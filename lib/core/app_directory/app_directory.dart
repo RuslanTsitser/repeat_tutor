@@ -33,7 +33,7 @@ abstract final class AppDirectory {
   }
 
   static File get appDbFile {
-    final file = File(p.join(_appDocsDirectory!.path, 'db.sqlite'));
+    final file = File(p.join(_appDocsDirectory!.path, 'repeat_tutor.sqlite'));
     return file;
   }
 

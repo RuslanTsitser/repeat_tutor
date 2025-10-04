@@ -8,7 +8,7 @@ import 'presentation/screens/chat_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppDirectory.initialize();
+  await AppDirectory.initialize();
 
   runApp(const ProviderScope(child: MyApp()));
 }

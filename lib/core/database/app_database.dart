@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:drift_flutter/drift_flutter.dart';
 
 import 'daos/chat_dao.dart';
 import 'daos/message_dao.dart';
+import 'open_connection/open_db_connection.dart';
 import 'tables.dart';
 
 part 'app_database.g.dart';
@@ -13,7 +13,7 @@ part 'app_database.g.dart';
   daos: [ChatDao, MessageDao],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase() : super(openDbConnection());
 
   @override
   int get schemaVersion => 1;
@@ -25,11 +25,6 @@ class AppDatabase extends _$AppDatabase {
       await _insertInitialData();
     },
   );
-
-  /// Создание соединения с базой данных
-  static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'repeat_tutor');
-  }
 
   /// Вставка начальных данных (вызывается только при создании базы)
   Future<void> _insertInitialData() async {
