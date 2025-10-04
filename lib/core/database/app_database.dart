@@ -18,22 +18,22 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (Migrator m) async {
+      await m.createAll();
+      await _insertInitialData();
+    },
+  );
+
   /// Создание соединения с базой данных
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'repeat_tutor');
   }
 
-  /// Инициализация базы данных с начальными данными
-  Future<void> initializeDatabase() async {
-    // Создаем таблицы
-    await customStatement('PRAGMA foreign_keys = ON');
-
-    // Проверяем, есть ли уже данные в базе
-    final existingChats = await chatDao.getAllChats();
-    if (existingChats.isEmpty) {
-      // Добавляем начальные данные только если база пустая
-      await _insertInitialChats();
-    }
+  /// Вставка начальных данных (вызывается только при создании базы)
+  Future<void> _insertInitialData() async {
+    await _insertInitialChats();
   }
 
   /// Вставка начальных данных чатов
@@ -100,12 +100,6 @@ class AppDatabase extends _$AppDatabase {
 
   /// Вставка начальных сообщений
   Future<void> _insertInitialMessages() async {
-    // Проверяем, есть ли уже сообщения для первого чата
-    final existingMessages = await messageDao.getMessagesByChatId('1');
-    if (existingMessages.isNotEmpty) {
-      return; // Сообщения уже существуют
-    }
-
     final initialMessages = [
       MessagesCompanion.insert(
         id: '1',
