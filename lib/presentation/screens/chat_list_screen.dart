@@ -5,6 +5,7 @@ import '../../infrastructure/di.dart';
 import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_list_item.dart';
 import 'chat_screen.dart';
+import 'create_chat_screen.dart';
 
 class ChatListScreen extends ConsumerStatefulWidget {
   const ChatListScreen({super.key});
@@ -28,12 +29,18 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     final chatNotifier = ref.watch<ChatNotifier>(chatProvider);
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Чаты'),
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text('Чаты'),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: null,
-          child: Icon(CupertinoIcons.add),
+          onPressed: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute<void>(
+                builder: (context) => const CreateChatScreen(),
+              ),
+            );
+          },
+          child: const Icon(CupertinoIcons.add),
         ),
       ),
       child: SafeArea(
