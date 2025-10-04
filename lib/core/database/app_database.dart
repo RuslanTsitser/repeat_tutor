@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
-import 'tables.dart';
 import 'daos/chat_dao.dart';
 import 'daos/message_dao.dart';
+import 'tables.dart';
 
 part 'app_database.g.dart';
 
@@ -27,7 +27,7 @@ class AppDatabase extends _$AppDatabase {
   Future<void> initializeDatabase() async {
     // Создаем таблицы
     await customStatement('PRAGMA foreign_keys = ON');
-    
+
     // Добавляем начальные данные чатов
     await _insertInitialChats();
   }

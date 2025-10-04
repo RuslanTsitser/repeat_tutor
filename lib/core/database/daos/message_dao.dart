@@ -1,13 +1,14 @@
 import 'package:drift/drift.dart';
-import '../tables.dart';
+
 import '../app_database.dart';
+import '../tables.dart';
 
 part 'message_dao.g.dart';
 
 /// DAO для работы с сообщениями
 @DriftAccessor(tables: [Messages])
 class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
-  MessageDao(AppDatabase db) : super(db);
+  MessageDao(super.db);
 
   /// Получить все сообщения для чата
   Future<List<Message>> getMessagesByChatId(String chatId) {
@@ -19,7 +20,9 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
 
   /// Получить сообщение по ID
   Future<Message?> getMessageById(String id) {
-    return (select(messages)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    return (select(
+      messages,
+    )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   }
 
   /// Добавить новое сообщение
@@ -28,8 +31,9 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
 
   /// Обновить сообщение
   Future<void> updateMessage(MessagesCompanion message) {
-    return (update(messages)..where((tbl) => tbl.id.equals(message.id.value)))
-        .write(message);
+    return (update(
+      messages,
+    )..where((tbl) => tbl.id.equals(message.id.value))).write(message);
   }
 
   /// Удалить сообщение
