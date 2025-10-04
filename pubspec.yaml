@@ -1,0 +1,31 @@
+name: repeat_tutor
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.20.2
+  flutter_localizations:
+    sdk: flutter
+  riverpod: ^2.6.1
+  flutter_riverpod: ^2.6.1
+  equatable: ^2.0.7
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+flutter_intl:
+  enabled: true
+  output_dir: lib/localization/generated
+  arb_dir: lib/localization/l10n
