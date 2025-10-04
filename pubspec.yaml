@@ -12,20 +12,38 @@ dependencies:
   intl: ^0.20.2
   flutter_localizations:
     sdk: flutter
+  cupertino_icons: ^1.0.2
+
+  equatable: ^2.0.7
+  auto_route: ^10.1.2
+
+  # plugins
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  share_plus: ^12.0.0
+
+  # REST API
+  dio: ^5.9.0
+
+  # State management
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
-  equatable: ^2.0.7
-  cupertino_icons: ^1.0.2
+
+  # Database
+  drift: ^2.28.2
+  drift_flutter: ^0.2.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  drift_dev: ^2.28.3
+  build_runner: ^2.7.1
 
 flutter:
   uses-material-design: true
 
 flutter_intl:
   enabled: true
-  output_dir: lib/localization/generated
-  arb_dir: lib/localization/l10n
+  output_dir: lib/core/localization/generated
+  arb_dir: lib/core/localization/l10n

@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'localization/generated/l10n.dart';
+import 'core/app_directory/app_directory.dart';
+import 'core/localization/generated/l10n.dart';
 import 'presentation/screens/chat_list_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  AppDirectory.initialize();
   runApp(const ProviderScope(child: MyApp()));
 }
 
