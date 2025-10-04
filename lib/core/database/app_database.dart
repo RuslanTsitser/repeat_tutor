@@ -21,8 +21,11 @@ class AppDatabase extends _$AppDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (Migrator m) async {
+      print('AppDatabase: Создаем таблицы базы данных');
       await m.createAll();
+      print('AppDatabase: Вставляем начальные данные');
       await _insertInitialData();
+      print('AppDatabase: Инициализация базы данных завершена');
     },
   );
 
@@ -85,9 +88,11 @@ class AppDatabase extends _$AppDatabase {
       ),
     ];
 
+    print('AppDatabase: Начинаем вставку ${initialChats.length} чатов');
     for (final chat in initialChats) {
       await chatDao.insertChat(chat);
     }
+    print('AppDatabase: Вставка чатов завершена');
 
     // Добавляем начальные сообщения для первого чата
     await _insertInitialMessages();
