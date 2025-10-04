@@ -13,7 +13,9 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<List<model.Chat>> getChats() async {
     print('ChatRepositoryImpl: Загружаем чаты из базы данных');
     final chatRows = await _database.chatDao.getAllChats();
-    print('ChatRepositoryImpl: Получено ${chatRows.length} чатов из базы данных');
+    print(
+      'ChatRepositoryImpl: Получено ${chatRows.length} чатов из базы данных',
+    );
     return chatRows.map((row) => _mapToDomainModel(row)).toList();
   }
 

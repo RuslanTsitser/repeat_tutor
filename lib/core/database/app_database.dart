@@ -13,7 +13,9 @@ part 'app_database.g.dart';
   daos: [ChatDao, MessageDao],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(openDbConnection());
+  AppDatabase() : super(openDbConnection()) {
+    print('AppDatabase: Конструктор вызван');
+  }
 
   @override
   int get schemaVersion => 1;
