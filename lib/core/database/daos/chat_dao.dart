@@ -11,12 +11,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   ChatDao(super.db);
 
   /// Получить все чаты
-  Future<List<Chat>> getAllChats() async {
-    print('ChatDao: Выполняем запрос SELECT * FROM chats');
-    final result = await select(chats).get();
-    print('ChatDao: Получено ${result.length} записей из таблицы chats');
-    return result;
-  }
+  Future<List<Chat>> getAllChats() => select(chats).get();
 
   /// Получить чат по ID
   Future<Chat?> getChatById(String id) {

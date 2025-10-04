@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' show log;
 
 import 'package:flutter/foundation.dart';
@@ -8,14 +9,26 @@ import 'logger_utils.dart';
 
 export 'app_navigator_observer.dart';
 
-void logInfo(dynamic data) {
+void logInfo(Object data) {
   log('${DateTime.now()} ${convertOrToString(data)}');
   logPersistent(convertOrToString(data));
   if (kReleaseMode) recordCrashlyticsLog(convertOrToString(data));
 }
 
-void logError(dynamic data, [dynamic error, StackTrace? stackTrace]) {
-  log('${DateTime.now()} ${convertOrToString(data)}', error: error, stackTrace: stackTrace);
+void logError(Object data, [Object? error, StackTrace? stackTrace]) {
+  log(
+    '${DateTime.now()} ${convertOrToString(data)}',
+    error: error,
+    stackTrace: stackTrace,
+  );
   logPersistent(convertOrToString(data), error: error, stackTrace: stackTrace);
-  if (kReleaseMode) recordCrashlyticsError(error, stackTrace, reason: convertOrToString(data));
+  if (kReleaseMode) {
+    unawaited(
+      recordCrashlyticsError(
+        error,
+        stackTrace,
+        reason: convertOrToString(data),
+      ),
+    );
+  }
 }
