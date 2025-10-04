@@ -1,78 +1,24 @@
-import '../../domain/models/chat.dart';
+import 'package:drift/drift.dart';
+
+import '../../core/database/app_database.dart';
+import '../../domain/models/chat.dart' as model;
 import '../../domain/repositories/chat_repository.dart';
 
 /// Реализация репозитория для работы с чатами
 class ChatRepositoryImpl implements ChatRepository {
-  // Временное хранилище в памяти (в будущем можно заменить на базу данных)
-  List<Chat> _chats = _initialChats;
-
-  static const List<Chat> _initialChats = [
-    Chat(
-      id: '1',
-      name: 'Анна Петрова',
-      lastMessage: 'Привет! Как дела?',
-      time: '12:30',
-      unreadCount: 2,
-    ),
-    Chat(
-      id: '2',
-      name: 'Иван Сидоров',
-      lastMessage: 'Спасибо за помощь с проектом',
-      time: '11:45',
-      unreadCount: 0,
-    ),
-    Chat(
-      id: '3',
-      name: 'Мария Козлова',
-      lastMessage: 'Встречаемся завтра в 15:00',
-      time: '10:20',
-      unreadCount: 1,
-    ),
-    Chat(
-      id: '4',
-      name: 'Алексей Волков',
-      lastMessage: 'Отличная работа!',
-      time: '09:15',
-      unreadCount: 0,
-    ),
-    Chat(
-      id: '5',
-      name: 'Елена Смирнова',
-      lastMessage: 'Документы готовы',
-      time: 'Вчера',
-      unreadCount: 3,
-    ),
-    Chat(
-      id: '6',
-      name: 'Дмитрий Новиков',
-      lastMessage: 'Спасибо за совет',
-      time: 'Вчера',
-      unreadCount: 0,
-    ),
-    Chat(
-      id: '7',
-      name: 'Ольга Морозова',
-      lastMessage: 'До встречи!',
-      time: 'Понедельник',
-      unreadCount: 0,
-    ),
-  ];
+  ChatRepositoryImpl(this._database);
+  final AppDatabase _database;
 
   @override
-  Future<List<Chat>> getChats() async {
-    // Имитация задержки сети
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    return List.from(_chats);
+  Future<List<model.Chat>> getChats() async {
+    final chatRows = await _database.chatDao.getAllChats();
+    return chatRows.map((row) => _mapToDomainModel(row)).toList();
   }
 
   @override
-  Future<Chat?> getChatById(String id) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    try {
-      return _chats.firstWhere((chat) => chat.id == id);
-    } catch (e) {
-      return null;
-    }
+  Future<model.Chat?> getChatById(String id) async {
+    final chatRow = await _database.chatDao.getChatById(id);
+    return chatRow != null ? _mapToDomainModel(chatRow) : null;
   }
 
   @override
@@ -81,40 +27,43 @@ class ChatRepositoryImpl implements ChatRepository {
     String message,
     String time,
   ) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    _chats = _chats.map((chat) {
-      if (chat.id == chatId) {
-        return chat.copyWith(
-          lastMessage: message,
-          time: time,
-          unreadCount: chat.unreadCount + 1,
-        );
-      }
-      return chat;
-    }).toList();
+    await _database.chatDao.updateLastMessage(chatId, message, time);
   }
 
   @override
   Future<void> markAsRead(String chatId) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    _chats = _chats.map((chat) {
-      if (chat.id == chatId) {
-        return chat.copyWith(unreadCount: 0);
-      }
-      return chat;
-    }).toList();
+    await _database.chatDao.markAsRead(chatId);
   }
 
   @override
-  Future<Chat> createChat(Chat chat) async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    _chats = [..._chats, chat];
+  Future<model.Chat> createChat(model.Chat chat) async {
+    final chatCompanion = ChatsCompanion.insert(
+      id: chat.id,
+      name: chat.name,
+      lastMessage: chat.lastMessage,
+      time: chat.time,
+      unreadCount: Value(chat.unreadCount),
+      avatarUrl: Value(chat.avatarUrl),
+    );
+
+    await _database.chatDao.insertChat(chatCompanion);
     return chat;
   }
 
   @override
   Future<void> deleteChat(String chatId) async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    _chats.removeWhere((chat) => chat.id == chatId);
+    await _database.chatDao.deleteChat(chatId);
+  }
+
+  /// Преобразование модели базы данных в доменную модель
+  model.Chat _mapToDomainModel(Chat chatData) {
+    return model.Chat(
+      id: chatData.id,
+      name: chatData.name,
+      lastMessage: chatData.lastMessage,
+      time: chatData.time,
+      unreadCount: chatData.unreadCount,
+      avatarUrl: chatData.avatarUrl,
+    );
   }
 }

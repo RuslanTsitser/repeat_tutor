@@ -4,11 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/app_directory/app_directory.dart';
 import 'core/localization/generated/l10n.dart';
+import 'core/database/app_database.dart';
 import 'presentation/screens/chat_list_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppDirectory.initialize();
+  
+  // Инициализация базы данных
+  final database = AppDatabase();
+  await database.initializeDatabase();
+  
   runApp(const ProviderScope(child: MyApp()));
 }
 

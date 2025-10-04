@@ -1,109 +1,73 @@
-import '../../domain/models/message.dart';
+import 'package:drift/drift.dart';
+
+import '../../domain/models/message.dart' as model;
 import '../../domain/repositories/message_repository.dart';
+import '../../core/database/app_database.dart';
 
 /// Реализация репозитория для работы с сообщениями
 class MessageRepositoryImpl implements MessageRepository {
-  // Временное хранилище в памяти (в будущем можно заменить на базу данных)
-  final Map<String, List<Message>> _messagesByChatId = {};
+  final AppDatabase _database;
 
-  /// Получить начальные сообщения для чата
-  static List<Message> _getInitialMessages(String chatId) {
-    return [
-      Message(
-        id: '1',
-        text: 'Привет! Как дела?',
-        isMe: false,
-        time: '12:25',
-        chatId: chatId,
-      ),
-      Message(
-        id: '2',
-        text: 'Привет! Всё хорошо, спасибо! А у тебя как?',
-        isMe: true,
-        time: '12:26',
-        chatId: chatId,
-      ),
-      Message(
-        id: '3',
-        text: 'Тоже всё отлично! Работаю над новым проектом',
-        isMe: false,
-        time: '12:27',
-        chatId: chatId,
-      ),
-      Message(
-        id: '4',
-        text: 'Здорово! Расскажи подробнее',
-        isMe: true,
-        time: '12:28',
-        chatId: chatId,
-      ),
-    ];
+  MessageRepositoryImpl(this._database);
+
+  @override
+  Future<List<model.Message>> getMessagesByChatId(String chatId) async {
+    final messageRows = await _database.messageDao.getMessagesByChatId(chatId);
+    return messageRows.map((row) => _mapToDomainModel(row)).toList();
   }
 
   @override
-  Future<List<Message>> getMessagesByChatId(String chatId) async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    
-    if (!_messagesByChatId.containsKey(chatId)) {
-      _messagesByChatId[chatId] = _getInitialMessages(chatId);
-    }
-    
-    return List.from(_messagesByChatId[chatId]!);
+  Future<model.Message?> getMessageById(String id) async {
+    final messageRow = await _database.messageDao.getMessageById(id);
+    return messageRow != null ? _mapToDomainModel(messageRow) : null;
   }
 
   @override
-  Future<Message?> getMessageById(String id) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+  Future<model.Message> addMessage(model.Message message) async {
+    final messageCompanion = MessagesCompanion.insert(
+      id: message.id,
+      message: message.text,
+      isMe: message.isMe,
+      time: message.time,
+      chatId: message.chatId,
+    );
     
-    for (final messages in _messagesByChatId.values) {
-      try {
-        return messages.firstWhere((message) => message.id == id);
-      } catch (e) {
-        continue;
-      }
-    }
-    return null;
-  }
-
-  @override
-  Future<Message> addMessage(Message message) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    
-    if (!_messagesByChatId.containsKey(message.chatId)) {
-      _messagesByChatId[message.chatId] = [];
-    }
-    
-    _messagesByChatId[message.chatId]!.add(message);
+    await _database.messageDao.insertMessage(messageCompanion);
     return message;
   }
 
   @override
   Future<void> deleteMessage(String messageId) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    
-    for (final messages in _messagesByChatId.values) {
-      messages.removeWhere((message) => message.id == messageId);
-    }
+    await _database.messageDao.deleteMessage(messageId);
   }
 
   @override
   Future<void> clearMessages(String chatId) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    _messagesByChatId[chatId]?.clear();
+    await _database.messageDao.clearMessages(chatId);
   }
 
   @override
-  Future<Message> updateMessage(Message message) async {
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+  Future<model.Message> updateMessage(model.Message message) async {
+    final messageCompanion = MessagesCompanion(
+      id: Value(message.id),
+      message: Value(message.text),
+      isMe: Value(message.isMe),
+      time: Value(message.time),
+      chatId: Value(message.chatId),
+    );
     
-    final messages = _messagesByChatId[message.chatId];
-    if (messages != null) {
-      final index = messages.indexWhere((m) => m.id == message.id);
-      if (index != -1) {
-        messages[index] = message;
-      }
-    }
-    
+    await _database.messageDao.updateMessage(messageCompanion);
     return message;
+  }
+
+  /// Преобразование модели базы данных в доменную модель
+  model.Message _mapToDomainModel(Message messageData) {
+    return model.Message(
+      id: messageData.id,
+      text: messageData.message,
+      isMe: messageData.isMe,
+      time: messageData.time,
+      chatId: messageData.chatId,
+    );
   }
 }
