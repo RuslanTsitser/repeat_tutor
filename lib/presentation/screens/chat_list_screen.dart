@@ -6,6 +6,7 @@ import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_list_item.dart';
 import 'chat_screen.dart';
 import 'create_chat_screen.dart';
+import 'realtime_session_list_screen.dart';
 
 class ChatListScreen extends ConsumerStatefulWidget {
   const ChatListScreen({super.key});
@@ -31,6 +32,17 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Чаты'),
+        leading: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute<void>(
+                builder: (context) => const RealtimeSessionListScreen(),
+              ),
+            );
+          },
+          child: const Icon(CupertinoIcons.phone),
+        ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
