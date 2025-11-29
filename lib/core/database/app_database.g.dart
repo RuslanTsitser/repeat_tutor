@@ -766,18 +766,627 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   }
 }
 
+class $RealtimeSessionsTable extends RealtimeSessions
+    with TableInfo<$RealtimeSessionsTable, RealtimeSession> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RealtimeSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _languageMeta = const VerificationMeta(
+    'language',
+  );
+  @override
+  late final GeneratedColumn<String> language = GeneratedColumn<String>(
+    'language',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _levelMeta = const VerificationMeta('level');
+  @override
+  late final GeneratedColumn<String> level = GeneratedColumn<String>(
+    'level',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _clientSecretMeta = const VerificationMeta(
+    'clientSecret',
+  );
+  @override
+  late final GeneratedColumn<String> clientSecret = GeneratedColumn<String>(
+    'client_secret',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _clientSecretExpiresAtMeta =
+      const VerificationMeta('clientSecretExpiresAt');
+  @override
+  late final GeneratedColumn<DateTime> clientSecretExpiresAt =
+      GeneratedColumn<DateTime>(
+        'client_secret_expires_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _serverURLMeta = const VerificationMeta(
+    'serverURL',
+  );
+  @override
+  late final GeneratedColumn<String> serverURL = GeneratedColumn<String>(
+    'server_u_r_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _callStartedAtMeta = const VerificationMeta(
+    'callStartedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> callStartedAt =
+      GeneratedColumn<DateTime>(
+        'call_started_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _callDurationMinutesMeta =
+      const VerificationMeta('callDurationMinutes');
+  @override
+  late final GeneratedColumn<int> callDurationMinutes = GeneratedColumn<int>(
+    'call_duration_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    language,
+    level,
+    clientSecret,
+    clientSecretExpiresAt,
+    serverURL,
+    callStartedAt,
+    callDurationMinutes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'realtime_sessions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RealtimeSession> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('language')) {
+      context.handle(
+        _languageMeta,
+        language.isAcceptableOrUnknown(data['language']!, _languageMeta),
+      );
+    }
+    if (data.containsKey('level')) {
+      context.handle(
+        _levelMeta,
+        level.isAcceptableOrUnknown(data['level']!, _levelMeta),
+      );
+    }
+    if (data.containsKey('client_secret')) {
+      context.handle(
+        _clientSecretMeta,
+        clientSecret.isAcceptableOrUnknown(
+          data['client_secret']!,
+          _clientSecretMeta,
+        ),
+      );
+    }
+    if (data.containsKey('client_secret_expires_at')) {
+      context.handle(
+        _clientSecretExpiresAtMeta,
+        clientSecretExpiresAt.isAcceptableOrUnknown(
+          data['client_secret_expires_at']!,
+          _clientSecretExpiresAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('server_u_r_l')) {
+      context.handle(
+        _serverURLMeta,
+        serverURL.isAcceptableOrUnknown(data['server_u_r_l']!, _serverURLMeta),
+      );
+    }
+    if (data.containsKey('call_started_at')) {
+      context.handle(
+        _callStartedAtMeta,
+        callStartedAt.isAcceptableOrUnknown(
+          data['call_started_at']!,
+          _callStartedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('call_duration_minutes')) {
+      context.handle(
+        _callDurationMinutesMeta,
+        callDurationMinutes.isAcceptableOrUnknown(
+          data['call_duration_minutes']!,
+          _callDurationMinutesMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RealtimeSession map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RealtimeSession(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      language: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}language'],
+      ),
+      level: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}level'],
+      ),
+      clientSecret: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}client_secret'],
+      ),
+      clientSecretExpiresAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}client_secret_expires_at'],
+      ),
+      serverURL: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}server_u_r_l'],
+      ),
+      callStartedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}call_started_at'],
+      ),
+      callDurationMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}call_duration_minutes'],
+      )!,
+    );
+  }
+
+  @override
+  $RealtimeSessionsTable createAlias(String alias) {
+    return $RealtimeSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
+  final String id;
+  final DateTime createdAt;
+  final String? language;
+  final String? level;
+  final String? clientSecret;
+  final DateTime? clientSecretExpiresAt;
+  final String? serverURL;
+  final DateTime? callStartedAt;
+  final int callDurationMinutes;
+  const RealtimeSession({
+    required this.id,
+    required this.createdAt,
+    this.language,
+    this.level,
+    this.clientSecret,
+    this.clientSecretExpiresAt,
+    this.serverURL,
+    this.callStartedAt,
+    required this.callDurationMinutes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || language != null) {
+      map['language'] = Variable<String>(language);
+    }
+    if (!nullToAbsent || level != null) {
+      map['level'] = Variable<String>(level);
+    }
+    if (!nullToAbsent || clientSecret != null) {
+      map['client_secret'] = Variable<String>(clientSecret);
+    }
+    if (!nullToAbsent || clientSecretExpiresAt != null) {
+      map['client_secret_expires_at'] = Variable<DateTime>(
+        clientSecretExpiresAt,
+      );
+    }
+    if (!nullToAbsent || serverURL != null) {
+      map['server_u_r_l'] = Variable<String>(serverURL);
+    }
+    if (!nullToAbsent || callStartedAt != null) {
+      map['call_started_at'] = Variable<DateTime>(callStartedAt);
+    }
+    map['call_duration_minutes'] = Variable<int>(callDurationMinutes);
+    return map;
+  }
+
+  RealtimeSessionsCompanion toCompanion(bool nullToAbsent) {
+    return RealtimeSessionsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      language: language == null && nullToAbsent
+          ? const Value.absent()
+          : Value(language),
+      level: level == null && nullToAbsent
+          ? const Value.absent()
+          : Value(level),
+      clientSecret: clientSecret == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientSecret),
+      clientSecretExpiresAt: clientSecretExpiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientSecretExpiresAt),
+      serverURL: serverURL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverURL),
+      callStartedAt: callStartedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(callStartedAt),
+      callDurationMinutes: Value(callDurationMinutes),
+    );
+  }
+
+  factory RealtimeSession.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RealtimeSession(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      language: serializer.fromJson<String?>(json['language']),
+      level: serializer.fromJson<String?>(json['level']),
+      clientSecret: serializer.fromJson<String?>(json['clientSecret']),
+      clientSecretExpiresAt: serializer.fromJson<DateTime?>(
+        json['clientSecretExpiresAt'],
+      ),
+      serverURL: serializer.fromJson<String?>(json['serverURL']),
+      callStartedAt: serializer.fromJson<DateTime?>(json['callStartedAt']),
+      callDurationMinutes: serializer.fromJson<int>(
+        json['callDurationMinutes'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'language': serializer.toJson<String?>(language),
+      'level': serializer.toJson<String?>(level),
+      'clientSecret': serializer.toJson<String?>(clientSecret),
+      'clientSecretExpiresAt': serializer.toJson<DateTime?>(
+        clientSecretExpiresAt,
+      ),
+      'serverURL': serializer.toJson<String?>(serverURL),
+      'callStartedAt': serializer.toJson<DateTime?>(callStartedAt),
+      'callDurationMinutes': serializer.toJson<int>(callDurationMinutes),
+    };
+  }
+
+  RealtimeSession copyWith({
+    String? id,
+    DateTime? createdAt,
+    Value<String?> language = const Value.absent(),
+    Value<String?> level = const Value.absent(),
+    Value<String?> clientSecret = const Value.absent(),
+    Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+    Value<String?> serverURL = const Value.absent(),
+    Value<DateTime?> callStartedAt = const Value.absent(),
+    int? callDurationMinutes,
+  }) => RealtimeSession(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    language: language.present ? language.value : this.language,
+    level: level.present ? level.value : this.level,
+    clientSecret: clientSecret.present ? clientSecret.value : this.clientSecret,
+    clientSecretExpiresAt: clientSecretExpiresAt.present
+        ? clientSecretExpiresAt.value
+        : this.clientSecretExpiresAt,
+    serverURL: serverURL.present ? serverURL.value : this.serverURL,
+    callStartedAt: callStartedAt.present
+        ? callStartedAt.value
+        : this.callStartedAt,
+    callDurationMinutes: callDurationMinutes ?? this.callDurationMinutes,
+  );
+  RealtimeSession copyWithCompanion(RealtimeSessionsCompanion data) {
+    return RealtimeSession(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      language: data.language.present ? data.language.value : this.language,
+      level: data.level.present ? data.level.value : this.level,
+      clientSecret: data.clientSecret.present
+          ? data.clientSecret.value
+          : this.clientSecret,
+      clientSecretExpiresAt: data.clientSecretExpiresAt.present
+          ? data.clientSecretExpiresAt.value
+          : this.clientSecretExpiresAt,
+      serverURL: data.serverURL.present ? data.serverURL.value : this.serverURL,
+      callStartedAt: data.callStartedAt.present
+          ? data.callStartedAt.value
+          : this.callStartedAt,
+      callDurationMinutes: data.callDurationMinutes.present
+          ? data.callDurationMinutes.value
+          : this.callDurationMinutes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RealtimeSession(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('language: $language, ')
+          ..write('level: $level, ')
+          ..write('clientSecret: $clientSecret, ')
+          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
+          ..write('serverURL: $serverURL, ')
+          ..write('callStartedAt: $callStartedAt, ')
+          ..write('callDurationMinutes: $callDurationMinutes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    language,
+    level,
+    clientSecret,
+    clientSecretExpiresAt,
+    serverURL,
+    callStartedAt,
+    callDurationMinutes,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RealtimeSession &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.language == this.language &&
+          other.level == this.level &&
+          other.clientSecret == this.clientSecret &&
+          other.clientSecretExpiresAt == this.clientSecretExpiresAt &&
+          other.serverURL == this.serverURL &&
+          other.callStartedAt == this.callStartedAt &&
+          other.callDurationMinutes == this.callDurationMinutes);
+}
+
+class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<String?> language;
+  final Value<String?> level;
+  final Value<String?> clientSecret;
+  final Value<DateTime?> clientSecretExpiresAt;
+  final Value<String?> serverURL;
+  final Value<DateTime?> callStartedAt;
+  final Value<int> callDurationMinutes;
+  final Value<int> rowid;
+  const RealtimeSessionsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.language = const Value.absent(),
+    this.level = const Value.absent(),
+    this.clientSecret = const Value.absent(),
+    this.clientSecretExpiresAt = const Value.absent(),
+    this.serverURL = const Value.absent(),
+    this.callStartedAt = const Value.absent(),
+    this.callDurationMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RealtimeSessionsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    this.language = const Value.absent(),
+    this.level = const Value.absent(),
+    this.clientSecret = const Value.absent(),
+    this.clientSecretExpiresAt = const Value.absent(),
+    this.serverURL = const Value.absent(),
+    this.callStartedAt = const Value.absent(),
+    this.callDurationMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt);
+  static Insertable<RealtimeSession> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<String>? language,
+    Expression<String>? level,
+    Expression<String>? clientSecret,
+    Expression<DateTime>? clientSecretExpiresAt,
+    Expression<String>? serverURL,
+    Expression<DateTime>? callStartedAt,
+    Expression<int>? callDurationMinutes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (language != null) 'language': language,
+      if (level != null) 'level': level,
+      if (clientSecret != null) 'client_secret': clientSecret,
+      if (clientSecretExpiresAt != null)
+        'client_secret_expires_at': clientSecretExpiresAt,
+      if (serverURL != null) 'server_u_r_l': serverURL,
+      if (callStartedAt != null) 'call_started_at': callStartedAt,
+      if (callDurationMinutes != null)
+        'call_duration_minutes': callDurationMinutes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RealtimeSessionsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<String?>? language,
+    Value<String?>? level,
+    Value<String?>? clientSecret,
+    Value<DateTime?>? clientSecretExpiresAt,
+    Value<String?>? serverURL,
+    Value<DateTime?>? callStartedAt,
+    Value<int>? callDurationMinutes,
+    Value<int>? rowid,
+  }) {
+    return RealtimeSessionsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      language: language ?? this.language,
+      level: level ?? this.level,
+      clientSecret: clientSecret ?? this.clientSecret,
+      clientSecretExpiresAt:
+          clientSecretExpiresAt ?? this.clientSecretExpiresAt,
+      serverURL: serverURL ?? this.serverURL,
+      callStartedAt: callStartedAt ?? this.callStartedAt,
+      callDurationMinutes: callDurationMinutes ?? this.callDurationMinutes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (language.present) {
+      map['language'] = Variable<String>(language.value);
+    }
+    if (level.present) {
+      map['level'] = Variable<String>(level.value);
+    }
+    if (clientSecret.present) {
+      map['client_secret'] = Variable<String>(clientSecret.value);
+    }
+    if (clientSecretExpiresAt.present) {
+      map['client_secret_expires_at'] = Variable<DateTime>(
+        clientSecretExpiresAt.value,
+      );
+    }
+    if (serverURL.present) {
+      map['server_u_r_l'] = Variable<String>(serverURL.value);
+    }
+    if (callStartedAt.present) {
+      map['call_started_at'] = Variable<DateTime>(callStartedAt.value);
+    }
+    if (callDurationMinutes.present) {
+      map['call_duration_minutes'] = Variable<int>(callDurationMinutes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RealtimeSessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('language: $language, ')
+          ..write('level: $level, ')
+          ..write('clientSecret: $clientSecret, ')
+          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
+          ..write('serverURL: $serverURL, ')
+          ..write('callStartedAt: $callStartedAt, ')
+          ..write('callDurationMinutes: $callDurationMinutes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ChatsTable chats = $ChatsTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
+  late final $RealtimeSessionsTable realtimeSessions = $RealtimeSessionsTable(
+    this,
+  );
   late final ChatDao chatDao = ChatDao(this as AppDatabase);
   late final MessageDao messageDao = MessageDao(this as AppDatabase);
+  late final RealtimeSessionDao realtimeSessionDao = RealtimeSessionDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [chats, messages];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    chats,
+    messages,
+    realtimeSessions,
+  ];
 }
 
 typedef $$ChatsTableCreateCompanionBuilder =
@@ -1190,6 +1799,296 @@ typedef $$MessagesTableProcessedTableManager =
       Message,
       PrefetchHooks Function()
     >;
+typedef $$RealtimeSessionsTableCreateCompanionBuilder =
+    RealtimeSessionsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      Value<String?> language,
+      Value<String?> level,
+      Value<String?> clientSecret,
+      Value<DateTime?> clientSecretExpiresAt,
+      Value<String?> serverURL,
+      Value<DateTime?> callStartedAt,
+      Value<int> callDurationMinutes,
+      Value<int> rowid,
+    });
+typedef $$RealtimeSessionsTableUpdateCompanionBuilder =
+    RealtimeSessionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<String?> language,
+      Value<String?> level,
+      Value<String?> clientSecret,
+      Value<DateTime?> clientSecretExpiresAt,
+      Value<String?> serverURL,
+      Value<DateTime?> callStartedAt,
+      Value<int> callDurationMinutes,
+      Value<int> rowid,
+    });
+
+class $$RealtimeSessionsTableFilterComposer
+    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
+  $$RealtimeSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get level => $composableBuilder(
+    column: $table.level,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get clientSecret => $composableBuilder(
+    column: $table.clientSecret,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get clientSecretExpiresAt => $composableBuilder(
+    column: $table.clientSecretExpiresAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get serverURL => $composableBuilder(
+    column: $table.serverURL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get callStartedAt => $composableBuilder(
+    column: $table.callStartedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get callDurationMinutes => $composableBuilder(
+    column: $table.callDurationMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RealtimeSessionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
+  $$RealtimeSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get level => $composableBuilder(
+    column: $table.level,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get clientSecret => $composableBuilder(
+    column: $table.clientSecret,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get clientSecretExpiresAt => $composableBuilder(
+    column: $table.clientSecretExpiresAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get serverURL => $composableBuilder(
+    column: $table.serverURL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get callStartedAt => $composableBuilder(
+    column: $table.callStartedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get callDurationMinutes => $composableBuilder(
+    column: $table.callDurationMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RealtimeSessionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
+  $$RealtimeSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get language =>
+      $composableBuilder(column: $table.language, builder: (column) => column);
+
+  GeneratedColumn<String> get level =>
+      $composableBuilder(column: $table.level, builder: (column) => column);
+
+  GeneratedColumn<String> get clientSecret => $composableBuilder(
+    column: $table.clientSecret,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get clientSecretExpiresAt => $composableBuilder(
+    column: $table.clientSecretExpiresAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get serverURL =>
+      $composableBuilder(column: $table.serverURL, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get callStartedAt => $composableBuilder(
+    column: $table.callStartedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get callDurationMinutes => $composableBuilder(
+    column: $table.callDurationMinutes,
+    builder: (column) => column,
+  );
+}
+
+class $$RealtimeSessionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RealtimeSessionsTable,
+          RealtimeSession,
+          $$RealtimeSessionsTableFilterComposer,
+          $$RealtimeSessionsTableOrderingComposer,
+          $$RealtimeSessionsTableAnnotationComposer,
+          $$RealtimeSessionsTableCreateCompanionBuilder,
+          $$RealtimeSessionsTableUpdateCompanionBuilder,
+          (
+            RealtimeSession,
+            BaseReferences<
+              _$AppDatabase,
+              $RealtimeSessionsTable,
+              RealtimeSession
+            >,
+          ),
+          RealtimeSession,
+          PrefetchHooks Function()
+        > {
+  $$RealtimeSessionsTableTableManager(
+    _$AppDatabase db,
+    $RealtimeSessionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RealtimeSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RealtimeSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RealtimeSessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String?> language = const Value.absent(),
+                Value<String?> level = const Value.absent(),
+                Value<String?> clientSecret = const Value.absent(),
+                Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<String?> serverURL = const Value.absent(),
+                Value<DateTime?> callStartedAt = const Value.absent(),
+                Value<int> callDurationMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RealtimeSessionsCompanion(
+                id: id,
+                createdAt: createdAt,
+                language: language,
+                level: level,
+                clientSecret: clientSecret,
+                clientSecretExpiresAt: clientSecretExpiresAt,
+                serverURL: serverURL,
+                callStartedAt: callStartedAt,
+                callDurationMinutes: callDurationMinutes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                Value<String?> language = const Value.absent(),
+                Value<String?> level = const Value.absent(),
+                Value<String?> clientSecret = const Value.absent(),
+                Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<String?> serverURL = const Value.absent(),
+                Value<DateTime?> callStartedAt = const Value.absent(),
+                Value<int> callDurationMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RealtimeSessionsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                language: language,
+                level: level,
+                clientSecret: clientSecret,
+                clientSecretExpiresAt: clientSecretExpiresAt,
+                serverURL: serverURL,
+                callStartedAt: callStartedAt,
+                callDurationMinutes: callDurationMinutes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RealtimeSessionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RealtimeSessionsTable,
+      RealtimeSession,
+      $$RealtimeSessionsTableFilterComposer,
+      $$RealtimeSessionsTableOrderingComposer,
+      $$RealtimeSessionsTableAnnotationComposer,
+      $$RealtimeSessionsTableCreateCompanionBuilder,
+      $$RealtimeSessionsTableUpdateCompanionBuilder,
+      (
+        RealtimeSession,
+        BaseReferences<_$AppDatabase, $RealtimeSessionsTable, RealtimeSession>,
+      ),
+      RealtimeSession,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1198,4 +2097,6 @@ class $AppDatabaseManager {
       $$ChatsTableTableManager(_db, _db.chats);
   $$MessagesTableTableManager get messages =>
       $$MessagesTableTableManager(_db, _db.messages);
+  $$RealtimeSessionsTableTableManager get realtimeSessions =>
+      $$RealtimeSessionsTableTableManager(_db, _db.realtimeSessions);
 }

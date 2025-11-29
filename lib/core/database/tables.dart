@@ -24,3 +24,20 @@ class Messages extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+/// Таблица сессий Realtime API
+class RealtimeSessions extends Table {
+  TextColumn get id => text()();
+  DateTimeColumn get createdAt => dateTime()();
+  TextColumn get language => text().nullable()();
+  TextColumn get level => text().nullable()();
+  TextColumn get clientSecret => text().nullable()();
+  DateTimeColumn get clientSecretExpiresAt => dateTime().nullable()();
+  TextColumn get serverURL => text().nullable()();
+  DateTimeColumn get callStartedAt => dateTime().nullable()();
+  IntColumn get callDurationMinutes =>
+      integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
