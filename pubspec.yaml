@@ -13,6 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  collection: ^1.19.1
 
   equatable: ^2.0.7
   auto_route: ^10.1.2
@@ -39,6 +40,13 @@ dependencies:
   drift_flutter: ^0.2.7
   sqlite3: ^2.9.1
   sqlite3_flutter_libs: ^0.5.40
+
+  # Metrics and Attribution
+  apphud: ^2.7.1
+  ab_test_service:
+    git:
+      url: https://github.com/RuslanTsitser/ab_test_service.git
+      ref: 0.0.6
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,7 @@ import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
 import '../../domain/usecases/get_all_realtime_sessions_usecase.dart';
+import '../core/ab_test/ab_test_prod.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_audio_manager.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
@@ -169,3 +170,13 @@ final realtimeCallProvider =
         session: session,
       );
     });
+
+final abTestServiceProvider = Provider<AbTestService>((ref) {
+  const appKey = String.fromEnvironment('APPHUD_APP_KEY', defaultValue: '');
+  if (appKey.isEmpty) {
+    throw StateError(
+      'APPHUD_APP_KEY не установлен. Установите переменную окружения APPHUD_APP_KEY.',
+    );
+  }
+  return AbTestService(appKey);
+});
