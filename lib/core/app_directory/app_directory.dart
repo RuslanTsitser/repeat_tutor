@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_storage_sync/cloud_storage_sync.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -9,11 +10,49 @@ import '../logging/app_logger.dart';
 abstract final class AppDirectory {
   static Directory? _appDocsDirectory;
   static Directory? _appCacheDirectory;
+  static String? _iCloudDocumentsPath;
 
   /// Инициализирует директории приложения. Обязательно нужно вызывать метод перед использованием класса.
   static Future<void> initialize() async {
-    _appDocsDirectory = await getApplicationDocumentsDirectory();
     _appCacheDirectory = await getTemporaryDirectory();
+
+    if (!Platform.isIOS) {
+      _appDocsDirectory = await getApplicationDocumentsDirectory();
+      _iCloudDocumentsPath = null;
+      logInfo(
+        '[AppDirectory] 📁 Локальная директория: ${_appDocsDirectory!.path}',
+      );
+      return;
+    }
+
+    // Проверяем доступность iCloud
+    final isAvailable = await CloudStorageSync.instance
+        .isCloudStorageAvailable();
+    if (!isAvailable) {
+      _appDocsDirectory = await getApplicationDocumentsDirectory();
+      _iCloudDocumentsPath = null;
+      logInfo(
+        '[AppDirectory] 📁 iCloud недоступен, используем локальную директорию: ${_appDocsDirectory!.path}',
+      );
+      return;
+    }
+
+    // Получаем путь к iCloud директории
+    final iCloudPath = await CloudStorageSync.instance
+        .getDocumentsDirectoryPath();
+    if (iCloudPath == null) {
+      _appDocsDirectory = await getApplicationDocumentsDirectory();
+      _iCloudDocumentsPath = null;
+      logInfo(
+        '[AppDirectory] 📁 Не удалось получить путь iCloud, используем локальную директорию: ${_appDocsDirectory!.path}',
+      );
+      return;
+    }
+
+    final iCloudDir = Directory(iCloudPath);
+    if (!iCloudDir.existsSync()) {
+      iCloudDir.createSync(recursive: true);
+    }
     manageLogFiles();
   }
 
@@ -33,7 +72,8 @@ abstract final class AppDirectory {
   }
 
   static File get appDbFile {
-    final file = File(p.join(_appDocsDirectory!.path, 'repeat_tutor.sqlite'));
+    final path = _iCloudDocumentsPath ?? _appDocsDirectory!.path;
+    final file = File(p.join(path, 'repeat_tutor.sqlite'));
     return file;
   }
 

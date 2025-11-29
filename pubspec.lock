@@ -154,6 +154,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  cloud_storage_sync:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "0.0.1"
+      resolved-ref: "066742dc4764ef72083baeb7c03db8359fd894bd"
+      url: "https://github.com/RuslanTsitser/cloud_storage_sync.git"
+    source: git
+    version: "0.0.1"
   code_builder:
     dependency: transitive
     description:
