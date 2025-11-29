@@ -1,0 +1,244 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../infrastructure/di.dart';
+import '../../domain/models/realtime_session.dart';
+import '../notifiers/realtime_call_notifier.dart';
+
+class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
+  final RealtimeSession session;
+
+  const RealtimeSessionDetailScreen({
+    super.key,
+    required this.session,
+  });
+
+  @override
+  ConsumerState<RealtimeSessionDetailScreen> createState() =>
+      _RealtimeSessionDetailScreenState();
+}
+
+class _RealtimeSessionDetailScreenState
+    extends ConsumerState<RealtimeSessionDetailScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final notifier = ref.watch<RealtimeCallNotifier>(
+      realtimeCallProvider(widget.session.id),
+    );
+
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text('Реалтайм звонок'),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (notifier.error != null)
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.systemRed.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          notifier.error!,
+                          style: const TextStyle(
+                            color: CupertinoColors.systemRed,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    _StatusCard(notifier: notifier),
+                    const SizedBox(height: 16),
+                    _AudioLevelCard(notifier: notifier),
+                    const SizedBox(height: 16),
+                    _MessagesCard(notifier: notifier),
+                  ],
+                ),
+              ),
+            ),
+            _ControlButtons(notifier: notifier),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusCard extends StatelessWidget {
+  final RealtimeCallNotifier notifier;
+
+  const _StatusCard({required this.notifier});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGrey6,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Статус',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text('Подключен: ${notifier.isConnected ? "Да" : "Нет"}'),
+          Text('Запись: ${notifier.isRecording ? "Да" : "Нет"}'),
+          Text('Воспроизведение: ${notifier.isPlaying ? "Да" : "Нет"}'),
+        ],
+      ),
+    );
+  }
+}
+
+class _AudioLevelCard extends StatelessWidget {
+  final RealtimeCallNotifier notifier;
+
+  const _AudioLevelCard({required this.notifier});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGrey6,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Уровень звука',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: notifier.audioLevel,
+              backgroundColor: CupertinoColors.systemGrey4,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                CupertinoColors.activeGreen,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MessagesCard extends StatelessWidget {
+  final RealtimeCallNotifier notifier;
+
+  const _MessagesCard({required this.notifier});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemGrey6,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Сообщения',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (notifier.receivedMessages.isEmpty)
+            const Text(
+              'Нет сообщений',
+              style: TextStyle(color: CupertinoColors.systemGrey),
+            )
+          else
+            ...notifier.receivedMessages.map(
+              (message) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  message,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ControlButtons extends ConsumerWidget {
+  final RealtimeCallNotifier notifier;
+
+  const _ControlButtons({required this.notifier});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemBackground,
+        border: Border(
+          top: BorderSide(
+            color: CupertinoColors.separator,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          if (!notifier.isConnected && !notifier.isConnecting)
+            CupertinoButton.filled(
+              onPressed: () {
+                ref
+                    .read<RealtimeCallNotifier>(
+                      realtimeCallProvider(notifier.session.id),
+                    )
+                    .connect();
+              },
+              child: const Text('Подключиться'),
+            )
+          else if (notifier.isConnecting)
+            const CupertinoActivityIndicator()
+          else
+            CupertinoButton(
+              color: CupertinoColors.systemRed,
+              onPressed: () {
+                ref
+                    .read<RealtimeCallNotifier>(
+                      realtimeCallProvider(notifier.session.id),
+                    )
+                    .disconnect();
+              },
+              child: const Text('Отключиться'),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
