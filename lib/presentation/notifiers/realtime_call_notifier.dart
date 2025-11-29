@@ -5,12 +5,12 @@ import '../../domain/models/realtime_session.dart';
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
-import '../../domain/repositories/realtime_audio_manager.dart' as domain;
 import '../../domain/repositories/realtime_session_repository.dart';
-import '../../domain/repositories/realtime_web_rtc_connection.dart' as domain;
 import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
+import '../../infrastructure/realtime/realtime_audio_manager.dart';
+import '../../infrastructure/realtime/realtime_webrtc_manager.dart';
 
 /// Нотатор для управления звонком Realtime API
 class RealtimeCallNotifier extends ChangeNotifier {
@@ -21,18 +21,18 @@ class RealtimeCallNotifier extends ChangeNotifier {
     required this.sessionRepository,
     required this.createSessionUseCase,
     required this.deleteSessionUseCase,
-    required RealtimeSession session,
-  }) : _session = session {
+    required this.session,
+  }) {
     _setupCallbacks();
   }
-  final domain.RealtimeWebRTCConnection connection;
-  final domain.RealtimeAudioManager audioManager;
+  final RealtimeWebRTCConnection connection;
+  final RealtimeAudioManager audioManager;
   final ConnectRealtimeWebRTCUseCase connectUseCase;
   final RealtimeSessionRepository sessionRepository;
   final CreateRealtimeSessionUseCase createSessionUseCase;
   final DeleteRealtimeSessionUseCase deleteSessionUseCase;
 
-  RealtimeSession _session;
+  RealtimeSession session;
   bool _isConnected = false;
   bool _isConnecting = false;
   bool _isRecording = false;
@@ -41,7 +41,6 @@ class RealtimeCallNotifier extends ChangeNotifier {
   List<String> _receivedMessages = [];
   double _audioLevel = 0.0;
 
-  RealtimeSession get session => _session;
   bool get isConnected => _isConnected;
   bool get isConnecting => _isConnecting;
   bool get isRecording => _isRecording;
@@ -148,7 +147,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
       return;
     }
 
-    if (_session.clientSecret == null || !_session.isClientSecretValid) {
+    if (session.clientSecret == null || !session.isClientSecretValid) {
       // Если секрет истек, создаем новую сессию
       await _replaceExpiredSession();
       return;
@@ -156,8 +155,8 @@ class RealtimeCallNotifier extends ChangeNotifier {
 
     try {
       await connectUseCase.execute(
-        sessionId: _session.id,
-        clientSecret: _session.clientSecret!,
+        sessionId: session.id,
+        clientSecret: session.clientSecret!,
       );
     } catch (e) {
       _error = e.toString();
@@ -171,18 +170,18 @@ class RealtimeCallNotifier extends ChangeNotifier {
     try {
       // Сохраняем параметры текущей сессии
       final settings = SessionSettings(
-        language: _session.language ?? SessionLanguage.japanese,
-        level: _session.level ?? SessionDifficultyLevel.beginner,
+        language: session.language ?? SessionLanguage.japanese,
+        level: session.level ?? SessionDifficultyLevel.beginner,
       );
 
       // Создаем новую сессию
       final newSession = await createSessionUseCase.execute(settings);
 
       // Удаляем старую сессию
-      await deleteSessionUseCase.execute(_session);
+      await deleteSessionUseCase.execute(session);
 
       // Обновляем текущую сессию
-      _session = newSession;
+      session = newSession;
       notifyListeners();
 
       // Пытаемся подключиться с новой сессией

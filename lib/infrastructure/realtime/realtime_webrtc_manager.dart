@@ -3,10 +3,33 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-import '../../domain/repositories/realtime_web_rtc_connection.dart';
+/// Доменный протокол для подключения к Realtime API через WebRTC
+abstract interface class RealtimeWebRTCConnection {
+  bool get isConnected;
+
+  void Function(String)? onMessage;
+  void Function(Object error)? onError;
+  void Function()? onConnect;
+  void Function()? onDisconnect;
+  void Function()? onAudioTrackReady;
+  void Function()? onDataChannelReady;
+
+  Future<void> connect({
+    required String clientSecret,
+    required String sessionId,
+  });
+
+  void disconnect();
+
+  void sendText(String text);
+
+  void sendAudioChunk(String base64);
+
+  void commitAudio();
+}
 
 /// WebRTC менеджер для работы с OpenAI Realtime API
-class RealtimeWebRTCManager implements RealtimeWebRTCConnection {
+class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   RTCPeerConnection? _peerConnection;
   RTCDataChannel? _dataChannel;
   MediaStream? _localStream;

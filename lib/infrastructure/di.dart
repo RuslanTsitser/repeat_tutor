@@ -13,27 +13,17 @@ import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
 import '../../domain/usecases/get_all_realtime_sessions_usecase.dart';
 import '../../infrastructure/realtime/realtime_webrtc_manager.dart';
-import '../domain/repositories/realtime_audio_manager.dart' as domain;
-import '../domain/repositories/realtime_web_rtc_connection.dart' as domain;
+import '../core/logging/app_logger.dart';
 import '../presentation/notifiers/chat_notifier.dart';
 import '../presentation/notifiers/message_notifier.dart';
 import '../presentation/notifiers/realtime_call_notifier.dart';
 import '../presentation/notifiers/realtime_session_notifier.dart';
-import 'realtime/realtime_audio_manager.dart' as impl;
-
-// Database singleton
-AppDatabase? _databaseInstance;
-
-/// Получение экземпляра базы данных (синглтон)
-AppDatabase get database {
-  _databaseInstance ??= AppDatabase();
-  return _databaseInstance!;
-}
+import 'realtime/realtime_audio_manager.dart';
 
 // Database provider
 /// Провайдер для базы данных
 final databaseProvider = Provider<AppDatabase>((ref) {
-  return database;
+  return AppDatabase();
 });
 
 // Repository providers
@@ -67,7 +57,6 @@ final messageProvider = ChangeNotifierProvider.family<MessageNotifier, String>((
 // Realtime providers
 /// API ключ OpenAI (должен быть установлен через переменные окружения)
 final openAIApiKeyProvider = Provider<String>((ref) {
-  // TODO: Загрузить из переменных окружения или конфигурации
   const apiKey = String.fromEnvironment('OPENAI_API_KEY', defaultValue: '');
   if (apiKey.isEmpty) {
     throw StateError(
@@ -79,7 +68,15 @@ final openAIApiKeyProvider = Provider<String>((ref) {
 
 /// Провайдер для Dio
 final dioProvider = Provider<Dio>((ref) {
-  return Dio();
+  return Dio()
+    ..interceptors.add(
+      LogInterceptor(
+        responseBody: true,
+        requestBody: true,
+        requestHeader: false,
+        logPrint: logInfo,
+      ),
+    );
 });
 
 /// Провайдер для RealtimeSessionRepository
@@ -97,16 +94,17 @@ final realtimeSessionRepositoryProvider = Provider<RealtimeSessionRepository>((
 });
 
 /// Провайдер для RealtimeWebRTCConnection
-final realtimeWebRTCConnectionProvider =
-    Provider<domain.RealtimeWebRTCConnection>((ref) {
-      return RealtimeWebRTCManager();
-    });
-
-/// Провайдер для RealtimeAudioManager
-final realtimeAudioManagerProvider = Provider<domain.RealtimeAudioManager>((
+final realtimeWebRTCConnectionProvider = Provider<RealtimeWebRTCConnection>((
   ref,
 ) {
-  return impl.RealtimeAudioManager();
+  return RealtimeWebRTCManagerImpl();
+});
+
+/// Провайдер для RealtimeAudioManager
+final realtimeAudioManagerProvider = Provider<RealtimeAudioManager>((
+  ref,
+) {
+  return RealtimeAudioManagerImpl();
 });
 
 /// Провайдер для Use Cases

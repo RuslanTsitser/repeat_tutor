@@ -4,10 +4,18 @@ import 'dart:math' as math;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../domain/repositories/realtime_audio_manager.dart' as domain;
+/// Доменный протокол для управления аудио
+abstract interface class RealtimeAudioManager {
+  void Function(String base64)? onAudioDataBase64;
+  void Function(double level)? onAudioLevel;
+
+  Future<void> startRecording();
+  void stopRecording();
+  void stopPlaying();
+}
 
 /// Менеджер для записи и воспроизведения аудио
-class RealtimeAudioManager implements domain.RealtimeAudioManager {
+class RealtimeAudioManagerImpl implements RealtimeAudioManager {
   MediaStream? _localStream;
   MediaStreamTrack? _audioTrack;
   bool _isRecording = false;
