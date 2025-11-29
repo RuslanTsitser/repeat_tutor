@@ -57,4 +57,27 @@ enum SessionLanguage {
         return null;
     }
   }
+
+  String get localizedName {
+    switch (this) {
+      case SessionLanguage.japanese:
+        return '日本語';
+      case SessionLanguage.portugueseEuropean:
+        return 'Português (Europa)';
+      case SessionLanguage.portugueseBrazilian:
+        return 'Português (Brasil)';
+      case SessionLanguage.spanish:
+        return 'Español';
+      case SessionLanguage.french:
+        return 'Français';
+      case SessionLanguage.italian:
+        return 'Italiano';
+      case SessionLanguage.german:
+        return 'Deutsch';
+      case SessionLanguage.russian:
+        return 'Русский';
+      case SessionLanguage.english:
+        return 'English';
+    }
+  }
 }
