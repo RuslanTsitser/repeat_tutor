@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../infrastructure/di.dart';
+import '../../core/permission_service/microphone_permission_request.dart';
 import '../../domain/models/realtime_session.dart';
+import '../../infrastructure/di.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
 class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
-  final RealtimeSession session;
-
   const RealtimeSessionDetailScreen({
     super.key,
     required this.session,
   });
+  final RealtimeSession session;
 
   @override
   ConsumerState<RealtimeSessionDetailScreen> createState() =>
@@ -22,14 +22,20 @@ class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
 class _RealtimeSessionDetailScreenState
     extends ConsumerState<RealtimeSessionDetailScreen> {
   @override
+  void initState() {
+    super.initState();
+    requestMicrophonePermission();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final notifier = ref.watch<RealtimeCallNotifier>(
       realtimeCallProvider(widget.session.id),
     );
 
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: const Text('Реалтайм звонок'),
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Реалтайм звонок'),
       ),
       child: SafeArea(
         child: Column(
@@ -73,9 +79,8 @@ class _RealtimeSessionDetailScreenState
 }
 
 class _StatusCard extends StatelessWidget {
-  final RealtimeCallNotifier notifier;
-
   const _StatusCard({required this.notifier});
+  final RealtimeCallNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +111,8 @@ class _StatusCard extends StatelessWidget {
 }
 
 class _AudioLevelCard extends StatelessWidget {
-  final RealtimeCallNotifier notifier;
-
   const _AudioLevelCard({required this.notifier});
+  final RealtimeCallNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +138,7 @@ class _AudioLevelCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: notifier.audioLevel,
               backgroundColor: CupertinoColors.systemGrey4,
-              valueColor: AlwaysStoppedAnimation<Color>(
+              valueColor: const AlwaysStoppedAnimation<Color>(
                 CupertinoColors.activeGreen,
               ),
             ),
@@ -146,9 +150,8 @@ class _AudioLevelCard extends StatelessWidget {
 }
 
 class _MessagesCard extends StatelessWidget {
-  final RealtimeCallNotifier notifier;
-
   const _MessagesCard({required this.notifier});
+  final RealtimeCallNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
@@ -191,15 +194,14 @@ class _MessagesCard extends StatelessWidget {
 }
 
 class _ControlButtons extends ConsumerWidget {
-  final RealtimeCallNotifier notifier;
-
   const _ControlButtons({required this.notifier});
+  final RealtimeCallNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: CupertinoColors.systemBackground,
         border: Border(
           top: BorderSide(
@@ -241,4 +243,3 @@ class _ControlButtons extends ConsumerWidget {
     );
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/permission_service/microphone_permission_request.dart';
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
@@ -20,6 +21,12 @@ class _CreateRealtimeSessionScreenState
     extends ConsumerState<CreateRealtimeSessionScreen> {
   SessionLanguage _selectedLanguage = SessionLanguage.japanese;
   SessionDifficultyLevel _selectedLevel = SessionDifficultyLevel.beginner;
+
+  @override
+  void initState() {
+    super.initState();
+    requestMicrophonePermission();
+  }
 
   @override
   Widget build(BuildContext context) {
