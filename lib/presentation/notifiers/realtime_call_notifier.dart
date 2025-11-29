@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
 
+import '../../core/permission_service/microphone_permission_request.dart';
 import '../../core/realtime/realtime_audio_manager.dart';
 import '../../core/realtime/realtime_webrtc_manager.dart';
 import '../../domain/models/realtime_session.dart';
@@ -120,23 +120,11 @@ class RealtimeCallNotifier extends ChangeNotifier {
 
     // Сначала запрашиваем разрешение на микрофон
     try {
-      var status = await Permission.microphone.status;
-      if (!status.isGranted) {
-        status = await Permission.microphone.request();
-      }
+      final granted = await requestMicrophonePermission();
 
-      if (!status.isGranted) {
+      if (!granted) {
         _isConnecting = false;
-        if (status.isPermanentlyDenied) {
-          await openAppSettings();
-          _error =
-              'Разрешение на микрофон было отклонено навсегда. '
-              'Пожалуйста, включите его в настройках приложения и попробуйте снова.';
-        } else {
-          _error =
-              'Для работы реалтайм звонков необходимо разрешение на микрофон. '
-              'Пожалуйста, предоставьте доступ к микрофону.';
-        }
+        _error = 'Разрешение на микрофон было отклонено';
         notifyListeners();
         return;
       }

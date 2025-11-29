@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/app_directory/app_directory.dart';
 import 'core/localization/generated/l10n.dart';
+import 'core/permission_service/app_tracking_transparency_request.dart';
 import 'presentation/screens/initialize_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppDirectory.initialize();
+  await requestAppTrackingTransparency();
 
   runApp(const ProviderScope(child: MyApp()));
 }

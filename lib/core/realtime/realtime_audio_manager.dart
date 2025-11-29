@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:permission_handler/permission_handler.dart';
+
+import '../permission_service/microphone_permission_request.dart';
 
 /// Доменный протокол для управления аудио
 abstract interface class RealtimeAudioManager {
@@ -34,28 +35,11 @@ class RealtimeAudioManagerImpl implements RealtimeAudioManager {
     if (_isRecording) return;
 
     // Проверяем текущий статус разрешения
-    var status = await Permission.microphone.status;
-
-    // Если разрешение не предоставлено, запрашиваем его
-    if (!status.isGranted) {
-      status = await Permission.microphone.request();
-    }
+    final granted = await requestMicrophonePermission();
 
     // Если разрешение все еще не предоставлено
-    if (!status.isGranted) {
-      if (status.isPermanentlyDenied) {
-        // Пытаемся открыть настройки
-        await openAppSettings();
-        throw Exception(
-          'Разрешение на микрофон было отклонено навсегда. '
-          'Пожалуйста, включите его в настройках приложения.',
-        );
-      } else {
-        throw Exception(
-          'Для работы реалтайм звонков необходимо разрешение на микрофон. '
-          'Пожалуйста, предоставьте доступ к микрофону.',
-        );
-      }
+    if (!granted) {
+      throw Exception('Разрешение на микрофон было отклонено');
     }
 
     try {
