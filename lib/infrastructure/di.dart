@@ -12,13 +12,13 @@ import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
 import '../../domain/usecases/get_all_realtime_sessions_usecase.dart';
-import '../../infrastructure/realtime/realtime_webrtc_manager.dart';
 import '../core/logging/app_logger.dart';
+import '../core/realtime/realtime_audio_manager.dart';
+import '../core/realtime/realtime_webrtc_manager.dart';
 import '../presentation/notifiers/chat_notifier.dart';
 import '../presentation/notifiers/message_notifier.dart';
 import '../presentation/notifiers/realtime_call_notifier.dart';
 import '../presentation/notifiers/realtime_session_notifier.dart';
-import 'realtime/realtime_audio_manager.dart';
 
 // Database provider
 /// Провайдер для базы данных

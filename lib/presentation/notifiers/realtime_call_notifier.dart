@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../core/realtime/realtime_audio_manager.dart';
+import '../../core/realtime/realtime_webrtc_manager.dart';
 import '../../domain/models/realtime_session.dart';
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
@@ -9,8 +11,6 @@ import '../../domain/repositories/realtime_session_repository.dart';
 import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
-import '../../infrastructure/realtime/realtime_audio_manager.dart';
-import '../../infrastructure/realtime/realtime_webrtc_manager.dart';
 
 /// Нотатор для управления звонком Realtime API
 class RealtimeCallNotifier extends ChangeNotifier {

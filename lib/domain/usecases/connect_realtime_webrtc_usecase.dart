@@ -1,4 +1,4 @@
-import '../../infrastructure/realtime/realtime_webrtc_manager.dart';
+import '../../core/realtime/realtime_webrtc_manager.dart';
 
 /// Use Case для подключения к WebRTC сессии Realtime API
 class ConnectRealtimeWebRTCUseCase {
