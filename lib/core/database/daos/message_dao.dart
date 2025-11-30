@@ -18,27 +18,53 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
         .get();
   }
 
-  /// Получить сообщение по ID
-  Future<Message?> getMessageById(String id) {
-    return (select(
-      messages,
-    )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  /// Добавить новое сообщение
+  Future<void> insertMessage({
+    required String messageId,
+    required String message,
+    required bool isMe,
+    required String chatId,
+    required String audioPath,
+  }) {
+    final now = DateTime.now();
+    return into(messages).insert(
+      MessagesCompanion(
+        messageId: Value(messageId),
+        createdAt: Value(now),
+        message: Value(message),
+        isMe: Value(isMe),
+        chatId: Value(chatId),
+        audioPath: Value(audioPath),
+      ),
+    );
   }
 
-  /// Добавить новое сообщение
-  Future<void> insertMessage(MessagesCompanion message) =>
-      into(messages).insert(message);
-
   /// Обновить сообщение
-  Future<void> updateMessage(MessagesCompanion message) {
+  Future<void> updateMessage({
+    required String messageId,
+    required String message,
+    required bool isMe,
+    required String chatId,
+    required String audioPath,
+  }) {
     return (update(
       messages,
-    )..where((tbl) => tbl.id.equals(message.id.value))).write(message);
+    )..where((tbl) => tbl.messageId.equals(messageId))).write(
+      MessagesCompanion(
+        messageId: Value(messageId),
+        message: Value(message),
+        isMe: Value(isMe),
+        chatId: Value(chatId),
+        audioPath: Value(audioPath),
+      ),
+    );
   }
 
   /// Удалить сообщение
-  Future<void> deleteMessage(String id) {
-    return (delete(messages)..where((tbl) => tbl.id.equals(id))).go();
+  Future<void> deleteMessage(String messageId) {
+    return (delete(
+      messages,
+    )..where((tbl) => tbl.messageId.equals(messageId))).go();
   }
 
   /// Очистить все сообщения в чате

@@ -15,47 +15,49 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   /// Получить чат по ID
   Future<Chat?> getChatById(String id) {
-    return (select(chats)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    return (select(
+      chats,
+    )..where((tbl) => tbl.chatId.equals(id))).getSingleOrNull();
   }
 
   /// Создать новый чат
-  Future<void> insertChat(ChatsCompanion chat) => into(chats).insert(chat);
+  Future<void> insertChat({
+    required String chatId,
+    required String language,
+    required String level,
+    required String topic,
+  }) {
+    final now = DateTime.now();
+    return into(chats).insert(
+      ChatsCompanion(
+        chatId: Value(chatId),
+        createdAt: Value(now),
+        language: Value(language),
+        level: Value(level),
+        topic: Value(topic),
+      ),
+    );
+  }
 
   /// Обновить чат
-  Future<void> updateChat(ChatsCompanion chat) {
-    return (update(
-      chats,
-    )..where((tbl) => tbl.id.equals(chat.id.value))).write(chat);
+  Future<void> updateChat({
+    required String chatId,
+    required String language,
+    required String level,
+    required String topic,
+  }) {
+    return (update(chats)..where((tbl) => tbl.chatId.equals(chatId))).write(
+      ChatsCompanion(
+        chatId: Value(chatId),
+        language: Value(language),
+        level: Value(level),
+        topic: Value(topic),
+      ),
+    );
   }
 
   /// Удалить чат
-  Future<void> deleteChat(String id) {
-    return (delete(chats)..where((tbl) => tbl.id.equals(id))).go();
-  }
-
-  /// Обновить последнее сообщение в чате
-  Future<void> updateLastMessage(
-    String chatId,
-    String message,
-    String time,
-  ) async {
-    // Сначала получаем текущий unreadCount
-    final currentChat = await getChatById(chatId);
-    if (currentChat != null) {
-      await (update(chats)..where((tbl) => tbl.id.equals(chatId))).write(
-        ChatsCompanion(
-          lastMessage: Value(message),
-          time: Value(time),
-          unreadCount: Value(currentChat.unreadCount + 1),
-        ),
-      );
-    }
-  }
-
-  /// Отметить чат как прочитанный
-  Future<void> markAsRead(String chatId) {
-    return (update(chats)..where((tbl) => tbl.id.equals(chatId))).write(
-      const ChatsCompanion(unreadCount: Value(0)),
-    );
+  Future<void> deleteChat(String chatId) {
+    return (delete(chats)..where((tbl) => tbl.chatId.equals(chatId))).go();
   }
 }

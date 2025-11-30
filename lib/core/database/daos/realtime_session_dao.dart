@@ -16,25 +16,58 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
       select(realtimeSessions).get();
 
   /// Получить сессию по ID
-  Future<RealtimeSession?> getSessionById(String id) {
+  Future<RealtimeSession?> getSessionById(String sessionId) {
     return (select(
       realtimeSessions,
-    )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    )..where((tbl) => tbl.sessionId.equals(sessionId))).getSingleOrNull();
   }
 
   /// Создать новую сессию
-  Future<void> insertSession(RealtimeSessionsCompanion session) =>
-      into(realtimeSessions).insert(session);
+  Future<void> insertSession({
+    required String sessionId,
+    required String language,
+    required String level,
+    required String clientSecret,
+    required DateTime clientSecretExpiresAt,
+  }) {
+    final now = DateTime.now();
+    return into(realtimeSessions).insert(
+      RealtimeSessionsCompanion(
+        sessionId: Value(sessionId),
+        createdAt: Value(now),
+        language: Value(language),
+        level: Value(level),
+        clientSecret: Value(clientSecret),
+        clientSecretExpiresAt: Value(clientSecretExpiresAt),
+      ),
+    );
+  }
 
   /// Обновить сессию
-  Future<void> updateSession(RealtimeSessionsCompanion session) {
+  Future<void> updateSession({
+    required String sessionId,
+    required String language,
+    required String level,
+    required String clientSecret,
+    required DateTime clientSecretExpiresAt,
+  }) {
     return (update(
       realtimeSessions,
-    )..where((tbl) => tbl.id.equals(session.id.value))).write(session);
+    )..where((tbl) => tbl.sessionId.equals(sessionId))).write(
+      RealtimeSessionsCompanion(
+        sessionId: Value(sessionId),
+        language: Value(language),
+        level: Value(level),
+        clientSecret: Value(clientSecret),
+        clientSecretExpiresAt: Value(clientSecretExpiresAt),
+      ),
+    );
   }
 
   /// Удалить сессию
   Future<void> deleteSession(String id) {
-    return (delete(realtimeSessions)..where((tbl) => tbl.id.equals(id))).go();
+    return (delete(
+      realtimeSessions,
+    )..where((tbl) => tbl.sessionId.equals(id))).go();
   }
 }
