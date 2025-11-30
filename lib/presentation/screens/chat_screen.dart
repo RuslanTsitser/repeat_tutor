@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/chat.dart';
 import '../../infrastructure/di.dart';
-import '../notifiers/chat_notifier.dart';
+import '../handlers/chat_event_handler.dart';
+import '../handlers/message_event_handler.dart';
 import '../notifiers/message_notifier.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/message_input.dart';
@@ -27,8 +28,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.initState();
     // Загружаем сообщения и отмечаем чат как прочитанный при открытии
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read<MessageNotifier>(messageProvider(widget.chat.id)).loadMessages();
-      ref.read<ChatNotifier>(chatProvider).markAsRead(widget.chat.id);
+      final messageEventHandler = ref.read<MessageEventHandler>(
+        messageEventHandlerProvider(widget.chat.id),
+      );
+      messageEventHandler.onLoadMessagesPressed();
+      final chatEventHandler = ref.read<ChatEventHandler>(
+        chatEventHandlerProvider,
+      );
+      chatEventHandler.onMarkAsReadPressed(widget.chat.id);
     });
   }
 
@@ -38,18 +45,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final messageText = _messageController.text.trim();
     _messageController.clear();
 
-    // Добавляем сообщение в провайдер
-    ref
-        .read<MessageNotifier>(messageProvider(widget.chat.id))
-        .addMessage(messageText);
+    // Добавляем сообщение через обработчик событий
+    final messageEventHandler = ref.read<MessageEventHandler>(
+      messageEventHandlerProvider(widget.chat.id),
+    );
+    messageEventHandler.onAddMessagePressed(messageText);
 
     // Обновляем последнее сообщение в списке чатов
     final now = DateTime.now();
     final time =
         '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-    ref
-        .read<ChatNotifier>(chatProvider)
-        .updateChatLastMessage(widget.chat.id, messageText, time);
+    final chatEventHandler = ref.read<ChatEventHandler>(
+      chatEventHandlerProvider,
+    );
+    chatEventHandler.onUpdateChatLastMessagePressed(
+      widget.chat.id,
+      messageText,
+      time,
+    );
   }
 
   @override
@@ -110,7 +123,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           const SizedBox(height: 16),
                           CupertinoButton.filled(
                             onPressed: () {
-                              messageNotifier.loadMessages();
+                              final messageEventHandler = ref
+                                  .read<MessageEventHandler>(
+                                    messageEventHandlerProvider(widget.chat.id),
+                                  );
+                              messageEventHandler.onLoadMessagesPressed();
                             },
                             child: const Text('Повторить'),
                           ),

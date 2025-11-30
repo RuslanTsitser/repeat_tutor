@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../infrastructure/di.dart';
+import '../handlers/chat_event_handler.dart';
 import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_list_item.dart';
 import 'chat_screen.dart';
@@ -21,7 +22,8 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     super.initState();
     // Загружаем чаты при инициализации экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read<ChatNotifier>(chatProvider).loadChats();
+      final chatEventHandler = ref.read<ChatEventHandler>(chatEventHandlerProvider);
+      chatEventHandler.onLoadChatsPressed();
     });
   }
 
@@ -86,7 +88,8 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
                       onPressed: () {
-                        chatNotifier.loadChats();
+                        final chatEventHandler = ref.read<ChatEventHandler>(chatEventHandlerProvider);
+                        chatEventHandler.onLoadChatsPressed();
                       },
                       child: const Text('Повторить'),
                     ),

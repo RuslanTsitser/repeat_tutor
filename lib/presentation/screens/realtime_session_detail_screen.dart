@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/di.dart';
+import '../handlers/realtime_call_event_handler.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
 class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
@@ -198,6 +199,10 @@ class _ControlButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final eventHandler = ref.read<RealtimeCallEventHandler>(
+      realtimeCallEventHandlerProvider(notifier.session.id),
+    );
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -215,11 +220,7 @@ class _ControlButtons extends ConsumerWidget {
           if (!notifier.isConnected && !notifier.isConnecting)
             CupertinoButton.filled(
               onPressed: () {
-                ref
-                    .read<RealtimeCallNotifier>(
-                      realtimeCallProvider(notifier.session.id),
-                    )
-                    .connect();
+                eventHandler.onConnectPressed();
               },
               child: const Text('Подключиться'),
             )
@@ -229,11 +230,7 @@ class _ControlButtons extends ConsumerWidget {
             CupertinoButton(
               color: CupertinoColors.systemRed,
               onPressed: () {
-                ref
-                    .read<RealtimeCallNotifier>(
-                      realtimeCallProvider(notifier.session.id),
-                    )
-                    .disconnect();
+                eventHandler.onDisconnectPressed();
               },
               child: const Text('Отключиться'),
             ),

@@ -10,8 +10,8 @@ import '../../domain/repositories/message_repository.dart';
 import '../../domain/repositories/realtime_session_repository.dart';
 import '../../domain/usecases/add_message_usecase.dart';
 import '../../domain/usecases/clear_messages_usecase.dart';
-import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
 import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
+import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
 import '../../domain/usecases/create_chat_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
 import '../../domain/usecases/delete_chat_usecase.dart';
@@ -33,6 +33,9 @@ import '../core/ab_test/ab_test_prod.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_audio_manager.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
+import '../presentation/handlers/chat_event_handler.dart';
+import '../presentation/handlers/message_event_handler.dart';
+import '../presentation/handlers/realtime_call_event_handler.dart';
 import '../presentation/notifiers/chat_notifier.dart';
 import '../presentation/notifiers/message_notifier.dart';
 import '../presentation/notifiers/realtime_call_notifier.dart';
@@ -65,9 +68,9 @@ final getChatsUseCaseProvider = Provider<GetChatsUseCase>((ref) {
 
 final updateChatLastMessageUseCaseProvider =
     Provider<UpdateChatLastMessageUseCase>((ref) {
-  final repository = ref.watch(chatRepositoryProvider);
-  return UpdateChatLastMessageUseCase(repository: repository);
-});
+      final repository = ref.watch(chatRepositoryProvider);
+      return UpdateChatLastMessageUseCase(repository: repository);
+    });
 
 final markChatAsReadUseCaseProvider = Provider<MarkChatAsReadUseCase>((ref) {
   final repository = ref.watch(chatRepositoryProvider);
@@ -112,9 +115,18 @@ final clearMessagesUseCaseProvider = Provider<ClearMessagesUseCase>((ref) {
 
 // Chat providers
 final chatProvider = ChangeNotifierProvider<ChatNotifier>((ref) {
-  return ChatNotifier(
+  return ChatNotifier();
+});
+
+/// Провайдер для обработчика событий чатов
+final chatEventHandlerProvider = Provider<ChatEventHandler>((ref) {
+  final notifier = ref.watch(chatProvider);
+  return ChatEventHandler(
+    notifier: notifier,
     getChatsUseCase: ref.watch(getChatsUseCaseProvider),
-    updateChatLastMessageUseCase: ref.watch(updateChatLastMessageUseCaseProvider),
+    updateChatLastMessageUseCase: ref.watch(
+      updateChatLastMessageUseCaseProvider,
+    ),
     markChatAsReadUseCase: ref.watch(markChatAsReadUseCaseProvider),
     createChatUseCase: ref.watch(createChatUseCaseProvider),
     deleteChatUseCase: ref.watch(deleteChatUseCaseProvider),
@@ -128,13 +140,22 @@ final messageProvider = ChangeNotifierProvider.family<MessageNotifier, String>((
 ) {
   return MessageNotifier(
     chatId: chatId,
-    getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
-    addMessageUseCase: ref.watch(addMessageUseCaseProvider),
-    deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
-    updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
-    clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
   );
 });
+
+/// Провайдер для обработчика событий сообщений (family для разных чатов)
+final messageEventHandlerProvider =
+    Provider.family<MessageEventHandler, String>((ref, chatId) {
+      final notifier = ref.watch(messageProvider(chatId));
+      return MessageEventHandler(
+        notifier: notifier,
+        getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
+        addMessageUseCase: ref.watch(addMessageUseCaseProvider),
+        deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
+        updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
+        clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
+      );
+    });
 
 // Realtime providers
 /// API ключ OpenAI (должен быть установлен через переменные окружения)
@@ -230,8 +251,12 @@ final replaceExpiredSessionUseCaseProvider =
 final connectRealtimeWithPermissionUseCaseProvider =
     Provider<ConnectRealtimeWithPermissionUseCase>((ref) {
       return ConnectRealtimeWithPermissionUseCase(
-        requestPermissionUseCase: ref.watch(requestMicrophonePermissionUseCaseProvider),
-        replaceExpiredSessionUseCase: ref.watch(replaceExpiredSessionUseCaseProvider),
+        requestPermissionUseCase: ref.watch(
+          requestMicrophonePermissionUseCaseProvider,
+        ),
+        replaceExpiredSessionUseCase: ref.watch(
+          replaceExpiredSessionUseCaseProvider,
+        ),
         connectUseCase: ref.watch(connectRealtimeWebRTCUseCaseProvider),
       );
     });
@@ -288,15 +313,52 @@ final realtimeCallProvider =
         orElse: () => throw Exception('Сессия не найдена'),
       );
 
-      return RealtimeCallNotifier(
+      final notifier = RealtimeCallNotifier(
         connection: ref.watch(realtimeWebRTCConnectionProvider),
         audioManager: ref.watch(realtimeAudioManagerProvider),
-        connectWithPermissionUseCase: ref.watch(connectRealtimeWithPermissionUseCaseProvider),
+        session: session,
+      );
+
+      // Создаем обработчик событий после создания нотифаера
+      final eventHandler = RealtimeCallEventHandler(
+        notifier: notifier,
+        connectWithPermissionUseCase: ref.watch(
+          connectRealtimeWithPermissionUseCaseProvider,
+        ),
         disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
         startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
         stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
         sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
-        session: session,
+      );
+
+      // Устанавливаем колбэки в нотифаере
+      notifier.onConnectCallback = () async {
+        // Начинаем запись после подключения
+        if (!notifier.isRecording) {
+          await eventHandler.startRecordingInternal();
+        }
+      };
+      notifier.onDisconnectCallback = () {
+        // Останавливаем запись при отключении
+        eventHandler.stopRecordingInternal();
+      };
+
+      return notifier;
+    });
+
+/// Провайдер для обработчика событий звонка (family для разных сессий)
+final realtimeCallEventHandlerProvider =
+    Provider.family<RealtimeCallEventHandler, String>((ref, sessionId) {
+      final notifier = ref.watch(realtimeCallProvider(sessionId));
+      return RealtimeCallEventHandler(
+        notifier: notifier,
+        connectWithPermissionUseCase: ref.watch(
+          connectRealtimeWithPermissionUseCaseProvider,
+        ),
+        disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
+        startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
+        stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
+        sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
       );
     });
 

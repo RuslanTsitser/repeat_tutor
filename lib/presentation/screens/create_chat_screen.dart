@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../domain/models/chat.dart';
 import '../../infrastructure/di.dart';
+import '../handlers/chat_event_handler.dart';
 import '../notifiers/chat_notifier.dart';
 
 class CreateChatScreen extends ConsumerStatefulWidget {
@@ -35,33 +36,33 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
       _isCreating = true;
     });
 
-    try {
-      final chat = Chat(
-        id: const Uuid().v4(),
-        name: _nameController.text.trim(),
-        lastMessage: 'Чат создан',
-        time: DateTime.now().toIso8601String(),
-        unreadCount: 0,
-        avatarUrl: _avatarUrlController.text.trim(),
-      );
+    final chat = Chat(
+      id: const Uuid().v4(),
+      name: _nameController.text.trim(),
+      lastMessage: 'Чат создан',
+      time: DateTime.now().toIso8601String(),
+      unreadCount: 0,
+      avatarUrl: _avatarUrlController.text.trim(),
+    );
 
-      final chatNotifier = ref.read<ChatNotifier>(chatProvider);
-      await chatNotifier.createChat(chat);
+    final chatEventHandler = ref.read<ChatEventHandler>(
+      chatEventHandlerProvider,
+    );
+    await chatEventHandler.onCreateChatPressed(chat);
 
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Ошибка создания чата: $e');
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isCreating = false;
-        });
-      }
+    if (!mounted) return;
+
+    final chatNotifier = ref.read<ChatNotifier>(chatProvider);
+    if (chatNotifier.error != null) {
+      _showErrorDialog(chatNotifier.error!);
+      chatNotifier.setError(null); // Очищаем ошибку после показа
+    } else {
+      Navigator.of(context).pop();
     }
+
+    setState(() {
+      _isCreating = false;
+    });
   }
 
   void _showErrorDialog(String message) {

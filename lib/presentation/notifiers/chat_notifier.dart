@@ -1,26 +1,12 @@
 import 'package:flutter/foundation.dart';
 
 import '../../domain/models/chat.dart';
-import '../../domain/usecases/create_chat_usecase.dart';
-import '../../domain/usecases/delete_chat_usecase.dart';
-import '../../domain/usecases/get_chats_usecase.dart';
-import '../../domain/usecases/mark_chat_as_read_usecase.dart';
-import '../../domain/usecases/update_chat_last_message_usecase.dart';
 
+/// Нотатор для управления состоянием чатов
+/// Хранит только состояние UI, не содержит бизнес-логику
 class ChatNotifier extends ChangeNotifier {
-  ChatNotifier({
-    required this.getChatsUseCase,
-    required this.updateChatLastMessageUseCase,
-    required this.markChatAsReadUseCase,
-    required this.createChatUseCase,
-    required this.deleteChatUseCase,
-  });
+  ChatNotifier();
 
-  final GetChatsUseCase getChatsUseCase;
-  final UpdateChatLastMessageUseCase updateChatLastMessageUseCase;
-  final MarkChatAsReadUseCase markChatAsReadUseCase;
-  final CreateChatUseCase createChatUseCase;
-  final DeleteChatUseCase deleteChatUseCase;
   List<Chat> _chats = [];
   bool _isLoading = false;
   String? _error;
@@ -29,71 +15,20 @@ class ChatNotifier extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  /// Загрузить список чатов
-  Future<void> loadChats() async {
-    _isLoading = true;
-    _error = null;
+  // Методы для установки состояния (вызываются из обработчика событий)
+
+  void setChats(List<Chat> value) {
+    _chats = value;
     notifyListeners();
-
-    try {
-      _chats = await getChatsUseCase.execute();
-    } catch (e) {
-      _error = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
-  /// Обновить последнее сообщение в чате
-  Future<void> updateChatLastMessage(
-    String chatId,
-    String message,
-    String time,
-  ) async {
-    try {
-      await updateChatLastMessageUseCase.execute(
-        chatId: chatId,
-        message: message,
-        time: time,
-      );
-      await loadChats(); // Перезагружаем список чатов
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
   }
 
-  /// Отметить чат как прочитанный
-  Future<void> markAsRead(String chatId) async {
-    try {
-      await markChatAsReadUseCase.execute(chatId);
-      await loadChats(); // Перезагружаем список чатов
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
-  }
-
-  /// Создать новый чат
-  Future<void> createChat(Chat chat) async {
-    try {
-      await createChatUseCase.execute(chat);
-      await loadChats(); // Перезагружаем список чатов
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
-  }
-
-  /// Удалить чат
-  Future<void> deleteChat(String chatId) async {
-    try {
-      await deleteChatUseCase.execute(chatId);
-      await loadChats(); // Перезагружаем список чатов
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
+  void setError(String? value) {
+    _error = value;
+    notifyListeners();
   }
 }
