@@ -1,12 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../infrastructure/di.dart';
-import '../notifiers/realtime_session_notifier.dart';
 import '../../domain/models/realtime_session.dart';
-import 'realtime_session_detail_screen.dart';
+import '../../infrastructure/state_managers.dart';
+import '../notifiers/realtime_session_notifier.dart';
 import 'create_realtime_session_screen.dart';
+import 'realtime_session_detail_screen.dart';
 
+@RoutePage()
 class RealtimeSessionListScreen extends ConsumerStatefulWidget {
   const RealtimeSessionListScreen({super.key});
 
@@ -29,8 +31,9 @@ class _RealtimeSessionListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final notifier =
-        ref.watch<RealtimeSessionListNotifier>(realtimeSessionListProvider);
+    final notifier = ref.watch<RealtimeSessionListNotifier>(
+      realtimeSessionListProvider,
+    );
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -65,7 +68,9 @@ class _RealtimeSessionListScreenState
                     const SizedBox(height: 16),
                     Text(
                       'Ошибка загрузки сессий',
-                      style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+                      style: CupertinoTheme.of(
+                        context,
+                      ).textTheme.navTitleTextStyle,
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -130,15 +135,14 @@ class _RealtimeSessionListScreenState
 }
 
 class _RealtimeSessionListItem extends StatelessWidget {
-  final RealtimeSession session;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
-
   const _RealtimeSessionListItem({
     required this.session,
     required this.onTap,
     required this.onDelete,
   });
+  final RealtimeSession session;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -163,4 +167,3 @@ class _RealtimeSessionListItem extends StatelessWidget {
     return '${date.day}.${date.month}.${date.year}';
   }
 }
-

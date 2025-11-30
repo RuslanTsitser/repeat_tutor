@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/app_directory/app_directory.dart';
 import 'core/localization/generated/l10n.dart';
 import 'core/permission_service/app_tracking_transparency_request.dart';
-import 'presentation/screens/initialize_screen.dart';
+import 'infrastructure/core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,12 +15,14 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    return CupertinoApp.router(
+      routerConfig: router.config(),
       supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: const [
         S.delegate,
@@ -28,7 +30,6 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const InitializeScreen(),
     );
   }
 }

@@ -1,12 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/models/chat.dart';
-import '../../infrastructure/di.dart';
-import '../handlers/chat_event_handler.dart';
-import '../notifiers/chat_notifier.dart';
+import '../../infrastructure/handlers.dart';
+import '../../infrastructure/state_managers.dart';
 
+@RoutePage()
 class CreateChatScreen extends ConsumerStatefulWidget {
   const CreateChatScreen({super.key});
 
@@ -45,14 +46,12 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
       avatarUrl: _avatarUrlController.text.trim(),
     );
 
-    final chatEventHandler = ref.read<ChatEventHandler>(
-      chatEventHandlerProvider,
-    );
+    final chatEventHandler = ref.read(chatEventHandlerProvider);
     await chatEventHandler.onCreateChatPressed(chat);
 
     if (!mounted) return;
 
-    final chatNotifier = ref.read<ChatNotifier>(chatProvider);
+    final chatNotifier = ref.read(chatProvider);
     if (chatNotifier.error != null) {
       _showErrorDialog(chatNotifier.error!);
       chatNotifier.setError(null); // Очищаем ошибку после показа

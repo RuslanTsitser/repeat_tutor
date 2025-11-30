@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../infrastructure/di.dart';
-import '../handlers/chat_event_handler.dart';
+import '../../infrastructure/handlers.dart';
+import '../../infrastructure/state_managers.dart';
 import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_list_item.dart';
 import 'chat_screen.dart';
 import 'create_chat_screen.dart';
 import 'realtime_session_list_screen.dart';
 
+@RoutePage()
 class ChatListScreen extends ConsumerStatefulWidget {
   const ChatListScreen({super.key});
 
@@ -22,7 +24,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     super.initState();
     // Загружаем чаты при инициализации экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final chatEventHandler = ref.read<ChatEventHandler>(chatEventHandlerProvider);
+      final chatEventHandler = ref.read(chatEventHandlerProvider);
       chatEventHandler.onLoadChatsPressed();
     });
   }
@@ -88,7 +90,9 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
                       onPressed: () {
-                        final chatEventHandler = ref.read<ChatEventHandler>(chatEventHandlerProvider);
+                        final chatEventHandler = ref.read(
+                          chatEventHandlerProvider,
+                        );
                         chatEventHandler.onLoadChatsPressed();
                       },
                       child: const Text('Повторить'),

@@ -1,29 +1,26 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../infrastructure/di.dart';
-import 'chat_list_screen.dart';
+import '../../core/router/router.dart';
+import '../../infrastructure/core.dart';
 
+@RoutePage()
 class InitializeScreen extends ConsumerWidget {
   const InitializeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initialize = ref.watch(initializeServiceProvider);
-    if (initialize.isLoading) {
-      return const CupertinoPageScaffold(
-        child: Center(
-          child: CupertinoActivityIndicator(),
-        ),
-      );
-    }
-    if (initialize.hasError) {
-      return const CupertinoPageScaffold(
-        child: Center(
-          child: Text('Error'),
-        ),
-      );
-    }
-    return const ChatListScreen();
+    ref.listen(initializeServiceProvider, (previous, next) {
+      if (next.hasValue) {
+        ref.read(routerProvider).replace(const ChatListRoute());
+      }
+    });
+
+    return const CupertinoPageScaffold(
+      child: Center(
+        child: CupertinoActivityIndicator(),
+      ),
+    );
   }
 }

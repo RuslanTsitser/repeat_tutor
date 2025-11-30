@@ -1,12 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/realtime_session.dart';
-import '../../infrastructure/di.dart';
-import '../handlers/realtime_call_event_handler.dart';
+import '../../infrastructure/handlers.dart';
+import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
+@RoutePage()
 class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
   const RealtimeSessionDetailScreen({
     super.key,
@@ -199,7 +202,7 @@ class _ControlButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventHandler = ref.read<RealtimeCallEventHandler>(
+    final eventHandler = ref.read(
       realtimeCallEventHandlerProvider(notifier.session.id),
     );
 

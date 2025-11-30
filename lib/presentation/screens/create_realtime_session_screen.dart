@@ -1,13 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
-import '../../infrastructure/di.dart';
+import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_session_notifier.dart';
 import 'realtime_session_detail_screen.dart';
 
+@RoutePage()
 class CreateRealtimeSessionScreen extends ConsumerStatefulWidget {
   const CreateRealtimeSessionScreen({super.key});
 

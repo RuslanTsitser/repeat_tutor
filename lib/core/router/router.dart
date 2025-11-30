@@ -3,6 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/models/chat.dart';
+import '../../domain/models/realtime_session.dart';
+import '../../presentation/screens/chat_list_screen.dart';
+import '../../presentation/screens/chat_screen.dart';
+import '../../presentation/screens/create_chat_screen.dart';
+import '../../presentation/screens/create_realtime_session_screen.dart';
+import '../../presentation/screens/initialize_screen.dart';
+import '../../presentation/screens/realtime_session_detail_screen.dart';
+import '../../presentation/screens/realtime_session_list_screen.dart';
 import 'modal_screens/app_bottom_sheet_screen.dart';
 import 'modal_screens/app_dialog_screen.dart';
 import 'modal_screens/app_full_screen.dart';
@@ -13,6 +22,13 @@ part 'router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
+    AutoRoute(page: InitializeRoute.page, initial: true),
+    AutoRoute(page: ChatListRoute.page),
+    AutoRoute(page: ChatRoute.page),
+    AutoRoute(page: RealtimeSessionListRoute.page),
+    AutoRoute(page: RealtimeSessionDetailRoute.page),
+    AutoRoute(page: CreateChatRoute.page),
+    AutoRoute(page: CreateRealtimeSessionRoute.page),
     CustomRoute<void>(
       page: AppDialogRoute.page,
       fullscreenDialog: true,
