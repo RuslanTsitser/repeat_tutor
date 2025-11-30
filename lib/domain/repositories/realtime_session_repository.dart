@@ -14,7 +14,4 @@ abstract interface class RealtimeSessionRepository {
 
   /// Удалить сессию
   Future<void> deleteSession(RealtimeSession session);
-
-  /// Обновить сессию
-  Future<void> updateSession(RealtimeSession session);
 }

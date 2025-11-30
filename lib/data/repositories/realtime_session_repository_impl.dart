@@ -93,17 +93,6 @@ class RealtimeSessionRepositoryImpl implements RealtimeSessionRepository {
     await dao.deleteSession(session.id);
   }
 
-  @override
-  Future<void> updateSession(RealtimeSession session) async {
-    await dao.updateSession(
-      db.RealtimeSessionsCompanion(
-        id: Value(session.id),
-        callStartedAt: Value(session.callStartedAt),
-        callDurationMinutes: Value(session.callDurationMinutes),
-      ),
-    );
-  }
-
   RealtimeSession _fromDb(db.RealtimeSession dbSession) {
     return RealtimeSession(
       id: dbSession.id,

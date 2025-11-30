@@ -118,11 +118,7 @@ final getAllRealtimeSessionsUseCaseProvider =
 final createRealtimeSessionUseCaseProvider =
     Provider<CreateRealtimeSessionUseCase>((ref) {
       final repository = ref.watch(realtimeSessionRepositoryProvider);
-      final generatePromptUseCase = const GeneratePromptFromSettingsUseCase();
-      return CreateRealtimeSessionUseCase(
-        repository: repository,
-        generatePromptUseCase: generatePromptUseCase,
-      );
+      return CreateRealtimeSessionUseCase(repository: repository);
     });
 
 final deleteRealtimeSessionUseCaseProvider =

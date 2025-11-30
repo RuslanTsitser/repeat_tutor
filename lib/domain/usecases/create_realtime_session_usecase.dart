@@ -6,26 +6,19 @@ import '../repositories/realtime_session_repository.dart';
 class CreateRealtimeSessionUseCase {
   const CreateRealtimeSessionUseCase({
     required this.repository,
-    required this.generatePromptUseCase,
   });
   final RealtimeSessionRepository repository;
-  final GeneratePromptFromSettingsUseCase generatePromptUseCase;
 
   Future<RealtimeSession> execute(SessionSettings settings) async {
     // Генерируем промпт из настроек
-    final instructions = generatePromptUseCase.execute(settings: settings);
+    final instructions = _generatePrompt(settings);
     return await repository.createSession(
       instructions: instructions,
       settings: settings,
     );
   }
-}
 
-/// Use Case для генерации промпта из настроек
-class GeneratePromptFromSettingsUseCase {
-  const GeneratePromptFromSettingsUseCase();
-
-  String execute({required SessionSettings settings}) {
+  String _generatePrompt(SessionSettings settings) {
     // Простая генерация промпта на основе настроек
     // В реальном приложении это может быть более сложная логика
     final languageName = settings.language.localizedName;
