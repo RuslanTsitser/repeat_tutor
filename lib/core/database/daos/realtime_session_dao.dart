@@ -15,6 +15,14 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
   Future<List<RealtimeSession>> getAllSessions() =>
       select(realtimeSessions).get();
 
+  /// Получить сессию по ID
+  Future<RealtimeSession?> getSessionById(String sessionId) async {
+    final result = await (select(
+      realtimeSessions,
+    )..where((tbl) => tbl.sessionId.equals(sessionId))).getSingleOrNull();
+    return result;
+  }
+
   /// Создать новую сессию
   Future<void> insertSession({
     required String sessionId,

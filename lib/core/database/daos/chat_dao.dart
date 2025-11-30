@@ -13,6 +13,14 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   /// Получить все чаты
   Future<List<Chat>> getAllChats() => select(chats).get();
 
+  /// Получить чат по ID
+  Future<Chat?> getChatById(int chatId) async {
+    final result = await (select(
+      chats,
+    )..where((tbl) => tbl.chatId.equals(chatId))).getSingleOrNull();
+    return result;
+  }
+
   /// Создать новый чат
   Future<void> insertChat({
     required String language,
