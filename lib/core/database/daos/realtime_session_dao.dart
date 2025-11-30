@@ -17,7 +17,7 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
 
   /// Создать новую сессию
   Future<void> insertSession({
-    required int sessionId,
+    required String sessionId,
     required String language,
     required String level,
     required String clientSecret,
@@ -34,7 +34,7 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
 
   /// Обновить сессию
   Future<void> updateSession({
-    required int sessionId,
+    required String sessionId,
     required String language,
     required String level,
     required String clientSecret,
@@ -54,7 +54,7 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
   }
 
   /// Удалить сессию
-  Future<void> deleteSession(int id) {
+  Future<void> deleteSession(String id) {
     return (delete(
       realtimeSessions,
     )..where((tbl) => tbl.sessionId.equals(id))).go();

@@ -763,16 +763,12 @@ class $RealtimeSessionsTable extends RealtimeSessions
     'sessionId',
   );
   @override
-  late final GeneratedColumn<int> sessionId = GeneratedColumn<int>(
+  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
     'session_id',
     aliasedName,
     false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -854,6 +850,8 @@ class $RealtimeSessionsTable extends RealtimeSessions
         _sessionIdMeta,
         sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
       );
+    } else if (isInserting) {
+      context.missing(_sessionIdMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -905,7 +903,7 @@ class $RealtimeSessionsTable extends RealtimeSessions
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RealtimeSession(
       sessionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
+        DriftSqlType.string,
         data['${effectivePrefix}session_id'],
       )!,
       createdAt: attachedDatabase.typeMapping.read(
@@ -938,7 +936,7 @@ class $RealtimeSessionsTable extends RealtimeSessions
 }
 
 class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
-  final int sessionId;
+  final String sessionId;
   final DateTime createdAt;
   final String language;
   final String level;
@@ -955,7 +953,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['session_id'] = Variable<int>(sessionId);
+    map['session_id'] = Variable<String>(sessionId);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['language'] = Variable<String>(language);
     map['level'] = Variable<String>(level);
@@ -991,7 +989,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RealtimeSession(
-      sessionId: serializer.fromJson<int>(json['sessionId']),
+      sessionId: serializer.fromJson<String>(json['sessionId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       language: serializer.fromJson<String>(json['language']),
       level: serializer.fromJson<String>(json['level']),
@@ -1005,7 +1003,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'sessionId': serializer.toJson<int>(sessionId),
+      'sessionId': serializer.toJson<String>(sessionId),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'language': serializer.toJson<String>(language),
       'level': serializer.toJson<String>(level),
@@ -1017,7 +1015,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
   }
 
   RealtimeSession copyWith({
-    int? sessionId,
+    String? sessionId,
     DateTime? createdAt,
     String? language,
     String? level,
@@ -1083,12 +1081,13 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
 }
 
 class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
-  final Value<int> sessionId;
+  final Value<String> sessionId;
   final Value<DateTime> createdAt;
   final Value<String> language;
   final Value<String> level;
   final Value<String?> clientSecret;
   final Value<DateTime?> clientSecretExpiresAt;
+  final Value<int> rowid;
   const RealtimeSessionsCompanion({
     this.sessionId = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1096,23 +1095,27 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
     this.level = const Value.absent(),
     this.clientSecret = const Value.absent(),
     this.clientSecretExpiresAt = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   RealtimeSessionsCompanion.insert({
-    this.sessionId = const Value.absent(),
+    required String sessionId,
     this.createdAt = const Value.absent(),
     required String language,
     required String level,
     this.clientSecret = const Value.absent(),
     this.clientSecretExpiresAt = const Value.absent(),
-  }) : language = Value(language),
+    this.rowid = const Value.absent(),
+  }) : sessionId = Value(sessionId),
+       language = Value(language),
        level = Value(level);
   static Insertable<RealtimeSession> custom({
-    Expression<int>? sessionId,
+    Expression<String>? sessionId,
     Expression<DateTime>? createdAt,
     Expression<String>? language,
     Expression<String>? level,
     Expression<String>? clientSecret,
     Expression<DateTime>? clientSecretExpiresAt,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (sessionId != null) 'session_id': sessionId,
@@ -1122,16 +1125,18 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
       if (clientSecret != null) 'client_secret': clientSecret,
       if (clientSecretExpiresAt != null)
         'client_secret_expires_at': clientSecretExpiresAt,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   RealtimeSessionsCompanion copyWith({
-    Value<int>? sessionId,
+    Value<String>? sessionId,
     Value<DateTime>? createdAt,
     Value<String>? language,
     Value<String>? level,
     Value<String?>? clientSecret,
     Value<DateTime?>? clientSecretExpiresAt,
+    Value<int>? rowid,
   }) {
     return RealtimeSessionsCompanion(
       sessionId: sessionId ?? this.sessionId,
@@ -1141,6 +1146,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
       clientSecret: clientSecret ?? this.clientSecret,
       clientSecretExpiresAt:
           clientSecretExpiresAt ?? this.clientSecretExpiresAt,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1148,7 +1154,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (sessionId.present) {
-      map['session_id'] = Variable<int>(sessionId.value);
+      map['session_id'] = Variable<String>(sessionId.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -1167,6 +1173,9 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
         clientSecretExpiresAt.value,
       );
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -1178,7 +1187,8 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
           ..write('language: $language, ')
           ..write('level: $level, ')
           ..write('clientSecret: $clientSecret, ')
-          ..write('clientSecretExpiresAt: $clientSecretExpiresAt')
+          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1604,21 +1614,23 @@ typedef $$MessagesTableProcessedTableManager =
     >;
 typedef $$RealtimeSessionsTableCreateCompanionBuilder =
     RealtimeSessionsCompanion Function({
-      Value<int> sessionId,
+      required String sessionId,
       Value<DateTime> createdAt,
       required String language,
       required String level,
       Value<String?> clientSecret,
       Value<DateTime?> clientSecretExpiresAt,
+      Value<int> rowid,
     });
 typedef $$RealtimeSessionsTableUpdateCompanionBuilder =
     RealtimeSessionsCompanion Function({
-      Value<int> sessionId,
+      Value<String> sessionId,
       Value<DateTime> createdAt,
       Value<String> language,
       Value<String> level,
       Value<String?> clientSecret,
       Value<DateTime?> clientSecretExpiresAt,
+      Value<int> rowid,
     });
 
 class $$RealtimeSessionsTableFilterComposer
@@ -1630,7 +1642,7 @@ class $$RealtimeSessionsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get sessionId => $composableBuilder(
+  ColumnFilters<String> get sessionId => $composableBuilder(
     column: $table.sessionId,
     builder: (column) => ColumnFilters(column),
   );
@@ -1670,7 +1682,7 @@ class $$RealtimeSessionsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get sessionId => $composableBuilder(
+  ColumnOrderings<String> get sessionId => $composableBuilder(
     column: $table.sessionId,
     builder: (column) => ColumnOrderings(column),
   );
@@ -1710,7 +1722,7 @@ class $$RealtimeSessionsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get sessionId =>
+  GeneratedColumn<String> get sessionId =>
       $composableBuilder(column: $table.sessionId, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
@@ -1770,12 +1782,13 @@ class $$RealtimeSessionsTableTableManager
               $$RealtimeSessionsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
-                Value<int> sessionId = const Value.absent(),
+                Value<String> sessionId = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String> language = const Value.absent(),
                 Value<String> level = const Value.absent(),
                 Value<String?> clientSecret = const Value.absent(),
                 Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => RealtimeSessionsCompanion(
                 sessionId: sessionId,
                 createdAt: createdAt,
@@ -1783,15 +1796,17 @@ class $$RealtimeSessionsTableTableManager
                 level: level,
                 clientSecret: clientSecret,
                 clientSecretExpiresAt: clientSecretExpiresAt,
+                rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                Value<int> sessionId = const Value.absent(),
+                required String sessionId,
                 Value<DateTime> createdAt = const Value.absent(),
                 required String language,
                 required String level,
                 Value<String?> clientSecret = const Value.absent(),
                 Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => RealtimeSessionsCompanion.insert(
                 sessionId: sessionId,
                 createdAt: createdAt,
@@ -1799,6 +1814,7 @@ class $$RealtimeSessionsTableTableManager
                 level: level,
                 clientSecret: clientSecret,
                 clientSecretExpiresAt: clientSecretExpiresAt,
+                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

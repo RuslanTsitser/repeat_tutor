@@ -23,7 +23,7 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
     required String message,
     required bool isMe,
     required int chatId,
-    required String audioPath,
+    String? audioPath,
   }) => into(messages).insert(
     MessagesCompanion(
       message: Value(message),
@@ -43,5 +43,12 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
   /// Очистить все сообщения в чате
   Future<void> clearMessages(int chatId) {
     return (delete(messages)..where((tbl) => tbl.chatId.equals(chatId))).go();
+  }
+
+  Stream<List<Message>> getMessagesStream(int chatId) {
+    return (select(messages)
+          ..where((tbl) => tbl.chatId.equals(chatId))
+          ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
+        .watch();
   }
 }

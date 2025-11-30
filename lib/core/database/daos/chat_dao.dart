@@ -15,7 +15,6 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   /// Создать новый чат
   Future<void> insertChat({
-    required int chatId,
     required String language,
     required String level,
     required String topic,
@@ -30,5 +29,9 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   /// Удалить чат
   Future<void> deleteChat(int chatId) {
     return (delete(chats)..where((tbl) => tbl.chatId.equals(chatId))).go();
+  }
+
+  Stream<List<Chat>> getChatsStream() {
+    return select(chats).watch();
   }
 }

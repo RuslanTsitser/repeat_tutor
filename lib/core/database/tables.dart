@@ -18,10 +18,13 @@ class Messages extends Table {
 }
 
 class RealtimeSessions extends Table {
-  IntColumn get sessionId => integer().autoIncrement()();
+  TextColumn get sessionId => text()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   TextColumn get language => text()();
   TextColumn get level => text()();
   TextColumn get clientSecret => text().nullable()();
   DateTimeColumn get clientSecretExpiresAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {sessionId};
 }
