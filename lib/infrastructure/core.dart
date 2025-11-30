@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ab_test/ab_test_prod.dart';
+import '../core/audio/chat_audio_cache_service.dart';
 import '../core/database/app_database.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_audio_manager.dart';
@@ -54,6 +55,10 @@ final realtimeAudioManagerProvider = Provider<RealtimeAudioManager>((
   ref,
 ) {
   return RealtimeAudioManagerImpl();
+});
+
+final chatAudioCacheServiceProvider = Provider<ChatAudioCacheService>((ref) {
+  return ChatAudioCacheService();
 });
 
 final abTestServiceProvider = Provider<AbTestService>((ref) {

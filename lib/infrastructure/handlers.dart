@@ -19,6 +19,12 @@ final chatEventHandlerProvider = Provider<ChatEventHandler>((ref) {
     markChatAsReadUseCase: ref.watch(markChatAsReadUseCaseProvider),
     createChatUseCase: ref.watch(createChatUseCaseProvider),
     deleteChatUseCase: ref.watch(deleteChatUseCaseProvider),
+    upsertChatConfigurationUseCase: ref.watch(
+      upsertChatConfigurationUseCaseProvider,
+    ),
+    generateWelcomeMessageUseCase: ref.watch(
+      generateWelcomeMessageUseCaseProvider,
+    ),
   );
 });
 
@@ -29,10 +35,13 @@ final messageEventHandlerProvider =
       return MessageEventHandler(
         notifier: notifier,
         getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
-        addMessageUseCase: ref.watch(addMessageUseCaseProvider),
         deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
         updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
         clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
+        getChatConfigurationUseCase: ref.watch(
+          getChatConfigurationUseCaseProvider,
+        ),
+        sendChatTurnUseCase: ref.watch(sendChatTurnUseCaseProvider),
       );
     });
 

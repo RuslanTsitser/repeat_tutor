@@ -1,7 +1,6 @@
 // Chat Use Cases
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/usecases/add_message_usecase.dart';
 import '../domain/usecases/clear_messages_usecase.dart';
 import '../domain/usecases/connect_realtime_webrtc_usecase.dart';
 import '../domain/usecases/connect_realtime_with_permission_usecase.dart';
@@ -11,16 +10,20 @@ import '../domain/usecases/delete_chat_usecase.dart';
 import '../domain/usecases/delete_message_usecase.dart';
 import '../domain/usecases/delete_realtime_session_usecase.dart';
 import '../domain/usecases/disconnect_realtime_call_usecase.dart';
+import '../domain/usecases/generate_welcome_message_usecase.dart';
 import '../domain/usecases/get_all_realtime_sessions_usecase.dart';
+import '../domain/usecases/get_chat_configuration_usecase.dart';
 import '../domain/usecases/get_chats_usecase.dart';
 import '../domain/usecases/get_messages_usecase.dart';
 import '../domain/usecases/mark_chat_as_read_usecase.dart';
 import '../domain/usecases/replace_expired_session_usecase.dart';
 import '../domain/usecases/request_microphone_permission_usecase.dart';
+import '../domain/usecases/send_chat_turn_usecase.dart';
 import '../domain/usecases/start_recording_usecase.dart';
 import '../domain/usecases/stop_recording_usecase.dart';
 import '../domain/usecases/update_chat_last_message_usecase.dart';
 import '../domain/usecases/update_message_usecase.dart';
+import '../domain/usecases/upsert_chat_configuration_usecase.dart';
 import 'core.dart';
 import 'repositories.dart';
 
@@ -45,20 +48,47 @@ final createChatUseCaseProvider = Provider<CreateChatUseCase>((ref) {
   return CreateChatUseCase(repository: repository);
 });
 
+final getChatConfigurationUseCaseProvider =
+    Provider<GetChatConfigurationUseCase>((ref) {
+      final repository = ref.watch(chatConfigurationRepositoryProvider);
+      return GetChatConfigurationUseCase(repository: repository);
+    });
+
+final upsertChatConfigurationUseCaseProvider =
+    Provider<UpsertChatConfigurationUseCase>((ref) {
+      final repository = ref.watch(chatConfigurationRepositoryProvider);
+      return UpsertChatConfigurationUseCase(repository: repository);
+    });
+
 final deleteChatUseCaseProvider = Provider<DeleteChatUseCase>((ref) {
   final repository = ref.watch(chatRepositoryProvider);
   return DeleteChatUseCase(repository: repository);
+});
+
+final generateWelcomeMessageUseCaseProvider =
+    Provider<GenerateWelcomeMessageUseCase>((ref) {
+      return GenerateWelcomeMessageUseCase(
+        chatAiRepository: ref.watch(chatAiRepositoryProvider),
+        messageRepository: ref.watch(messageRepositoryProvider),
+        audioCacheService: ref.watch(chatAudioCacheServiceProvider),
+      );
+    });
+
+final sendChatTurnUseCaseProvider = Provider<SendChatTurnUseCase>((ref) {
+  return SendChatTurnUseCase(
+    chatAiRepository: ref.watch(chatAiRepositoryProvider),
+    messageRepository: ref.watch(messageRepositoryProvider),
+    audioCacheService: ref.watch(chatAudioCacheServiceProvider),
+    updateChatLastMessageUseCase: ref.watch(
+      updateChatLastMessageUseCaseProvider,
+    ),
+  );
 });
 
 // Message Use Cases
 final getMessagesUseCaseProvider = Provider<GetMessagesUseCase>((ref) {
   final repository = ref.watch(messageRepositoryProvider);
   return GetMessagesUseCase(repository: repository);
-});
-
-final addMessageUseCaseProvider = Provider<AddMessageUseCase>((ref) {
-  final repository = ref.watch(messageRepositoryProvider);
-  return AddMessageUseCase(repository: repository);
 });
 
 final deleteMessageUseCaseProvider = Provider<DeleteMessageUseCase>((ref) {

@@ -1,14 +1,15 @@
 import 'package:drift/drift.dart';
 
-import '../../domain/models/message.dart' as model;
-import '../../domain/repositories/message_repository.dart';
 import '../../core/database/app_database.dart';
+import '../../domain/models/message.dart' as model;
+import '../../domain/models/message_content_type.dart';
+import '../../domain/models/session_language.dart';
+import '../../domain/repositories/message_repository.dart';
 
 /// Реализация репозитория для работы с сообщениями
 class MessageRepositoryImpl implements MessageRepository {
-  final AppDatabase _database;
-
   MessageRepositoryImpl(this._database);
+  final AppDatabase _database;
 
   @override
   Future<List<model.Message>> getMessagesByChatId(String chatId) async {
@@ -30,8 +31,14 @@ class MessageRepositoryImpl implements MessageRepository {
       isMe: message.isMe,
       time: message.time,
       chatId: message.chatId,
+      contentType: Value(message.contentType.value),
+      audioPath: Value(message.audioPath),
+      transcription: Value(message.transcription),
+      corrections: Value(message.corrections),
+      language: Value(message.language?.value),
+      createdAt: Value(message.createdAt),
     );
-    
+
     await _database.messageDao.insertMessage(messageCompanion);
     return message;
   }
@@ -54,8 +61,14 @@ class MessageRepositoryImpl implements MessageRepository {
       isMe: Value(message.isMe),
       time: Value(message.time),
       chatId: Value(message.chatId),
+      contentType: Value(message.contentType.value),
+      audioPath: Value(message.audioPath),
+      transcription: Value(message.transcription),
+      corrections: Value(message.corrections),
+      language: Value(message.language?.value),
+      createdAt: Value(message.createdAt),
     );
-    
+
     await _database.messageDao.updateMessage(messageCompanion);
     return message;
   }
@@ -68,6 +81,14 @@ class MessageRepositoryImpl implements MessageRepository {
       isMe: messageData.isMe,
       time: messageData.time,
       chatId: messageData.chatId,
+      contentType: MessageContentType.fromValue(messageData.contentType),
+      audioPath: messageData.audioPath,
+      transcription: messageData.transcription,
+      corrections: messageData.corrections,
+      language: messageData.language != null
+          ? SessionLanguage.fromValue(messageData.language!)
+          : null,
+      createdAt: messageData.createdAt,
     );
   }
 }

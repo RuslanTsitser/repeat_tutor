@@ -1,4 +1,5 @@
 import '../models/message.dart';
+import '../models/message_content_type.dart';
 import '../repositories/message_repository.dart';
 
 /// Use Case для добавления сообщения
@@ -27,9 +28,10 @@ class AddMessageUseCase {
       isMe: true,
       time: time,
       chatId: chatId,
+      contentType: MessageContentType.text,
+      createdAt: now,
     );
 
     return await repository.addMessage(message);
   }
 }
-

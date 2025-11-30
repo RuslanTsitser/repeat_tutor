@@ -80,4 +80,26 @@ enum SessionLanguage {
         return 'English';
     }
   }
+
+  String get localeCode {
+    switch (this) {
+      case SessionLanguage.japanese:
+        return 'ja';
+      case SessionLanguage.portugueseEuropean:
+      case SessionLanguage.portugueseBrazilian:
+        return 'pt';
+      case SessionLanguage.spanish:
+        return 'es';
+      case SessionLanguage.french:
+        return 'fr';
+      case SessionLanguage.italian:
+        return 'it';
+      case SessionLanguage.german:
+        return 'de';
+      case SessionLanguage.russian:
+        return 'ru';
+      case SessionLanguage.english:
+        return 'en';
+    }
+  }
 }

@@ -469,8 +469,88 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _contentTypeMeta = const VerificationMeta(
+    'contentType',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, message, isMe, time, chatId];
+  late final GeneratedColumn<String> contentType = GeneratedColumn<String>(
+    'content_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('text'),
+  );
+  static const VerificationMeta _audioPathMeta = const VerificationMeta(
+    'audioPath',
+  );
+  @override
+  late final GeneratedColumn<String> audioPath = GeneratedColumn<String>(
+    'audio_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _transcriptionMeta = const VerificationMeta(
+    'transcription',
+  );
+  @override
+  late final GeneratedColumn<String> transcription = GeneratedColumn<String>(
+    'transcription',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _correctionsMeta = const VerificationMeta(
+    'corrections',
+  );
+  @override
+  late final GeneratedColumn<String> corrections = GeneratedColumn<String>(
+    'corrections',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _languageMeta = const VerificationMeta(
+    'language',
+  );
+  @override
+  late final GeneratedColumn<String> language = GeneratedColumn<String>(
+    'language',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    message,
+    isMe,
+    time,
+    chatId,
+    contentType,
+    audioPath,
+    transcription,
+    corrections,
+    language,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -520,6 +600,51 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     } else if (isInserting) {
       context.missing(_chatIdMeta);
     }
+    if (data.containsKey('content_type')) {
+      context.handle(
+        _contentTypeMeta,
+        contentType.isAcceptableOrUnknown(
+          data['content_type']!,
+          _contentTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('audio_path')) {
+      context.handle(
+        _audioPathMeta,
+        audioPath.isAcceptableOrUnknown(data['audio_path']!, _audioPathMeta),
+      );
+    }
+    if (data.containsKey('transcription')) {
+      context.handle(
+        _transcriptionMeta,
+        transcription.isAcceptableOrUnknown(
+          data['transcription']!,
+          _transcriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('corrections')) {
+      context.handle(
+        _correctionsMeta,
+        corrections.isAcceptableOrUnknown(
+          data['corrections']!,
+          _correctionsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('language')) {
+      context.handle(
+        _languageMeta,
+        language.isAcceptableOrUnknown(data['language']!, _languageMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
     return context;
   }
 
@@ -549,6 +674,30 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         DriftSqlType.string,
         data['${effectivePrefix}chat_id'],
       )!,
+      contentType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content_type'],
+      )!,
+      audioPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_path'],
+      ),
+      transcription: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transcription'],
+      ),
+      corrections: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}corrections'],
+      ),
+      language: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}language'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -564,12 +713,24 @@ class Message extends DataClass implements Insertable<Message> {
   final bool isMe;
   final String time;
   final String chatId;
+  final String contentType;
+  final String? audioPath;
+  final String? transcription;
+  final String? corrections;
+  final String? language;
+  final DateTime createdAt;
   const Message({
     required this.id,
     required this.message,
     required this.isMe,
     required this.time,
     required this.chatId,
+    required this.contentType,
+    this.audioPath,
+    this.transcription,
+    this.corrections,
+    this.language,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -579,6 +740,20 @@ class Message extends DataClass implements Insertable<Message> {
     map['is_me'] = Variable<bool>(isMe);
     map['time'] = Variable<String>(time);
     map['chat_id'] = Variable<String>(chatId);
+    map['content_type'] = Variable<String>(contentType);
+    if (!nullToAbsent || audioPath != null) {
+      map['audio_path'] = Variable<String>(audioPath);
+    }
+    if (!nullToAbsent || transcription != null) {
+      map['transcription'] = Variable<String>(transcription);
+    }
+    if (!nullToAbsent || corrections != null) {
+      map['corrections'] = Variable<String>(corrections);
+    }
+    if (!nullToAbsent || language != null) {
+      map['language'] = Variable<String>(language);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -589,6 +764,20 @@ class Message extends DataClass implements Insertable<Message> {
       isMe: Value(isMe),
       time: Value(time),
       chatId: Value(chatId),
+      contentType: Value(contentType),
+      audioPath: audioPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(audioPath),
+      transcription: transcription == null && nullToAbsent
+          ? const Value.absent()
+          : Value(transcription),
+      corrections: corrections == null && nullToAbsent
+          ? const Value.absent()
+          : Value(corrections),
+      language: language == null && nullToAbsent
+          ? const Value.absent()
+          : Value(language),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -603,6 +792,12 @@ class Message extends DataClass implements Insertable<Message> {
       isMe: serializer.fromJson<bool>(json['isMe']),
       time: serializer.fromJson<String>(json['time']),
       chatId: serializer.fromJson<String>(json['chatId']),
+      contentType: serializer.fromJson<String>(json['contentType']),
+      audioPath: serializer.fromJson<String?>(json['audioPath']),
+      transcription: serializer.fromJson<String?>(json['transcription']),
+      corrections: serializer.fromJson<String?>(json['corrections']),
+      language: serializer.fromJson<String?>(json['language']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -614,6 +809,12 @@ class Message extends DataClass implements Insertable<Message> {
       'isMe': serializer.toJson<bool>(isMe),
       'time': serializer.toJson<String>(time),
       'chatId': serializer.toJson<String>(chatId),
+      'contentType': serializer.toJson<String>(contentType),
+      'audioPath': serializer.toJson<String?>(audioPath),
+      'transcription': serializer.toJson<String?>(transcription),
+      'corrections': serializer.toJson<String?>(corrections),
+      'language': serializer.toJson<String?>(language),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
@@ -623,12 +824,26 @@ class Message extends DataClass implements Insertable<Message> {
     bool? isMe,
     String? time,
     String? chatId,
+    String? contentType,
+    Value<String?> audioPath = const Value.absent(),
+    Value<String?> transcription = const Value.absent(),
+    Value<String?> corrections = const Value.absent(),
+    Value<String?> language = const Value.absent(),
+    DateTime? createdAt,
   }) => Message(
     id: id ?? this.id,
     message: message ?? this.message,
     isMe: isMe ?? this.isMe,
     time: time ?? this.time,
     chatId: chatId ?? this.chatId,
+    contentType: contentType ?? this.contentType,
+    audioPath: audioPath.present ? audioPath.value : this.audioPath,
+    transcription: transcription.present
+        ? transcription.value
+        : this.transcription,
+    corrections: corrections.present ? corrections.value : this.corrections,
+    language: language.present ? language.value : this.language,
+    createdAt: createdAt ?? this.createdAt,
   );
   Message copyWithCompanion(MessagesCompanion data) {
     return Message(
@@ -637,6 +852,18 @@ class Message extends DataClass implements Insertable<Message> {
       isMe: data.isMe.present ? data.isMe.value : this.isMe,
       time: data.time.present ? data.time.value : this.time,
       chatId: data.chatId.present ? data.chatId.value : this.chatId,
+      contentType: data.contentType.present
+          ? data.contentType.value
+          : this.contentType,
+      audioPath: data.audioPath.present ? data.audioPath.value : this.audioPath,
+      transcription: data.transcription.present
+          ? data.transcription.value
+          : this.transcription,
+      corrections: data.corrections.present
+          ? data.corrections.value
+          : this.corrections,
+      language: data.language.present ? data.language.value : this.language,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -647,13 +874,31 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('message: $message, ')
           ..write('isMe: $isMe, ')
           ..write('time: $time, ')
-          ..write('chatId: $chatId')
+          ..write('chatId: $chatId, ')
+          ..write('contentType: $contentType, ')
+          ..write('audioPath: $audioPath, ')
+          ..write('transcription: $transcription, ')
+          ..write('corrections: $corrections, ')
+          ..write('language: $language, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, message, isMe, time, chatId);
+  int get hashCode => Object.hash(
+    id,
+    message,
+    isMe,
+    time,
+    chatId,
+    contentType,
+    audioPath,
+    transcription,
+    corrections,
+    language,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -662,7 +907,13 @@ class Message extends DataClass implements Insertable<Message> {
           other.message == this.message &&
           other.isMe == this.isMe &&
           other.time == this.time &&
-          other.chatId == this.chatId);
+          other.chatId == this.chatId &&
+          other.contentType == this.contentType &&
+          other.audioPath == this.audioPath &&
+          other.transcription == this.transcription &&
+          other.corrections == this.corrections &&
+          other.language == this.language &&
+          other.createdAt == this.createdAt);
 }
 
 class MessagesCompanion extends UpdateCompanion<Message> {
@@ -671,6 +922,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<bool> isMe;
   final Value<String> time;
   final Value<String> chatId;
+  final Value<String> contentType;
+  final Value<String?> audioPath;
+  final Value<String?> transcription;
+  final Value<String?> corrections;
+  final Value<String?> language;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
   const MessagesCompanion({
     this.id = const Value.absent(),
@@ -678,6 +935,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.isMe = const Value.absent(),
     this.time = const Value.absent(),
     this.chatId = const Value.absent(),
+    this.contentType = const Value.absent(),
+    this.audioPath = const Value.absent(),
+    this.transcription = const Value.absent(),
+    this.corrections = const Value.absent(),
+    this.language = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MessagesCompanion.insert({
@@ -686,6 +949,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required bool isMe,
     required String time,
     required String chatId,
+    this.contentType = const Value.absent(),
+    this.audioPath = const Value.absent(),
+    this.transcription = const Value.absent(),
+    this.corrections = const Value.absent(),
+    this.language = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        message = Value(message),
@@ -698,6 +967,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<bool>? isMe,
     Expression<String>? time,
     Expression<String>? chatId,
+    Expression<String>? contentType,
+    Expression<String>? audioPath,
+    Expression<String>? transcription,
+    Expression<String>? corrections,
+    Expression<String>? language,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -706,6 +981,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (isMe != null) 'is_me': isMe,
       if (time != null) 'time': time,
       if (chatId != null) 'chat_id': chatId,
+      if (contentType != null) 'content_type': contentType,
+      if (audioPath != null) 'audio_path': audioPath,
+      if (transcription != null) 'transcription': transcription,
+      if (corrections != null) 'corrections': corrections,
+      if (language != null) 'language': language,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -716,6 +997,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Value<bool>? isMe,
     Value<String>? time,
     Value<String>? chatId,
+    Value<String>? contentType,
+    Value<String?>? audioPath,
+    Value<String?>? transcription,
+    Value<String?>? corrections,
+    Value<String?>? language,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
     return MessagesCompanion(
@@ -724,6 +1011,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       isMe: isMe ?? this.isMe,
       time: time ?? this.time,
       chatId: chatId ?? this.chatId,
+      contentType: contentType ?? this.contentType,
+      audioPath: audioPath ?? this.audioPath,
+      transcription: transcription ?? this.transcription,
+      corrections: corrections ?? this.corrections,
+      language: language ?? this.language,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -746,6 +1039,24 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     if (chatId.present) {
       map['chat_id'] = Variable<String>(chatId.value);
     }
+    if (contentType.present) {
+      map['content_type'] = Variable<String>(contentType.value);
+    }
+    if (audioPath.present) {
+      map['audio_path'] = Variable<String>(audioPath.value);
+    }
+    if (transcription.present) {
+      map['transcription'] = Variable<String>(transcription.value);
+    }
+    if (corrections.present) {
+      map['corrections'] = Variable<String>(corrections.value);
+    }
+    if (language.present) {
+      map['language'] = Variable<String>(language.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -760,6 +1071,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('isMe: $isMe, ')
           ..write('time: $time, ')
           ..write('chatId: $chatId, ')
+          ..write('contentType: $contentType, ')
+          ..write('audioPath: $audioPath, ')
+          ..write('transcription: $transcription, ')
+          ..write('corrections: $corrections, ')
+          ..write('language: $language, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1365,6 +1682,416 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
   }
 }
 
+class $ChatConfigurationsTable extends ChatConfigurations
+    with TableInfo<$ChatConfigurationsTable, ChatConfiguration> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChatConfigurationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
+  @override
+  late final GeneratedColumn<String> chatId = GeneratedColumn<String>(
+    'chat_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _languageMeta = const VerificationMeta(
+    'language',
+  );
+  @override
+  late final GeneratedColumn<String> language = GeneratedColumn<String>(
+    'language',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _difficultyMeta = const VerificationMeta(
+    'difficulty',
+  );
+  @override
+  late final GeneratedColumn<String> difficulty = GeneratedColumn<String>(
+    'difficulty',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
+  @override
+  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
+    'topic',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    chatId,
+    language,
+    difficulty,
+    topic,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chat_configurations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ChatConfiguration> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('chat_id')) {
+      context.handle(
+        _chatIdMeta,
+        chatId.isAcceptableOrUnknown(data['chat_id']!, _chatIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_chatIdMeta);
+    }
+    if (data.containsKey('language')) {
+      context.handle(
+        _languageMeta,
+        language.isAcceptableOrUnknown(data['language']!, _languageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_languageMeta);
+    }
+    if (data.containsKey('difficulty')) {
+      context.handle(
+        _difficultyMeta,
+        difficulty.isAcceptableOrUnknown(data['difficulty']!, _difficultyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_difficultyMeta);
+    }
+    if (data.containsKey('topic')) {
+      context.handle(
+        _topicMeta,
+        topic.isAcceptableOrUnknown(data['topic']!, _topicMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_topicMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {chatId};
+  @override
+  ChatConfiguration map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ChatConfiguration(
+      chatId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}chat_id'],
+      )!,
+      language: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}language'],
+      )!,
+      difficulty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}difficulty'],
+      )!,
+      topic: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}topic'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ChatConfigurationsTable createAlias(String alias) {
+    return $ChatConfigurationsTable(attachedDatabase, alias);
+  }
+}
+
+class ChatConfiguration extends DataClass
+    implements Insertable<ChatConfiguration> {
+  final String chatId;
+  final String language;
+  final String difficulty;
+  final String topic;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const ChatConfiguration({
+    required this.chatId,
+    required this.language,
+    required this.difficulty,
+    required this.topic,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['chat_id'] = Variable<String>(chatId);
+    map['language'] = Variable<String>(language);
+    map['difficulty'] = Variable<String>(difficulty);
+    map['topic'] = Variable<String>(topic);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  ChatConfigurationsCompanion toCompanion(bool nullToAbsent) {
+    return ChatConfigurationsCompanion(
+      chatId: Value(chatId),
+      language: Value(language),
+      difficulty: Value(difficulty),
+      topic: Value(topic),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory ChatConfiguration.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ChatConfiguration(
+      chatId: serializer.fromJson<String>(json['chatId']),
+      language: serializer.fromJson<String>(json['language']),
+      difficulty: serializer.fromJson<String>(json['difficulty']),
+      topic: serializer.fromJson<String>(json['topic']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'chatId': serializer.toJson<String>(chatId),
+      'language': serializer.toJson<String>(language),
+      'difficulty': serializer.toJson<String>(difficulty),
+      'topic': serializer.toJson<String>(topic),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  ChatConfiguration copyWith({
+    String? chatId,
+    String? language,
+    String? difficulty,
+    String? topic,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => ChatConfiguration(
+    chatId: chatId ?? this.chatId,
+    language: language ?? this.language,
+    difficulty: difficulty ?? this.difficulty,
+    topic: topic ?? this.topic,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  ChatConfiguration copyWithCompanion(ChatConfigurationsCompanion data) {
+    return ChatConfiguration(
+      chatId: data.chatId.present ? data.chatId.value : this.chatId,
+      language: data.language.present ? data.language.value : this.language,
+      difficulty: data.difficulty.present
+          ? data.difficulty.value
+          : this.difficulty,
+      topic: data.topic.present ? data.topic.value : this.topic,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatConfiguration(')
+          ..write('chatId: $chatId, ')
+          ..write('language: $language, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('topic: $topic, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(chatId, language, difficulty, topic, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatConfiguration &&
+          other.chatId == this.chatId &&
+          other.language == this.language &&
+          other.difficulty == this.difficulty &&
+          other.topic == this.topic &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class ChatConfigurationsCompanion extends UpdateCompanion<ChatConfiguration> {
+  final Value<String> chatId;
+  final Value<String> language;
+  final Value<String> difficulty;
+  final Value<String> topic;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const ChatConfigurationsCompanion({
+    this.chatId = const Value.absent(),
+    this.language = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.topic = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ChatConfigurationsCompanion.insert({
+    required String chatId,
+    required String language,
+    required String difficulty,
+    required String topic,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : chatId = Value(chatId),
+       language = Value(language),
+       difficulty = Value(difficulty),
+       topic = Value(topic);
+  static Insertable<ChatConfiguration> custom({
+    Expression<String>? chatId,
+    Expression<String>? language,
+    Expression<String>? difficulty,
+    Expression<String>? topic,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (chatId != null) 'chat_id': chatId,
+      if (language != null) 'language': language,
+      if (difficulty != null) 'difficulty': difficulty,
+      if (topic != null) 'topic': topic,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ChatConfigurationsCompanion copyWith({
+    Value<String>? chatId,
+    Value<String>? language,
+    Value<String>? difficulty,
+    Value<String>? topic,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return ChatConfigurationsCompanion(
+      chatId: chatId ?? this.chatId,
+      language: language ?? this.language,
+      difficulty: difficulty ?? this.difficulty,
+      topic: topic ?? this.topic,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (chatId.present) {
+      map['chat_id'] = Variable<String>(chatId.value);
+    }
+    if (language.present) {
+      map['language'] = Variable<String>(language.value);
+    }
+    if (difficulty.present) {
+      map['difficulty'] = Variable<String>(difficulty.value);
+    }
+    if (topic.present) {
+      map['topic'] = Variable<String>(topic.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatConfigurationsCompanion(')
+          ..write('chatId: $chatId, ')
+          ..write('language: $language, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('topic: $topic, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1373,9 +2100,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $RealtimeSessionsTable realtimeSessions = $RealtimeSessionsTable(
     this,
   );
+  late final $ChatConfigurationsTable chatConfigurations =
+      $ChatConfigurationsTable(this);
   late final ChatDao chatDao = ChatDao(this as AppDatabase);
   late final MessageDao messageDao = MessageDao(this as AppDatabase);
   late final RealtimeSessionDao realtimeSessionDao = RealtimeSessionDao(
+    this as AppDatabase,
+  );
+  late final ChatConfigurationDao chatConfigurationDao = ChatConfigurationDao(
     this as AppDatabase,
   );
   @override
@@ -1386,6 +2118,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     chats,
     messages,
     realtimeSessions,
+    chatConfigurations,
   ];
 }
 
@@ -1612,6 +2345,12 @@ typedef $$MessagesTableCreateCompanionBuilder =
       required bool isMe,
       required String time,
       required String chatId,
+      Value<String> contentType,
+      Value<String?> audioPath,
+      Value<String?> transcription,
+      Value<String?> corrections,
+      Value<String?> language,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 typedef $$MessagesTableUpdateCompanionBuilder =
@@ -1621,6 +2360,12 @@ typedef $$MessagesTableUpdateCompanionBuilder =
       Value<bool> isMe,
       Value<String> time,
       Value<String> chatId,
+      Value<String> contentType,
+      Value<String?> audioPath,
+      Value<String?> transcription,
+      Value<String?> corrections,
+      Value<String?> language,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
@@ -1655,6 +2400,36 @@ class $$MessagesTableFilterComposer
 
   ColumnFilters<String> get chatId => $composableBuilder(
     column: $table.chatId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contentType => $composableBuilder(
+    column: $table.contentType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get audioPath => $composableBuilder(
+    column: $table.audioPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get transcription => $composableBuilder(
+    column: $table.transcription,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get corrections => $composableBuilder(
+    column: $table.corrections,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1692,6 +2467,36 @@ class $$MessagesTableOrderingComposer
     column: $table.chatId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get contentType => $composableBuilder(
+    column: $table.contentType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get audioPath => $composableBuilder(
+    column: $table.audioPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get transcription => $composableBuilder(
+    column: $table.transcription,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get corrections => $composableBuilder(
+    column: $table.corrections,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MessagesTableAnnotationComposer
@@ -1717,6 +2522,30 @@ class $$MessagesTableAnnotationComposer
 
   GeneratedColumn<String> get chatId =>
       $composableBuilder(column: $table.chatId, builder: (column) => column);
+
+  GeneratedColumn<String> get contentType => $composableBuilder(
+    column: $table.contentType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get audioPath =>
+      $composableBuilder(column: $table.audioPath, builder: (column) => column);
+
+  GeneratedColumn<String> get transcription => $composableBuilder(
+    column: $table.transcription,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get corrections => $composableBuilder(
+    column: $table.corrections,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get language =>
+      $composableBuilder(column: $table.language, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$MessagesTableTableManager
@@ -1752,6 +2581,12 @@ class $$MessagesTableTableManager
                 Value<bool> isMe = const Value.absent(),
                 Value<String> time = const Value.absent(),
                 Value<String> chatId = const Value.absent(),
+                Value<String> contentType = const Value.absent(),
+                Value<String?> audioPath = const Value.absent(),
+                Value<String?> transcription = const Value.absent(),
+                Value<String?> corrections = const Value.absent(),
+                Value<String?> language = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MessagesCompanion(
                 id: id,
@@ -1759,6 +2594,12 @@ class $$MessagesTableTableManager
                 isMe: isMe,
                 time: time,
                 chatId: chatId,
+                contentType: contentType,
+                audioPath: audioPath,
+                transcription: transcription,
+                corrections: corrections,
+                language: language,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1768,6 +2609,12 @@ class $$MessagesTableTableManager
                 required bool isMe,
                 required String time,
                 required String chatId,
+                Value<String> contentType = const Value.absent(),
+                Value<String?> audioPath = const Value.absent(),
+                Value<String?> transcription = const Value.absent(),
+                Value<String?> corrections = const Value.absent(),
+                Value<String?> language = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MessagesCompanion.insert(
                 id: id,
@@ -1775,6 +2622,12 @@ class $$MessagesTableTableManager
                 isMe: isMe,
                 time: time,
                 chatId: chatId,
+                contentType: contentType,
+                audioPath: audioPath,
+                transcription: transcription,
+                corrections: corrections,
+                language: language,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -2089,6 +2942,240 @@ typedef $$RealtimeSessionsTableProcessedTableManager =
       RealtimeSession,
       PrefetchHooks Function()
     >;
+typedef $$ChatConfigurationsTableCreateCompanionBuilder =
+    ChatConfigurationsCompanion Function({
+      required String chatId,
+      required String language,
+      required String difficulty,
+      required String topic,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$ChatConfigurationsTableUpdateCompanionBuilder =
+    ChatConfigurationsCompanion Function({
+      Value<String> chatId,
+      Value<String> language,
+      Value<String> difficulty,
+      Value<String> topic,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$ChatConfigurationsTableFilterComposer
+    extends Composer<_$AppDatabase, $ChatConfigurationsTable> {
+  $$ChatConfigurationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get chatId => $composableBuilder(
+    column: $table.chatId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get topic => $composableBuilder(
+    column: $table.topic,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ChatConfigurationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ChatConfigurationsTable> {
+  $$ChatConfigurationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get chatId => $composableBuilder(
+    column: $table.chatId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get language => $composableBuilder(
+    column: $table.language,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get topic => $composableBuilder(
+    column: $table.topic,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ChatConfigurationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ChatConfigurationsTable> {
+  $$ChatConfigurationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get chatId =>
+      $composableBuilder(column: $table.chatId, builder: (column) => column);
+
+  GeneratedColumn<String> get language =>
+      $composableBuilder(column: $table.language, builder: (column) => column);
+
+  GeneratedColumn<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get topic =>
+      $composableBuilder(column: $table.topic, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$ChatConfigurationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ChatConfigurationsTable,
+          ChatConfiguration,
+          $$ChatConfigurationsTableFilterComposer,
+          $$ChatConfigurationsTableOrderingComposer,
+          $$ChatConfigurationsTableAnnotationComposer,
+          $$ChatConfigurationsTableCreateCompanionBuilder,
+          $$ChatConfigurationsTableUpdateCompanionBuilder,
+          (
+            ChatConfiguration,
+            BaseReferences<
+              _$AppDatabase,
+              $ChatConfigurationsTable,
+              ChatConfiguration
+            >,
+          ),
+          ChatConfiguration,
+          PrefetchHooks Function()
+        > {
+  $$ChatConfigurationsTableTableManager(
+    _$AppDatabase db,
+    $ChatConfigurationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ChatConfigurationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ChatConfigurationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ChatConfigurationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> chatId = const Value.absent(),
+                Value<String> language = const Value.absent(),
+                Value<String> difficulty = const Value.absent(),
+                Value<String> topic = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ChatConfigurationsCompanion(
+                chatId: chatId,
+                language: language,
+                difficulty: difficulty,
+                topic: topic,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String chatId,
+                required String language,
+                required String difficulty,
+                required String topic,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ChatConfigurationsCompanion.insert(
+                chatId: chatId,
+                language: language,
+                difficulty: difficulty,
+                topic: topic,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ChatConfigurationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ChatConfigurationsTable,
+      ChatConfiguration,
+      $$ChatConfigurationsTableFilterComposer,
+      $$ChatConfigurationsTableOrderingComposer,
+      $$ChatConfigurationsTableAnnotationComposer,
+      $$ChatConfigurationsTableCreateCompanionBuilder,
+      $$ChatConfigurationsTableUpdateCompanionBuilder,
+      (
+        ChatConfiguration,
+        BaseReferences<
+          _$AppDatabase,
+          $ChatConfigurationsTable,
+          ChatConfiguration
+        >,
+      ),
+      ChatConfiguration,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2099,4 +3186,6 @@ class $AppDatabaseManager {
       $$MessagesTableTableManager(_db, _db.messages);
   $$RealtimeSessionsTableTableManager get realtimeSessions =>
       $$RealtimeSessionsTableTableManager(_db, _db.realtimeSessions);
+  $$ChatConfigurationsTableTableManager get chatConfigurations =>
+      $$ChatConfigurationsTableTableManager(_db, _db.chatConfigurations);
 }

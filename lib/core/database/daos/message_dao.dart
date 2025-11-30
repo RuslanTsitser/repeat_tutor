@@ -14,7 +14,7 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
   Future<List<Message>> getMessagesByChatId(String chatId) {
     return (select(messages)
           ..where((tbl) => tbl.chatId.equals(chatId))
-          ..orderBy([(tbl) => OrderingTerm.asc(tbl.time)]))
+          ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
         .get();
   }
 

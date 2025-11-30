@@ -20,6 +20,12 @@ class Messages extends Table {
   BoolColumn get isMe => boolean()();
   TextColumn get time => text()();
   TextColumn get chatId => text()();
+  TextColumn get contentType => text().withDefault(const Constant('text'))();
+  TextColumn get audioPath => text().nullable()();
+  TextColumn get transcription => text().nullable()();
+  TextColumn get corrections => text().nullable()();
+  TextColumn get language => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -40,4 +46,17 @@ class RealtimeSessions extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+/// Дополнительные настройки для практических чатов
+class ChatConfigurations extends Table {
+  TextColumn get chatId => text()();
+  TextColumn get language => text()();
+  TextColumn get difficulty => text()();
+  TextColumn get topic => text()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+
+  @override
+  Set<Column> get primaryKey => {chatId};
 }
