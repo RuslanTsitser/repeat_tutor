@@ -1,36 +1,35 @@
 import 'package:flutter/foundation.dart';
 
-import '../../core/permission_service/microphone_permission_request.dart';
 import '../../core/realtime/realtime_audio_manager.dart';
 import '../../core/realtime/realtime_webrtc_manager.dart';
 import '../../domain/models/realtime_session.dart';
-import '../../domain/models/session_difficulty_level.dart';
-import '../../domain/models/session_language.dart';
-import '../../domain/models/session_settings.dart';
-import '../../domain/repositories/realtime_session_repository.dart';
-import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
-import '../../domain/usecases/create_realtime_session_usecase.dart';
-import '../../domain/usecases/delete_realtime_session_usecase.dart';
+import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
+import '../../domain/usecases/disconnect_realtime_call_usecase.dart';
+import '../../domain/usecases/send_text_message_usecase.dart';
+import '../../domain/usecases/start_recording_usecase.dart';
+import '../../domain/usecases/stop_recording_usecase.dart';
 
 /// Нотатор для управления звонком Realtime API
 class RealtimeCallNotifier extends ChangeNotifier {
   RealtimeCallNotifier({
     required this.connection,
     required this.audioManager,
-    required this.connectUseCase,
-    required this.sessionRepository,
-    required this.createSessionUseCase,
-    required this.deleteSessionUseCase,
+    required this.connectWithPermissionUseCase,
+    required this.disconnectUseCase,
+    required this.startRecordingUseCase,
+    required this.stopRecordingUseCase,
+    required this.sendMessageUseCase,
     required this.session,
   }) {
     _setupCallbacks();
   }
   final RealtimeWebRTCConnection connection;
   final RealtimeAudioManager audioManager;
-  final ConnectRealtimeWebRTCUseCase connectUseCase;
-  final RealtimeSessionRepository sessionRepository;
-  final CreateRealtimeSessionUseCase createSessionUseCase;
-  final DeleteRealtimeSessionUseCase deleteSessionUseCase;
+  final ConnectRealtimeWithPermissionUseCase connectWithPermissionUseCase;
+  final DisconnectRealtimeCallUseCase disconnectUseCase;
+  final StartRecordingUseCase startRecordingUseCase;
+  final StopRecordingUseCase stopRecordingUseCase;
+  final SendTextMessageUseCase sendMessageUseCase;
 
   RealtimeSession session;
   bool _isConnected = false;
@@ -75,7 +74,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
       // Начинаем запись после подключения
       // Разрешение уже должно быть получено в методе connect()
       if (!_isRecording) {
-        startRecording();
+        _startRecordingInternal();
       }
     };
 
@@ -88,7 +87,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
       _isConnected = false;
       _isConnecting = false;
       _isPlaying = false;
-      stopRecording();
+      _stopRecordingInternal();
       notifyListeners();
     };
 
@@ -118,34 +117,12 @@ class RealtimeCallNotifier extends ChangeNotifier {
     _isConnecting = true;
     notifyListeners();
 
-    // Сначала запрашиваем разрешение на микрофон
     try {
-      final granted = await requestMicrophonePermission();
-
-      if (!granted) {
-        _isConnecting = false;
-        _error = 'Разрешение на микрофон было отклонено';
+      final newSession = await connectWithPermissionUseCase.execute(session);
+      if (newSession != null) {
+        session = newSession;
         notifyListeners();
-        return;
       }
-    } catch (e) {
-      _isConnecting = false;
-      _error = 'Ошибка при запросе разрешения на микрофон: ${e.toString()}';
-      notifyListeners();
-      return;
-    }
-
-    if (session.clientSecret == null || !session.isClientSecretValid) {
-      // Если секрет истек, создаем новую сессию
-      await _replaceExpiredSession();
-      return;
-    }
-
-    try {
-      await connectUseCase.execute(
-        sessionId: session.id,
-        clientSecret: session.clientSecret!,
-      );
     } catch (e) {
       _error = e.toString();
       _isConnecting = false;
@@ -153,48 +130,9 @@ class RealtimeCallNotifier extends ChangeNotifier {
     }
   }
 
-  /// Заменить истекшую сессию
-  Future<void> _replaceExpiredSession() async {
-    try {
-      // Сохраняем параметры текущей сессии
-      final settings = SessionSettings(
-        language: session.language ?? SessionLanguage.japanese,
-        level: session.level ?? SessionDifficultyLevel.beginner,
-      );
-
-      // Создаем новую сессию
-      final newSession = await createSessionUseCase.execute(settings);
-
-      // Удаляем старую сессию
-      await deleteSessionUseCase.execute(session);
-
-      // Обновляем текущую сессию
-      session = newSession;
-      notifyListeners();
-
-      // Пытаемся подключиться с новой сессией
-      if (newSession.clientSecret != null && newSession.isClientSecretValid) {
-        await connectUseCase.execute(
-          sessionId: newSession.id,
-          clientSecret: newSession.clientSecret!,
-        );
-      } else {
-        _error = 'Не удалось получить client secret';
-        _isConnecting = false;
-        notifyListeners();
-      }
-    } catch (e) {
-      _error = 'Ошибка при замене сессии: ${e.toString()}';
-      _isConnecting = false;
-      notifyListeners();
-    }
-  }
-
   /// Отключиться от сессии
   void disconnect() {
-    connection.disconnect();
-    audioManager.stopRecording();
-    audioManager.stopPlaying();
+    disconnectUseCase.execute();
     _isRecording = false;
     _isPlaying = false;
     _isConnecting = false;
@@ -204,7 +142,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
   /// Отправить текстовое сообщение
   void sendMessage(String message) {
     try {
-      connection.sendText(message);
+      sendMessageUseCase.execute(message);
     } catch (e) {
       _error = e.toString();
       notifyListeners();
@@ -214,7 +152,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
   /// Начать запись
   Future<void> startRecording() async {
     try {
-      await audioManager.startRecording();
+      await startRecordingUseCase.execute();
       _isRecording = true;
       _error = null;
       notifyListeners();
@@ -227,16 +165,40 @@ class RealtimeCallNotifier extends ChangeNotifier {
 
   /// Остановить запись
   void stopRecording() {
-    audioManager.stopRecording();
-    _isRecording = false;
-    _audioLevel = 0.0;
     try {
-      connection.commitAudio();
+      stopRecordingUseCase.execute();
+      _isRecording = false;
+      _audioLevel = 0.0;
+      notifyListeners();
     } catch (e) {
       _error = 'Ошибка завершения аудио: ${e.toString()}';
       notifyListeners();
     }
-    notifyListeners();
+  }
+
+  /// Внутренний метод для начала записи (используется в колбэках)
+  Future<void> _startRecordingInternal() async {
+    try {
+      await startRecordingUseCase.execute();
+      _isRecording = true;
+      _error = null;
+      notifyListeners();
+    } catch (e) {
+      _isRecording = false;
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
+
+  /// Внутренний метод для остановки записи (используется в колбэках)
+  void _stopRecordingInternal() {
+    try {
+      stopRecordingUseCase.execute();
+      _isRecording = false;
+      _audioLevel = 0.0;
+    } catch (e) {
+      _error = 'Ошибка завершения аудио: ${e.toString()}';
+    }
   }
 
   @override

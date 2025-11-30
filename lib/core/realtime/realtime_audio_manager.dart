@@ -3,8 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-import '../permission_service/microphone_permission_request.dart';
-
 /// Доменный протокол для управления аудио
 abstract interface class RealtimeAudioManager {
   void Function(String base64)? onAudioDataBase64;
@@ -34,14 +32,6 @@ class RealtimeAudioManagerImpl implements RealtimeAudioManager {
   Future<void> startRecording() async {
     if (_isRecording) return;
 
-    // Проверяем текущий статус разрешения
-    final granted = await requestMicrophonePermission();
-
-    // Если разрешение все еще не предоставлено
-    if (!granted) {
-      throw Exception('Разрешение на микрофон было отклонено');
-    }
-
     try {
       // Получаем доступ к микрофону
       _localStream = await navigator.mediaDevices.getUserMedia({
@@ -65,7 +55,7 @@ class RealtimeAudioManagerImpl implements RealtimeAudioManager {
       // Здесь мы используем упрощенный подход
 
       _isRecording = true;
-
+      // TODO: Implement real audio processing
       // Запускаем таймер для симуляции уровня звука
       _audioLevelTimer = Timer.periodic(const Duration(milliseconds: 100), (
         timer,

@@ -8,10 +8,27 @@ import '../../data/repositories/realtime_session_repository_impl.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../../domain/repositories/message_repository.dart';
 import '../../domain/repositories/realtime_session_repository.dart';
+import '../../domain/usecases/add_message_usecase.dart';
+import '../../domain/usecases/clear_messages_usecase.dart';
+import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
 import '../../domain/usecases/connect_realtime_webrtc_usecase.dart';
+import '../../domain/usecases/create_chat_usecase.dart';
 import '../../domain/usecases/create_realtime_session_usecase.dart';
+import '../../domain/usecases/delete_chat_usecase.dart';
+import '../../domain/usecases/delete_message_usecase.dart';
 import '../../domain/usecases/delete_realtime_session_usecase.dart';
+import '../../domain/usecases/disconnect_realtime_call_usecase.dart';
 import '../../domain/usecases/get_all_realtime_sessions_usecase.dart';
+import '../../domain/usecases/get_chats_usecase.dart';
+import '../../domain/usecases/get_messages_usecase.dart';
+import '../../domain/usecases/mark_chat_as_read_usecase.dart';
+import '../../domain/usecases/replace_expired_session_usecase.dart';
+import '../../domain/usecases/request_microphone_permission_usecase.dart';
+import '../../domain/usecases/send_text_message_usecase.dart';
+import '../../domain/usecases/start_recording_usecase.dart';
+import '../../domain/usecases/stop_recording_usecase.dart';
+import '../../domain/usecases/update_chat_last_message_usecase.dart';
+import '../../domain/usecases/update_message_usecase.dart';
 import '../core/ab_test/ab_test_prod.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_audio_manager.dart';
@@ -40,10 +57,68 @@ final messageRepositoryProvider = Provider<MessageRepository>((ref) {
   return MessageRepositoryImpl(database);
 });
 
+// Chat Use Cases
+final getChatsUseCaseProvider = Provider<GetChatsUseCase>((ref) {
+  final repository = ref.watch(chatRepositoryProvider);
+  return GetChatsUseCase(repository: repository);
+});
+
+final updateChatLastMessageUseCaseProvider =
+    Provider<UpdateChatLastMessageUseCase>((ref) {
+  final repository = ref.watch(chatRepositoryProvider);
+  return UpdateChatLastMessageUseCase(repository: repository);
+});
+
+final markChatAsReadUseCaseProvider = Provider<MarkChatAsReadUseCase>((ref) {
+  final repository = ref.watch(chatRepositoryProvider);
+  return MarkChatAsReadUseCase(repository: repository);
+});
+
+final createChatUseCaseProvider = Provider<CreateChatUseCase>((ref) {
+  final repository = ref.watch(chatRepositoryProvider);
+  return CreateChatUseCase(repository: repository);
+});
+
+final deleteChatUseCaseProvider = Provider<DeleteChatUseCase>((ref) {
+  final repository = ref.watch(chatRepositoryProvider);
+  return DeleteChatUseCase(repository: repository);
+});
+
+// Message Use Cases
+final getMessagesUseCaseProvider = Provider<GetMessagesUseCase>((ref) {
+  final repository = ref.watch(messageRepositoryProvider);
+  return GetMessagesUseCase(repository: repository);
+});
+
+final addMessageUseCaseProvider = Provider<AddMessageUseCase>((ref) {
+  final repository = ref.watch(messageRepositoryProvider);
+  return AddMessageUseCase(repository: repository);
+});
+
+final deleteMessageUseCaseProvider = Provider<DeleteMessageUseCase>((ref) {
+  final repository = ref.watch(messageRepositoryProvider);
+  return DeleteMessageUseCase(repository: repository);
+});
+
+final updateMessageUseCaseProvider = Provider<UpdateMessageUseCase>((ref) {
+  final repository = ref.watch(messageRepositoryProvider);
+  return UpdateMessageUseCase(repository: repository);
+});
+
+final clearMessagesUseCaseProvider = Provider<ClearMessagesUseCase>((ref) {
+  final repository = ref.watch(messageRepositoryProvider);
+  return ClearMessagesUseCase(repository: repository);
+});
+
 // Chat providers
 final chatProvider = ChangeNotifierProvider<ChatNotifier>((ref) {
-  final chatRepository = ref.watch(chatRepositoryProvider);
-  return ChatNotifier(chatRepository);
+  return ChatNotifier(
+    getChatsUseCase: ref.watch(getChatsUseCaseProvider),
+    updateChatLastMessageUseCase: ref.watch(updateChatLastMessageUseCaseProvider),
+    markChatAsReadUseCase: ref.watch(markChatAsReadUseCaseProvider),
+    createChatUseCase: ref.watch(createChatUseCaseProvider),
+    deleteChatUseCase: ref.watch(deleteChatUseCaseProvider),
+  );
 });
 
 // Message providers
@@ -51,8 +126,14 @@ final messageProvider = ChangeNotifierProvider.family<MessageNotifier, String>((
   ref,
   String chatId,
 ) {
-  final messageRepository = ref.watch(messageRepositoryProvider);
-  return MessageNotifier(chatId, messageRepository);
+  return MessageNotifier(
+    chatId: chatId,
+    getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
+    addMessageUseCase: ref.watch(addMessageUseCaseProvider),
+    deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
+    updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
+    clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
+  );
 });
 
 // Realtime providers
@@ -133,6 +214,57 @@ final connectRealtimeWebRTCUseCaseProvider =
       return ConnectRealtimeWebRTCUseCase(connection: connection);
     });
 
+final requestMicrophonePermissionUseCaseProvider =
+    Provider<RequestMicrophonePermissionUseCase>((ref) {
+      return const RequestMicrophonePermissionUseCase();
+    });
+
+final replaceExpiredSessionUseCaseProvider =
+    Provider<ReplaceExpiredSessionUseCase>((ref) {
+      return ReplaceExpiredSessionUseCase(
+        createSessionUseCase: ref.watch(createRealtimeSessionUseCaseProvider),
+        deleteSessionUseCase: ref.watch(deleteRealtimeSessionUseCaseProvider),
+      );
+    });
+
+final connectRealtimeWithPermissionUseCaseProvider =
+    Provider<ConnectRealtimeWithPermissionUseCase>((ref) {
+      return ConnectRealtimeWithPermissionUseCase(
+        requestPermissionUseCase: ref.watch(requestMicrophonePermissionUseCaseProvider),
+        replaceExpiredSessionUseCase: ref.watch(replaceExpiredSessionUseCaseProvider),
+        connectUseCase: ref.watch(connectRealtimeWebRTCUseCaseProvider),
+      );
+    });
+
+final startRecordingUseCaseProvider = Provider<StartRecordingUseCase>((ref) {
+  final audioManager = ref.watch(realtimeAudioManagerProvider);
+  return StartRecordingUseCase(audioManager: audioManager);
+});
+
+final stopRecordingUseCaseProvider = Provider<StopRecordingUseCase>((ref) {
+  final audioManager = ref.watch(realtimeAudioManagerProvider);
+  final connection = ref.watch(realtimeWebRTCConnectionProvider);
+  return StopRecordingUseCase(
+    audioManager: audioManager,
+    connection: connection,
+  );
+});
+
+final sendTextMessageUseCaseProvider = Provider<SendTextMessageUseCase>((ref) {
+  final connection = ref.watch(realtimeWebRTCConnectionProvider);
+  return SendTextMessageUseCase(connection: connection);
+});
+
+final disconnectRealtimeCallUseCaseProvider =
+    Provider<DisconnectRealtimeCallUseCase>((ref) {
+      final connection = ref.watch(realtimeWebRTCConnectionProvider);
+      final audioManager = ref.watch(realtimeAudioManagerProvider);
+      return DisconnectRealtimeCallUseCase(
+        connection: connection,
+        audioManager: audioManager,
+      );
+    });
+
 /// Провайдер для списка сессий
 final realtimeSessionListProvider =
     ChangeNotifierProvider<RealtimeSessionListNotifier>((ref) {
@@ -159,10 +291,11 @@ final realtimeCallProvider =
       return RealtimeCallNotifier(
         connection: ref.watch(realtimeWebRTCConnectionProvider),
         audioManager: ref.watch(realtimeAudioManagerProvider),
-        connectUseCase: ref.watch(connectRealtimeWebRTCUseCaseProvider),
-        sessionRepository: ref.watch(realtimeSessionRepositoryProvider),
-        createSessionUseCase: ref.watch(createRealtimeSessionUseCaseProvider),
-        deleteSessionUseCase: ref.watch(deleteRealtimeSessionUseCaseProvider),
+        connectWithPermissionUseCase: ref.watch(connectRealtimeWithPermissionUseCaseProvider),
+        disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
+        startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
+        stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
+        sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
         session: session,
       );
     });

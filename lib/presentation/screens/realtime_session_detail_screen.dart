@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/permission_service/microphone_permission_request.dart';
 import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/di.dart';
 import '../notifiers/realtime_call_notifier.dart';
@@ -24,7 +23,7 @@ class _RealtimeSessionDetailScreenState
   @override
   void initState() {
     super.initState();
-    requestMicrophonePermission();
+    ref.read(requestMicrophonePermissionUseCaseProvider).execute();
   }
 
   @override

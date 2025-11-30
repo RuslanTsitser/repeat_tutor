@@ -1,13 +1,28 @@
 import 'package:flutter/foundation.dart';
 
 import '../../domain/models/message.dart';
-import '../../domain/repositories/message_repository.dart';
+import '../../domain/usecases/add_message_usecase.dart';
+import '../../domain/usecases/clear_messages_usecase.dart';
+import '../../domain/usecases/delete_message_usecase.dart';
+import '../../domain/usecases/get_messages_usecase.dart';
+import '../../domain/usecases/update_message_usecase.dart';
 
 class MessageNotifier extends ChangeNotifier {
-  MessageNotifier(this.chatId, this._messageRepository);
+  MessageNotifier({
+    required this.chatId,
+    required this.getMessagesUseCase,
+    required this.addMessageUseCase,
+    required this.deleteMessageUseCase,
+    required this.updateMessageUseCase,
+    required this.clearMessagesUseCase,
+  });
 
   final String chatId;
-  final MessageRepository _messageRepository;
+  final GetMessagesUseCase getMessagesUseCase;
+  final AddMessageUseCase addMessageUseCase;
+  final DeleteMessageUseCase deleteMessageUseCase;
+  final UpdateMessageUseCase updateMessageUseCase;
+  final ClearMessagesUseCase clearMessagesUseCase;
   List<Message> _messages = [];
   bool _isLoading = false;
   String? _error;
@@ -23,7 +38,7 @@ class MessageNotifier extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _messages = await _messageRepository.getMessagesByChatId(chatId);
+      _messages = await getMessagesUseCase.execute(chatId);
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -34,22 +49,8 @@ class MessageNotifier extends ChangeNotifier {
 
   /// Добавить новое сообщение
   Future<void> addMessage(String text) async {
-    if (text.trim().isEmpty) return;
-
-    final now = DateTime.now();
-    final time =
-        '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-
-    final message = Message(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      text: text.trim(),
-      isMe: true,
-      time: time,
-      chatId: chatId,
-    );
-
     try {
-      await _messageRepository.addMessage(message);
+      await addMessageUseCase.execute(chatId: chatId, text: text);
       await loadMessages(); // Перезагружаем сообщения
     } catch (e) {
       _error = e.toString();
@@ -60,7 +61,7 @@ class MessageNotifier extends ChangeNotifier {
   /// Очистить все сообщения в чате
   Future<void> clearMessages() async {
     try {
-      await _messageRepository.clearMessages(chatId);
+      await clearMessagesUseCase.execute(chatId);
       await loadMessages(); // Перезагружаем сообщения
     } catch (e) {
       _error = e.toString();
@@ -71,7 +72,7 @@ class MessageNotifier extends ChangeNotifier {
   /// Удалить сообщение
   Future<void> deleteMessage(String messageId) async {
     try {
-      await _messageRepository.deleteMessage(messageId);
+      await deleteMessageUseCase.execute(messageId);
       await loadMessages(); // Перезагружаем сообщения
     } catch (e) {
       _error = e.toString();
@@ -82,7 +83,7 @@ class MessageNotifier extends ChangeNotifier {
   /// Обновить сообщение
   Future<void> updateMessage(Message message) async {
     try {
-      await _messageRepository.updateMessage(message);
+      await updateMessageUseCase.execute(message);
       await loadMessages(); // Перезагружаем сообщения
     } catch (e) {
       _error = e.toString();
