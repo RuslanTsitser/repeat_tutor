@@ -56,7 +56,6 @@ final realtimeCallEventHandlerProvider =
         disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
         startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
         stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
-        sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
       );
 
       // Очищаем колбэки при удалении провайдера

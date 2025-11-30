@@ -17,7 +17,6 @@ import '../domain/usecases/get_messages_usecase.dart';
 import '../domain/usecases/mark_chat_as_read_usecase.dart';
 import '../domain/usecases/replace_expired_session_usecase.dart';
 import '../domain/usecases/request_microphone_permission_usecase.dart';
-import '../domain/usecases/send_text_message_usecase.dart';
 import '../domain/usecases/start_recording_usecase.dart';
 import '../domain/usecases/stop_recording_usecase.dart';
 import '../domain/usecases/update_chat_last_message_usecase.dart';
@@ -140,11 +139,6 @@ final stopRecordingUseCaseProvider = Provider<StopRecordingUseCase>((ref) {
     audioManager: audioManager,
     connection: connection,
   );
-});
-
-final sendTextMessageUseCaseProvider = Provider<SendTextMessageUseCase>((ref) {
-  final connection = ref.watch(realtimeWebRTCConnectionProvider);
-  return SendTextMessageUseCase(connection: connection);
 });
 
 final disconnectRealtimeCallUseCaseProvider =

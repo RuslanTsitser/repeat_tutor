@@ -2,7 +2,6 @@ import '../../core/realtime/realtime_audio_manager.dart';
 import '../../core/realtime/realtime_webrtc_manager.dart';
 import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
 import '../../domain/usecases/disconnect_realtime_call_usecase.dart';
-import '../../domain/usecases/send_text_message_usecase.dart';
 import '../../domain/usecases/start_recording_usecase.dart';
 import '../../domain/usecases/stop_recording_usecase.dart';
 import '../notifiers/realtime_call_notifier.dart';
@@ -18,7 +17,6 @@ class RealtimeCallEventHandler {
     required this.disconnectUseCase,
     required this.startRecordingUseCase,
     required this.stopRecordingUseCase,
-    required this.sendMessageUseCase,
   }) {
     _setupCallbacks();
   }
@@ -30,7 +28,6 @@ class RealtimeCallEventHandler {
   final DisconnectRealtimeCallUseCase disconnectUseCase;
   final StartRecordingUseCase startRecordingUseCase;
   final StopRecordingUseCase stopRecordingUseCase;
-  final SendTextMessageUseCase sendMessageUseCase;
 
   void _setupCallbacks() {
     connection.onMessage = (message) {
@@ -123,15 +120,6 @@ class RealtimeCallEventHandler {
   void onDisconnectPressed() {
     disconnectUseCase.execute();
     // Состояние отключения устанавливается через колбэк connection.onDisconnect
-  }
-
-  /// Обработка события отправки сообщения
-  void onSendMessagePressed(String message) {
-    try {
-      sendMessageUseCase.execute(message);
-    } catch (e) {
-      notifier.setError(e.toString());
-    }
   }
 
   /// Обработка события начала записи
