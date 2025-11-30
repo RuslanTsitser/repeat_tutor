@@ -35,13 +35,6 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Чаты'),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            ref.read(routerProvider).push(const RealtimeSessionListRoute());
-          },
-          child: const Icon(CupertinoIcons.phone),
-        ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -120,6 +113,12 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     chat: chat,
                     onTap: () {
                       ref.read(routerProvider).push(ChatRoute(chat: chat));
+                    },
+                    onDeletePressed: () {
+                      final chatEventHandler = ref.read(
+                        chatEventHandlerProvider,
+                      );
+                      chatEventHandler.onDeleteChatPressed(chat.id);
                     },
                   );
                 },

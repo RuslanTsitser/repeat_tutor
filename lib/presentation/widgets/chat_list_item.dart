@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../domain/models/chat.dart';
 
 class ChatListItem extends StatelessWidget {
@@ -7,9 +8,11 @@ class ChatListItem extends StatelessWidget {
     super.key,
     required this.chat,
     required this.onTap,
+    required this.onDeletePressed,
   });
   final Chat chat;
   final VoidCallback onTap;
+  final VoidCallback onDeletePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +74,11 @@ class ChatListItem extends StatelessWidget {
                 ),
               ),
             ),
+          CupertinoButton(
+            onPressed: onDeletePressed,
+            padding: EdgeInsets.zero,
+            child: const Icon(CupertinoIcons.delete),
+          ),
         ],
       ),
       onTap: onTap,
