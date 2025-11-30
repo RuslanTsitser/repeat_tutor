@@ -1,15 +1,5 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../infrastructure/repositories.dart';
 import '../../presentation/notifiers/chat_notifier.dart';
 import '../repositories/chat_repository.dart';
-
-final getChatsUseCaseProvider = Provider((ref) {
-  return GetChatsUseCase(
-    chatRepository: ref.watch(chatRepositoryProvider),
-    chatNotifier: ref.watch(chatNotifierProvider),
-  );
-});
 
 class GetChatsUseCase {
   const GetChatsUseCase({

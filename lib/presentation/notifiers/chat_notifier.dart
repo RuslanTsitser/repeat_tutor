@@ -7,28 +7,37 @@ import '../../domain/models/chat.dart';
 class ChatNotifier extends ChangeNotifier {
   ChatNotifier();
 
-  List<Chat> _chats = [];
-  bool _isLoading = false;
-  String? _error;
+  ChatsState _state = ChatsState.initial();
+  ChatsState get state => _state;
 
-  List<Chat> get chats => _chats;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
-
-  // Методы для установки состояния (вызываются из обработчика событий)
-
-  void setChats(List<Chat> value) {
-    _chats = value;
+  void setState(ChatsState value) {
+    _state = value;
     notifyListeners();
   }
+}
 
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+class ChatsState {
+  factory ChatsState.initial() {
+    return const ChatsState(chats: [], isLoading: false, error: null);
   }
+  const ChatsState({
+    required this.chats,
+    required this.isLoading,
+    required this.error,
+  });
+  final List<Chat> chats;
+  final bool isLoading;
+  final String? error;
 
-  void setError(String? value) {
-    _error = value;
-    notifyListeners();
+  ChatsState copyWith({
+    List<Chat>? chats,
+    bool? isLoading,
+    String? error,
+  }) {
+    return ChatsState(
+      chats: chats ?? this.chats,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+    );
   }
 }
