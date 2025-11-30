@@ -1,12 +1,10 @@
 // Chat providers
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../presentation/handlers/realtime_call_event_handler.dart';
 import '../presentation/notifiers/chat_notifier.dart';
 import '../presentation/notifiers/message_notifier.dart';
 import '../presentation/notifiers/realtime_call_notifier.dart';
 import '../presentation/notifiers/realtime_session_notifier.dart';
-import 'core.dart';
 import 'use_case.dart';
 
 final chatProvider = ChangeNotifierProvider<ChatNotifier>((ref) {
@@ -47,34 +45,11 @@ final realtimeCallProvider =
       );
 
       final notifier = RealtimeCallNotifier(
-        connection: ref.watch(realtimeWebRTCConnectionProvider),
-        audioManager: ref.watch(realtimeAudioManagerProvider),
         session: session,
       );
 
-      // Создаем обработчик событий после создания нотифаера
-      final eventHandler = RealtimeCallEventHandler(
-        notifier: notifier,
-        connectWithPermissionUseCase: ref.watch(
-          connectRealtimeWithPermissionUseCaseProvider,
-        ),
-        disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
-        startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
-        stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
-        sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
-      );
-
-      // Устанавливаем колбэки в нотифаере
-      notifier.onConnectCallback = () async {
-        // Начинаем запись после подключения
-        if (!notifier.isRecording) {
-          await eventHandler.startRecordingInternal();
-        }
-      };
-      notifier.onDisconnectCallback = () {
-        // Останавливаем запись при отключении
-        eventHandler.stopRecordingInternal();
-      };
+      // Обработчик событий создается через realtimeCallEventHandlerProvider в handlers.dart
+      // Подписки на события connection и audioManager устанавливаются там
 
       return notifier;
     });

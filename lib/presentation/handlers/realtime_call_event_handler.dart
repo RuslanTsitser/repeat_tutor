@@ -1,3 +1,5 @@
+import '../../core/realtime/realtime_audio_manager.dart';
+import '../../core/realtime/realtime_webrtc_manager.dart';
 import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
 import '../../domain/usecases/disconnect_realtime_call_usecase.dart';
 import '../../domain/usecases/send_text_message_usecase.dart';
@@ -6,22 +8,95 @@ import '../../domain/usecases/stop_recording_usecase.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
 /// Обработчик событий для RealtimeCallNotifier
+/// Управляет подписками на события connection и audioManager
 class RealtimeCallEventHandler {
   RealtimeCallEventHandler({
     required this.notifier,
+    required this.connection,
+    required this.audioManager,
     required this.connectWithPermissionUseCase,
     required this.disconnectUseCase,
     required this.startRecordingUseCase,
     required this.stopRecordingUseCase,
     required this.sendMessageUseCase,
-  });
+  }) {
+    _setupCallbacks();
+  }
 
   final RealtimeCallNotifier notifier;
+  final RealtimeWebRTCConnection connection;
+  final RealtimeAudioManager audioManager;
   final ConnectRealtimeWithPermissionUseCase connectWithPermissionUseCase;
   final DisconnectRealtimeCallUseCase disconnectUseCase;
   final StartRecordingUseCase startRecordingUseCase;
   final StopRecordingUseCase stopRecordingUseCase;
   final SendTextMessageUseCase sendMessageUseCase;
+
+  void _setupCallbacks() {
+    connection.onMessage = (message) {
+      notifier.addReceivedMessage(message);
+    };
+
+    connection.onAudioTrackReady = () {
+      // Аудио трек готов к воспроизведению
+      notifier.setPlaying(true);
+    };
+
+    connection.onError = (error) {
+      notifier.setError(error.toString());
+      notifier.setConnected(false);
+      notifier.setConnecting(false);
+    };
+
+    connection.onConnect = () {
+      notifier.setConnected(true);
+      notifier.setConnecting(false);
+      notifier.setError(null);
+      // Начинаем запись после подключения
+      if (!notifier.isRecording) {
+        startRecordingInternal();
+      }
+    };
+
+    connection.onDataChannelReady = () {
+      // Data channel готов, можно начинать отправку данных
+      // Состояние уже обновлено через onConnect
+    };
+
+    connection.onDisconnect = () {
+      notifier.setConnected(false);
+      notifier.setConnecting(false);
+      notifier.setPlaying(false);
+      // Останавливаем запись при отключении
+      stopRecordingInternal();
+    };
+
+    audioManager.onAudioDataBase64 = (base64) {
+      try {
+        connection.sendAudioChunk(base64);
+      } catch (e) {
+        // Игнорируем ошибки, если data channel еще не готов
+        if (!e.toString().contains('Data channel не готов')) {
+          notifier.setError('Ошибка отправки аудио: ${e.toString()}');
+        }
+      }
+    };
+
+    audioManager.onAudioLevel = (level) {
+      notifier.setAudioLevel(level);
+    };
+  }
+
+  void dispose() {
+    connection.onMessage = null;
+    connection.onError = null;
+    connection.onConnect = null;
+    connection.onDisconnect = null;
+    connection.onAudioTrackReady = null;
+    connection.onDataChannelReady = null;
+    audioManager.onAudioDataBase64 = null;
+    audioManager.onAudioLevel = null;
+  }
 
   /// Обработка события подключения
   Future<void> onConnectPressed() async {

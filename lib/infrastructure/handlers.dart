@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../presentation/handlers/chat_event_handler.dart';
 import '../presentation/handlers/message_event_handler.dart';
 import '../presentation/handlers/realtime_call_event_handler.dart';
+import 'core.dart';
 import 'state_managers.dart';
 import 'use_case.dart';
 
@@ -38,11 +39,17 @@ final messageEventHandlerProvider =
 // Realtime providers
 
 /// Провайдер для обработчика событий звонка (family для разных сессий)
+/// Управляет подписками на события connection и audioManager
 final realtimeCallEventHandlerProvider =
     Provider.family<RealtimeCallEventHandler, String>((ref, sessionId) {
       final notifier = ref.watch(realtimeCallProvider(sessionId));
-      return RealtimeCallEventHandler(
+      final connection = ref.watch(realtimeWebRTCConnectionProvider);
+      final audioManager = ref.watch(realtimeAudioManagerProvider);
+
+      final eventHandler = RealtimeCallEventHandler(
         notifier: notifier,
+        connection: connection,
+        audioManager: audioManager,
         connectWithPermissionUseCase: ref.watch(
           connectRealtimeWithPermissionUseCaseProvider,
         ),
@@ -51,4 +58,11 @@ final realtimeCallEventHandlerProvider =
         stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
         sendMessageUseCase: ref.watch(sendTextMessageUseCaseProvider),
       );
+
+      // Очищаем колбэки при удалении провайдера
+      ref.onDispose(() {
+        eventHandler.dispose();
+      });
+
+      return eventHandler;
     });
