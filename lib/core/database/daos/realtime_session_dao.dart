@@ -59,4 +59,8 @@ class RealtimeSessionDao extends DatabaseAccessor<AppDatabase>
       realtimeSessions,
     )..where((tbl) => tbl.sessionId.equals(id))).go();
   }
+
+  Stream<List<RealtimeSession>> getSessionStream() {
+    return select(realtimeSessions).watch();
+  }
 }

@@ -1,8 +1,7 @@
-import 'package:drift/drift.dart';
-
 import '../../core/database/app_database.dart';
 import '../../domain/models/chat.dart' as model;
 import '../../domain/repositories/chat_repository.dart';
+import '../mappers/chat_db_mappers.dart';
 
 /// Реализация репозитория для работы с чатами
 class ChatRepositoryImpl implements ChatRepository {
@@ -12,58 +11,31 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<List<model.Chat>> getChats() async {
     final chatRows = await _database.chatDao.getAllChats();
-    return chatRows.map((row) => _mapToDomainModel(row)).toList();
+    return chatRows.map(ChatDbMappers.toDomain).toList();
   }
 
   @override
-  Future<model.Chat?> getChatById(String id) async {
-    final chatRow = await _database.chatDao.getChatById(id);
-    return chatRow != null ? _mapToDomainModel(chatRow) : null;
-  }
-
-  @override
-  Future<void> updateLastMessage(
-    String chatId,
-    String message,
-    String time,
-  ) async {
-    await _database.chatDao.updateLastMessage(chatId, message, time);
-  }
-
-  @override
-  Future<void> markAsRead(String chatId) async {
-    await _database.chatDao.markAsRead(chatId);
-  }
-
-  @override
-  Future<model.Chat> createChat(model.Chat chat) async {
-    final chatCompanion = ChatsCompanion.insert(
-      id: chat.id,
-      name: chat.name,
-      lastMessage: chat.lastMessage,
-      time: chat.time,
-      unreadCount: Value(chat.unreadCount),
-      avatarUrl: Value(chat.avatarUrl),
+  Future<void> createChat({
+    required String language,
+    required String level,
+    required String topic,
+  }) async {
+    await _database.chatDao.insertChat(
+      language: language,
+      level: level,
+      topic: topic,
     );
-
-    await _database.chatDao.insertChat(chatCompanion);
-    return chat;
   }
 
   @override
-  Future<void> deleteChat(String chatId) async {
+  Future<void> deleteChat(int chatId) async {
     await _database.chatDao.deleteChat(chatId);
   }
 
-  /// Преобразование модели базы данных в доменную модель
-  model.Chat _mapToDomainModel(Chat chatData) {
-    return model.Chat(
-      id: chatData.id,
-      name: chatData.name,
-      lastMessage: chatData.lastMessage,
-      time: chatData.time,
-      unreadCount: chatData.unreadCount,
-      avatarUrl: chatData.avatarUrl,
+  @override
+  Stream<List<model.Chat>> getChatsStream() {
+    return _database.chatDao.getChatsStream().map(
+      (rows) => rows.map(ChatDbMappers.toDomain).toList(),
     );
   }
 }

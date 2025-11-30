@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:drift/drift.dart';
 
 import '../../core/database/app_database.dart' as db;
 import '../../core/database/daos/realtime_session_dao.dart';
 import '../../domain/models/realtime_session.dart';
-import '../../domain/models/session_difficulty_level.dart';
-import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
 import '../../domain/repositories/realtime_session_repository.dart';
+import '../mappers/realtime_session_db_mappers.dart';
 
 /// Реализация репозитория для работы с сессиями Realtime API
 class RealtimeSessionRepositoryImpl implements RealtimeSessionRepository {
@@ -26,7 +24,7 @@ class RealtimeSessionRepositoryImpl implements RealtimeSessionRepository {
   Future<List<RealtimeSession>> getAllSessions() async {
     // Получаем сессии из локального хранилища
     final dbSessions = await dao.getAllSessions();
-    return dbSessions.map((dbSession) => _fromDb(dbSession)).toList();
+    return dbSessions.map(RealtimeSessionDbMappers.toDomain).toList();
   }
 
   @override
@@ -60,22 +58,16 @@ class RealtimeSessionRepositoryImpl implements RealtimeSessionRepository {
     final clientSecretData = data['client_secret'] as Map<String, dynamic>;
     final clientSecret = clientSecretData['value'] as String;
     final expiresAt = clientSecretData['expires_at'] as int;
-    final serverURL = data['server_url'] as String?;
 
     final expiresAtDate = DateTime.fromMillisecondsSinceEpoch(expiresAt * 1000);
 
-    // Сохраняем в локальное хранилище
-    final session = db.RealtimeSessionsCompanion(
-      id: Value(sessionId),
-      createdAt: Value(DateTime.now()),
-      language: Value(settings.language.value),
-      level: Value(settings.level.value),
-      clientSecret: Value(clientSecret),
-      clientSecretExpiresAt: Value(expiresAtDate),
-      serverURL: Value(serverURL),
+    await dao.insertSession(
+      sessionId: sessionId,
+      language: settings.language.value,
+      level: settings.level.value,
+      clientSecret: clientSecret,
+      clientSecretExpiresAt: expiresAtDate,
     );
-
-    await dao.insertSession(session);
 
     return RealtimeSession(
       id: sessionId,
@@ -84,30 +76,29 @@ class RealtimeSessionRepositoryImpl implements RealtimeSessionRepository {
       level: settings.level,
       clientSecret: clientSecret,
       clientSecretExpiresAt: expiresAtDate,
-      serverURL: serverURL,
     );
   }
 
   @override
-  Future<void> deleteSession(RealtimeSession session) async {
-    await dao.deleteSession(session.id);
+  Future<void> deleteSession(String id) async {
+    await dao.deleteSession(id);
   }
 
-  RealtimeSession _fromDb(db.RealtimeSession dbSession) {
-    return RealtimeSession(
-      id: dbSession.id,
-      createdAt: dbSession.createdAt,
-      language: dbSession.language != null
-          ? SessionLanguage.fromValue(dbSession.language!)
-          : null,
-      level: dbSession.level != null
-          ? SessionDifficultyLevel.fromValue(dbSession.level!)
-          : null,
-      clientSecret: dbSession.clientSecret,
-      clientSecretExpiresAt: dbSession.clientSecretExpiresAt,
-      serverURL: dbSession.serverURL,
-      callStartedAt: dbSession.callStartedAt,
-      callDurationMinutes: dbSession.callDurationMinutes,
+  @override
+  Future<void> updateSession(RealtimeSession session) async {
+    await dao.updateSession(
+      sessionId: session.id,
+      language: session.language.value,
+      level: session.level.value,
+      clientSecret: session.clientSecret!,
+      clientSecretExpiresAt: session.clientSecretExpiresAt!,
+    );
+  }
+
+  @override
+  Stream<List<RealtimeSession>> getSessionStream() {
+    return dao.getSessionStream().map(
+      (rows) => rows.map(RealtimeSessionDbMappers.toDomain).toList(),
     );
   }
 }
