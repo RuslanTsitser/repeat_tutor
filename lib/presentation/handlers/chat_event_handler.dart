@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '../../domain/models/chat.dart';
 import '../../domain/usecases/create_chat_usecase.dart';
 import '../../domain/usecases/delete_chat_usecase.dart';
@@ -70,8 +72,18 @@ class ChatEventHandler {
   }
 
   /// Обработка события создания чата
-  Future<void> onCreateChatPressed(Chat chat) async {
+  Future<void> onCreateChatPressed(
+    String name,
+  ) async {
     try {
+      final chat = Chat(
+        id: const Uuid().v4(),
+        name: name,
+        lastMessage: 'Чат создан',
+        time: DateTime.now().toIso8601String(),
+        unreadCount: 0,
+        avatarUrl: '',
+      );
       await createChatUseCase.execute(chat);
       // Перезагружаем список чатов после создания
       await onLoadChatsPressed();

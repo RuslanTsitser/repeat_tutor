@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/router/router.dart';
 import '../../domain/models/realtime_session.dart';
+import '../../infrastructure/core.dart';
 import '../../infrastructure/state_managers.dart';
 import '../notifiers/realtime_session_notifier.dart';
-import 'create_realtime_session_screen.dart';
-import 'realtime_session_detail_screen.dart';
 
 @RoutePage()
 class RealtimeSessionListScreen extends ConsumerStatefulWidget {
@@ -41,11 +41,7 @@ class _RealtimeSessionListScreenState
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute<void>(
-                builder: (context) => const CreateRealtimeSessionScreen(),
-              ),
-            );
+            ref.read(routerProvider).push(const CreateRealtimeSessionRoute());
           },
           child: const Icon(CupertinoIcons.add),
         ),
@@ -116,12 +112,9 @@ class _RealtimeSessionListScreenState
                   return _RealtimeSessionListItem(
                     session: session,
                     onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (context) =>
-                              RealtimeSessionDetailScreen(session: session),
-                        ),
-                      );
+                      ref
+                          .read(routerProvider)
+                          .push(RealtimeSessionDetailRoute(session: session));
                     },
                     onDelete: () {
                       notifier.deleteSession(session);

@@ -2,13 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/router/router.dart';
+import '../../infrastructure/core.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 import '../notifiers/chat_notifier.dart';
 import '../widgets/chat_list_item.dart';
-import 'chat_screen.dart';
-import 'create_chat_screen.dart';
-import 'realtime_session_list_screen.dart';
 
 @RoutePage()
 class ChatListScreen extends ConsumerStatefulWidget {
@@ -39,22 +38,14 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute<void>(
-                builder: (context) => const RealtimeSessionListScreen(),
-              ),
-            );
+            ref.read(routerProvider).push(const RealtimeSessionListRoute());
           },
           child: const Icon(CupertinoIcons.phone),
         ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute<void>(
-                builder: (context) => const CreateChatScreen(),
-              ),
-            );
+            ref.read(routerProvider).push(const CreateChatRoute());
           },
           child: const Icon(CupertinoIcons.add),
         ),
@@ -128,11 +119,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                   return ChatListItem(
                     chat: chat,
                     onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute<ChatScreen>(
-                          builder: (context) => ChatScreen(chat: chat),
-                        ),
-                      );
+                      ref.read(routerProvider).push(ChatRoute(chat: chat));
                     },
                   );
                 },

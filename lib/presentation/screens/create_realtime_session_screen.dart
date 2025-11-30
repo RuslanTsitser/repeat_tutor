@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/router/router.dart';
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
+import '../../infrastructure/core.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_session_notifier.dart';
-import 'realtime_session_detail_screen.dart';
 
 @RoutePage()
 class CreateRealtimeSessionScreen extends ConsumerStatefulWidget {
@@ -40,7 +41,7 @@ class _CreateRealtimeSessionScreenState
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Создать сессию'),
         leading: CupertinoNavigationBarBackButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => ref.read(routerProvider).pop(),
         ),
       ),
       child: SafeArea(
@@ -110,12 +111,11 @@ class _CreateRealtimeSessionScreenState
                         );
                         final session = await notifier.createSession(settings);
                         if (session != null && mounted) {
-                          Navigator.of(context).pushReplacement(
-                            CupertinoPageRoute<void>(
-                              builder: (context) =>
-                                  RealtimeSessionDetailScreen(session: session),
-                            ),
-                          );
+                          ref
+                              .read(routerProvider)
+                              .replace(
+                                RealtimeSessionDetailRoute(session: session),
+                              );
                         }
                       },
                 child: notifier.isLoading

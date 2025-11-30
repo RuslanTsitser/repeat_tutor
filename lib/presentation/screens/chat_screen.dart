@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/chat.dart';
+import '../../infrastructure/core.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 import '../notifiers/message_notifier.dart';
@@ -74,7 +75,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => ref.read(routerProvider).pop(),
         ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,

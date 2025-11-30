@@ -1,9 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../domain/models/chat.dart';
+import '../../infrastructure/core.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 
@@ -37,17 +36,8 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
       _isCreating = true;
     });
 
-    final chat = Chat(
-      id: const Uuid().v4(),
-      name: _nameController.text.trim(),
-      lastMessage: 'Чат создан',
-      time: DateTime.now().toIso8601String(),
-      unreadCount: 0,
-      avatarUrl: _avatarUrlController.text.trim(),
-    );
-
     final chatEventHandler = ref.read(chatEventHandlerProvider);
-    await chatEventHandler.onCreateChatPressed(chat);
+    await chatEventHandler.onCreateChatPressed(_nameController.text.trim());
 
     if (!mounted) return;
 
@@ -56,7 +46,7 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
       _showErrorDialog(chatNotifier.error!);
       chatNotifier.setError(null); // Очищаем ошибку после показа
     } else {
-      Navigator.of(context).pop();
+      ref.read(routerProvider).pop();
     }
 
     setState(() {
@@ -73,7 +63,7 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
         actions: [
           CupertinoDialogAction(
             child: const Text('OK'),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => ref.read(routerProvider).pop(),
           ),
         ],
       ),
@@ -87,7 +77,7 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
         middle: const Text('Новый чат'),
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: _isCreating ? null : () => Navigator.of(context).pop(),
+          onPressed: _isCreating ? null : () => ref.read(routerProvider).pop(),
           child: const Text('Отмена'),
         ),
         trailing: CupertinoButton(
