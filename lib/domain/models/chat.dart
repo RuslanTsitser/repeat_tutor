@@ -1,40 +1,44 @@
 import 'package:equatable/equatable.dart';
 
-class Chat extends Equatable {
+import 'session_difficulty_level.dart';
+import 'session_language.dart';
 
+class Chat extends Equatable {
   const Chat({
-    required this.id,
-    required this.name,
-    required this.lastMessage,
-    required this.time,
-    required this.unreadCount,
-    this.avatarUrl = '',
+    required this.chatId,
+    required this.topic,
+    required this.language,
+    required this.level,
+    required this.createdAt,
   });
-  final String id;
-  final String name;
-  final String lastMessage;
-  final String time;
-  final int unreadCount;
-  final String avatarUrl;
+  final int chatId;
+  final String topic;
+  final SessionLanguage language;
+  final SessionDifficultyLevel level;
+  final DateTime createdAt;
 
   @override
-  List<Object?> get props => [id, name, lastMessage, time, unreadCount, avatarUrl];
+  List<Object?> get props => [
+    chatId,
+    topic,
+    language,
+    level,
+    createdAt,
+  ];
 
   Chat copyWith({
-    String? id,
-    String? name,
-    String? lastMessage,
-    String? time,
-    int? unreadCount,
-    String? avatarUrl,
+    int? chatId,
+    String? topic,
+    SessionLanguage? language,
+    SessionDifficultyLevel? level,
+    DateTime? createdAt,
   }) {
     return Chat(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      lastMessage: lastMessage ?? this.lastMessage,
-      time: time ?? this.time,
-      unreadCount: unreadCount ?? this.unreadCount,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
+      chatId: chatId ?? this.chatId,
+      topic: topic ?? this.topic,
+      language: language ?? this.language,
+      level: level ?? this.level,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

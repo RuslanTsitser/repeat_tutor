@@ -8,23 +8,17 @@ class RealtimeSession extends Equatable {
   const RealtimeSession({
     required this.id,
     required this.createdAt,
-    this.language,
-    this.level,
+    required this.language,
+    required this.level,
     this.clientSecret,
     this.clientSecretExpiresAt,
-    this.serverURL,
-    this.callStartedAt,
-    this.callDurationMinutes = 0,
   });
   final String id;
   final DateTime createdAt;
-  final SessionLanguage? language;
-  final SessionDifficultyLevel? level;
+  final SessionLanguage language;
+  final SessionDifficultyLevel level;
   final String? clientSecret;
   final DateTime? clientSecretExpiresAt;
-  final String? serverURL;
-  final DateTime? callStartedAt;
-  final int callDurationMinutes;
 
   bool get isClientSecretValid {
     if (clientSecret == null || clientSecret!.isEmpty) {
@@ -47,8 +41,5 @@ class RealtimeSession extends Equatable {
     level,
     clientSecret,
     clientSecretExpiresAt,
-    serverURL,
-    callStartedAt,
-    callDurationMinutes,
   ];
 }

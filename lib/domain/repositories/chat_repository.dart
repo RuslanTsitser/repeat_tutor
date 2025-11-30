@@ -5,18 +5,16 @@ abstract interface class ChatRepository {
   /// Получить список всех чатов
   Future<List<Chat>> getChats();
 
-  /// Получить чат по ID
-  Future<Chat?> getChatById(String id);
-
-  /// Обновить последнее сообщение в чате
-  Future<void> updateLastMessage(String chatId, String message, String time);
-
-  /// Отметить чат как прочитанный
-  Future<void> markAsRead(String chatId);
-
   /// Создать новый чат
-  Future<Chat> createChat(Chat chat);
+  Future<void> createChat({
+    required String language,
+    required String level,
+    required String topic,
+  });
 
   /// Удалить чат
-  Future<void> deleteChat(String chatId);
+  Future<void> deleteChat(int chatId);
+
+  /// Получить поток всех чатов
+  Stream<List<Chat>> getChatsStream();
 }
