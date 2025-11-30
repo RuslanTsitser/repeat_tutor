@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
 @RoutePage()
@@ -19,12 +17,6 @@ class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
 
 class _RealtimeSessionDetailScreenState
     extends ConsumerState<RealtimeSessionDetailScreen> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(requestMicrophonePermissionUseCaseProvider).execute();
-  }
-
   @override
   Widget build(BuildContext context) {
     final notifier = ref.watch(realtimeCallProvider);
@@ -195,8 +187,6 @@ class _ControlButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventHandler = ref.read(realtimeCallEventHandlerProvider);
-
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -214,7 +204,7 @@ class _ControlButtons extends ConsumerWidget {
           if (!notifier.isConnected && !notifier.isConnecting)
             CupertinoButton.filled(
               onPressed: () {
-                eventHandler.onConnectPressed();
+                // TODO: Implement onConnectPressed
               },
               child: const Text('Подключиться'),
             )
@@ -224,7 +214,7 @@ class _ControlButtons extends ConsumerWidget {
             CupertinoButton(
               color: CupertinoColors.systemRed,
               onPressed: () {
-                eventHandler.onDisconnectPressed();
+                // TODO: Implement onDisconnectPressed
               },
               child: const Text('Отключиться'),
             ),

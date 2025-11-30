@@ -5,34 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/router/router.dart';
 import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/core.dart';
-import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../notifiers/realtime_session_notifier.dart';
 
 @RoutePage()
-class RealtimeSessionListScreen extends ConsumerStatefulWidget {
+class RealtimeSessionListScreen extends ConsumerWidget {
   const RealtimeSessionListScreen({super.key});
 
   @override
-  ConsumerState<RealtimeSessionListScreen> createState() =>
-      _RealtimeSessionListScreenState();
-}
-
-class _RealtimeSessionListScreenState
-    extends ConsumerState<RealtimeSessionListScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(realtimeCallEventHandlerProvider).onLoadSessions();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final notifier = ref.watch<RealtimeSessionListNotifier>(
-      realtimeSessionListProvider,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.watch(realtimeSessionListProvider);
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -75,9 +56,9 @@ class _RealtimeSessionListScreenState
                     ),
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
-                      onPressed: () => ref
-                          .read(realtimeCallEventHandlerProvider)
-                          .onLoadSessions(),
+                      onPressed: () {
+                        // TODO: Implement onLoadSessions
+                      },
                       child: const Text('Повторить'),
                     ),
                   ],
@@ -113,9 +94,9 @@ class _RealtimeSessionListScreenState
                     onTap: () {
                       // TODO: Implement onTap
                     },
-                    onDelete: () => ref
-                        .read(realtimeCallEventHandlerProvider)
-                        .onDeleteSession(session),
+                    onDelete: () {
+                      // TODO: Implement onDelete
+                    },
                   );
                 },
               ),

@@ -1,311 +1,71 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:intl/intl.dart';
 
-import '../../core/audio/voice_recorder_service.dart';
 import '../../domain/models/message.dart';
-import '../../domain/models/message_content_type.dart';
-import '../../infrastructure/core.dart';
-import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../../infrastructure/use_case.dart';
+import '../notifiers/message_notifier.dart';
 
 @RoutePage()
-class ChatScreen extends ConsumerStatefulWidget {
+class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
 
   @override
-  ConsumerState<ChatScreen> createState() => _ChatScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Чат'),
+      ),
+      child: _Body(),
+    );
+  }
 }
 
-class _ChatScreenState extends ConsumerState<ChatScreen> {
-  final TextEditingController _messageController = TextEditingController();
-  late final VoiceRecorderService _voiceRecorder;
-  bool _isRecording = false;
-  bool _isSending = false;
-  bool _hasMicPermission = false;
-  bool _isPermissionRequestInProgress = false;
-
-  String? get chatId => ref.read(messageProvider).chatId;
+class _Body extends ConsumerWidget {
+  const _Body();
 
   @override
-  void initState() {
-    super.initState();
-    _voiceRecorder = VoiceRecorderService();
-    _loadMicrophonePermission();
-    // Загружаем сообщения и отмечаем чат как прочитанный при открытии
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final messageEventHandler = ref.read(messageEventHandlerProvider);
-      messageEventHandler.onLoadMessagesPressed();
-      final chatEventHandler = ref.read(chatEventHandlerProvider);
-      chatEventHandler.onMarkAsReadPressed(chatId!);
-    });
-  }
-
-  Future<void> _sendTextMessage() async {
-    if (_messageController.text.trim().isEmpty || _isSending) {
-      return;
-    }
-
-    final messageText = _messageController.text.trim();
-    _messageController.clear();
-
-    await _performSend(() {
-      final messageEventHandler = ref.read(messageEventHandlerProvider);
-      return messageEventHandler.onAddMessagePressed(messageText);
-    });
-  }
-
-  Future<void> _sendVoiceMessage(String path) async {
-    await _performSend(() {
-      final messageEventHandler = ref.read(messageEventHandlerProvider);
-      return messageEventHandler.onAddVoiceMessagePressed(path);
-    });
-  }
-
-  Future<void> _performSend(Future<void> Function() action) async {
-    if (_isSending) return;
-    setState(() {
-      _isSending = true;
-    });
-    try {
-      await action();
-    } catch (e) {
-      _showErrorDialog(e.toString());
-    } finally {
-      if (!mounted) return;
-      setState(() {
-        _isSending = false;
-      });
-    }
-  }
-
-  Future<void> _toggleRecording() async {
-    if (_isRecording) {
-      await _stopRecordingAndSend();
-    } else {
-      await _startRecording();
-    }
-  }
-
-  Future<void> _startRecording() async {
-    if (_isSending || !_hasMicPermission) return;
-    try {
-      await _voiceRecorder.startRecording(chatId!);
-      if (!mounted) return;
-      setState(() {
-        _isRecording = true;
-      });
-    } catch (e) {
-      _showErrorDialog('Не удалось начать запись: $e');
-    }
-  }
-
-  Future<void> _stopRecordingAndSend() async {
-    final resolvedPath = await _voiceRecorder.stopRecording();
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _isRecording = false;
-    });
-
-    if (resolvedPath != null) {
-      await _sendVoiceMessage(resolvedPath);
-    }
-  }
-
-  void _showErrorDialog(String message) {
-    showCupertinoDialog<void>(
-      context: context,
-      builder: (_) => CupertinoAlertDialog(
-        title: const Text('Ошибка'),
-        content: Text(message),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => ref.read(routerProvider).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final messageNotifier = ref.watch(messageProvider);
-    final messageEventHandler = ref.read(messageEventHandlerProvider);
+    final MessagesState state = messageNotifier.state;
+    final List<Message> messages = state.messages;
+    final bool isLoading = state.isLoading;
+    final String? error = state.error;
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(chatId ?? ''),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: const Icon(CupertinoIcons.back),
-          onPressed: () => ref.read(routerProvider).pop(),
+    if (isLoading) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+
+    if (error != null) {
+      return Center(
+        child: Text(error),
+      );
+    }
+
+    if (messages.isEmpty) {
+      return const Center(child: Text('Нет сообщений'));
+    }
+
+    return Stack(
+      children: [
+        ListView.builder(
+          itemCount: messages.length,
+          itemBuilder: (context, index) =>
+              _MessageBubble(message: messages[index]),
         ),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: const Icon(CupertinoIcons.phone),
-          onPressed: () {
-            // Действие для звонка
-          },
-        ),
-      ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: messageNotifier.isLoading
-                  ? const Center(
-                      child: CupertinoActivityIndicator(),
-                    )
-                  : messageNotifier.error != null
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            CupertinoIcons.exclamationmark_triangle,
-                            size: 48,
-                            color: CupertinoColors.systemRed,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Ошибка загрузки сообщений',
-                            style: CupertinoTheme.of(
-                              context,
-                            ).textTheme.navTitleTextStyle,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            messageNotifier.error!,
-                            style: CupertinoTheme.of(
-                              context,
-                            ).textTheme.textStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          CupertinoButton.filled(
-                            onPressed: () {
-                              messageEventHandler.onLoadMessagesPressed();
-                            },
-                            child: const Text('Повторить'),
-                          ),
-                        ],
-                      ),
-                    )
-                  : messageNotifier.messages.isEmpty
-                  ? const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            CupertinoIcons.chat_bubble,
-                            size: 48,
-                            color: CupertinoColors.systemGrey,
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            'Нет сообщений',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: CupertinoColors.systemGrey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      itemCount: messageNotifier.messages.length,
-                      itemBuilder: (context, index) {
-                        final message = messageNotifier.messages[index];
-                        return _MessageBubble(
-                          message: message,
-                          chatName: chatId ?? '',
-                        );
-                      },
-                    ),
-            ),
-            _MessageInput(
-              controller: _messageController,
-              onSendMessage: _sendTextMessage,
-              onToggleRecording: _toggleRecording,
-              onRequestPermission: _requestMicrophonePermission,
-              isRecording: _isRecording,
-              isSending: _isSending,
-              canRecord: _hasMicPermission,
-              isPermissionInProgress: _isPermissionRequestInProgress,
-            ),
-          ],
-        ),
-      ),
+        const _MessageInput(),
+      ],
     );
-  }
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-    unawaited(_voiceRecorder.dispose());
-    super.dispose();
-  }
-
-  Future<void> _loadMicrophonePermission() async {
-    final granted = await ref
-        .read(requestMicrophonePermissionUseCaseProvider)
-        .execute();
-    if (!mounted) return;
-    setState(() {
-      _hasMicPermission = granted;
-    });
-  }
-
-  Future<void> _requestMicrophonePermission() async {
-    if (_isPermissionRequestInProgress) {
-      return;
-    }
-    setState(() {
-      _isPermissionRequestInProgress = true;
-    });
-    try {
-      final granted = await ref
-          .read(requestMicrophonePermissionUseCaseProvider)
-          .execute();
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _hasMicPermission = granted;
-      });
-      if (!granted) {
-        _showErrorDialog(
-          'Нет доступа к микрофону. Разрешите доступ в настройках устройства.',
-        );
-      }
-    } finally {
-      if (!mounted) return;
-      setState(() {
-        _isPermissionRequestInProgress = false;
-      });
-    }
   }
 }
 
 class _MessageBubble extends StatelessWidget {
   const _MessageBubble({
     required this.message,
-    required this.chatName,
   });
   final Message message;
-  final String chatName;
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +88,7 @@ class _MessageBubble extends StatelessWidget {
               radius: 16,
               backgroundColor: CupertinoColors.systemGrey4,
               child: Text(
-                chatName[0].toUpperCase(),
+                message.text[0].toUpperCase(),
                 style: const TextStyle(
                   color: CupertinoColors.systemGrey,
                   fontWeight: FontWeight.w600,
@@ -351,50 +111,22 @@ class _MessageBubble extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (message.hasAudio && message.audioPath != null)
-                    VoiceMessagePlayer(
-                      path: message.audioPath!,
-                      isMe: message.isMe,
-                    ),
                   if (message.text.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: message.hasAudio ? 8 : 0,
-                        bottom: 4,
-                      ),
-                      child: Text(
-                        message.text,
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 16,
-                        ),
+                    Text(
+                      message.text,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 16,
                       ),
                     ),
-                  if (message.contentType == MessageContentType.voice &&
-                      message.transcription != null &&
-                      message.transcription!.isNotEmpty &&
-                      message.isMe)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Text(
-                        'Транскрипция: ${message.transcription}',
-                        style: TextStyle(
-                          color: textColor.withOpacity(0.8),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  if (message.hasCorrections && message.corrections != null)
-                    _CorrectionsBlock(
-                      text: message.corrections!,
-                    ),
+
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      message.time,
+                      DateFormat('HH:mm').format(message.createdAt),
                       style: TextStyle(
                         color: message.isMe
-                            ? CupertinoColors.white.withOpacity(0.7)
+                            ? CupertinoColors.white.withValues(alpha: 0.7)
                             : CupertinoColors.systemGrey,
                         fontSize: 12,
                       ),
@@ -423,24 +155,7 @@ class _MessageBubble extends StatelessWidget {
 }
 
 class _MessageInput extends StatelessWidget {
-  const _MessageInput({
-    required this.onSendMessage,
-    required this.onToggleRecording,
-    required this.onRequestPermission,
-    required this.controller,
-    required this.isRecording,
-    required this.isSending,
-    required this.canRecord,
-    required this.isPermissionInProgress,
-  });
-  final VoidCallback onSendMessage;
-  final VoidCallback onToggleRecording;
-  final Future<void> Function() onRequestPermission;
-  final TextEditingController controller;
-  final bool isRecording;
-  final bool isSending;
-  final bool canRecord;
-  final bool isPermissionInProgress;
+  const _MessageInput();
 
   @override
   Widget build(BuildContext context) {
@@ -457,268 +172,8 @@ class _MessageInput extends StatelessWidget {
       ),
       child: Column(
         children: [
-          if (!canRecord)
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: CupertinoColors.systemYellow.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    CupertinoIcons.mic_slash,
-                    color: CupertinoColors.systemOrange,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: Text(
-                      'Нет доступа к микрофону',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: CupertinoColors.systemOrange,
-                      ),
-                    ),
-                  ),
-                  CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: isPermissionInProgress
-                        ? null
-                        : () {
-                            onRequestPermission();
-                          },
-                    child: isPermissionInProgress
-                        ? const CupertinoActivityIndicator()
-                        : const Text('Разрешить'),
-                  ),
-                ],
-              ),
-            ),
-          if (isRecording)
-            Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: CupertinoColors.systemRed.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    CupertinoIcons.mic_fill,
-                    color: CupertinoColors.systemRed,
-                    size: 18,
-                  ),
-                  SizedBox(width: 6),
-                  Text(
-                    'Идет запись...',
-                    style: TextStyle(
-                      color: CupertinoColors.systemRed,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          Row(
-            children: [
-              Expanded(
-                child: CupertinoTextField(
-                  controller: controller,
-                  placeholder: 'Сообщение',
-                  decoration: const BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  onSubmitted: (_) => onSendMessage(),
-                  enabled: !isSending,
-                ),
-              ),
-              const SizedBox(width: 8),
-              CupertinoButton(
-                padding: const EdgeInsets.all(8),
-                onPressed: isSending || !canRecord || isPermissionInProgress
-                    ? null
-                    : onToggleRecording,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: !canRecord
-                        ? CupertinoColors.systemGrey3
-                        : isRecording
-                        ? CupertinoColors.systemRed
-                        : CupertinoColors.systemGrey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    isRecording
-                        ? CupertinoIcons.stop_fill
-                        : CupertinoIcons.mic_fill,
-                    color: CupertinoColors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-              CupertinoButton(
-                padding: const EdgeInsets.all(8),
-                onPressed: isSending ? null : onSendMessage,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: CupertinoColors.systemBlue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: isSending
-                      ? const CupertinoActivityIndicator(
-                          color: CupertinoColors.white,
-                        )
-                      : const Icon(
-                          CupertinoIcons.paperplane_fill,
-                          color: CupertinoColors.white,
-                          size: 20,
-                        ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class VoiceMessagePlayer extends StatefulWidget {
-  const VoiceMessagePlayer({
-    super.key,
-    required this.path,
-    required this.isMe,
-  });
-
-  final String path;
-  final bool isMe;
-
-  @override
-  State<VoiceMessagePlayer> createState() => _VoiceMessagePlayerState();
-}
-
-class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
-  late final AudioPlayer _player;
-  String? _loadedPath;
-
-  @override
-  void initState() {
-    super.initState();
-    _player = AudioPlayer();
-    _player.playerStateStream.listen((_) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
-
-  Future<void> _toggle() async {
-    if (_player.playerState.playing) {
-      await _player.pause();
-      return;
-    }
-
-    if (_loadedPath != widget.path) {
-      if (!File(widget.path).existsSync()) {
-        return;
-      }
-      await _player.setFilePath(widget.path);
-      _loadedPath = widget.path;
-    }
-    await _player.play();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isPlaying = _player.playerState.playing;
-    return GestureDetector(
-      onTap: _toggle,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: widget.isMe
-              ? CupertinoColors.white.withOpacity(0.2)
-              : CupertinoColors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isPlaying
-                  ? CupertinoIcons.pause_circle
-                  : CupertinoIcons.play_circle,
-              color: widget.isMe
-                  ? CupertinoColors.white
-                  : CupertinoColors.systemBlue,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              isPlaying ? 'Остановить' : 'Слушать аудио',
-              style: TextStyle(
-                color: widget.isMe
-                    ? CupertinoColors.white
-                    : CupertinoColors.systemBlue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CorrectionsBlock extends StatelessWidget {
-  const _CorrectionsBlock({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 6),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: CupertinoColors.systemYellow.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Правки',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: CupertinoColors.systemOrange,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 14,
-              color: CupertinoColors.black,
-            ),
+          CupertinoTextFormFieldRow(
+            placeholder: 'Сообщение',
           ),
         ],
       ),

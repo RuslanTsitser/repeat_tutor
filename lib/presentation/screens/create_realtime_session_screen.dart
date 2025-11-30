@@ -4,12 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
-import '../../domain/models/session_settings.dart';
 import '../../infrastructure/core.dart';
-import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../../infrastructure/use_case.dart';
-import '../notifiers/realtime_session_notifier.dart';
 
 @RoutePage()
 class CreateRealtimeSessionScreen extends ConsumerStatefulWidget {
@@ -22,20 +18,9 @@ class CreateRealtimeSessionScreen extends ConsumerStatefulWidget {
 
 class _CreateRealtimeSessionScreenState
     extends ConsumerState<CreateRealtimeSessionScreen> {
-  SessionLanguage _selectedLanguage = SessionLanguage.japanese;
-  SessionDifficultyLevel _selectedLevel = SessionDifficultyLevel.beginner;
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(requestMicrophonePermissionUseCaseProvider).execute();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.watch<RealtimeSessionListNotifier>(
-      realtimeSessionListProvider,
-    );
+    final notifier = ref.watch(realtimeSessionListProvider);
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -64,13 +49,11 @@ class _CreateRealtimeSessionScreenState
                   looping: true,
                   itemExtent: 44,
                   onSelectedItemChanged: (index) {
-                    setState(() {
-                      _selectedLanguage = SessionLanguage.values[index];
-                    });
+                    // TODO: Implement onSelectedLanguage
                   },
                   children: SessionLanguage.values.map((language) {
-                    return Center(
-                      child: Text(_getLanguageName(language)),
+                    return const Center(
+                      child: Text('LocalizedName'),
                     );
                   }).toList(),
                 ),
@@ -89,13 +72,11 @@ class _CreateRealtimeSessionScreenState
                 child: CupertinoPicker(
                   itemExtent: 44,
                   onSelectedItemChanged: (index) {
-                    setState(() {
-                      _selectedLevel = SessionDifficultyLevel.values[index];
-                    });
+                    // TODO: Implement onSelectedLevel
                   },
                   children: SessionDifficultyLevel.values.map((level) {
-                    return Center(
-                      child: Text(_getLevelName(level)),
+                    return const Center(
+                      child: Text('LocalizedName'),
                     );
                   }).toList(),
                 ),
@@ -104,14 +85,9 @@ class _CreateRealtimeSessionScreenState
               CupertinoButton.filled(
                 onPressed: notifier.isLoading
                     ? null
-                    : () => ref
-                          .read(realtimeCallEventHandlerProvider)
-                          .onCreateSession(
-                            SessionSettings(
-                              language: _selectedLanguage,
-                              level: _selectedLevel,
-                            ),
-                          ),
+                    : () {
+                        // TODO: Implement onCreateSession
+                      },
                 child: notifier.isLoading
                     ? const CupertinoActivityIndicator()
                     : const Text('Создать сессию'),
@@ -121,39 +97,5 @@ class _CreateRealtimeSessionScreenState
         ),
       ),
     );
-  }
-
-  String _getLanguageName(SessionLanguage language) {
-    switch (language) {
-      case SessionLanguage.japanese:
-        return 'Японский';
-      case SessionLanguage.portugueseEuropean:
-        return 'Португальский (Европа)';
-      case SessionLanguage.portugueseBrazilian:
-        return 'Португальский (Бразилия)';
-      case SessionLanguage.spanish:
-        return 'Испанский';
-      case SessionLanguage.french:
-        return 'Французский';
-      case SessionLanguage.italian:
-        return 'Итальянский';
-      case SessionLanguage.german:
-        return 'Немецкий';
-      case SessionLanguage.russian:
-        return 'Русский';
-      case SessionLanguage.english:
-        return 'Английский';
-    }
-  }
-
-  String _getLevelName(SessionDifficultyLevel level) {
-    switch (level) {
-      case SessionDifficultyLevel.beginner:
-        return 'Начинающий';
-      case SessionDifficultyLevel.intermediate:
-        return 'Средний';
-      case SessionDifficultyLevel.advanced:
-        return 'Продвинутый';
-    }
   }
 }

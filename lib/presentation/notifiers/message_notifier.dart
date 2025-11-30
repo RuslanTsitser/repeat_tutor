@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-import '../../domain/models/chat.dart';
 import '../../domain/models/message.dart';
 
 /// Нотатор для управления состоянием сообщений
@@ -8,36 +7,54 @@ import '../../domain/models/message.dart';
 class MessageNotifier extends ChangeNotifier {
   MessageNotifier();
 
-  Chat? _chat;
-  String? get chatId => _chat?.id;
+  MessagesState _state = MessagesState.initial();
+  MessagesState get state => _state;
 
-  List<Message> _messages = [];
-  List<Message> get messages => _messages;
-
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
-  String? _error;
-  String? get error => _error;
-
-  // Методы для установки состояния (вызываются из обработчика событий)
-  void setChat(Chat value) {
-    _chat = value;
+  void setState(MessagesState value) {
+    _state = value;
     notifyListeners();
   }
 
-  void setMessages(List<Message> value) {
-    _messages = value;
-    notifyListeners();
-  }
+  final TextEditingController messageController = TextEditingController();
 
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+  @override
+  void dispose() {
+    messageController.dispose();
+    super.dispose();
   }
+}
 
-  void setError(String? value) {
-    _error = value;
-    notifyListeners();
+class MessagesState {
+  factory MessagesState.initial() {
+    return const MessagesState(
+      chatId: 0,
+      messages: [],
+      isLoading: false,
+      error: null,
+    );
+  }
+  const MessagesState({
+    required this.chatId,
+    required this.messages,
+    required this.isLoading,
+    required this.error,
+  });
+  final int chatId;
+  final List<Message> messages;
+  final bool isLoading;
+  final String? error;
+
+  MessagesState copyWith({
+    int? chatId,
+    List<Message>? messages,
+    bool? isLoading,
+    String? error,
+  }) {
+    return MessagesState(
+      chatId: chatId ?? this.chatId,
+      messages: messages ?? this.messages,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+    );
   }
 }
