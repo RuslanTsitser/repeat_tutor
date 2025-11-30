@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/chat.dart';
-import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
+import '../notifiers/chat_notifier.dart';
 
 @RoutePage()
 class ChatListScreen extends ConsumerStatefulWidget {
@@ -19,102 +20,111 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
   @override
   void initState() {
     super.initState();
-    // Загружаем чаты при инициализации экрана
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(chatEventHandlerProvider).onLoadChatsPressed();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getChatsUseCaseProvider).execute();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final chatNotifier = ref.watch(chatProvider);
-
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Чаты'),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            // TODO: Implement onPressed
+            // TODO: Implement onAddChatPressed
           },
           child: const Icon(CupertinoIcons.add),
         ),
       ),
-      child: SafeArea(
-        child: chatNotifier.isLoading
-            ? const Center(
-                child: CupertinoActivityIndicator(),
-              )
-            : chatNotifier.error != null
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      CupertinoIcons.exclamationmark_triangle,
-                      size: 64,
-                      color: CupertinoColors.systemRed,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Ошибка загрузки чатов',
-                      style: CupertinoTheme.of(
-                        context,
-                      ).textTheme.navTitleTextStyle,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      chatNotifier.error!,
-                      style: CupertinoTheme.of(context).textTheme.textStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    CupertinoButton.filled(
-                      onPressed: () => ref
-                          .read(chatEventHandlerProvider)
-                          .onLoadChatsPressed(),
-                      child: const Text('Повторить'),
-                    ),
-                  ],
-                ),
-              )
-            : chatNotifier.chats.isEmpty
-            ? const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      CupertinoIcons.chat_bubble_2,
-                      size: 64,
-                      color: CupertinoColors.systemGrey,
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Нет чатов',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: CupertinoColors.systemGrey,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                itemCount: chatNotifier.chats.length,
-                itemBuilder: (context, index) {
-                  final chat = chatNotifier.chats[index];
-                  return _ChatListItem(
-                    chat: chat,
-                    onTap: () {
-                      // TODO: Implement onTap
-                    },
-                    onDeletePressed: () => ref
-                        .read(chatEventHandlerProvider)
-                        .onDeleteChatPressed(chat.id),
-                  );
-                },
+      child: const _Body(),
+    );
+  }
+}
+
+class _Body extends ConsumerWidget {
+  const _Body();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatNotifier = ref.watch(chatProvider);
+    final ChatsState state = chatNotifier.state;
+    final bool isLoading = state.isLoading;
+    final String? error = state.error;
+    final List<Chat> chats = state.chats;
+
+    if (isLoading) {
+      return const Center(
+        child: CupertinoActivityIndicator(),
+      );
+    }
+
+    if (error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              CupertinoIcons.exclamationmark_triangle,
+              size: 64,
+              color: CupertinoColors.systemRed,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Ошибка загрузки чатов',
+              style: CupertinoTheme.of(context).textTheme.textStyle,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            CupertinoButton.filled(
+              onPressed: () {
+                // TODO: Implement onLoadChatsPressed
+              },
+              child: const Text('Повторить'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (chats.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              CupertinoIcons.chat_bubble_2,
+              size: 64,
+              color: CupertinoColors.systemGrey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Нет чатов',
+              style: TextStyle(
+                fontSize: 18,
+                color: CupertinoColors.systemGrey,
               ),
-      ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: chats.length,
+      itemBuilder: (context, index) {
+        final chat = chats[index];
+        return _ChatListItem(
+          chat: chat,
+          onTap: () {
+            // TODO: Implement onOpenChatPressed
+          },
+          onDeletePressed: () {
+            // TODO: Implement onDeleteChatPressed
+          },
+        );
+      },
     );
   }
 }
@@ -136,7 +146,7 @@ class _ChatListItem extends StatelessWidget {
         radius: 20,
         backgroundColor: CupertinoColors.systemGrey4,
         child: Text(
-          chat.name[0].toUpperCase(),
+          chat.topic[0].toUpperCase(),
           style: const TextStyle(
             color: CupertinoColors.systemGrey,
             fontWeight: FontWeight.w600,
@@ -144,13 +154,13 @@ class _ChatListItem extends StatelessWidget {
         ),
       ),
       title: Text(
-        chat.name,
+        chat.topic,
         style: const TextStyle(
           fontWeight: FontWeight.w600,
         ),
       ),
       subtitle: Text(
-        chat.lastMessage,
+        chat.language.name,
         style: const TextStyle(
           color: CupertinoColors.systemGrey,
           fontSize: 14,
@@ -163,32 +173,13 @@ class _ChatListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            chat.time,
+            chat.createdAt.toLocal().toString(),
             style: const TextStyle(
               color: CupertinoColors.systemGrey,
               fontSize: 12,
             ),
           ),
-          if (chat.unreadCount > 0)
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 6,
-                vertical: 2,
-              ),
-              decoration: const BoxDecoration(
-                color: CupertinoColors.systemBlue,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Text(
-                chat.unreadCount.toString(),
-                style: const TextStyle(
-                  color: CupertinoColors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+
           CupertinoButton(
             onPressed: onDeletePressed,
             padding: EdgeInsets.zero,
