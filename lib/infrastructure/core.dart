@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ab_test/ab_test_prod.dart';
 import '../core/audio/chat_audio_cache_service.dart';
+import '../core/audio/voice_recorder_service.dart';
 import '../core/database/app_database.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_audio_manager.dart';
@@ -74,4 +75,12 @@ final abTestServiceProvider = Provider<AbTestService>((ref) {
 final initializeServiceProvider = FutureProvider<void>((ref) async {
   final abTestService = ref.watch(abTestServiceProvider);
   await abTestService.init();
+});
+
+final voiceRecorderServiceProvider = Provider<VoiceRecorderService>((ref) {
+  final voiceRecorder = VoiceRecorderService();
+  ref.onDispose(() {
+    voiceRecorder.dispose();
+  });
+  return voiceRecorder;
 });
