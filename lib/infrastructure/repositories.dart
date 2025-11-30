@@ -2,12 +2,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/repositories/chat_ai_repository_impl.dart';
-import '../data/repositories/chat_configuration_repository_impl.dart';
 import '../data/repositories/chat_repository_impl.dart';
 import '../data/repositories/message_repository_impl.dart';
 import '../data/repositories/realtime_session_repository_impl.dart';
 import '../domain/repositories/chat_ai_repository.dart';
-import '../domain/repositories/chat_configuration_repository.dart';
 import '../domain/repositories/chat_repository.dart';
 import '../domain/repositories/message_repository.dart';
 import '../domain/repositories/realtime_session_repository.dart';
@@ -18,13 +16,6 @@ final chatRepositoryProvider = Provider<ChatRepository>((ref) {
   final database = ref.watch(databaseProvider);
   return ChatRepositoryImpl(database);
 });
-
-/// Провайдер для ChatConfigurationRepository
-final chatConfigurationRepositoryProvider =
-    Provider<ChatConfigurationRepository>((ref) {
-      final database = ref.watch(databaseProvider);
-      return ChatConfigurationRepositoryImpl(database);
-    });
 
 /// Провайдер для MessageRepository
 final messageRepositoryProvider = Provider<MessageRepository>((ref) {
