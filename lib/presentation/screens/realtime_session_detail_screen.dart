@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
@@ -11,11 +10,7 @@ import '../notifiers/realtime_call_notifier.dart';
 
 @RoutePage()
 class RealtimeSessionDetailScreen extends ConsumerStatefulWidget {
-  const RealtimeSessionDetailScreen({
-    super.key,
-    required this.session,
-  });
-  final RealtimeSession session;
+  const RealtimeSessionDetailScreen({super.key});
 
   @override
   ConsumerState<RealtimeSessionDetailScreen> createState() =>
@@ -32,9 +27,7 @@ class _RealtimeSessionDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.watch<RealtimeCallNotifier>(
-      realtimeCallProvider(widget.session.id),
-    );
+    final notifier = ref.watch(realtimeCallProvider);
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
@@ -202,9 +195,7 @@ class _ControlButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventHandler = ref.read(
-      realtimeCallEventHandlerProvider(notifier.session.id),
-    );
+    final eventHandler = ref.read(realtimeCallEventHandlerProvider);
 
     return Container(
       padding: const EdgeInsets.all(16),

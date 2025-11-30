@@ -5,12 +5,10 @@ import '../../domain/models/realtime_session.dart';
 /// Нотифаер для управления состоянием звонка Realtime API
 /// Хранит только состояние UI, не содержит бизнес-логику
 class RealtimeCallNotifier extends ChangeNotifier {
-  RealtimeCallNotifier({
-    required this.session,
-  });
+  RealtimeCallNotifier();
 
-  RealtimeSession session;
-
+  RealtimeSession? _session;
+  RealtimeSession? get session => _session;
   bool _isConnected = false;
   bool _isConnecting = false;
   bool _isRecording = false;
@@ -28,6 +26,11 @@ class RealtimeCallNotifier extends ChangeNotifier {
   double get audioLevel => _audioLevel;
 
   // Методы для установки состояния (вызываются из обработчика событий)
+
+  void setSession(RealtimeSession value) {
+    _session = value;
+    notifyListeners();
+  }
 
   void setConnecting(bool value) {
     _isConnecting = value;
@@ -51,11 +54,6 @@ class RealtimeCallNotifier extends ChangeNotifier {
 
   void setError(String? value) {
     _error = value;
-    notifyListeners();
-  }
-
-  void setSession(RealtimeSession value) {
-    session = value;
     notifyListeners();
   }
 

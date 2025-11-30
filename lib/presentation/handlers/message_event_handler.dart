@@ -1,8 +1,8 @@
 import '../../domain/models/message.dart';
 import '../../domain/usecases/clear_messages_usecase.dart';
 import '../../domain/usecases/delete_message_usecase.dart';
-import '../../domain/usecases/get_messages_usecase.dart';
 import '../../domain/usecases/get_chat_configuration_usecase.dart';
+import '../../domain/usecases/get_messages_usecase.dart';
 import '../../domain/usecases/send_chat_turn_usecase.dart';
 import '../../domain/usecases/update_message_usecase.dart';
 import '../notifiers/message_notifier.dart';
@@ -33,7 +33,7 @@ class MessageEventHandler {
     notifier.setError(null);
 
     try {
-      final messages = await getMessagesUseCase.execute(notifier.chatId);
+      final messages = await getMessagesUseCase.execute(notifier.chatId!);
       notifier.setMessages(messages);
     } catch (e) {
       notifier.setError(e.toString());
@@ -55,7 +55,7 @@ class MessageEventHandler {
   /// Обработка события очистки сообщений
   Future<void> onClearMessagesPressed() async {
     try {
-      await clearMessagesUseCase.execute(notifier.chatId);
+      await clearMessagesUseCase.execute(notifier.chatId!);
       // Перезагружаем сообщения после очистки
       await onLoadMessagesPressed();
     } catch (e) {
@@ -90,8 +90,9 @@ class MessageEventHandler {
     String? voiceFilePath,
   }) async {
     try {
-      final configuration =
-          await getChatConfigurationUseCase.execute(notifier.chatId);
+      final configuration = await getChatConfigurationUseCase.execute(
+        notifier.chatId!,
+      );
       if (configuration == null) {
         throw StateError('Настройки чата не найдены');
       }
@@ -102,11 +103,10 @@ class MessageEventHandler {
         voiceFilePath: voiceFilePath,
       );
 
-      final messages = await getMessagesUseCase.execute(notifier.chatId);
+      final messages = await getMessagesUseCase.execute(notifier.chatId!);
       notifier.setMessages(messages);
     } catch (e) {
       notifier.setError(e.toString());
     }
   }
 }
-

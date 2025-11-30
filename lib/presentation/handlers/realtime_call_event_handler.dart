@@ -1,35 +1,53 @@
 import '../../core/realtime/realtime_audio_manager.dart';
 import '../../core/realtime/realtime_webrtc_manager.dart';
+import '../../core/router/router.dart';
+import '../../domain/models/realtime_session.dart';
+import '../../domain/models/session_settings.dart';
 import '../../domain/usecases/connect_realtime_with_permission_usecase.dart';
+import '../../domain/usecases/create_realtime_session_usecase.dart';
+import '../../domain/usecases/delete_realtime_session_usecase.dart';
 import '../../domain/usecases/disconnect_realtime_call_usecase.dart';
+import '../../domain/usecases/get_all_realtime_sessions_usecase.dart';
+import '../../domain/usecases/replace_expired_session_usecase.dart';
 import '../../domain/usecases/start_recording_usecase.dart';
 import '../../domain/usecases/stop_recording_usecase.dart';
 import '../notifiers/realtime_call_notifier.dart';
+import '../notifiers/realtime_session_notifier.dart';
 
 /// Обработчик событий для RealtimeCallNotifier
 /// Управляет подписками на события connection и audioManager
 class RealtimeCallEventHandler {
-  RealtimeCallEventHandler({
+  const RealtimeCallEventHandler({
+    required this.router,
     required this.notifier,
+    required this.realtimeSessionListNotifier,
     required this.connection,
     required this.audioManager,
     required this.connectWithPermissionUseCase,
     required this.disconnectUseCase,
     required this.startRecordingUseCase,
     required this.stopRecordingUseCase,
-  }) {
-    _setupCallbacks();
-  }
+    required this.createSessionUseCase,
+    required this.getAllSessionsUseCase,
+    required this.deleteSessionUseCase,
+    required this.replaceExpiredSessionUseCase,
+  });
 
+  final AppRouter router;
   final RealtimeCallNotifier notifier;
+  final RealtimeSessionListNotifier realtimeSessionListNotifier;
   final RealtimeWebRTCConnection connection;
   final RealtimeAudioManager audioManager;
   final ConnectRealtimeWithPermissionUseCase connectWithPermissionUseCase;
   final DisconnectRealtimeCallUseCase disconnectUseCase;
   final StartRecordingUseCase startRecordingUseCase;
   final StopRecordingUseCase stopRecordingUseCase;
+  final CreateRealtimeSessionUseCase createSessionUseCase;
+  final GetAllRealtimeSessionsUseCase getAllSessionsUseCase;
+  final DeleteRealtimeSessionUseCase deleteSessionUseCase;
+  final ReplaceExpiredSessionUseCase replaceExpiredSessionUseCase;
 
-  void _setupCallbacks() {
+  void setupWebRTCCallbacks() {
     connection.onMessage = (message) {
       notifier.addReceivedMessage(message);
     };
@@ -104,7 +122,7 @@ class RealtimeCallEventHandler {
 
     try {
       final newSession = await connectWithPermissionUseCase.execute(
-        notifier.session,
+        notifier.session!,
       );
       if (newSession != null) {
         notifier.setSession(newSession);
@@ -166,5 +184,29 @@ class RealtimeCallEventHandler {
     } catch (e) {
       notifier.setError('Ошибка завершения аудио: ${e.toString()}');
     }
+  }
+
+  Future<void> onLoadSessions() async {
+    realtimeSessionListNotifier.setLoading(true);
+    final sessions = await getAllSessionsUseCase.execute();
+    realtimeSessionListNotifier.setSessions(sessions);
+    realtimeSessionListNotifier.setLoading(false);
+  }
+
+  Future<void> onCreateSession(SessionSettings settings) async {
+    final session = await createSessionUseCase.execute(settings);
+    notifier.setSession(session);
+    await router.push(const RealtimeSessionDetailRoute());
+  }
+
+  Future<void> onDeleteSession(RealtimeSession session) async {
+    await deleteSessionUseCase.execute(session);
+    final sessions = await getAllSessionsUseCase.execute();
+    realtimeSessionListNotifier.setSessions(sessions);
+  }
+
+  Future<void> onReplaceExpiredSession(RealtimeSession expiredSession) async {
+    final session = await replaceExpiredSessionUseCase.execute(expiredSession);
+    notifier.setSession(session);
   }
 }

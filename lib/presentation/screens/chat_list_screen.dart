@@ -3,12 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/router/router.dart';
 import '../../domain/models/chat.dart';
-import '../../infrastructure/core.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../notifiers/chat_notifier.dart';
 
 @RoutePage()
 class ChatListScreen extends ConsumerStatefulWidget {
@@ -24,14 +21,13 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
     super.initState();
     // Загружаем чаты при инициализации экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final chatEventHandler = ref.read(chatEventHandlerProvider);
-      chatEventHandler.onLoadChatsPressed();
+      ref.read(chatEventHandlerProvider).onLoadChatsPressed();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final chatNotifier = ref.watch<ChatNotifier>(chatProvider);
+    final chatNotifier = ref.watch(chatProvider);
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -39,7 +35,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            ref.read(routerProvider).push(const CreateChatRoute());
+            // TODO: Implement onPressed
           },
           child: const Icon(CupertinoIcons.add),
         ),
@@ -74,12 +70,9 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                     ),
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
-                      onPressed: () {
-                        final chatEventHandler = ref.read(
-                          chatEventHandlerProvider,
-                        );
-                        chatEventHandler.onLoadChatsPressed();
-                      },
+                      onPressed: () => ref
+                          .read(chatEventHandlerProvider)
+                          .onLoadChatsPressed(),
                       child: const Text('Повторить'),
                     ),
                   ],
@@ -113,14 +106,11 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                   return _ChatListItem(
                     chat: chat,
                     onTap: () {
-                      ref.read(routerProvider).push(ChatRoute(chat: chat));
+                      // TODO: Implement onTap
                     },
-                    onDeletePressed: () {
-                      final chatEventHandler = ref.read(
-                        chatEventHandlerProvider,
-                      );
-                      chatEventHandler.onDeleteChatPressed(chat.id);
-                    },
+                    onDeletePressed: () => ref
+                        .read(chatEventHandlerProvider)
+                        .onDeleteChatPressed(chat.id),
                   );
                 },
               ),

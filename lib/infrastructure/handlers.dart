@@ -8,7 +8,7 @@ import 'state_managers.dart';
 import 'use_case.dart';
 
 /// Провайдер для обработчика событий чатов
-final chatEventHandlerProvider = Provider<ChatEventHandler>((ref) {
+final chatEventHandlerProvider = Provider((ref) {
   final notifier = ref.watch(chatProvider);
   return ChatEventHandler(
     notifier: notifier,
@@ -29,48 +29,56 @@ final chatEventHandlerProvider = Provider<ChatEventHandler>((ref) {
 });
 
 /// Провайдер для обработчика событий сообщений (family для разных чатов)
-final messageEventHandlerProvider =
-    Provider.family<MessageEventHandler, String>((ref, chatId) {
-      final notifier = ref.watch(messageProvider(chatId));
-      return MessageEventHandler(
-        notifier: notifier,
-        getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
-        deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
-        updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
-        clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
-        getChatConfigurationUseCase: ref.watch(
-          getChatConfigurationUseCaseProvider,
-        ),
-        sendChatTurnUseCase: ref.watch(sendChatTurnUseCaseProvider),
-      );
-    });
+final messageEventHandlerProvider = Provider((ref) {
+  final notifier = ref.watch(messageProvider);
+  return MessageEventHandler(
+    notifier: notifier,
+    getMessagesUseCase: ref.watch(getMessagesUseCaseProvider),
+    deleteMessageUseCase: ref.watch(deleteMessageUseCaseProvider),
+    updateMessageUseCase: ref.watch(updateMessageUseCaseProvider),
+    clearMessagesUseCase: ref.watch(clearMessagesUseCaseProvider),
+    getChatConfigurationUseCase: ref.watch(
+      getChatConfigurationUseCaseProvider,
+    ),
+    sendChatTurnUseCase: ref.watch(sendChatTurnUseCaseProvider),
+  );
+});
 
 // Realtime providers
 
 /// Провайдер для обработчика событий звонка (family для разных сессий)
 /// Управляет подписками на события connection и audioManager
-final realtimeCallEventHandlerProvider =
-    Provider.family<RealtimeCallEventHandler, String>((ref, sessionId) {
-      final notifier = ref.watch(realtimeCallProvider(sessionId));
-      final connection = ref.watch(realtimeWebRTCConnectionProvider);
-      final audioManager = ref.watch(realtimeAudioManagerProvider);
+final realtimeCallEventHandlerProvider = Provider((ref) {
+  final notifier = ref.watch(realtimeCallProvider);
+  final connection = ref.watch(realtimeWebRTCConnectionProvider);
+  final audioManager = ref.watch(realtimeAudioManagerProvider);
 
-      final eventHandler = RealtimeCallEventHandler(
-        notifier: notifier,
-        connection: connection,
-        audioManager: audioManager,
-        connectWithPermissionUseCase: ref.watch(
-          connectRealtimeWithPermissionUseCaseProvider,
-        ),
-        disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
-        startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
-        stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
-      );
+  final eventHandler = RealtimeCallEventHandler(
+    notifier: notifier,
+    connection: connection,
+    audioManager: audioManager,
+    connectWithPermissionUseCase: ref.watch(
+      connectRealtimeWithPermissionUseCaseProvider,
+    ),
+    disconnectUseCase: ref.watch(disconnectRealtimeCallUseCaseProvider),
+    startRecordingUseCase: ref.watch(startRecordingUseCaseProvider),
+    stopRecordingUseCase: ref.watch(stopRecordingUseCaseProvider),
+    createSessionUseCase: ref.watch(createRealtimeSessionUseCaseProvider),
+    deleteSessionUseCase: ref.watch(deleteRealtimeSessionUseCaseProvider),
+    replaceExpiredSessionUseCase: ref.watch(
+      replaceExpiredSessionUseCaseProvider,
+    ),
+    getAllSessionsUseCase: ref.watch(getAllRealtimeSessionsUseCaseProvider),
+    realtimeSessionListNotifier: ref.watch(realtimeSessionListProvider),
+    router: ref.watch(routerProvider),
+  );
 
-      // Очищаем колбэки при удалении провайдера
-      ref.onDispose(() {
-        eventHandler.dispose();
-      });
+  eventHandler.setupWebRTCCallbacks();
 
-      return eventHandler;
-    });
+  // Очищаем колбэки при удалении провайдера
+  ref.onDispose(() {
+    eventHandler.dispose();
+  });
+
+  return eventHandler;
+});

@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/models/chat.dart';
-import '../../domain/models/realtime_session.dart';
 import '../../presentation/screens/chat_list_screen.dart';
 import '../../presentation/screens/chat_screen.dart';
 import '../../presentation/screens/create_chat_screen.dart';

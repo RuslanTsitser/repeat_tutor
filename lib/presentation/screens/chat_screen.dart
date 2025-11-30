@@ -6,26 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
 
-import '../../domain/models/chat.dart';
+import '../../core/audio/voice_recorder_service.dart';
 import '../../domain/models/message.dart';
 import '../../domain/models/message_content_type.dart';
 import '../../infrastructure/core.dart';
 import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
-import '../notifiers/message_notifier.dart';
+import '../../infrastructure/use_case.dart';
 
 @RoutePage()
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({
-    super.key,
-    required this.chat,
-  });
-  final Chat chat;
+  const ChatScreen({super.key});
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -33,22 +25,25 @@ class ChatScreen extends ConsumerStatefulWidget {
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final Record _recorder = Record();
+  late final VoiceRecorderService _voiceRecorder;
   bool _isRecording = false;
   bool _isSending = false;
-  String? _recordingPath;
+  bool _hasMicPermission = false;
+  bool _isPermissionRequestInProgress = false;
+
+  String? get chatId => ref.read(messageProvider).chatId;
 
   @override
   void initState() {
     super.initState();
+    _voiceRecorder = VoiceRecorderService();
+    _loadMicrophonePermission();
     // Загружаем сообщения и отмечаем чат как прочитанный при открытии
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final messageEventHandler = ref.read(
-        messageEventHandlerProvider(widget.chat.id),
-      );
+      final messageEventHandler = ref.read(messageEventHandlerProvider);
       messageEventHandler.onLoadMessagesPressed();
       final chatEventHandler = ref.read(chatEventHandlerProvider);
-      chatEventHandler.onMarkAsReadPressed(widget.chat.id);
+      chatEventHandler.onMarkAsReadPressed(chatId!);
     });
   }
 
@@ -61,18 +56,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _messageController.clear();
 
     await _performSend(() {
-      final messageEventHandler = ref.read(
-        messageEventHandlerProvider(widget.chat.id),
-      );
+      final messageEventHandler = ref.read(messageEventHandlerProvider);
       return messageEventHandler.onAddMessagePressed(messageText);
     });
   }
 
   Future<void> _sendVoiceMessage(String path) async {
     await _performSend(() {
-      final messageEventHandler = ref.read(
-        messageEventHandlerProvider(widget.chat.id),
-      );
+      final messageEventHandler = ref.read(messageEventHandlerProvider);
       return messageEventHandler.onAddVoiceMessagePressed(path);
     });
   }
@@ -103,43 +94,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Future<void> _startRecording() async {
-    if (_isSending) return;
-
-    final permissionStatus = await Permission.microphone.request();
-    if (!permissionStatus.isGranted) {
-      _showErrorDialog(
-        'Разрешите доступ к микрофону, чтобы записать сообщение.',
-      );
-      return;
+    if (_isSending || !_hasMicPermission) return;
+    try {
+      await _voiceRecorder.startRecording(chatId!);
+      if (!mounted) return;
+      setState(() {
+        _isRecording = true;
+      });
+    } catch (e) {
+      _showErrorDialog('Не удалось начать запись: $e');
     }
-
-    final hasPermission = await _recorder.hasPermission();
-    if (!hasPermission) {
-      _showErrorDialog('Нет доступа к микрофону');
-      return;
-    }
-
-    final tempDir = await getTemporaryDirectory();
-    final fileName =
-        'voice_${widget.chat.id}_${DateTime.now().microsecondsSinceEpoch}.m4a';
-    final path = p.join(tempDir.path, fileName);
-
-    await _recorder.start(
-      path: path,
-      encoder: AudioEncoder.aacLc,
-      bitRate: 128000,
-      samplingRate: 44100,
-    );
-
-    setState(() {
-      _isRecording = true;
-      _recordingPath = path;
-    });
   }
 
   Future<void> _stopRecordingAndSend() async {
-    final path = await _recorder.stop();
-    final resolvedPath = path ?? _recordingPath;
+    final resolvedPath = await _voiceRecorder.stopRecording();
 
     if (!mounted) {
       return;
@@ -147,7 +115,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     setState(() {
       _isRecording = false;
-      _recordingPath = null;
     });
 
     if (resolvedPath != null) {
@@ -173,13 +140,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messageNotifier = ref.watch<MessageNotifier>(
-      messageProvider(widget.chat.id),
-    );
+    final messageNotifier = ref.watch(messageProvider);
+    final messageEventHandler = ref.read(messageEventHandlerProvider);
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(widget.chat.name),
+        middle: Text(chatId ?? ''),
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.back),
@@ -229,9 +195,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           const SizedBox(height: 16),
                           CupertinoButton.filled(
                             onPressed: () {
-                              final messageEventHandler = ref.read(
-                                messageEventHandlerProvider(widget.chat.id),
-                              );
                               messageEventHandler.onLoadMessagesPressed();
                             },
                             child: const Text('Повторить'),
@@ -267,7 +230,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         final message = messageNotifier.messages[index];
                         return _MessageBubble(
                           message: message,
-                          chatName: widget.chat.name,
+                          chatName: chatId ?? '',
                         );
                       },
                     ),
@@ -276,8 +239,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               controller: _messageController,
               onSendMessage: _sendTextMessage,
               onToggleRecording: _toggleRecording,
+              onRequestPermission: _requestMicrophonePermission,
               isRecording: _isRecording,
               isSending: _isSending,
+              canRecord: _hasMicPermission,
+              isPermissionInProgress: _isPermissionRequestInProgress,
             ),
           ],
         ),
@@ -288,11 +254,48 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   void dispose() {
     _messageController.dispose();
-    if (_isRecording) {
-      _recorder.stop();
-    }
-    unawaited(_recorder.dispose());
+    unawaited(_voiceRecorder.dispose());
     super.dispose();
+  }
+
+  Future<void> _loadMicrophonePermission() async {
+    final granted = await ref
+        .read(requestMicrophonePermissionUseCaseProvider)
+        .execute();
+    if (!mounted) return;
+    setState(() {
+      _hasMicPermission = granted;
+    });
+  }
+
+  Future<void> _requestMicrophonePermission() async {
+    if (_isPermissionRequestInProgress) {
+      return;
+    }
+    setState(() {
+      _isPermissionRequestInProgress = true;
+    });
+    try {
+      final granted = await ref
+          .read(requestMicrophonePermissionUseCaseProvider)
+          .execute();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _hasMicPermission = granted;
+      });
+      if (!granted) {
+        _showErrorDialog(
+          'Нет доступа к микрофону. Разрешите доступ в настройках устройства.',
+        );
+      }
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _isPermissionRequestInProgress = false;
+      });
+    }
   }
 }
 
@@ -423,15 +426,21 @@ class _MessageInput extends StatelessWidget {
   const _MessageInput({
     required this.onSendMessage,
     required this.onToggleRecording,
+    required this.onRequestPermission,
     required this.controller,
     required this.isRecording,
     required this.isSending,
+    required this.canRecord,
+    required this.isPermissionInProgress,
   });
   final VoidCallback onSendMessage;
   final VoidCallback onToggleRecording;
+  final Future<void> Function() onRequestPermission;
   final TextEditingController controller;
   final bool isRecording;
   final bool isSending;
+  final bool canRecord;
+  final bool isPermissionInProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -448,6 +457,46 @@ class _MessageInput extends StatelessWidget {
       ),
       child: Column(
         children: [
+          if (!canRecord)
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: CupertinoColors.systemYellow.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    CupertinoIcons.mic_slash,
+                    color: CupertinoColors.systemOrange,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'Нет доступа к микрофону',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: CupertinoColors.systemOrange,
+                      ),
+                    ),
+                  ),
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: isPermissionInProgress
+                        ? null
+                        : () {
+                            onRequestPermission();
+                          },
+                    child: isPermissionInProgress
+                        ? const CupertinoActivityIndicator()
+                        : const Text('Разрешить'),
+                  ),
+                ],
+              ),
+            ),
           if (isRecording)
             Container(
               margin: const EdgeInsets.only(bottom: 8),
@@ -496,11 +545,15 @@ class _MessageInput extends StatelessWidget {
               const SizedBox(width: 8),
               CupertinoButton(
                 padding: const EdgeInsets.all(8),
-                onPressed: isSending ? null : onToggleRecording,
+                onPressed: isSending || !canRecord || isPermissionInProgress
+                    ? null
+                    : onToggleRecording,
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: isRecording
+                    color: !canRecord
+                        ? CupertinoColors.systemGrey3
+                        : isRecording
                         ? CupertinoColors.systemRed
                         : CupertinoColors.systemGrey,
                     shape: BoxShape.circle,

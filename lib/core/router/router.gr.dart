@@ -347,46 +347,18 @@ class ChatListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ChatScreen]
-class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
-  ChatRoute({Key? key, required Chat chat, List<PageRouteInfo>? children})
-    : super(
-        ChatRoute.name,
-        args: ChatRouteArgs(key: key, chat: chat),
-        initialChildren: children,
-      );
+class ChatRoute extends PageRouteInfo<void> {
+  const ChatRoute({List<PageRouteInfo>? children})
+    : super(ChatRoute.name, initialChildren: children);
 
   static const String name = 'ChatRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<ChatRouteArgs>();
-      return ChatScreen(key: args.key, chat: args.chat);
+      return const ChatScreen();
     },
   );
-}
-
-class ChatRouteArgs {
-  const ChatRouteArgs({this.key, required this.chat});
-
-  final Key? key;
-
-  final Chat chat;
-
-  @override
-  String toString() {
-    return 'ChatRouteArgs{key: $key, chat: $chat}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ChatRouteArgs) return false;
-    return key == other.key && chat == other.chat;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ chat.hashCode;
 }
 
 /// generated route for
@@ -439,50 +411,18 @@ class InitializeRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [RealtimeSessionDetailScreen]
-class RealtimeSessionDetailRoute
-    extends PageRouteInfo<RealtimeSessionDetailRouteArgs> {
-  RealtimeSessionDetailRoute({
-    Key? key,
-    required RealtimeSession session,
-    List<PageRouteInfo>? children,
-  }) : super(
-         RealtimeSessionDetailRoute.name,
-         args: RealtimeSessionDetailRouteArgs(key: key, session: session),
-         initialChildren: children,
-       );
+class RealtimeSessionDetailRoute extends PageRouteInfo<void> {
+  const RealtimeSessionDetailRoute({List<PageRouteInfo>? children})
+    : super(RealtimeSessionDetailRoute.name, initialChildren: children);
 
   static const String name = 'RealtimeSessionDetailRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<RealtimeSessionDetailRouteArgs>();
-      return RealtimeSessionDetailScreen(key: args.key, session: args.session);
+      return const RealtimeSessionDetailScreen();
     },
   );
-}
-
-class RealtimeSessionDetailRouteArgs {
-  const RealtimeSessionDetailRouteArgs({this.key, required this.session});
-
-  final Key? key;
-
-  final RealtimeSession session;
-
-  @override
-  String toString() {
-    return 'RealtimeSessionDetailRouteArgs{key: $key, session: $session}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! RealtimeSessionDetailRouteArgs) return false;
-    return key == other.key && session == other.session;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ session.hashCode;
 }
 
 /// generated route for

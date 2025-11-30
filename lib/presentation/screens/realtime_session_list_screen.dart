@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/router/router.dart';
 import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/core.dart';
+import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 import '../notifiers/realtime_session_notifier.dart';
 
@@ -23,9 +24,7 @@ class _RealtimeSessionListScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read<RealtimeSessionListNotifier>(realtimeSessionListProvider)
-          .loadSessions();
+      ref.read(realtimeCallEventHandlerProvider).onLoadSessions();
     });
   }
 
@@ -76,9 +75,9 @@ class _RealtimeSessionListScreenState
                     ),
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
-                      onPressed: () {
-                        notifier.loadSessions();
-                      },
+                      onPressed: () => ref
+                          .read(realtimeCallEventHandlerProvider)
+                          .onLoadSessions(),
                       child: const Text('Повторить'),
                     ),
                   ],
@@ -112,13 +111,11 @@ class _RealtimeSessionListScreenState
                   return _RealtimeSessionListItem(
                     session: session,
                     onTap: () {
-                      ref
-                          .read(routerProvider)
-                          .push(RealtimeSessionDetailRoute(session: session));
+                      // TODO: Implement onTap
                     },
-                    onDelete: () {
-                      notifier.deleteSession(session);
-                    },
+                    onDelete: () => ref
+                        .read(realtimeCallEventHandlerProvider)
+                        .onDeleteSession(session),
                   );
                 },
               ),

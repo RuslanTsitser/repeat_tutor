@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/router/router.dart';
 import '../../domain/models/session_difficulty_level.dart';
 import '../../domain/models/session_language.dart';
 import '../../domain/models/session_settings.dart';
 import '../../infrastructure/core.dart';
+import '../../infrastructure/handlers.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_session_notifier.dart';
@@ -104,20 +104,14 @@ class _CreateRealtimeSessionScreenState
               CupertinoButton.filled(
                 onPressed: notifier.isLoading
                     ? null
-                    : () async {
-                        final settings = SessionSettings(
-                          language: _selectedLanguage,
-                          level: _selectedLevel,
-                        );
-                        final session = await notifier.createSession(settings);
-                        if (session != null && mounted) {
-                          ref
-                              .read(routerProvider)
-                              .replace(
-                                RealtimeSessionDetailRoute(session: session),
-                              );
-                        }
-                      },
+                    : () => ref
+                          .read(realtimeCallEventHandlerProvider)
+                          .onCreateSession(
+                            SessionSettings(
+                              language: _selectedLanguage,
+                              level: _selectedLevel,
+                            ),
+                          ),
                 child: notifier.isLoading
                     ? const CupertinoActivityIndicator()
                     : const Text('Создать сессию'),
