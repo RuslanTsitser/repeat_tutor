@@ -6,14 +6,31 @@ import '../../core/router/router.dart';
 import '../../domain/models/realtime_session.dart';
 import '../../infrastructure/core.dart';
 import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 
 @RoutePage()
-class RealtimeSessionListScreen extends ConsumerWidget {
+class RealtimeSessionListScreen extends ConsumerStatefulWidget {
   const RealtimeSessionListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RealtimeSessionListScreen> createState() =>
+      _RealtimeSessionListScreenState();
+}
+
+class _RealtimeSessionListScreenState
+    extends ConsumerState<RealtimeSessionListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(getRealtimeSessionsUseCaseProvider).execute();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final notifier = ref.watch(realtimeSessionListProvider);
+    final state = notifier.state;
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
@@ -27,11 +44,11 @@ class RealtimeSessionListScreen extends ConsumerWidget {
         ),
       ),
       child: SafeArea(
-        child: notifier.isLoading
+        child: state.isLoading
             ? const Center(
                 child: CupertinoActivityIndicator(),
               )
-            : notifier.error != null
+            : state.error != null
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,27 +61,26 @@ class RealtimeSessionListScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       'Ошибка загрузки сессий',
-                      style: CupertinoTheme.of(
-                        context,
-                      ).textTheme.navTitleTextStyle,
+                      style: CupertinoTheme.of(context).textTheme.textStyle,
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      notifier.error!,
+                      state.error!,
                       style: CupertinoTheme.of(context).textTheme.textStyle,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
                     CupertinoButton.filled(
                       onPressed: () {
-                        // TODO: Implement onLoadSessions
+                        ref.read(getRealtimeSessionsUseCaseProvider).execute();
                       },
                       child: const Text('Повторить'),
                     ),
                   ],
                 ),
               )
-            : notifier.sessions.isEmpty
+            : state.sessions.isEmpty
             ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -86,9 +102,9 @@ class RealtimeSessionListScreen extends ConsumerWidget {
                 ),
               )
             : ListView.builder(
-                itemCount: notifier.sessions.length,
+                itemCount: state.sessions.length,
                 itemBuilder: (context, index) {
-                  final session = notifier.sessions[index];
+                  final session = state.sessions[index];
                   return _RealtimeSessionListItem(
                     session: session,
                     onTap: () {

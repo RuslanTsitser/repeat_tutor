@@ -2,30 +2,47 @@ import 'package:flutter/foundation.dart';
 
 import '../../domain/models/realtime_session.dart';
 
-/// Нотатор для управления списком сессий Realtime API
+/// Нотифаер для управления списком сессий Realtime API.
 class RealtimeSessionListNotifier extends ChangeNotifier {
   RealtimeSessionListNotifier();
 
-  List<RealtimeSession> _sessions = [];
-  bool _isLoading = false;
-  String? _error;
+  RealtimeSessionsState _state = RealtimeSessionsState.initial();
+  RealtimeSessionsState get state => _state;
 
-  List<RealtimeSession> get sessions => _sessions;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
-
-  void setSessions(List<RealtimeSession> value) {
-    _sessions = value;
+  void setState(RealtimeSessionsState value) {
+    _state = value;
     notifyListeners();
   }
+}
 
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+class RealtimeSessionsState {
+  factory RealtimeSessionsState.initial() {
+    return const RealtimeSessionsState(
+      sessions: [],
+      isLoading: false,
+      error: null,
+    );
   }
 
-  void setError(String? value) {
-    _error = value;
-    notifyListeners();
+  const RealtimeSessionsState({
+    required this.sessions,
+    required this.isLoading,
+    required this.error,
+  });
+
+  final List<RealtimeSession> sessions;
+  final bool isLoading;
+  final String? error;
+
+  RealtimeSessionsState copyWith({
+    List<RealtimeSession>? sessions,
+    bool? isLoading,
+    String? error,
+  }) {
+    return RealtimeSessionsState(
+      sessions: sessions ?? this.sessions,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+    );
   }
 }

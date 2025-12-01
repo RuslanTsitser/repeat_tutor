@@ -27,4 +27,15 @@ enum SessionDifficultyLevel {
         return null;
     }
   }
+
+  String get localizedName {
+    switch (this) {
+      case SessionDifficultyLevel.beginner:
+        return 'Начальный';
+      case SessionDifficultyLevel.intermediate:
+        return 'Средний';
+      case SessionDifficultyLevel.advanced:
+        return 'Продвинутый';
+    }
+  }
 }
