@@ -16,6 +16,12 @@ class RealtimeSessionListNotifier extends ChangeNotifier {
 }
 
 class RealtimeSessionsState {
+  const RealtimeSessionsState({
+    required this.sessions,
+    required this.isLoading,
+    required this.error,
+  });
+
   factory RealtimeSessionsState.initial() {
     return const RealtimeSessionsState(
       sessions: [],
@@ -24,11 +30,7 @@ class RealtimeSessionsState {
     );
   }
 
-  const RealtimeSessionsState({
-    required this.sessions,
-    required this.isLoading,
-    required this.error,
-  });
+  static const Object _errorSentinel = Object();
 
   final List<RealtimeSession> sessions;
   final bool isLoading;
@@ -37,12 +39,12 @@ class RealtimeSessionsState {
   RealtimeSessionsState copyWith({
     List<RealtimeSession>? sessions,
     bool? isLoading,
-    String? error,
+    Object? error = _errorSentinel,
   }) {
     return RealtimeSessionsState(
       sessions: sessions ?? this.sessions,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: identical(error, _errorSentinel) ? this.error : error as String?,
     );
   }
 }

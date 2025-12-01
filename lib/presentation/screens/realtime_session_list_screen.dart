@@ -108,10 +108,14 @@ class _RealtimeSessionListScreenState
                   return _RealtimeSessionListItem(
                     session: session,
                     onTap: () {
-                      // TODO: Implement onTap
+                      ref
+                          .read(openRealtimeSessionDetailUseCaseProvider)
+                          .execute(session.id);
                     },
                     onDelete: () {
-                      // TODO: Implement onDelete
+                      ref
+                          .read(deleteRealtimeSessionUseCaseProvider)
+                          .execute(session.id);
                     },
                   );
                 },

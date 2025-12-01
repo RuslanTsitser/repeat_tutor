@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/usecases/create_realtime_session_use_case.dart';
+import '../domain/usecases/delete_realtime_session_use_case.dart';
 import '../domain/usecases/get_chats_use_case.dart';
 import '../domain/usecases/get_realtime_sessions_use_case.dart';
+import '../domain/usecases/open_realtime_session_detail_use_case.dart';
 import 'core.dart';
 import 'repositories.dart';
 import 'state_managers.dart';
@@ -26,6 +28,21 @@ final createRealtimeSessionUseCaseProvider = Provider((ref) {
     realtimeSessionRepository: ref.watch(realtimeSessionRepositoryProvider),
     realtimeSessionListNotifier: ref.watch(realtimeSessionListProvider),
     createRealtimeSessionNotifier: ref.watch(createRealtimeSessionProvider),
+    appRouter: ref.watch(routerProvider),
+  );
+});
+
+final deleteRealtimeSessionUseCaseProvider = Provider((ref) {
+  return DeleteRealtimeSessionUseCase(
+    realtimeSessionRepository: ref.watch(realtimeSessionRepositoryProvider),
+    realtimeSessionListNotifier: ref.watch(realtimeSessionListProvider),
+  );
+});
+
+final openRealtimeSessionDetailUseCaseProvider = Provider((ref) {
+  return OpenRealtimeSessionDetailUseCase(
+    realtimeSessionListNotifier: ref.watch(realtimeSessionListProvider),
+    realtimeCallNotifier: ref.watch(realtimeCallProvider),
     appRouter: ref.watch(routerProvider),
   );
 });

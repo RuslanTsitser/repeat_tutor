@@ -33,6 +33,13 @@ class CreateRealtimeSessionNotifier extends ChangeNotifier {
 }
 
 class CreateRealtimeSessionState {
+  const CreateRealtimeSessionState({
+    required this.selectedLanguage,
+    required this.selectedLevel,
+    required this.isLoading,
+    required this.error,
+  });
+
   factory CreateRealtimeSessionState.initial() {
     return const CreateRealtimeSessionState(
       selectedLanguage: SessionLanguage.english,
@@ -42,12 +49,7 @@ class CreateRealtimeSessionState {
     );
   }
 
-  const CreateRealtimeSessionState({
-    required this.selectedLanguage,
-    required this.selectedLevel,
-    required this.isLoading,
-    required this.error,
-  });
+  static const Object _errorSentinel = Object();
 
   final SessionLanguage selectedLanguage;
   final SessionDifficultyLevel selectedLevel;
@@ -58,14 +60,13 @@ class CreateRealtimeSessionState {
     SessionLanguage? selectedLanguage,
     SessionDifficultyLevel? selectedLevel,
     bool? isLoading,
-    String? error,
+    Object? error = _errorSentinel,
   }) {
     return CreateRealtimeSessionState(
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       selectedLevel: selectedLevel ?? this.selectedLevel,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: identical(error, _errorSentinel) ? this.error : error as String?,
     );
   }
 }
-
