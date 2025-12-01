@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 import '../notifiers/realtime_call_notifier.dart';
 
 @RoutePage()
@@ -20,6 +21,7 @@ class _RealtimeSessionDetailScreenState
   @override
   Widget build(BuildContext context) {
     final notifier = ref.watch(realtimeCallProvider);
+    final state = notifier.state;
 
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
@@ -34,7 +36,7 @@ class _RealtimeSessionDetailScreenState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (notifier.error != null)
+                    if (state.error != null)
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -42,23 +44,23 @@ class _RealtimeSessionDetailScreenState
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          notifier.error!,
+                          state.error!,
                           style: const TextStyle(
                             color: CupertinoColors.systemRed,
                           ),
                         ),
                       ),
                     const SizedBox(height: 16),
-                    _StatusCard(notifier: notifier),
+                    _StatusCard(state: state),
                     const SizedBox(height: 16),
-                    _AudioLevelCard(notifier: notifier),
+                    _AudioLevelCard(state: state),
                     const SizedBox(height: 16),
-                    _MessagesCard(notifier: notifier),
+                    _MessagesCard(state: state),
                   ],
                 ),
               ),
             ),
-            _ControlButtons(notifier: notifier),
+            _ControlButtons(state: state),
           ],
         ),
       ),
@@ -67,8 +69,8 @@ class _RealtimeSessionDetailScreenState
 }
 
 class _StatusCard extends StatelessWidget {
-  const _StatusCard({required this.notifier});
-  final RealtimeCallNotifier notifier;
+  const _StatusCard({required this.state});
+  final RealtimeCallState state;
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +91,9 @@ class _StatusCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text('Подключен: ${notifier.isConnected ? "Да" : "Нет"}'),
-          Text('Запись: ${notifier.isRecording ? "Да" : "Нет"}'),
-          Text('Воспроизведение: ${notifier.isPlaying ? "Да" : "Нет"}'),
+          Text('Подключен: ${state.isConnected ? "Да" : "Нет"}'),
+          Text('Запись: ${state.isRecording ? "Да" : "Нет"}'),
+          Text('Воспроизведение: ${state.isPlaying ? "Да" : "Нет"}'),
         ],
       ),
     );
@@ -99,8 +101,8 @@ class _StatusCard extends StatelessWidget {
 }
 
 class _AudioLevelCard extends StatelessWidget {
-  const _AudioLevelCard({required this.notifier});
-  final RealtimeCallNotifier notifier;
+  const _AudioLevelCard({required this.state});
+  final RealtimeCallState state;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +126,7 @@ class _AudioLevelCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
-              value: notifier.audioLevel,
+              value: state.audioLevel,
               backgroundColor: CupertinoColors.systemGrey4,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 CupertinoColors.activeGreen,
@@ -138,8 +140,8 @@ class _AudioLevelCard extends StatelessWidget {
 }
 
 class _MessagesCard extends StatelessWidget {
-  const _MessagesCard({required this.notifier});
-  final RealtimeCallNotifier notifier;
+  const _MessagesCard({required this.state});
+  final RealtimeCallState state;
 
   @override
   Widget build(BuildContext context) {
@@ -160,13 +162,13 @@ class _MessagesCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          if (notifier.receivedMessages.isEmpty)
+          if (state.receivedMessages.isEmpty)
             const Text(
               'Нет сообщений',
               style: TextStyle(color: CupertinoColors.systemGrey),
             )
           else
-            ...notifier.receivedMessages.map(
+            ...state.receivedMessages.map(
               (message) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
@@ -182,8 +184,8 @@ class _MessagesCard extends StatelessWidget {
 }
 
 class _ControlButtons extends ConsumerWidget {
-  const _ControlButtons({required this.notifier});
-  final RealtimeCallNotifier notifier;
+  const _ControlButtons({required this.state});
+  final RealtimeCallState state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -201,20 +203,22 @@ class _ControlButtons extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          if (!notifier.isConnected && !notifier.isConnecting)
+          if (!state.isConnected && !state.isConnecting)
             CupertinoButton.filled(
-              onPressed: () {
-                // TODO: Implement onConnectPressed
-              },
+              onPressed: state.session == null
+                  ? null
+                  : () {
+                      ref.read(connectRealtimeSessionUseCaseProvider).execute();
+                    },
               child: const Text('Подключиться'),
             )
-          else if (notifier.isConnecting)
+          else if (state.isConnecting)
             const CupertinoActivityIndicator()
           else
             CupertinoButton(
               color: CupertinoColors.systemRed,
               onPressed: () {
-                // TODO: Implement onDisconnectPressed
+                ref.read(disconnectRealtimeSessionUseCaseProvider).execute();
               },
               child: const Text('Отключиться'),
             ),

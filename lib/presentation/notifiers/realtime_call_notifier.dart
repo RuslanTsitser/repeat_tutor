@@ -2,68 +2,85 @@ import 'package:flutter/foundation.dart';
 
 import '../../domain/models/realtime_session.dart';
 
-/// Нотифаер для управления состоянием звонка Realtime API
-/// Хранит только состояние UI, не содержит бизнес-логику
+/// Нотифаер для управления состоянием звонка Realtime API.
 class RealtimeCallNotifier extends ChangeNotifier {
   RealtimeCallNotifier();
 
-  RealtimeSession? _session;
-  RealtimeSession? get session => _session;
-  bool _isConnected = false;
-  bool _isConnecting = false;
-  bool _isRecording = false;
-  bool _isPlaying = false;
-  String? _error;
-  List<String> _receivedMessages = [];
-  double _audioLevel = 0.0;
+  RealtimeCallState _state = RealtimeCallState.initial();
+  RealtimeCallState get state => _state;
 
-  bool get isConnected => _isConnected;
-  bool get isConnecting => _isConnecting;
-  bool get isRecording => _isRecording;
-  bool get isPlaying => _isPlaying;
-  String? get error => _error;
-  List<String> get receivedMessages => _receivedMessages;
-  double get audioLevel => _audioLevel;
-
-  // Методы для установки состояния (вызываются из обработчика событий)
-
-  void setSession(RealtimeSession value) {
-    _session = value;
-    notifyListeners();
-  }
-
-  void setConnecting(bool value) {
-    _isConnecting = value;
-    notifyListeners();
-  }
-
-  void setConnected(bool value) {
-    _isConnected = value;
-    notifyListeners();
-  }
-
-  void setRecording(bool value) {
-    _isRecording = value;
-    notifyListeners();
-  }
-
-  void setPlaying(bool value) {
-    _isPlaying = value;
-    notifyListeners();
-  }
-
-  void setError(String? value) {
-    _error = value;
-    notifyListeners();
-  }
-
-  void setAudioLevel(double value) {
-    _audioLevel = value;
+  void setState(RealtimeCallState value) {
+    _state = value;
     notifyListeners();
   }
 
   void addReceivedMessage(String message) {
-    _receivedMessages = [..._receivedMessages, message];
-    notifyListeners();
+    setState(
+      _state.copyWith(
+        receivedMessages: [..._state.receivedMessages, message],
+      ),
+    );
+  }
+}
+
+class RealtimeCallState {
+  const RealtimeCallState({
+    required this.session,
+    required this.isConnected,
+    required this.isConnecting,
+    required this.isRecording,
+    required this.isPlaying,
+    required this.audioLevel,
+    required this.receivedMessages,
+    required this.error,
+  });
+
+  factory RealtimeCallState.initial() {
+    return const RealtimeCallState(
+      session: null,
+      isConnected: false,
+      isConnecting: false,
+      isRecording: false,
+      isPlaying: false,
+      audioLevel: 0,
+      receivedMessages: [],
+      error: null,
+    );
+  }
+
+  static const Object _errorSentinel = Object();
+  static const Object _sessionSentinel = Object();
+
+  final RealtimeSession? session;
+  final bool isConnected;
+  final bool isConnecting;
+  final bool isRecording;
+  final bool isPlaying;
+  final double audioLevel;
+  final List<String> receivedMessages;
+  final String? error;
+
+  RealtimeCallState copyWith({
+    Object? session = _sessionSentinel,
+    bool? isConnected,
+    bool? isConnecting,
+    bool? isRecording,
+    bool? isPlaying,
+    double? audioLevel,
+    List<String>? receivedMessages,
+    Object? error = _errorSentinel,
+  }) {
+    return RealtimeCallState(
+      session: identical(session, _sessionSentinel)
+          ? this.session
+          : session as RealtimeSession?,
+      isConnected: isConnected ?? this.isConnected,
+      isConnecting: isConnecting ?? this.isConnecting,
+      isRecording: isRecording ?? this.isRecording,
+      isPlaying: isPlaying ?? this.isPlaying,
+      audioLevel: audioLevel ?? this.audioLevel,
+      receivedMessages: receivedMessages ?? this.receivedMessages,
+      error: identical(error, _errorSentinel) ? this.error : error as String?,
+    );
   }
 }

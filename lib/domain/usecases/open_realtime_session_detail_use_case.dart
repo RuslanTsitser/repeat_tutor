@@ -20,8 +20,17 @@ class OpenRealtimeSessionDetailUseCase {
       final session = sessions.firstWhere(
         (session) => session.id == sessionId,
       );
-      realtimeCallNotifier.setSession(session);
-      realtimeCallNotifier.setError(null);
+      realtimeCallNotifier.setState(
+        realtimeCallNotifier.state.copyWith(
+          session: session,
+          isConnected: false,
+          isConnecting: false,
+          isRecording: false,
+          isPlaying: false,
+          receivedMessages: const [],
+          error: null,
+        ),
+      );
       await appRouter.push(const RealtimeSessionDetailRoute());
     } on StateError {
       realtimeSessionListNotifier.setState(
