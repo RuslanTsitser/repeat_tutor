@@ -11,5 +11,5 @@
     "editor.wordWrapColumn": 80
   },
   "dart.lineLength": 80,
-  "dart.flutterSdkPath": ".fvm/versions/3.35.7"
+  "dart.flutterSdkPath": ".fvm/versions/3.38.3"
 }
