@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'core/app_directory/app_directory.dart';
 import 'core/localization/generated/l10n.dart';
@@ -11,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppDirectory.initialize();
   await requestAppTrackingTransparency();
+  await WakelockPlus.enable();
 
   runApp(const ProviderScope(child: MyApp()));
 }
