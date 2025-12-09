@@ -50,7 +50,7 @@ class _InitializeScreenState extends ConsumerState<InitializeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.phone),
-            label: 'Сессии',
+            label: 'Повторяшки',
           ),
         ],
       ),
