@@ -56,8 +56,6 @@ class _RealtimeSessionDetailScreenState
                     _StatusCard(state: state),
                     const SizedBox(height: 16),
                     _AudioLevelCard(state: state),
-                    const SizedBox(height: 16),
-                    _MessagesCard(state: state),
                   ],
                 ),
               ),
@@ -133,49 +131,6 @@ class _AudioLevelCard extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MessagesCard extends StatelessWidget {
-  const _MessagesCard({required this.state});
-  final RealtimeCallState state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Сообщения',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          if (state.receivedMessages.isEmpty)
-            const Text(
-              'Нет сообщений',
-              style: TextStyle(color: CupertinoColors.systemGrey),
-            )
-          else
-            ...state.receivedMessages.map(
-              (message) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  message,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ),
-            ),
         ],
       ),
     );
