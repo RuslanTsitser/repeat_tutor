@@ -182,11 +182,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.1"
-      resolved-ref: "066742dc4764ef72083baeb7c03db8359fd894bd"
+      ref: "0.0.5"
+      resolved-ref: "80f1029874091f68c75ea686a09810709633253a"
       url: "https://github.com/RuslanTsitser/cloud_storage_sync.git"
     source: git
-    version: "0.0.1"
+    version: "0.0.5"
   code_builder:
     dependency: transitive
     description:
@@ -371,10 +371,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_webrtc
-      sha256: f6800cc2af79018c12e955ddf8ad007891fdfbb8199b0ce3dccd0977ed2add9c
+      sha256: "71a38363a5b50603e405c275f30de2eb90f980b0cc94b0e1e9d8b9d6a6b03bf0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.7"
+    version: "1.2.1"
   frontend_server_client:
     dependency: transitive
     description:
@@ -527,6 +527,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: a7967e31b703831a893bbc3c3dd11db08126fe5f369b5c648a36f821979f5be3
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.2"
   logging:
     dependency: transitive
     description:
@@ -555,10 +563,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: e3641ec5d63ebf0d9b41bd43201a66e3fc79a65db5f61fc181f04cd27aab950c
+      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
       url: "https://pub.dev"
     source: hosted
-    version: "1.16.0"
+    version: "1.17.0"
   mime:
     dependency: transitive
     description:
@@ -1008,10 +1016,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "522f00f556e73044315fa4585ec3270f1808a4b186c936e612cab0b565ff1e00"
+      sha256: ab2726c1a94d3176a45960b6234466ec367179b87dd74f1611adb1f3b5fb9d55
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.6"
+    version: "0.7.7"
   typed_data:
     dependency: transitive
     description:

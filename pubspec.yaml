@@ -27,10 +27,10 @@ dependencies:
   cloud_storage_sync:
     git:
       url: https://github.com/RuslanTsitser/cloud_storage_sync.git
-      ref: 0.0.1
+      ref: 0.0.5
 
   # WebRTC
-  flutter_webrtc: ^0.11.7
+  flutter_webrtc: ^1.2.1
 
   # Audio
   just_audio: ^0.10.5
