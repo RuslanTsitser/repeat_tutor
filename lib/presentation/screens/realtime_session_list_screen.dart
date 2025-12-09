@@ -138,7 +138,9 @@ class _RealtimeSessionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile(
-      title: Text('Сессия ${session.id.substring(0, 8)}'),
+      title: Text(
+        '${session.language.localizedName} - ${session.level.localizedName}',
+      ),
       subtitle: Text(
         'Создана: ${_formatDate(session.createdAt)}',
       ),
