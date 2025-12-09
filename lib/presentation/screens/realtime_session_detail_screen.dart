@@ -40,13 +40,15 @@ class _RealtimeSessionDetailScreenState
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: CupertinoColors.systemRed.withOpacity(0.1),
+                          color: CupertinoColors.systemRed.withValues(
+                            alpha: 0.1,
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           state.error!,
                           style: const TextStyle(
-                            color: CupertinoColors.systemRed,
+                            color: Color.fromARGB(255, 40, 27, 26),
                           ),
                         ),
                       ),
@@ -77,7 +79,6 @@ class _StatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -109,7 +110,6 @@ class _AudioLevelCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -148,7 +148,6 @@ class _MessagesCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -192,7 +191,6 @@ class _ControlButtons extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        color: CupertinoColors.systemBackground,
         border: Border(
           top: BorderSide(
             color: CupertinoColors.separator,
@@ -204,7 +202,7 @@ class _ControlButtons extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (!state.isConnected && !state.isConnecting)
-            CupertinoButton.filled(
+            CupertinoButton(
               onPressed: state.session == null
                   ? null
                   : () {
