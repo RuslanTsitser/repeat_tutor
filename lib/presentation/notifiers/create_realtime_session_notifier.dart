@@ -30,12 +30,21 @@ class CreateRealtimeSessionNotifier extends ChangeNotifier {
       ),
     );
   }
+
+  void selectTeacherLanguage(SessionLanguage? language) {
+    setState(
+      _state.copyWith(
+        teacherLanguage: language,
+      ),
+    );
+  }
 }
 
 class CreateRealtimeSessionState {
   const CreateRealtimeSessionState({
     required this.selectedLanguage,
     required this.selectedLevel,
+    required this.teacherLanguage,
     required this.isLoading,
     required this.error,
   });
@@ -44,6 +53,7 @@ class CreateRealtimeSessionState {
     return const CreateRealtimeSessionState(
       selectedLanguage: SessionLanguage.english,
       selectedLevel: SessionDifficultyLevel.beginner,
+      teacherLanguage: null,
       isLoading: false,
       error: null,
     );
@@ -53,18 +63,21 @@ class CreateRealtimeSessionState {
 
   final SessionLanguage selectedLanguage;
   final SessionDifficultyLevel selectedLevel;
+  final SessionLanguage? teacherLanguage;
   final bool isLoading;
   final String? error;
 
   CreateRealtimeSessionState copyWith({
     SessionLanguage? selectedLanguage,
     SessionDifficultyLevel? selectedLevel,
+    SessionLanguage? teacherLanguage,
     bool? isLoading,
     Object? error = _errorSentinel,
   }) {
     return CreateRealtimeSessionState(
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       selectedLevel: selectedLevel ?? this.selectedLevel,
+      teacherLanguage: teacherLanguage,
       isLoading: isLoading ?? this.isLoading,
       error: identical(error, _errorSentinel) ? this.error : error as String?,
     );

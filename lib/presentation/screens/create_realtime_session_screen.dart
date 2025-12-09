@@ -41,7 +41,7 @@ class _CreateRealtimeSessionScreenState
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: CupertinoColors.systemRed.withOpacity(0.1),
+                    color: CupertinoColors.systemRed.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -103,6 +103,73 @@ class _CreateRealtimeSessionScreenState
                   }).toList(),
                 ),
               ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: CupertinoSwitch(
+                      value: formState.teacherLanguage != null,
+                      onChanged: (value) {
+                        if (value) {
+                          // Включаем режим с языком преподавателя, выбираем первый язык по умолчанию
+                          ref
+                              .read(createRealtimeSessionProvider)
+                              .selectTeacherLanguage(SessionLanguage.english);
+                        } else {
+                          // Выключаем режим
+                          ref
+                              .read(createRealtimeSessionProvider)
+                              .selectTeacherLanguage(null);
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    flex: 3,
+                    child: Text(
+                      'Режим с языком преподавателя',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (formState.teacherLanguage != null) ...[
+                const SizedBox(height: 16),
+                const Text(
+                  'Язык преподавателя',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 200,
+                  child: CupertinoPicker(
+                    key: ValueKey(formState.teacherLanguage),
+                    looping: true,
+                    itemExtent: 44,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: SessionLanguage.values.indexOf(
+                        formState.teacherLanguage!,
+                      ),
+                    ),
+                    onSelectedItemChanged: (index) {
+                      ref
+                          .read(createRealtimeSessionProvider)
+                          .selectTeacherLanguage(SessionLanguage.values[index]);
+                    },
+                    children: SessionLanguage.values.map((language) {
+                      return Center(
+                        child: Text(language.localizedName),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
               const SizedBox(height: 32),
               CupertinoButton.filled(
                 onPressed: formState.isLoading
