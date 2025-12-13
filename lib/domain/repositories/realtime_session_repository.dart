@@ -14,10 +14,4 @@ abstract interface class RealtimeSessionRepository {
 
   /// Удалить сессию
   Future<void> deleteSession(String id);
-
-  /// Обновить сессию
-  Future<void> updateSession(RealtimeSession session);
-
-  /// Получить поток всех сессий
-  Stream<List<RealtimeSession>> getSessionStream();
 }

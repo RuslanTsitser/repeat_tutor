@@ -13,10 +13,7 @@ abstract interface class RealtimeWebRTCConnection {
   void Function()? onDisconnect;
 
   /// Подключение к Realtime API через WebRTC
-  Future<void> connect({
-    required String clientSecret,
-    required String sessionId,
-  });
+  Future<void> connect(String clientSecret);
 
   /// Отключение от Realtime API через WebRTC
   void disconnect();

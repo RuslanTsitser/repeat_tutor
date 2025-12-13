@@ -79,10 +79,7 @@ class ConnectRealtimeSessionUseCase {
     );
 
     try {
-      await realtimeWebRTCConnection.connect(
-        clientSecret: session.clientSecret!,
-        sessionId: session.id,
-      );
+      await realtimeWebRTCConnection.connect(session.clientSecret!);
 
       realtimeCallNotifier.setState(
         realtimeCallNotifier.state.copyWith(

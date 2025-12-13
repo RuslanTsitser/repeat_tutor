@@ -1,10 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
+import '../gpt/gpt_service.dart';
 import 'realtime_webrtc_manager.dart';
 
 /// WebRTC менеджер для работы с OpenAI Realtime API
 class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
+  RealtimeWebRTCManagerImpl(this._gptService);
+  final GptService _gptService;
   RTCPeerConnection? _peerConnection;
   RTCDataChannel? _dataChannel;
   MediaStream? _localStream;
@@ -22,15 +24,8 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   @override
   void Function()? onDisconnect;
 
-  String _clientSecret = '';
-
   @override
-  Future<void> connect({
-    required String clientSecret,
-    required String sessionId,
-  }) async {
-    _clientSecret = clientSecret;
-
+  Future<void> connect(String clientSecret) async {
     try {
       // Создаем конфигурацию peer connection
       final config = {
@@ -53,9 +48,10 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       });
 
       if (_localStream != null) {
-        _localStream!.getAudioTracks().forEach((track) {
-          _peerConnection!.addTrack(track, _localStream!);
-        });
+        final tracks = _localStream!.getAudioTracks();
+        for (final track in tracks) {
+          await _peerConnection!.addTrack(track, _localStream!);
+        }
       }
 
       // Создаем DataChannel для событий Realtime API
@@ -94,56 +90,13 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       await _peerConnection!.setLocalDescription(offer);
 
       // Отправляем Offer в OpenAI API
-      final answerSDP = await _sendOfferToOpenAI(offer.sdp!);
+      final answerSDP = await _gptService.sendOffer(offer.sdp!, clientSecret);
 
       // Устанавливаем remote description (Answer)
       final answer = RTCSessionDescription(answerSDP, 'answer');
       await _peerConnection!.setRemoteDescription(answer);
     } catch (e) {
       onError?.call(e);
-      rethrow;
-    }
-  }
-
-  Future<String> _sendOfferToOpenAI(String sdp) async {
-    final dio = Dio();
-    final url = 'https://api.openai.com/v1/realtime/calls';
-
-    try {
-      final response = await dio.post<String>(
-        url,
-        data: sdp,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/sdp',
-            'Authorization': 'Bearer $_clientSecret',
-            'OpenAI-Beta': 'realtime=v1',
-          },
-        ),
-      );
-
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
-        // Ответ может быть в формате JSON с полем "sdp" или просто SDP текст
-        final contentType = response.headers.value('content-type') ?? '';
-
-        if (contentType.contains('application/json')) {
-          final json = response.data as Map<String, dynamic>;
-          return json['sdp'] as String;
-        } else {
-          return response.data as String;
-        }
-      } else {
-        throw Exception(
-          'HTTP ошибка: ${response.statusCode} - ${response.data}',
-        );
-      }
-    } catch (e) {
-      if (e is DioException) {
-        final errorMessage = e.response?.data?.toString() ?? e.message;
-        throw Exception('Ошибка API: $errorMessage');
-      }
       rethrow;
     }
   }

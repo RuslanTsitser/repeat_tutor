@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ab_test/ab_test_prod.dart';
 import '../core/database/app_database.dart';
+import '../core/gpt/gpt_service.dart';
+import '../core/gpt/gpt_service_impl.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_web_rtc_manager_impl.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
@@ -42,11 +44,19 @@ final openAIApiKeyProvider = Provider<String>((ref) {
   return apiKey;
 });
 
+/// Провайдер для GPT сервиса
+final gptServiceProvider = Provider<GptService>((ref) {
+  final dio = ref.watch(dioProvider);
+  final apiKey = ref.watch(openAIApiKeyProvider);
+  return GptServiceImpl(dio, apiKey);
+});
+
 /// Провайдер для RealtimeWebRTCConnection
 final realtimeWebRTCConnectionProvider = Provider<RealtimeWebRTCConnection>((
   ref,
 ) {
-  return RealtimeWebRTCManagerImpl();
+  final gptService = ref.watch(gptServiceProvider);
+  return RealtimeWebRTCManagerImpl(gptService);
 });
 
 final abTestServiceProvider = Provider<AbTestService>((ref) {
