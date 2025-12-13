@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_untyped_parameter
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -29,8 +31,7 @@ String convertOrToString(Object? data) {
 }
 
 // Плагин требует dynamic
-// ignore: avoid-dynamic
-Object _toEncodableFallback(dynamic object) {
+Object _toEncodableFallback(object) {
   return object.toString();
 }
 
