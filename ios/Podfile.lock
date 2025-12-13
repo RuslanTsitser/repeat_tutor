@@ -5,8 +5,6 @@ PODS:
   - ApphudSDK (3.6.2)
   - audio_session (0.0.1):
     - Flutter
-  - cloud_storage_sync (0.1.0):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_webrtc (1.2.0):
     - Flutter
@@ -60,7 +58,6 @@ PODS:
 DEPENDENCIES:
   - apphud (from `.symlinks/plugins/apphud/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
-  - cloud_storage_sync (from `.symlinks/plugins/cloud_storage_sync/ios`)
   - Flutter (from `Flutter`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/darwin`)
@@ -84,8 +81,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/apphud/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
-  cloud_storage_sync:
-    :path: ".symlinks/plugins/cloud_storage_sync/ios"
   Flutter:
     :path: Flutter
   flutter_webrtc:
@@ -113,7 +108,6 @@ SPEC CHECKSUMS:
   apphud: a7a8e61480b886ec89e28cd5cc35b5438d7a1cc8
   ApphudSDK: 787b3f4f41427a07f4f8d02590470f31f567cfdf
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
-  cloud_storage_sync: 744e522ee553fe620070cf2c1f2320d540e2f00e
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_webrtc: c3e21fc0dcd9d8eb246ae4d5256fcbeb2f5ecd22
   just_audio: 4e391f57b79cad2b0674030a00453ca5ce817eed
