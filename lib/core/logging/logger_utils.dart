@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import '../app_directory/app_directory.dart';
+import 'app_logger.dart';
 
 /// Get or create the session log file
 File createLogFile() {
-  final logDir = AppDirectory.logsDirectory;
+  final logDir = logsDirectory;
   final logFileName = convertDateToLogFileName(DateTime.now());
   final logFile = File('${logDir.path}/$logFileName');
   if (!logFile.existsSync()) {

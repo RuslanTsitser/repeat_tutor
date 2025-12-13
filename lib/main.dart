@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
-import 'core/app_directory/app_directory.dart';
 import 'core/localization/generated/l10n.dart';
+import 'core/logging/app_logger.dart';
 import 'core/permission_service/app_tracking_transparency_request.dart';
+import 'core/plugins/app_directory.dart';
+import 'core/plugins/app_version.dart';
+import 'core/plugins/app_wakelock.dart';
 import 'infrastructure/core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppDirectory.initialize();
+  await AppDirectory.init();
+  manageLogFiles();
+  await AppVersion.init();
   await requestAppTrackingTransparency();
-  await WakelockPlus.enable();
+  await AppWakelock.enable();
 
   runApp(const ProviderScope(child: MyApp()));
 }
