@@ -1,9 +1,9 @@
-import '../../core/gpt/instructions/tutor_instruction.dart';
-import '../../core/router/router.dart';
-import '../../domain/models/session_settings.dart';
-import '../../presentation/notifiers/create_realtime_session_notifier.dart';
-import '../../presentation/notifiers/realtime_session_notifier.dart';
-import '../repositories/realtime_session_repository.dart';
+import '../../../core/gpt/instructions/tutor_instruction.dart';
+import '../../../core/router/router.dart';
+import '../../../presentation/notifiers/create_realtime_session_notifier.dart';
+import '../../../presentation/notifiers/realtime_session_notifier.dart';
+import '../../models/session_settings.dart';
+import '../../repositories/realtime_session_repository.dart';
 
 /// Use case для создания новой Realtime-сессии.
 class CreateRealtimeSessionUseCase {

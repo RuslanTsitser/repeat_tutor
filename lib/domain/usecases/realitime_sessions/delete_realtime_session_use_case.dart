@@ -1,5 +1,5 @@
-import '../../presentation/notifiers/realtime_session_notifier.dart';
-import '../repositories/realtime_session_repository.dart';
+import '../../../presentation/notifiers/realtime_session_notifier.dart';
+import '../../repositories/realtime_session_repository.dart';
 
 /// Use case для удаления Realtime-сессии.
 class DeleteRealtimeSessionUseCase {

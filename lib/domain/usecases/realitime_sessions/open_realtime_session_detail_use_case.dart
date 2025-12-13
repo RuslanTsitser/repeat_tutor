@@ -1,6 +1,6 @@
-import '../../core/router/router.dart';
-import '../../presentation/notifiers/realtime_call_notifier.dart';
-import '../../presentation/notifiers/realtime_session_notifier.dart';
+import '../../../core/router/router.dart';
+import '../../../presentation/notifiers/realtime_call_notifier.dart';
+import '../../../presentation/notifiers/realtime_session_notifier.dart';
 
 /// Use case для открытия экрана деталей Realtime-сессии.
 class OpenRealtimeSessionDetailUseCase {

@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/usecases/connect_realtime_session_use_case.dart';
-import '../domain/usecases/create_realtime_session_use_case.dart';
-import '../domain/usecases/delete_realtime_session_use_case.dart';
-import '../domain/usecases/disconnect_realtime_session_use_case.dart';
 import '../domain/usecases/get_chats_use_case.dart';
-import '../domain/usecases/get_realtime_sessions_use_case.dart';
-import '../domain/usecases/open_realtime_session_detail_use_case.dart';
+import '../domain/usecases/realitime_sessions/connect_realtime_session_use_case.dart';
+import '../domain/usecases/realitime_sessions/create_realtime_session_use_case.dart';
+import '../domain/usecases/realitime_sessions/delete_realtime_session_use_case.dart';
+import '../domain/usecases/realitime_sessions/disconnect_realtime_session_use_case.dart';
+import '../domain/usecases/realitime_sessions/get_realtime_sessions_use_case.dart';
+import '../domain/usecases/realitime_sessions/open_realtime_session_detail_use_case.dart';
 import 'core.dart';
 import 'repositories.dart';
 import 'state_managers.dart';

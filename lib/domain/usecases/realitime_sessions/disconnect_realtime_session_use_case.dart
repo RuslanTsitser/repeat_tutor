@@ -1,5 +1,5 @@
-import '../../core/realtime/realtime_webrtc_manager.dart';
-import '../../presentation/notifiers/realtime_call_notifier.dart';
+import '../../../core/realtime/realtime_webrtc_manager.dart';
+import '../../../presentation/notifiers/realtime_call_notifier.dart';
 
 /// Use case для отключения от Realtime-сессии.
 class DisconnectRealtimeSessionUseCase {
