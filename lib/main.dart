@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/localization/generated/l10n.dart';
 import 'core/logging/app_logger.dart';
-import 'core/permission_service/app_tracking_transparency_request.dart';
+import 'core/permission/app_tracking_transparency_request.dart';
 import 'core/plugins/app_directory.dart';
 import 'core/plugins/app_version.dart';
 import 'core/plugins/app_wakelock.dart';
