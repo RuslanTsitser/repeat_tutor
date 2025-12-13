@@ -53,7 +53,6 @@ final connectRealtimeSessionUseCaseProvider = Provider((ref) {
   return ConnectRealtimeSessionUseCase(
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
-    realtimeAudioManager: ref.watch(realtimeAudioManagerProvider),
   );
 });
 
@@ -61,6 +60,5 @@ final disconnectRealtimeSessionUseCaseProvider = Provider((ref) {
   return DisconnectRealtimeSessionUseCase(
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
-    realtimeAudioManager: ref.watch(realtimeAudioManagerProvider),
   );
 });

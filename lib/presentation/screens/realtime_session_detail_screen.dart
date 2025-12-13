@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../infrastructure/state_managers.dart';
@@ -54,8 +53,6 @@ class _RealtimeSessionDetailScreenState
                       ),
                     const SizedBox(height: 16),
                     _StatusCard(state: state),
-                    const SizedBox(height: 16),
-                    _AudioLevelCard(state: state),
                   ],
                 ),
               ),
@@ -92,45 +89,6 @@ class _StatusCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text('Подключен: ${state.isConnected ? "Да" : "Нет"}'),
           Text('Запись: ${state.isRecording ? "Да" : "Нет"}'),
-          Text('Воспроизведение: ${state.isPlaying ? "Да" : "Нет"}'),
-        ],
-      ),
-    );
-  }
-}
-
-class _AudioLevelCard extends StatelessWidget {
-  const _AudioLevelCard({required this.state});
-  final RealtimeCallState state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Уровень звука',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: state.audioLevel,
-              backgroundColor: CupertinoColors.systemGrey4,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                CupertinoColors.activeGreen,
-              ),
-            ),
-          ),
         ],
       ),
     );

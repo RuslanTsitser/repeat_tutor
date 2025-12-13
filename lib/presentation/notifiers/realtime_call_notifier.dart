@@ -13,14 +13,6 @@ class RealtimeCallNotifier extends ChangeNotifier {
     _state = value;
     notifyListeners();
   }
-
-  void addReceivedMessage(String message) {
-    setState(
-      _state.copyWith(
-        receivedMessages: [..._state.receivedMessages, message],
-      ),
-    );
-  }
 }
 
 class RealtimeCallState {
@@ -29,9 +21,6 @@ class RealtimeCallState {
     required this.isConnected,
     required this.isConnecting,
     required this.isRecording,
-    required this.isPlaying,
-    required this.audioLevel,
-    required this.receivedMessages,
     required this.error,
   });
 
@@ -41,9 +30,6 @@ class RealtimeCallState {
       isConnected: false,
       isConnecting: false,
       isRecording: false,
-      isPlaying: false,
-      audioLevel: 0,
-      receivedMessages: [],
       error: null,
     );
   }
@@ -55,9 +41,6 @@ class RealtimeCallState {
   final bool isConnected;
   final bool isConnecting;
   final bool isRecording;
-  final bool isPlaying;
-  final double audioLevel;
-  final List<String> receivedMessages;
   final String? error;
 
   RealtimeCallState copyWith({
@@ -65,9 +48,6 @@ class RealtimeCallState {
     bool? isConnected,
     bool? isConnecting,
     bool? isRecording,
-    bool? isPlaying,
-    double? audioLevel,
-    List<String>? receivedMessages,
     Object? error = _errorSentinel,
   }) {
     return RealtimeCallState(
@@ -77,9 +57,6 @@ class RealtimeCallState {
       isConnected: isConnected ?? this.isConnected,
       isConnecting: isConnecting ?? this.isConnecting,
       isRecording: isRecording ?? this.isRecording,
-      isPlaying: isPlaying ?? this.isPlaying,
-      audioLevel: audioLevel ?? this.audioLevel,
-      receivedMessages: receivedMessages ?? this.receivedMessages,
       error: identical(error, _errorSentinel) ? this.error : error as String?,
     );
   }

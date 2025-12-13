@@ -26,8 +26,6 @@ class OpenRealtimeSessionDetailUseCase {
           isConnected: false,
           isConnecting: false,
           isRecording: false,
-          isPlaying: false,
-          receivedMessages: const [],
           error: null,
         ),
       );
