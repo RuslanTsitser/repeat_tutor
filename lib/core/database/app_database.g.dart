@@ -824,6 +824,15 @@ class $RealtimeSessionsTable extends RealtimeSessions
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
+  @override
+  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
+    'topic',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     sessionId,
@@ -832,6 +841,7 @@ class $RealtimeSessionsTable extends RealtimeSessions
     level,
     clientSecret,
     clientSecretExpiresAt,
+    topic,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -893,6 +903,12 @@ class $RealtimeSessionsTable extends RealtimeSessions
         ),
       );
     }
+    if (data.containsKey('topic')) {
+      context.handle(
+        _topicMeta,
+        topic.isAcceptableOrUnknown(data['topic']!, _topicMeta),
+      );
+    }
     return context;
   }
 
@@ -926,6 +942,10 @@ class $RealtimeSessionsTable extends RealtimeSessions
         DriftSqlType.dateTime,
         data['${effectivePrefix}client_secret_expires_at'],
       ),
+      topic: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}topic'],
+      ),
     );
   }
 
@@ -942,6 +962,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
   final String level;
   final String? clientSecret;
   final DateTime? clientSecretExpiresAt;
+  final String? topic;
   const RealtimeSession({
     required this.sessionId,
     required this.createdAt,
@@ -949,6 +970,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
     required this.level,
     this.clientSecret,
     this.clientSecretExpiresAt,
+    this.topic,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -965,6 +987,9 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
         clientSecretExpiresAt,
       );
     }
+    if (!nullToAbsent || topic != null) {
+      map['topic'] = Variable<String>(topic);
+    }
     return map;
   }
 
@@ -980,6 +1005,9 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
       clientSecretExpiresAt: clientSecretExpiresAt == null && nullToAbsent
           ? const Value.absent()
           : Value(clientSecretExpiresAt),
+      topic: topic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(topic),
     );
   }
 
@@ -997,6 +1025,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
       clientSecretExpiresAt: serializer.fromJson<DateTime?>(
         json['clientSecretExpiresAt'],
       ),
+      topic: serializer.fromJson<String?>(json['topic']),
     );
   }
   @override
@@ -1011,6 +1040,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
       'clientSecretExpiresAt': serializer.toJson<DateTime?>(
         clientSecretExpiresAt,
       ),
+      'topic': serializer.toJson<String?>(topic),
     };
   }
 
@@ -1021,6 +1051,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
     String? level,
     Value<String?> clientSecret = const Value.absent(),
     Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+    Value<String?> topic = const Value.absent(),
   }) => RealtimeSession(
     sessionId: sessionId ?? this.sessionId,
     createdAt: createdAt ?? this.createdAt,
@@ -1030,6 +1061,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
     clientSecretExpiresAt: clientSecretExpiresAt.present
         ? clientSecretExpiresAt.value
         : this.clientSecretExpiresAt,
+    topic: topic.present ? topic.value : this.topic,
   );
   RealtimeSession copyWithCompanion(RealtimeSessionsCompanion data) {
     return RealtimeSession(
@@ -1043,6 +1075,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
       clientSecretExpiresAt: data.clientSecretExpiresAt.present
           ? data.clientSecretExpiresAt.value
           : this.clientSecretExpiresAt,
+      topic: data.topic.present ? data.topic.value : this.topic,
     );
   }
 
@@ -1054,7 +1087,8 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
           ..write('language: $language, ')
           ..write('level: $level, ')
           ..write('clientSecret: $clientSecret, ')
-          ..write('clientSecretExpiresAt: $clientSecretExpiresAt')
+          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
+          ..write('topic: $topic')
           ..write(')'))
         .toString();
   }
@@ -1067,6 +1101,7 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
     level,
     clientSecret,
     clientSecretExpiresAt,
+    topic,
   );
   @override
   bool operator ==(Object other) =>
@@ -1077,7 +1112,8 @@ class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
           other.language == this.language &&
           other.level == this.level &&
           other.clientSecret == this.clientSecret &&
-          other.clientSecretExpiresAt == this.clientSecretExpiresAt);
+          other.clientSecretExpiresAt == this.clientSecretExpiresAt &&
+          other.topic == this.topic);
 }
 
 class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
@@ -1087,6 +1123,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
   final Value<String> level;
   final Value<String?> clientSecret;
   final Value<DateTime?> clientSecretExpiresAt;
+  final Value<String?> topic;
   final Value<int> rowid;
   const RealtimeSessionsCompanion({
     this.sessionId = const Value.absent(),
@@ -1095,6 +1132,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
     this.level = const Value.absent(),
     this.clientSecret = const Value.absent(),
     this.clientSecretExpiresAt = const Value.absent(),
+    this.topic = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   RealtimeSessionsCompanion.insert({
@@ -1104,6 +1142,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
     required String level,
     this.clientSecret = const Value.absent(),
     this.clientSecretExpiresAt = const Value.absent(),
+    this.topic = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : sessionId = Value(sessionId),
        language = Value(language),
@@ -1115,6 +1154,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
     Expression<String>? level,
     Expression<String>? clientSecret,
     Expression<DateTime>? clientSecretExpiresAt,
+    Expression<String>? topic,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1125,6 +1165,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
       if (clientSecret != null) 'client_secret': clientSecret,
       if (clientSecretExpiresAt != null)
         'client_secret_expires_at': clientSecretExpiresAt,
+      if (topic != null) 'topic': topic,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1136,6 +1177,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
     Value<String>? level,
     Value<String?>? clientSecret,
     Value<DateTime?>? clientSecretExpiresAt,
+    Value<String?>? topic,
     Value<int>? rowid,
   }) {
     return RealtimeSessionsCompanion(
@@ -1146,6 +1188,7 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
       clientSecret: clientSecret ?? this.clientSecret,
       clientSecretExpiresAt:
           clientSecretExpiresAt ?? this.clientSecretExpiresAt,
+      topic: topic ?? this.topic,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1173,6 +1216,9 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
         clientSecretExpiresAt.value,
       );
     }
+    if (topic.present) {
+      map['topic'] = Variable<String>(topic.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1188,6 +1234,288 @@ class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
           ..write('level: $level, ')
           ..write('clientSecret: $clientSecret, ')
           ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
+          ..write('topic: $topic, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SessionsDurationsTable extends SessionsDurations
+    with TableInfo<$SessionsDurationsTable, SessionsDuration> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SessionsDurationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _sessionIdMeta = const VerificationMeta(
+    'sessionId',
+  );
+  @override
+  late final GeneratedColumn<int> sessionId = GeneratedColumn<int>(
+    'session_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _durationInMillisecondsMeta =
+      const VerificationMeta('durationInMilliseconds');
+  @override
+  late final GeneratedColumn<int> durationInMilliseconds = GeneratedColumn<int>(
+    'duration_in_milliseconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    sessionId,
+    createdAt,
+    durationInMilliseconds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sessions_durations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SessionsDuration> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('session_id')) {
+      context.handle(
+        _sessionIdMeta,
+        sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('duration_in_milliseconds')) {
+      context.handle(
+        _durationInMillisecondsMeta,
+        durationInMilliseconds.isAcceptableOrUnknown(
+          data['duration_in_milliseconds']!,
+          _durationInMillisecondsMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  SessionsDuration map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SessionsDuration(
+      sessionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}session_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      durationInMilliseconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_in_milliseconds'],
+      )!,
+    );
+  }
+
+  @override
+  $SessionsDurationsTable createAlias(String alias) {
+    return $SessionsDurationsTable(attachedDatabase, alias);
+  }
+}
+
+class SessionsDuration extends DataClass
+    implements Insertable<SessionsDuration> {
+  final int sessionId;
+  final DateTime createdAt;
+  final int durationInMilliseconds;
+  const SessionsDuration({
+    required this.sessionId,
+    required this.createdAt,
+    required this.durationInMilliseconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['session_id'] = Variable<int>(sessionId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['duration_in_milliseconds'] = Variable<int>(durationInMilliseconds);
+    return map;
+  }
+
+  SessionsDurationsCompanion toCompanion(bool nullToAbsent) {
+    return SessionsDurationsCompanion(
+      sessionId: Value(sessionId),
+      createdAt: Value(createdAt),
+      durationInMilliseconds: Value(durationInMilliseconds),
+    );
+  }
+
+  factory SessionsDuration.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SessionsDuration(
+      sessionId: serializer.fromJson<int>(json['sessionId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      durationInMilliseconds: serializer.fromJson<int>(
+        json['durationInMilliseconds'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'sessionId': serializer.toJson<int>(sessionId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'durationInMilliseconds': serializer.toJson<int>(durationInMilliseconds),
+    };
+  }
+
+  SessionsDuration copyWith({
+    int? sessionId,
+    DateTime? createdAt,
+    int? durationInMilliseconds,
+  }) => SessionsDuration(
+    sessionId: sessionId ?? this.sessionId,
+    createdAt: createdAt ?? this.createdAt,
+    durationInMilliseconds:
+        durationInMilliseconds ?? this.durationInMilliseconds,
+  );
+  SessionsDuration copyWithCompanion(SessionsDurationsCompanion data) {
+    return SessionsDuration(
+      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      durationInMilliseconds: data.durationInMilliseconds.present
+          ? data.durationInMilliseconds.value
+          : this.durationInMilliseconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SessionsDuration(')
+          ..write('sessionId: $sessionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('durationInMilliseconds: $durationInMilliseconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(sessionId, createdAt, durationInMilliseconds);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SessionsDuration &&
+          other.sessionId == this.sessionId &&
+          other.createdAt == this.createdAt &&
+          other.durationInMilliseconds == this.durationInMilliseconds);
+}
+
+class SessionsDurationsCompanion extends UpdateCompanion<SessionsDuration> {
+  final Value<int> sessionId;
+  final Value<DateTime> createdAt;
+  final Value<int> durationInMilliseconds;
+  final Value<int> rowid;
+  const SessionsDurationsCompanion({
+    this.sessionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.durationInMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SessionsDurationsCompanion.insert({
+    required int sessionId,
+    this.createdAt = const Value.absent(),
+    this.durationInMilliseconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : sessionId = Value(sessionId);
+  static Insertable<SessionsDuration> custom({
+    Expression<int>? sessionId,
+    Expression<DateTime>? createdAt,
+    Expression<int>? durationInMilliseconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (sessionId != null) 'session_id': sessionId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (durationInMilliseconds != null)
+        'duration_in_milliseconds': durationInMilliseconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SessionsDurationsCompanion copyWith({
+    Value<int>? sessionId,
+    Value<DateTime>? createdAt,
+    Value<int>? durationInMilliseconds,
+    Value<int>? rowid,
+  }) {
+    return SessionsDurationsCompanion(
+      sessionId: sessionId ?? this.sessionId,
+      createdAt: createdAt ?? this.createdAt,
+      durationInMilliseconds:
+          durationInMilliseconds ?? this.durationInMilliseconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (sessionId.present) {
+      map['session_id'] = Variable<int>(sessionId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (durationInMilliseconds.present) {
+      map['duration_in_milliseconds'] = Variable<int>(
+        durationInMilliseconds.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SessionsDurationsCompanion(')
+          ..write('sessionId: $sessionId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('durationInMilliseconds: $durationInMilliseconds, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1202,9 +1530,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $RealtimeSessionsTable realtimeSessions = $RealtimeSessionsTable(
     this,
   );
+  late final $SessionsDurationsTable sessionsDurations =
+      $SessionsDurationsTable(this);
   late final ChatDao chatDao = ChatDao(this as AppDatabase);
   late final MessageDao messageDao = MessageDao(this as AppDatabase);
   late final RealtimeSessionDao realtimeSessionDao = RealtimeSessionDao(
+    this as AppDatabase,
+  );
+  late final SessionsDurationsDao sessionsDurationsDao = SessionsDurationsDao(
     this as AppDatabase,
   );
   @override
@@ -1215,6 +1548,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     chats,
     messages,
     realtimeSessions,
+    sessionsDurations,
   ];
 }
 
@@ -1620,6 +1954,7 @@ typedef $$RealtimeSessionsTableCreateCompanionBuilder =
       required String level,
       Value<String?> clientSecret,
       Value<DateTime?> clientSecretExpiresAt,
+      Value<String?> topic,
       Value<int> rowid,
     });
 typedef $$RealtimeSessionsTableUpdateCompanionBuilder =
@@ -1630,6 +1965,7 @@ typedef $$RealtimeSessionsTableUpdateCompanionBuilder =
       Value<String> level,
       Value<String?> clientSecret,
       Value<DateTime?> clientSecretExpiresAt,
+      Value<String?> topic,
       Value<int> rowid,
     });
 
@@ -1669,6 +2005,11 @@ class $$RealtimeSessionsTableFilterComposer
 
   ColumnFilters<DateTime> get clientSecretExpiresAt => $composableBuilder(
     column: $table.clientSecretExpiresAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get topic => $composableBuilder(
+    column: $table.topic,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1711,6 +2052,11 @@ class $$RealtimeSessionsTableOrderingComposer
     column: $table.clientSecretExpiresAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get topic => $composableBuilder(
+    column: $table.topic,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$RealtimeSessionsTableAnnotationComposer
@@ -1743,6 +2089,9 @@ class $$RealtimeSessionsTableAnnotationComposer
     column: $table.clientSecretExpiresAt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get topic =>
+      $composableBuilder(column: $table.topic, builder: (column) => column);
 }
 
 class $$RealtimeSessionsTableTableManager
@@ -1788,6 +2137,7 @@ class $$RealtimeSessionsTableTableManager
                 Value<String> level = const Value.absent(),
                 Value<String?> clientSecret = const Value.absent(),
                 Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<String?> topic = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RealtimeSessionsCompanion(
                 sessionId: sessionId,
@@ -1796,6 +2146,7 @@ class $$RealtimeSessionsTableTableManager
                 level: level,
                 clientSecret: clientSecret,
                 clientSecretExpiresAt: clientSecretExpiresAt,
+                topic: topic,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1806,6 +2157,7 @@ class $$RealtimeSessionsTableTableManager
                 required String level,
                 Value<String?> clientSecret = const Value.absent(),
                 Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
+                Value<String?> topic = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RealtimeSessionsCompanion.insert(
                 sessionId: sessionId,
@@ -1814,6 +2166,7 @@ class $$RealtimeSessionsTableTableManager
                 level: level,
                 clientSecret: clientSecret,
                 clientSecretExpiresAt: clientSecretExpiresAt,
+                topic: topic,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -1841,6 +2194,183 @@ typedef $$RealtimeSessionsTableProcessedTableManager =
       RealtimeSession,
       PrefetchHooks Function()
     >;
+typedef $$SessionsDurationsTableCreateCompanionBuilder =
+    SessionsDurationsCompanion Function({
+      required int sessionId,
+      Value<DateTime> createdAt,
+      Value<int> durationInMilliseconds,
+      Value<int> rowid,
+    });
+typedef $$SessionsDurationsTableUpdateCompanionBuilder =
+    SessionsDurationsCompanion Function({
+      Value<int> sessionId,
+      Value<DateTime> createdAt,
+      Value<int> durationInMilliseconds,
+      Value<int> rowid,
+    });
+
+class $$SessionsDurationsTableFilterComposer
+    extends Composer<_$AppDatabase, $SessionsDurationsTable> {
+  $$SessionsDurationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get sessionId => $composableBuilder(
+    column: $table.sessionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationInMilliseconds => $composableBuilder(
+    column: $table.durationInMilliseconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SessionsDurationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SessionsDurationsTable> {
+  $$SessionsDurationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get sessionId => $composableBuilder(
+    column: $table.sessionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationInMilliseconds => $composableBuilder(
+    column: $table.durationInMilliseconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SessionsDurationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SessionsDurationsTable> {
+  $$SessionsDurationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get sessionId =>
+      $composableBuilder(column: $table.sessionId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<int> get durationInMilliseconds => $composableBuilder(
+    column: $table.durationInMilliseconds,
+    builder: (column) => column,
+  );
+}
+
+class $$SessionsDurationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SessionsDurationsTable,
+          SessionsDuration,
+          $$SessionsDurationsTableFilterComposer,
+          $$SessionsDurationsTableOrderingComposer,
+          $$SessionsDurationsTableAnnotationComposer,
+          $$SessionsDurationsTableCreateCompanionBuilder,
+          $$SessionsDurationsTableUpdateCompanionBuilder,
+          (
+            SessionsDuration,
+            BaseReferences<
+              _$AppDatabase,
+              $SessionsDurationsTable,
+              SessionsDuration
+            >,
+          ),
+          SessionsDuration,
+          PrefetchHooks Function()
+        > {
+  $$SessionsDurationsTableTableManager(
+    _$AppDatabase db,
+    $SessionsDurationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SessionsDurationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SessionsDurationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SessionsDurationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> sessionId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> durationInMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SessionsDurationsCompanion(
+                sessionId: sessionId,
+                createdAt: createdAt,
+                durationInMilliseconds: durationInMilliseconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int sessionId,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> durationInMilliseconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SessionsDurationsCompanion.insert(
+                sessionId: sessionId,
+                createdAt: createdAt,
+                durationInMilliseconds: durationInMilliseconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SessionsDurationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SessionsDurationsTable,
+      SessionsDuration,
+      $$SessionsDurationsTableFilterComposer,
+      $$SessionsDurationsTableOrderingComposer,
+      $$SessionsDurationsTableAnnotationComposer,
+      $$SessionsDurationsTableCreateCompanionBuilder,
+      $$SessionsDurationsTableUpdateCompanionBuilder,
+      (
+        SessionsDuration,
+        BaseReferences<
+          _$AppDatabase,
+          $SessionsDurationsTable,
+          SessionsDuration
+        >,
+      ),
+      SessionsDuration,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1851,4 +2381,6 @@ class $AppDatabaseManager {
       $$MessagesTableTableManager(_db, _db.messages);
   $$RealtimeSessionsTableTableManager get realtimeSessions =>
       $$RealtimeSessionsTableTableManager(_db, _db.realtimeSessions);
+  $$SessionsDurationsTableTableManager get sessionsDurations =>
+      $$SessionsDurationsTableTableManager(_db, _db.sessionsDurations);
 }

@@ -24,7 +24,15 @@ class RealtimeSessions extends Table {
   TextColumn get level => text()();
   TextColumn get clientSecret => text().nullable()();
   DateTimeColumn get clientSecretExpiresAt => dateTime().nullable()();
+  TextColumn get topic => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {sessionId};
+}
+
+class SessionsDurations extends Table {
+  IntColumn get sessionId => integer()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  IntColumn get durationInMilliseconds =>
+      integer().withDefault(const Constant(0))();
 }
