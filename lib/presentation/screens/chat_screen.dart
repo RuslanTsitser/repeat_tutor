@@ -338,24 +338,46 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               ),
             ),
             const SizedBox(width: 8),
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: _sendMessage,
-              minimumSize: const Size(0, 0),
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  color: CupertinoColors.systemBlue,
-                  shape: BoxShape.circle,
+            if (ref.watch(messageProvider).state.isAudioRecordingMode)
+              CupertinoButton(
+                onLongPress: ref.read(toggleAudioModeUseCaseProvider).execute,
+                padding: EdgeInsets.zero,
+                onPressed: () {},
+                minimumSize: const Size(0, 0),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: CupertinoColors.systemBlue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    CupertinoIcons.mic,
+                    color: CupertinoColors.white,
+                    size: 18,
+                  ),
                 ),
-                child: const Icon(
-                  CupertinoIcons.arrow_up,
-                  color: CupertinoColors.white,
-                  size: 18,
+              )
+            else
+              CupertinoButton(
+                onLongPress: ref.read(toggleAudioModeUseCaseProvider).execute,
+                padding: EdgeInsets.zero,
+                onPressed: _sendMessage,
+                minimumSize: const Size(0, 0),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: CupertinoColors.systemBlue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    CupertinoIcons.arrow_up,
+                    color: CupertinoColors.white,
+                    size: 18,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

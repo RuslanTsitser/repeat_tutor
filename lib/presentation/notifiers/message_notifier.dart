@@ -56,6 +56,8 @@ class MessagesState {
       messages: [],
       isLoading: false,
       error: null,
+      isAudioRecordingMode: false,
+      isSpeechRecording: false,
     );
   }
   const MessagesState({
@@ -63,23 +65,31 @@ class MessagesState {
     required this.messages,
     required this.isLoading,
     required this.error,
+    required this.isAudioRecordingMode,
+    required this.isSpeechRecording,
   });
   final Chat chat;
   final List<Message> messages;
   final bool isLoading;
   final String? error;
+  final bool isAudioRecordingMode;
+  final bool isSpeechRecording;
 
   MessagesState copyWith({
     Chat? chat,
     List<Message>? messages,
     bool? isLoading,
     String? error,
+    bool? isAudioRecordingMode,
+    bool? isSpeechRecording,
   }) {
     return MessagesState(
       chat: chat ?? this.chat,
       messages: messages ?? this.messages,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      isAudioRecordingMode: isAudioRecordingMode ?? this.isAudioRecordingMode,
+      isSpeechRecording: isSpeechRecording ?? this.isSpeechRecording,
     );
   }
 }

@@ -5,6 +5,7 @@ import '../domain/usecases/chats/create_chat_use_case.dart';
 import '../domain/usecases/chats/delete_chat_use_case.dart';
 import '../domain/usecases/chats/get_chats_use_case.dart';
 import '../domain/usecases/chats/open_chat_use_case.dart';
+import '../domain/usecases/chats/toggle_audio_mode_use_case.dart';
 import '../domain/usecases/realitime_sessions/connect_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/create_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/delete_realtime_session_use_case.dart';
@@ -91,6 +92,12 @@ final deleteChatUseCaseProvider = Provider((ref) {
 final addMessageUseCaseProvider = Provider((ref) {
   return AddMessageUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
+    messageNotifier: ref.watch(messageProvider),
+  );
+});
+
+final toggleAudioModeUseCaseProvider = Provider((ref) {
+  return ToggleAudioModeUseCase(
     messageNotifier: ref.watch(messageProvider),
   );
 });
