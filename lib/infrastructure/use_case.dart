@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/usecases/chats/create_chat_use_case.dart';
+import '../domain/usecases/chats/delete_chat_use_case.dart';
 import '../domain/usecases/chats/get_chats_use_case.dart';
+import '../domain/usecases/chats/open_chat_use_case.dart';
 import '../domain/usecases/realitime_sessions/connect_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/create_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/delete_realtime_session_use_case.dart';
@@ -60,5 +63,26 @@ final disconnectRealtimeSessionUseCaseProvider = Provider((ref) {
   return DisconnectRealtimeSessionUseCase(
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
+  );
+});
+
+final openChatUseCaseProvider = Provider((ref) {
+  return OpenChatUseCase(
+    chatRepository: ref.watch(chatRepositoryProvider),
+    messageNotifier: ref.watch(messageProvider),
+    appRouter: ref.watch(routerProvider),
+  );
+});
+
+final createChatUseCaseProvider = Provider((ref) {
+  return CreateChatUseCase(
+    chatRepository: ref.watch(chatRepositoryProvider),
+    router: ref.watch(routerProvider),
+  );
+});
+
+final deleteChatUseCaseProvider = Provider((ref) {
+  return DeleteChatUseCase(
+    chatRepository: ref.watch(chatRepositoryProvider),
   );
 });
