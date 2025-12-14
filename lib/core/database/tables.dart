@@ -5,6 +5,7 @@ class Chats extends Table {
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   TextColumn get language => text()();
   TextColumn get level => text()();
+  TextColumn get teacherLanguage => text().nullable()();
   TextColumn get topic => text()();
 }
 
@@ -13,7 +14,7 @@ class Messages extends Table {
   IntColumn get chatId => integer()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   TextColumn get message => text()();
-  BoolColumn get isMe => boolean()();
+  TextColumn get gptResponseId => text().nullable()();
   TextColumn get audioPath => text().nullable()();
 }
 

@@ -21,13 +21,13 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
   /// Добавить новое сообщение
   Future<void> insertMessage({
     required String message,
-    required bool isMe,
+    required String? gptResponseId,
     required int chatId,
     String? audioPath,
   }) => into(messages).insert(
     MessagesCompanion(
       message: Value(message),
-      isMe: Value(isMe),
+      gptResponseId: Value(gptResponseId),
       chatId: Value(chatId),
       audioPath: Value(audioPath),
     ),
