@@ -48,9 +48,11 @@ class __BodyState extends ConsumerState<_Body> {
     // Скролл до конца после первой загрузки сообщений
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent,
-        );
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(
+            _scrollController.position.maxScrollExtent,
+          );
+        }
       });
     });
   }
