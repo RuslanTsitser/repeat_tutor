@@ -132,15 +132,14 @@ class GptServiceImpl implements GptService {
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300) {
-        throw Exception(
-          'HTTP ошибка: ${response.statusCode} - ${response.data}',
+        return ConversationMessage(
+          // ignore: avoid_dynamic_calls
+          text: response.data?['output'][0]['content'][0]['text'] as String,
+          id: response.data?['id'] as String,
         );
       }
-
-      return ConversationMessage(
-        // ignore: avoid_dynamic_calls
-        text: response.data?['output'][0]['content'][0]['text'] as String,
-        id: response.data?['id'] as String,
+      throw Exception(
+        'HTTP ошибка: ${response.statusCode} - ${response.data}',
       );
     } catch (e) {
       if (e is DioException) {
