@@ -1,5 +1,5 @@
-import '../../presentation/notifiers/chat_notifier.dart';
-import '../repositories/chat_repository.dart';
+import '../../../presentation/notifiers/chat_notifier.dart';
+import '../../repositories/chat_repository.dart';
 
 class GetChatsUseCase {
   const GetChatsUseCase({
@@ -11,6 +11,8 @@ class GetChatsUseCase {
 
   Future<void> execute() async {
     if (chatNotifier.state.isLoading) return;
+    chatNotifier.unsubscribeFromChats();
+    chatNotifier.subscribeToChats(chatRepository.getChatsStream());
     try {
       chatNotifier.setState(
         chatNotifier.state.copyWith(
