@@ -15,25 +15,86 @@ class ChatScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Чат'),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: const CupertinoPageScaffold(
+        resizeToAvoidBottomInset: true,
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Чат'),
+        ),
+        child: _Body(),
       ),
-      child: _Body(),
     );
   }
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends ConsumerStatefulWidget {
   const _Body();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_Body> createState() => __BodyState();
+}
+
+class __BodyState extends ConsumerState<_Body> {
+  final ScrollController _scrollController = ScrollController();
+  int _previousMessageCount = 0;
+  bool _isInitialLoad = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Скролл до конца после первой загрузки сообщений
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final messageNotifier = ref.watch(messageProvider);
     final MessagesState state = messageNotifier.state;
     final List<Message> messages = state.messages;
     final bool isLoading = state.isLoading;
     final String? error = state.error;
+
+    // Скролл до конца при первой загрузке сообщений
+    if (!isLoading && _isInitialLoad && messages.isNotEmpty) {
+      _isInitialLoad = false;
+      _previousMessageCount = messages.length;
+      _scrollToBottom();
+    }
+
+    // Автоматическая прокрутка при появлении новых сообщений
+    if (messages.length != _previousMessageCount) {
+      _previousMessageCount = messages.length;
+      if (messages.isNotEmpty) {
+        _scrollToBottom();
+      }
+    }
 
     if (isLoading) {
       return const Center(child: CupertinoActivityIndicator());
@@ -51,13 +112,14 @@ class _Body extends ConsumerWidget {
           child: messages.isEmpty
               ? const Center(child: Text('Нет сообщений'))
               : ListView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: messages.length,
                   itemBuilder: (context, index) =>
                       _MessageBubble(message: messages[index]),
                 ),
         ),
-        const _MessageInput(),
+        _MessageInput(scrollController: _scrollController),
       ],
     );
   }
@@ -157,7 +219,9 @@ class _MessageBubble extends StatelessWidget {
 }
 
 class _MessageInput extends ConsumerStatefulWidget {
-  const _MessageInput();
+  const _MessageInput({required this.scrollController});
+
+  final ScrollController scrollController;
 
   @override
   ConsumerState<_MessageInput> createState() => __MessageInputState();
@@ -166,6 +230,20 @@ class _MessageInput extends ConsumerStatefulWidget {
 class __MessageInputState extends ConsumerState<_MessageInput> {
   final TextEditingController messageController = TextEditingController();
   final FocusNode focusNode = FocusNode();
+  double _previousKeyboardHeight = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Скролл до конца при фокусе на текстовое поле (с задержкой для появления клавиатуры)
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          _scrollToBottom();
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -174,19 +252,48 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
     super.dispose();
   }
 
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.scrollController.hasClients) {
+        widget.scrollController.animateTo(
+          widget.scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   void _sendMessage() {
     final text = messageController.text.trim();
     if (text.isNotEmpty) {
       ref.read(addMessageUseCaseProvider).execute(text);
       messageController.clear();
-      focusNode.unfocus();
+      // Клавиатура не скрывается при отправке сообщения
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+
+    // Скролл при изменении высоты клавиатуры
+    if (bottomPadding != _previousKeyboardHeight && bottomPadding > 0) {
+      _previousKeyboardHeight = bottomPadding;
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _scrollToBottom();
+      });
+    } else if (bottomPadding == 0) {
+      _previousKeyboardHeight = 0;
+    }
+
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.only(
+        left: 8,
+        right: 8,
+        top: 8,
+        bottom: 8 + bottomPadding,
+      ),
       decoration: const BoxDecoration(
         color: CupertinoColors.systemGrey6,
         border: Border(
@@ -208,6 +315,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 placeholder: 'Сообщение',
                 minLines: 1,
                 maxLines: 5,
+                textCapitalization: TextCapitalization.sentences,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 8,
@@ -226,12 +334,12 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
             const SizedBox(width: 8),
             CupertinoButton(
               padding: EdgeInsets.zero,
-              minSize: 0,
               onPressed: _sendMessage,
+              minimumSize: const Size(0, 0),
               child: Container(
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: CupertinoColors.systemBlue,
                   shape: BoxShape.circle,
                 ),
