@@ -1,4 +1,5 @@
 import '../models/chat.dart';
+import '../models/message.dart';
 
 /// Интерфейс репозитория для работы с чатами
 abstract interface class ChatRepository {
@@ -17,4 +18,18 @@ abstract interface class ChatRepository {
 
   /// Получить поток всех чатов
   Stream<List<Chat>> getChatsStream();
+
+  /// Получить сообщения для чата
+  Future<List<Message>> getMessages(int chatId);
+
+  /// Получить поток всех сообщений для чата
+  Stream<List<Message>> getMessagesStream(int chatId);
+
+  /// Добавить новое сообщение
+  Future<void> addMessage({
+    required String message,
+    required String? gptResponseId,
+    required Chat chat,
+    String? audioPath,
+  });
 }
