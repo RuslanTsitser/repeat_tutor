@@ -111,12 +111,16 @@ class __BodyState extends ConsumerState<_Body> {
         Expanded(
           child: messages.isEmpty
               ? const Center(child: Text('Нет сообщений'))
-              : ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) =>
-                      _MessageBubble(message: messages[index]),
+              : SafeArea(
+                  top: true,
+                  bottom: false,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) =>
+                        _MessageBubble(message: messages[index]),
+                  ),
                 ),
         ),
         _MessageInput(scrollController: _scrollController),
