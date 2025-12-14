@@ -2,19 +2,53 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/models/session_difficulty_level.dart';
+import '../../domain/models/session_language.dart';
 import '../../infrastructure/core.dart';
 
+class CreateChatEntity {
+  const CreateChatEntity({
+    required this.language,
+    required this.level,
+    required this.teacherLanguage,
+    required this.topic,
+  });
+  final SessionLanguage language;
+  final SessionDifficultyLevel level;
+  final SessionLanguage? teacherLanguage;
+  final String topic;
+
+  CreateChatEntity copyWith({
+    SessionLanguage? language,
+    SessionDifficultyLevel? level,
+    SessionLanguage? teacherLanguage,
+    String? topic,
+  }) {
+    return CreateChatEntity(
+      language: language ?? this.language,
+      level: level ?? this.level,
+      teacherLanguage: teacherLanguage ?? this.teacherLanguage,
+      topic: topic ?? this.topic,
+    );
+  }
+}
+
+final createChatEntityProvider = StateProvider.autoDispose((ref) {
+  return const CreateChatEntity(
+    language: SessionLanguage.english,
+    level: SessionDifficultyLevel.beginner,
+    teacherLanguage: null,
+    topic: 'Разговор о путешествиях',
+  );
+});
+
 @RoutePage()
-class CreateChatScreen extends ConsumerStatefulWidget {
+class CreateChatScreen extends ConsumerWidget {
   const CreateChatScreen({super.key});
 
   @override
-  ConsumerState<CreateChatScreen> createState() => _CreateChatScreenState();
-}
-
-class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final entity = ref.watch(createChatEntityProvider);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Новый чат'),
@@ -25,102 +59,130 @@ class _CreateChatScreenState extends ConsumerState<CreateChatScreen> {
         ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () {
-            // TODO: Implement onCreateChat
-          },
+          onPressed: () => ref.read(routerProvider).pop(entity),
           child: const Text('Создать'),
         ),
       ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                CupertinoFormSection(
-                  header: const Text('Информация о чате'),
-                  children: [
-                    CupertinoFormRow(
-                      prefix: const Text('Название'),
-                      child: CupertinoTextFormFieldRow(
-                        // controller: _nameController,
-                        placeholder: 'Введите название чата',
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Название чата обязательно';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    CupertinoFormRow(
-                      prefix: const Text('Тема'),
-                      child: CupertinoTextFormFieldRow(
-                        // controller: TextEditingController(),
-                        placeholder: 'Разговор о путешествиях',
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Тема обязательна';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    CupertinoFormRow(
-                      prefix: const Text('Язык'),
-                      child: CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          // TODO: Implement onShowLanguageSheet
-                        },
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('LocalizedName'),
-                            Icon(
-                              CupertinoIcons.chevron_down,
-                              size: 16,
-                              color: CupertinoColors.systemGrey,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    CupertinoFormRow(
-                      prefix: const Text('Сложность'),
-                      child: CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          // TODO: Implement onShowLevelSheet
-                        },
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('LocalizedName'),
-                            Icon(
-                              CupertinoIcons.chevron_down,
-                              size: 16,
-                              color: CupertinoColors.systemGrey,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+          child: ListView(
+            children: [
+              const SizedBox(height: 20),
+              CupertinoTextFormFieldRow(
+                initialValue: entity.topic,
+                placeholder: 'Разговор о путешествиях',
+                padding: EdgeInsets.zero,
+                onChanged: (value) =>
+                    ref.read(createChatEntityProvider).copyWith(topic: value),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Тема обязательна';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 200,
+                child: CupertinoPicker(
+                  looping: true,
+                  itemExtent: 44,
+                  onSelectedItemChanged: (index) => ref
+                      .read(createChatEntityProvider)
+                      .copyWith(language: SessionLanguage.values[index]),
+                  children: SessionLanguage.values.map((language) {
+                    return Center(
+                      child: Text(language.localizedName),
+                    );
+                  }).toList(),
                 ),
-                const SizedBox(height: 20),
+              ),
+              SizedBox(
+                height: 200,
+                child: CupertinoPicker(
+                  itemExtent: 44,
+                  onSelectedItemChanged: (index) => ref
+                      .read(createChatEntityProvider)
+                      .copyWith(
+                        level: SessionDifficultyLevel.values[index],
+                      ),
+                  children: SessionDifficultyLevel.values.map((level) {
+                    return Center(
+                      child: Text(level.localizedName),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: CupertinoSwitch(
+                      value: entity.teacherLanguage != null,
+                      onChanged: (value) {
+                        if (value) {
+                          // Включаем режим с языком преподавателя, выбираем первый язык по умолчанию
+                          ref
+                              .read(createChatEntityProvider)
+                              .copyWith(
+                                teacherLanguage: SessionLanguage.english,
+                              );
+                        } else {
+                          // Выключаем режим
+                          ref
+                              .read(createChatEntityProvider)
+                              .copyWith(teacherLanguage: null);
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    flex: 3,
+                    child: Text(
+                      'Режим с языком преподавателя',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (entity.teacherLanguage != null) ...[
+                const SizedBox(height: 16),
                 const Text(
-                  'Создайте новый чат для общения с репетитором или для изучения материала.',
+                  'Язык преподавателя',
                   style: TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 200,
+                  child: CupertinoPicker(
+                    looping: true,
+                    itemExtent: 44,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: SessionLanguage.values.indexOf(
+                        entity.teacherLanguage!,
+                      ),
+                    ),
+                    onSelectedItemChanged: (index) => ref
+                        .read(createChatEntityProvider)
+                        .copyWith(
+                          teacherLanguage: SessionLanguage.values[index],
+                        ),
+                    children: SessionLanguage.values.map((language) {
+                      return Center(
+                        child: Text(language.localizedName),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
-            ),
+            ],
           ),
         ),
       ),

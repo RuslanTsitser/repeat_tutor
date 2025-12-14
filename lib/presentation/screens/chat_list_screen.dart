@@ -32,9 +32,7 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
         middle: const Text('Чаты'),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () {
-            // TODO: Implement onAddChatPressed
-          },
+          onPressed: () => ref.read(createChatUseCaseProvider).execute(),
           child: const Icon(CupertinoIcons.add),
         ),
       ),
@@ -117,12 +115,9 @@ class _Body extends ConsumerWidget {
         final chat = chats[index];
         return _ChatListItem(
           chat: chat,
-          onTap: () {
-            // TODO: Implement onOpenChatPressed
-          },
-          onDeletePressed: () {
-            // TODO: Implement onDeleteChatPressed
-          },
+          onTap: () => ref.read(openChatUseCaseProvider).execute(chat.chatId),
+          onDeletePressed: () =>
+              ref.read(deleteChatUseCaseProvider).execute(chat.chatId),
         );
       },
     );
@@ -146,7 +141,7 @@ class _ChatListItem extends StatelessWidget {
         radius: 20,
         backgroundColor: CupertinoColors.systemGrey4,
         child: Text(
-          chat.topic[0].toUpperCase(),
+          chat.topic.isEmpty ? '?' : chat.topic[0].toUpperCase(),
           style: const TextStyle(
             color: CupertinoColors.systemGrey,
             fontWeight: FontWeight.w600,
