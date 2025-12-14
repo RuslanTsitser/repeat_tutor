@@ -100,6 +100,8 @@ final toggleAudioModeUseCaseProvider = Provider((ref) {
   return ToggleAudioModeUseCase(
     messageNotifier: ref.watch(messageProvider),
     speechRecognizer: ref.watch(speechRecognizerProvider),
+    audioService: ref.watch(audioServiceProvider),
+    gptService: ref.watch(gptServiceProvider),
     addMessageUseCase: ref.watch(addMessageUseCaseProvider),
   );
 });

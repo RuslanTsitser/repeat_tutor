@@ -354,7 +354,17 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                   }
                 },
                 minimumSize: const Size(0, 0),
-                child: (ref.watch(messageProvider).state.isSpeechRecording)
+                child: ref.watch(messageProvider).state.isUploading
+                    ? Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          color: CupertinoColors.systemBlue,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const CupertinoActivityIndicator(),
+                      )
+                    : (ref.watch(messageProvider).state.isSpeechRecording)
                     ? Container(
                         width: 36,
                         height: 36,

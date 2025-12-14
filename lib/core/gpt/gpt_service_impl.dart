@@ -149,4 +149,38 @@ class GptServiceImpl implements GptService {
       rethrow;
     }
   }
+
+  @override
+  Future<String> sendAudio(String filePath) async {
+    const url = 'https://api.openai.com/v1/audio/transcriptions';
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        url,
+        data: FormData.fromMap({
+          'model': 'gpt-4o-mini-transcribe',
+          'file': await MultipartFile.fromFile(filePath),
+        }),
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $_apiKey',
+          },
+        ),
+      );
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        return response.data?['text'] as String;
+      }
+      throw Exception(
+        'HTTP ошибка: ${response.statusCode} - ${response.data}',
+      );
+    } on Exception catch (e) {
+      if (e is DioException) {
+        final errorMessage = e.response?.data?.toString() ?? e.message;
+        throw Exception('Ошибка API: $errorMessage');
+      }
+      rethrow;
+    }
+  }
 }

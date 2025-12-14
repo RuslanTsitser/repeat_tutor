@@ -13,6 +13,9 @@ abstract interface class GptService {
     String? text,
     String? audioBase64,
   });
+
+  /// Отправляет аудио в OpenAI API
+  Future<String> sendAudio(String filePath);
 }
 
 class CreateSessionResult {

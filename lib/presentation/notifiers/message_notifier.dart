@@ -58,6 +58,7 @@ class MessagesState {
       error: null,
       isAudioRecordingMode: false,
       isSpeechRecording: false,
+      isUploading: false,
     );
   }
   const MessagesState({
@@ -67,6 +68,7 @@ class MessagesState {
     required this.error,
     required this.isAudioRecordingMode,
     required this.isSpeechRecording,
+    required this.isUploading,
   });
   final Chat chat;
   final List<Message> messages;
@@ -74,6 +76,7 @@ class MessagesState {
   final String? error;
   final bool isAudioRecordingMode;
   final bool isSpeechRecording;
+  final bool isUploading;
 
   MessagesState copyWith({
     Chat? chat,
@@ -82,6 +85,7 @@ class MessagesState {
     String? error,
     bool? isAudioRecordingMode,
     bool? isSpeechRecording,
+    bool? isUploading,
   }) {
     return MessagesState(
       chat: chat ?? this.chat,
@@ -90,6 +94,7 @@ class MessagesState {
       error: error ?? this.error,
       isAudioRecordingMode: isAudioRecordingMode ?? this.isAudioRecordingMode,
       isSpeechRecording: isSpeechRecording ?? this.isSpeechRecording,
+      isUploading: isUploading ?? this.isUploading,
     );
   }
 }

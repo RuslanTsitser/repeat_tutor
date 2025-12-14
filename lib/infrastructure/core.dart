@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ab_test/ab_test_prod.dart';
+import '../core/audio/audio_service.dart';
+import '../core/audio/audio_service_impl.dart';
 import '../core/database/app_database.dart';
 import '../core/gpt/gpt_service.dart';
 import '../core/gpt/gpt_service_impl.dart';
@@ -78,4 +80,8 @@ final initializeServiceProvider = FutureProvider<void>((ref) async {
 
 final speechRecognizerProvider = Provider<SpeechRecognizer>((ref) {
   return SpeechRecognizerImpl();
+});
+
+final audioServiceProvider = Provider<AudioService>((ref) {
+  return AudioServiceImpl();
 });
