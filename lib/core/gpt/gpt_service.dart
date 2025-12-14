@@ -5,6 +5,14 @@ abstract interface class GptService {
   /// Отправляет Offer в OpenAI API
   /// Возвращает Answer в формате SDP
   Future<String> sendOffer(String offer, String clientSecret);
+
+  /// Отправляет сообщение в OpenAI API
+  Future<ConversationMessage> sendMessage({
+    required String systemPrompt,
+    String? previousMessageId,
+    String? text,
+    String? audioBase64,
+  });
 }
 
 class CreateSessionResult {
@@ -16,4 +24,13 @@ class CreateSessionResult {
   final String sessionId;
   final String clientSecret;
   final DateTime clientSecretExpiresAt;
+}
+
+class ConversationMessage {
+  const ConversationMessage({
+    required this.text,
+    required this.id,
+  });
+  final String text;
+  final String id;
 }

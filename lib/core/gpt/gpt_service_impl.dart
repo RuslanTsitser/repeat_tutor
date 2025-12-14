@@ -89,4 +89,65 @@ class GptServiceImpl implements GptService {
       rethrow;
     }
   }
+
+  @override
+  Future<ConversationMessage> sendMessage({
+    required String systemPrompt,
+    String? previousMessageId,
+    String? text,
+    String? audioBase64,
+  }) async {
+    const url = 'https://api.openai.com/v1/responses';
+
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        url,
+        data: {
+          'model': 'gpt-4.1',
+          'instructions': systemPrompt,
+          if (previousMessageId != null)
+            'previous_response_id': previousMessageId,
+          'input': [
+            {
+              'role': 'user',
+              'content': [
+                if (text != null) {'type': 'input_text', 'text': text},
+                if (audioBase64 != null)
+                  {
+                    'type': 'input_file',
+                    'file_data': audioBase64,
+                  },
+              ],
+            },
+          ],
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $_apiKey',
+          },
+        ),
+      );
+
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        throw Exception(
+          'HTTP ошибка: ${response.statusCode} - ${response.data}',
+        );
+      }
+
+      return ConversationMessage(
+        // ignore: avoid_dynamic_calls
+        text: response.data?['output'][0]['content'][0]['text'] as String,
+        id: response.data?['id'] as String,
+      );
+    } catch (e) {
+      if (e is DioException) {
+        final errorMessage = e.response?.data?.toString() ?? e.message;
+        throw Exception('Ошибка API: $errorMessage');
+      }
+      rethrow;
+    }
+  }
 }
