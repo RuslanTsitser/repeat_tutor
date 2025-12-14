@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../../domain/models/chat.dart';
@@ -6,6 +8,19 @@ import '../../domain/models/chat.dart';
 /// Хранит только состояние UI, не содержит бизнес-логику
 class ChatNotifier extends ChangeNotifier {
   ChatNotifier();
+
+  StreamSubscription<List<Chat>>? _subscription;
+
+  void subscribeToChats(Stream<List<Chat>> stream) {
+    _subscription = stream.listen((chats) {
+      setState(state.copyWith(chats: chats));
+    });
+  }
+
+  void unsubscribeFromChats() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
 
   ChatsState _state = ChatsState.initial();
   ChatsState get state => _state;

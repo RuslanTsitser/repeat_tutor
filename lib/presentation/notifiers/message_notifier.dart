@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../domain/models/message.dart';
@@ -6,6 +8,19 @@ import '../../domain/models/message.dart';
 /// Хранит только состояние UI, не содержит бизнес-логику
 class MessageNotifier extends ChangeNotifier {
   MessageNotifier();
+
+  StreamSubscription<List<Message>>? _subscription;
+
+  void subscribeToMessages(Stream<List<Message>> stream) {
+    _subscription = stream.listen((messages) {
+      setState(state.copyWith(messages: messages));
+    });
+  }
+
+  void unsubscribeFromMessages() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
 
   MessagesState _state = MessagesState.initial();
   MessagesState get state => _state;
