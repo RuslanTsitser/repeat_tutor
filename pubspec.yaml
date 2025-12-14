@@ -33,6 +33,7 @@ dependencies:
   # Audio
   just_audio: ^0.10.5
   record: ^6.1.2
+  speech_to_text: ^7.3.0
 
   # REST API
   dio: ^5.9.0

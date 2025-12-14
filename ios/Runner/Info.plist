@@ -32,6 +32,8 @@
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Приложению нужен доступ к микрофону для записи голоса в Realtime API</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Приложению нужен доступ к микрофону для распознавания голоса</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string></string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
