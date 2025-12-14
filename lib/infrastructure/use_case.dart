@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/usecases/chats/add_message_use_case.dart';
 import '../domain/usecases/chats/create_chat_use_case.dart';
 import '../domain/usecases/chats/delete_chat_use_case.dart';
 import '../domain/usecases/chats/get_chats_use_case.dart';
@@ -84,5 +85,12 @@ final createChatUseCaseProvider = Provider((ref) {
 final deleteChatUseCaseProvider = Provider((ref) {
   return DeleteChatUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
+  );
+});
+
+final addMessageUseCaseProvider = Provider((ref) {
+  return AddMessageUseCase(
+    chatRepository: ref.watch(chatRepositoryProvider),
+    messageNotifier: ref.watch(messageProvider),
   );
 });
