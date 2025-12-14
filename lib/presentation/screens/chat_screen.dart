@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../domain/models/message.dart';
 import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 import '../notifiers/message_notifier.dart';
 
 @RoutePage()
@@ -44,18 +45,18 @@ class _Body extends ConsumerWidget {
       );
     }
 
-    if (messages.isEmpty) {
-      return const Center(child: Text('Нет сообщений'));
-    }
-
     return Stack(
       children: [
-        ListView.builder(
-          itemCount: messages.length,
-          itemBuilder: (context, index) =>
-              _MessageBubble(message: messages[index]),
-        ),
-        const _MessageInput(),
+        if (messages.isEmpty)
+          const Center(child: Text('Нет сообщений'))
+        else
+          ListView.builder(
+            padding: const EdgeInsets.only(bottom: 108),
+            itemCount: messages.length,
+            itemBuilder: (context, index) =>
+                _MessageBubble(message: messages[index]),
+          ),
+        const Align(alignment: Alignment.bottomCenter, child: _MessageInput()),
       ],
     );
   }
@@ -154,12 +155,26 @@ class _MessageBubble extends StatelessWidget {
   }
 }
 
-class _MessageInput extends StatelessWidget {
+class _MessageInput extends ConsumerStatefulWidget {
   const _MessageInput();
+
+  @override
+  ConsumerState<_MessageInput> createState() => __MessageInputState();
+}
+
+class __MessageInputState extends ConsumerState<_MessageInput> {
+  final TextEditingController messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100,
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
         color: CupertinoColors.systemGrey6,
@@ -170,12 +185,13 @@ class _MessageInput extends StatelessWidget {
           ),
         ),
       ),
-      child: Column(
-        children: [
-          CupertinoTextFormFieldRow(
-            placeholder: 'Сообщение',
-          ),
-        ],
+      child: CupertinoTextFormFieldRow(
+        controller: messageController,
+        placeholder: 'Сообщение',
+        onFieldSubmitted: (value) {
+          ref.read(addMessageUseCaseProvider).execute(value);
+          messageController.clear();
+        },
       ),
     );
   }

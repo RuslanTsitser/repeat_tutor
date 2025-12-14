@@ -77,7 +77,7 @@ class _Body extends ConsumerWidget {
             const SizedBox(height: 16),
             CupertinoButton.filled(
               onPressed: () {
-                // TODO: Implement onLoadChatsPressed
+                ref.read(getChatsUseCaseProvider).execute();
               },
               child: const Text('Повторить'),
             ),
@@ -115,7 +115,7 @@ class _Body extends ConsumerWidget {
         final chat = chats[index];
         return _ChatListItem(
           chat: chat,
-          onTap: () => ref.read(openChatUseCaseProvider).execute(chat.chatId),
+          onTap: () => ref.read(openChatUseCaseProvider).execute(chat),
           onDeletePressed: () =>
               ref.read(deleteChatUseCaseProvider).execute(chat.chatId),
         );

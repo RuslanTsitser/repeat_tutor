@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../domain/models/chat.dart';
 import '../../domain/models/message.dart';
+import '../../domain/models/session_difficulty_level.dart';
+import '../../domain/models/session_language.dart';
 
 /// Нотатор для управления состоянием сообщений
 /// Хранит только состояние UI, не содержит бизнес-логику
@@ -41,32 +44,39 @@ class MessageNotifier extends ChangeNotifier {
 
 class MessagesState {
   factory MessagesState.initial() {
-    return const MessagesState(
-      chatId: 0,
+    return MessagesState(
+      chat: Chat(
+        chatId: 0,
+        createdAt: DateTime.now(),
+        language: SessionLanguage.english,
+        level: SessionDifficultyLevel.beginner,
+        teacherLanguage: SessionLanguage.english,
+        topic: '',
+      ),
       messages: [],
       isLoading: false,
       error: null,
     );
   }
   const MessagesState({
-    required this.chatId,
+    required this.chat,
     required this.messages,
     required this.isLoading,
     required this.error,
   });
-  final int chatId;
+  final Chat chat;
   final List<Message> messages;
   final bool isLoading;
   final String? error;
 
   MessagesState copyWith({
-    int? chatId,
+    Chat? chat,
     List<Message>? messages,
     bool? isLoading,
     String? error,
   }) {
     return MessagesState(
-      chatId: chatId ?? this.chatId,
+      chat: chat ?? this.chat,
       messages: messages ?? this.messages,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
