@@ -33,7 +33,7 @@ class CreateChatEntity {
   }
 }
 
-final createChatEntityProvider = StateProvider.autoDispose((ref) {
+final createChatEntityProvider = StateProvider((ref) {
   return const CreateChatEntity(
     language: SessionLanguage.english,
     level: SessionDifficultyLevel.beginner,
@@ -49,6 +49,7 @@ class CreateChatScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final entity = ref.watch(createChatEntityProvider);
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Новый чат'),
@@ -74,7 +75,10 @@ class CreateChatScreen extends ConsumerWidget {
                 placeholder: 'Разговор о путешествиях',
                 padding: EdgeInsets.zero,
                 onChanged: (value) =>
-                    ref.read(createChatEntityProvider).copyWith(topic: value),
+                    ref.read(createChatEntityProvider.notifier).state = ref
+                        .read(createChatEntityProvider.notifier)
+                        .state
+                        .copyWith(topic: value),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Тема обязательна';
@@ -83,14 +87,23 @@ class CreateChatScreen extends ConsumerWidget {
                 },
               ),
               const SizedBox(height: 20),
+              const Text(
+                'Язык',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(
-                height: 200,
+                height: 150,
                 child: CupertinoPicker(
                   looping: true,
                   itemExtent: 44,
-                  onSelectedItemChanged: (index) => ref
-                      .read(createChatEntityProvider)
-                      .copyWith(language: SessionLanguage.values[index]),
+                  onSelectedItemChanged: (index) =>
+                      ref.read(createChatEntityProvider.notifier).state = ref
+                          .read(createChatEntityProvider.notifier)
+                          .state
+                          .copyWith(language: SessionLanguage.values[index]),
                   children: SessionLanguage.values.map((language) {
                     return Center(
                       child: Text(language.localizedName),
@@ -98,8 +111,16 @@ class CreateChatScreen extends ConsumerWidget {
                   }).toList(),
                 ),
               ),
+              const SizedBox(height: 20),
+              const Text(
+                'Уровень',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(
-                height: 200,
+                height: 100,
                 child: CupertinoPicker(
                   itemExtent: 44,
                   onSelectedItemChanged: (index) => ref
@@ -124,14 +145,20 @@ class CreateChatScreen extends ConsumerWidget {
                         if (value) {
                           // Включаем режим с языком преподавателя, выбираем первый язык по умолчанию
                           ref
-                              .read(createChatEntityProvider)
+                              .read(createChatEntityProvider.notifier)
+                              .state = ref
+                              .read(createChatEntityProvider.notifier)
+                              .state
                               .copyWith(
                                 teacherLanguage: SessionLanguage.english,
                               );
                         } else {
                           // Выключаем режим
                           ref
-                              .read(createChatEntityProvider)
+                              .read(createChatEntityProvider.notifier)
+                              .state = ref
+                              .read(createChatEntityProvider.notifier)
+                              .state
                               .copyWith(teacherLanguage: null);
                         }
                       },
@@ -169,11 +196,13 @@ class CreateChatScreen extends ConsumerWidget {
                         entity.teacherLanguage!,
                       ),
                     ),
-                    onSelectedItemChanged: (index) => ref
-                        .read(createChatEntityProvider)
-                        .copyWith(
-                          teacherLanguage: SessionLanguage.values[index],
-                        ),
+                    onSelectedItemChanged: (index) =>
+                        ref.read(createChatEntityProvider.notifier).state = ref
+                            .read(createChatEntityProvider.notifier)
+                            .state
+                            .copyWith(
+                              teacherLanguage: SessionLanguage.values[index],
+                            ),
                     children: SessionLanguage.values.map((language) {
                       return Center(
                         child: Text(language.localizedName),
