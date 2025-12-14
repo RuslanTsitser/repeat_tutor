@@ -10,6 +10,9 @@ abstract class ChatDbMappers {
       topic: chat.topic,
       language: domain.SessionLanguage.fromValue(chat.language)!,
       level: domain.SessionDifficultyLevel.fromValue(chat.level)!,
+      teacherLanguage: chat.teacherLanguage != null
+          ? domain.SessionLanguage.fromValue(chat.teacherLanguage!)
+          : null,
       createdAt: chat.createdAt,
     );
   }
@@ -20,6 +23,7 @@ abstract class ChatDbMappers {
       topic: chat.topic,
       language: chat.language.value,
       level: chat.level.value,
+      teacherLanguage: chat.teacherLanguage?.value,
       createdAt: chat.createdAt,
     );
   }

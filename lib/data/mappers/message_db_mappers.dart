@@ -5,8 +5,8 @@ abstract class MessageDbMappers {
   static domain.Message toDomain(db.Message message) {
     return domain.Message(
       id: message.messageId,
+      gptResponseId: message.gptResponseId,
       text: message.message,
-      isMe: message.isMe,
       chatId: message.chatId,
       audioPath: message.audioPath,
       createdAt: message.createdAt,
@@ -16,8 +16,8 @@ abstract class MessageDbMappers {
   static db.Message toDb(domain.Message message) {
     return db.Message(
       messageId: message.id,
+      gptResponseId: message.gptResponseId,
       message: message.text,
-      isMe: message.isMe,
       chatId: message.chatId,
       audioPath: message.audioPath,
       createdAt: message.createdAt,
