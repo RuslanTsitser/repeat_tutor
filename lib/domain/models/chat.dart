@@ -1,44 +1,37 @@
-import 'package:equatable/equatable.dart';
-
+import '../../core/gpt/instructions/tutor_instruction.dart';
 import 'session_difficulty_level.dart';
 import 'session_language.dart';
 
-class Chat extends Equatable {
+class Chat {
   const Chat({
     required this.chatId,
     required this.topic,
     required this.language,
     required this.level,
+    required this.teacherLanguage,
     required this.createdAt,
+    this.lastMessage,
   });
   final int chatId;
   final String topic;
   final SessionLanguage language;
   final SessionDifficultyLevel level;
+  final SessionLanguage? teacherLanguage;
   final DateTime createdAt;
+  final LastMessage? lastMessage;
 
-  @override
-  List<Object?> get props => [
-    chatId,
-    topic,
-    language,
-    level,
-    createdAt,
-  ];
+  String get systemPrompt => TutorInstruction.build(
+    languageName: language.localizedName,
+    levelName: level.localizedName,
+    teacherLanguageName: teacherLanguage?.localizedName,
+  );
+}
 
-  Chat copyWith({
-    int? chatId,
-    String? topic,
-    SessionLanguage? language,
-    SessionDifficultyLevel? level,
-    DateTime? createdAt,
-  }) {
-    return Chat(
-      chatId: chatId ?? this.chatId,
-      topic: topic ?? this.topic,
-      language: language ?? this.language,
-      level: level ?? this.level,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+class LastMessage {
+  const LastMessage({
+    required this.text,
+    required this.id,
+  });
+  final String text;
+  final String id;
 }
