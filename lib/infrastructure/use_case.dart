@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/usecases/get_chats_use_case.dart';
+import '../domain/usecases/chats/get_chats_use_case.dart';
 import '../domain/usecases/realitime_sessions/connect_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/create_realtime_session_use_case.dart';
 import '../domain/usecases/realitime_sessions/delete_realtime_session_use_case.dart';
