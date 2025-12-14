@@ -342,21 +342,45 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               CupertinoButton(
                 onLongPress: ref.read(toggleAudioModeUseCaseProvider).execute,
                 padding: EdgeInsets.zero,
-                onPressed: () {},
+                onPressed: () {
+                  if (ref.watch(messageProvider).state.isSpeechRecording) {
+                    ref
+                        .read(toggleAudioModeUseCaseProvider)
+                        .stopAudioRecording();
+                  } else {
+                    ref
+                        .read(toggleAudioModeUseCaseProvider)
+                        .startAudioRecording();
+                  }
+                },
                 minimumSize: const Size(0, 0),
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: CupertinoColors.systemBlue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.mic,
-                    color: CupertinoColors.white,
-                    size: 18,
-                  ),
-                ),
+                child: (ref.watch(messageProvider).state.isSpeechRecording)
+                    ? Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          color: CupertinoColors.systemRed,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.stop,
+                          color: CupertinoColors.white,
+                          size: 18,
+                        ),
+                      )
+                    : Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          color: CupertinoColors.systemBlue,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.mic,
+                          color: CupertinoColors.white,
+                          size: 18,
+                        ),
+                      ),
               )
             else
               CupertinoButton(

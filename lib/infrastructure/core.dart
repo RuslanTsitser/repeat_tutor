@@ -9,6 +9,8 @@ import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_web_rtc_manager_impl.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
 import '../core/router/router.dart';
+import '../core/speech/speech_recognizer.dart';
+import '../core/speech/speech_recognizer_impl.dart';
 
 final routerProvider = ChangeNotifierProvider<AppRouter>((ref) {
   return AppRouter();
@@ -72,4 +74,8 @@ final abTestServiceProvider = Provider<AbTestService>((ref) {
 final initializeServiceProvider = FutureProvider<void>((ref) async {
   final abTestService = ref.watch(abTestServiceProvider);
   await abTestService.init();
+});
+
+final speechRecognizerProvider = Provider<SpeechRecognizer>((ref) {
+  return SpeechRecognizerImpl();
 });

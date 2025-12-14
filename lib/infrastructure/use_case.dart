@@ -99,5 +99,7 @@ final addMessageUseCaseProvider = Provider((ref) {
 final toggleAudioModeUseCaseProvider = Provider((ref) {
   return ToggleAudioModeUseCase(
     messageNotifier: ref.watch(messageProvider),
+    speechRecognizer: ref.watch(speechRecognizerProvider),
+    addMessageUseCase: ref.watch(addMessageUseCaseProvider),
   );
 });
