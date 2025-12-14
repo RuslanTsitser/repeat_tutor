@@ -22,7 +22,7 @@ class Chat {
 
   String get systemPrompt => TutorInstruction.build(
     languageName: language.localizedName,
-    levelName: level.localizedName,
+    levelName: level.value,
     teacherLanguageName: teacherLanguage?.localizedName,
   );
 }
