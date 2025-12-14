@@ -45,18 +45,19 @@ class _Body extends ConsumerWidget {
       );
     }
 
-    return Stack(
+    return Column(
       children: [
-        if (messages.isEmpty)
-          const Center(child: Text('Нет сообщений'))
-        else
-          ListView.builder(
-            padding: const EdgeInsets.only(bottom: 108),
-            itemCount: messages.length,
-            itemBuilder: (context, index) =>
-                _MessageBubble(message: messages[index]),
-          ),
-        const Align(alignment: Alignment.bottomCenter, child: _MessageInput()),
+        Expanded(
+          child: messages.isEmpty
+              ? const Center(child: Text('Нет сообщений'))
+              : ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) =>
+                      _MessageBubble(message: messages[index]),
+                ),
+        ),
+        const _MessageInput(),
       ],
     );
   }
@@ -164,17 +165,27 @@ class _MessageInput extends ConsumerStatefulWidget {
 
 class __MessageInputState extends ConsumerState<_MessageInput> {
   final TextEditingController messageController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   @override
   void dispose() {
     messageController.dispose();
+    focusNode.dispose();
     super.dispose();
+  }
+
+  void _sendMessage() {
+    final text = messageController.text.trim();
+    if (text.isNotEmpty) {
+      ref.read(addMessageUseCaseProvider).execute(text);
+      messageController.clear();
+      focusNode.unfocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
         color: CupertinoColors.systemGrey6,
@@ -185,13 +196,54 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
           ),
         ),
       ),
-      child: CupertinoTextFormFieldRow(
-        controller: messageController,
-        placeholder: 'Сообщение',
-        onFieldSubmitted: (value) {
-          ref.read(addMessageUseCaseProvider).execute(value);
-          messageController.clear();
-        },
+      child: SafeArea(
+        top: false,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: CupertinoTextField(
+                controller: messageController,
+                focusNode: focusNode,
+                placeholder: 'Сообщение',
+                minLines: 1,
+                maxLines: 5,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: CupertinoColors.systemGrey4,
+                    width: 1,
+                  ),
+                ),
+                onSubmitted: (_) => _sendMessage(),
+              ),
+            ),
+            const SizedBox(width: 8),
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minSize: 0,
+              onPressed: _sendMessage,
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: CupertinoColors.systemBlue,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  CupertinoIcons.arrow_up,
+                  color: CupertinoColors.white,
+                  size: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
