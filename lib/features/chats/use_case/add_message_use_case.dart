@@ -47,16 +47,31 @@ class AddMessageUseCase {
     );
   }
 
+  Future<void> toggleRecording() async {
+    if (messageNotifier.state.isSpeechRecording) {
+      await stopAudioRecording();
+      return;
+    } else {
+      await startAudioRecording();
+    }
+  }
+
   Future<void> startAudioRecording() async {
+    if (messageNotifier.state.isAudioRecordingMode) {
+      return;
+    }
     await audioService.startRecording();
     messageNotifier.setState(
       messageNotifier.state.copyWith(
-        isSpeechRecording: true,
+        isAudioRecordingMode: true,
       ),
     );
   }
 
   Future<void> stopAudioRecording() async {
+    if (!messageNotifier.state.isAudioRecordingMode) {
+      return;
+    }
     final result = await audioService.stopRecording();
 
     messageNotifier.setState(

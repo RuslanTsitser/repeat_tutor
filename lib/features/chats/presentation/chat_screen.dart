@@ -340,13 +340,11 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
             const SizedBox(width: 8),
             if (ref.watch(messageProvider).state.isAudioRecordingMode)
               CupertinoButton(
-                onLongPress: () {
-                  // TODO: Implement toggle audio mode
-                },
+                onLongPress: ref
+                    .read(addMessageUseCaseProvider)
+                    .toggleAudioMode,
                 padding: EdgeInsets.zero,
-                onPressed: () {
-                  // TODO: Implement start audio recording
-                },
+                onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
                 minimumSize: const Size(0, 0),
                 child: ref.watch(messageProvider).state.isMessageSending
                     ? Container(
@@ -388,9 +386,9 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               )
             else
               CupertinoButton(
-                onLongPress: () {
-                  // TODO: Implement toggle audio mode
-                },
+                onLongPress: ref
+                    .read(addMessageUseCaseProvider)
+                    .toggleAudioMode,
                 padding: EdgeInsets.zero,
                 onPressed: _sendMessage,
                 minimumSize: const Size(0, 0),
