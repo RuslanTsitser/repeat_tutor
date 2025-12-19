@@ -11,10 +11,10 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   ChatDao(super.db);
 
   /// Получить все чаты
-  Future<List<Chat>> getAllChats() => select(chats).get();
+  Future<List<ChatDb>> getAllChats() => select(chats).get();
 
   /// Получить чат по ID
-  Future<Chat?> getChatById(int chatId) async {
+  Future<ChatDb?> getChatById(int chatId) async {
     final result = await (select(
       chats,
     )..where((tbl) => tbl.chatId.equals(chatId))).getSingleOrNull();
@@ -39,7 +39,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     return (delete(chats)..where((tbl) => tbl.chatId.equals(chatId))).go();
   }
 
-  Stream<List<Chat>> getChatsStream() {
+  Stream<List<ChatDb>> getChatsStream() {
     return select(chats).watch();
   }
 }

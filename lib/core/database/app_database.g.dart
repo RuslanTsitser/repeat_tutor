@@ -3,7 +3,7 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
+class $ChatsTable extends Chats with TableInfo<$ChatsTable, ChatDb> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -60,9 +60,9 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
   late final GeneratedColumn<String> teacherLanguage = GeneratedColumn<String>(
     'teacher_language',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _topicMeta = const VerificationMeta('topic');
   @override
@@ -89,7 +89,7 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
   static const String $name = 'chats';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Chat> instance, {
+    Insertable<ChatDb> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -130,6 +130,8 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
           _teacherLanguageMeta,
         ),
       );
+    } else if (isInserting) {
+      context.missing(_teacherLanguageMeta);
     }
     if (data.containsKey('topic')) {
       context.handle(
@@ -145,9 +147,9 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
   @override
   Set<GeneratedColumn> get $primaryKey => {chatId};
   @override
-  Chat map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ChatDb map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Chat(
+    return ChatDb(
       chatId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}chat_id'],
@@ -167,7 +169,7 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
       teacherLanguage: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}teacher_language'],
-      ),
+      )!,
       topic: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}topic'],
@@ -181,19 +183,19 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
   }
 }
 
-class Chat extends DataClass implements Insertable<Chat> {
+class ChatDb extends DataClass implements Insertable<ChatDb> {
   final int chatId;
   final DateTime createdAt;
   final String language;
   final String level;
-  final String? teacherLanguage;
+  final String teacherLanguage;
   final String topic;
-  const Chat({
+  const ChatDb({
     required this.chatId,
     required this.createdAt,
     required this.language,
     required this.level,
-    this.teacherLanguage,
+    required this.teacherLanguage,
     required this.topic,
   });
   @override
@@ -203,9 +205,7 @@ class Chat extends DataClass implements Insertable<Chat> {
     map['created_at'] = Variable<DateTime>(createdAt);
     map['language'] = Variable<String>(language);
     map['level'] = Variable<String>(level);
-    if (!nullToAbsent || teacherLanguage != null) {
-      map['teacher_language'] = Variable<String>(teacherLanguage);
-    }
+    map['teacher_language'] = Variable<String>(teacherLanguage);
     map['topic'] = Variable<String>(topic);
     return map;
   }
@@ -216,24 +216,22 @@ class Chat extends DataClass implements Insertable<Chat> {
       createdAt: Value(createdAt),
       language: Value(language),
       level: Value(level),
-      teacherLanguage: teacherLanguage == null && nullToAbsent
-          ? const Value.absent()
-          : Value(teacherLanguage),
+      teacherLanguage: Value(teacherLanguage),
       topic: Value(topic),
     );
   }
 
-  factory Chat.fromJson(
+  factory ChatDb.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Chat(
+    return ChatDb(
       chatId: serializer.fromJson<int>(json['chatId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       language: serializer.fromJson<String>(json['language']),
       level: serializer.fromJson<String>(json['level']),
-      teacherLanguage: serializer.fromJson<String?>(json['teacherLanguage']),
+      teacherLanguage: serializer.fromJson<String>(json['teacherLanguage']),
       topic: serializer.fromJson<String>(json['topic']),
     );
   }
@@ -245,30 +243,28 @@ class Chat extends DataClass implements Insertable<Chat> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'language': serializer.toJson<String>(language),
       'level': serializer.toJson<String>(level),
-      'teacherLanguage': serializer.toJson<String?>(teacherLanguage),
+      'teacherLanguage': serializer.toJson<String>(teacherLanguage),
       'topic': serializer.toJson<String>(topic),
     };
   }
 
-  Chat copyWith({
+  ChatDb copyWith({
     int? chatId,
     DateTime? createdAt,
     String? language,
     String? level,
-    Value<String?> teacherLanguage = const Value.absent(),
+    String? teacherLanguage,
     String? topic,
-  }) => Chat(
+  }) => ChatDb(
     chatId: chatId ?? this.chatId,
     createdAt: createdAt ?? this.createdAt,
     language: language ?? this.language,
     level: level ?? this.level,
-    teacherLanguage: teacherLanguage.present
-        ? teacherLanguage.value
-        : this.teacherLanguage,
+    teacherLanguage: teacherLanguage ?? this.teacherLanguage,
     topic: topic ?? this.topic,
   );
-  Chat copyWithCompanion(ChatsCompanion data) {
-    return Chat(
+  ChatDb copyWithCompanion(ChatsCompanion data) {
+    return ChatDb(
       chatId: data.chatId.present ? data.chatId.value : this.chatId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       language: data.language.present ? data.language.value : this.language,
@@ -282,7 +278,7 @@ class Chat extends DataClass implements Insertable<Chat> {
 
   @override
   String toString() {
-    return (StringBuffer('Chat(')
+    return (StringBuffer('ChatDb(')
           ..write('chatId: $chatId, ')
           ..write('createdAt: $createdAt, ')
           ..write('language: $language, ')
@@ -299,7 +295,7 @@ class Chat extends DataClass implements Insertable<Chat> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Chat &&
+      (other is ChatDb &&
           other.chatId == this.chatId &&
           other.createdAt == this.createdAt &&
           other.language == this.language &&
@@ -308,12 +304,12 @@ class Chat extends DataClass implements Insertable<Chat> {
           other.topic == this.topic);
 }
 
-class ChatsCompanion extends UpdateCompanion<Chat> {
+class ChatsCompanion extends UpdateCompanion<ChatDb> {
   final Value<int> chatId;
   final Value<DateTime> createdAt;
   final Value<String> language;
   final Value<String> level;
-  final Value<String?> teacherLanguage;
+  final Value<String> teacherLanguage;
   final Value<String> topic;
   const ChatsCompanion({
     this.chatId = const Value.absent(),
@@ -328,12 +324,13 @@ class ChatsCompanion extends UpdateCompanion<Chat> {
     this.createdAt = const Value.absent(),
     required String language,
     required String level,
-    this.teacherLanguage = const Value.absent(),
+    required String teacherLanguage,
     required String topic,
   }) : language = Value(language),
        level = Value(level),
+       teacherLanguage = Value(teacherLanguage),
        topic = Value(topic);
-  static Insertable<Chat> custom({
+  static Insertable<ChatDb> custom({
     Expression<int>? chatId,
     Expression<DateTime>? createdAt,
     Expression<String>? language,
@@ -356,7 +353,7 @@ class ChatsCompanion extends UpdateCompanion<Chat> {
     Value<DateTime>? createdAt,
     Value<String>? language,
     Value<String>? level,
-    Value<String?>? teacherLanguage,
+    Value<String>? teacherLanguage,
     Value<String>? topic,
   }) {
     return ChatsCompanion(
@@ -407,7 +404,8 @@ class ChatsCompanion extends UpdateCompanion<Chat> {
   }
 }
 
-class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
+class $MessagesTable extends Messages
+    with TableInfo<$MessagesTable, MessageDb> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -470,17 +468,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _audioPathMeta = const VerificationMeta(
-    'audioPath',
-  );
-  @override
-  late final GeneratedColumn<String> audioPath = GeneratedColumn<String>(
-    'audio_path',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   @override
   List<GeneratedColumn> get $columns => [
     messageId,
@@ -488,7 +475,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     createdAt,
     message,
     gptResponseId,
-    audioPath,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -497,7 +483,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   static const String $name = 'messages';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Message> instance, {
+    Insertable<MessageDb> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -539,21 +525,15 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         ),
       );
     }
-    if (data.containsKey('audio_path')) {
-      context.handle(
-        _audioPathMeta,
-        audioPath.isAcceptableOrUnknown(data['audio_path']!, _audioPathMeta),
-      );
-    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {messageId};
   @override
-  Message map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MessageDb map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Message(
+    return MessageDb(
       messageId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}message_id'],
@@ -574,10 +554,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         DriftSqlType.string,
         data['${effectivePrefix}gpt_response_id'],
       ),
-      audioPath: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}audio_path'],
-      ),
     );
   }
 
@@ -587,20 +563,18 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   }
 }
 
-class Message extends DataClass implements Insertable<Message> {
+class MessageDb extends DataClass implements Insertable<MessageDb> {
   final int messageId;
   final int chatId;
   final DateTime createdAt;
   final String message;
   final String? gptResponseId;
-  final String? audioPath;
-  const Message({
+  const MessageDb({
     required this.messageId,
     required this.chatId,
     required this.createdAt,
     required this.message,
     this.gptResponseId,
-    this.audioPath,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -611,9 +585,6 @@ class Message extends DataClass implements Insertable<Message> {
     map['message'] = Variable<String>(message);
     if (!nullToAbsent || gptResponseId != null) {
       map['gpt_response_id'] = Variable<String>(gptResponseId);
-    }
-    if (!nullToAbsent || audioPath != null) {
-      map['audio_path'] = Variable<String>(audioPath);
     }
     return map;
   }
@@ -627,24 +598,20 @@ class Message extends DataClass implements Insertable<Message> {
       gptResponseId: gptResponseId == null && nullToAbsent
           ? const Value.absent()
           : Value(gptResponseId),
-      audioPath: audioPath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(audioPath),
     );
   }
 
-  factory Message.fromJson(
+  factory MessageDb.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Message(
+    return MessageDb(
       messageId: serializer.fromJson<int>(json['messageId']),
       chatId: serializer.fromJson<int>(json['chatId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       message: serializer.fromJson<String>(json['message']),
       gptResponseId: serializer.fromJson<String?>(json['gptResponseId']),
-      audioPath: serializer.fromJson<String?>(json['audioPath']),
     );
   }
   @override
@@ -656,18 +623,16 @@ class Message extends DataClass implements Insertable<Message> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'message': serializer.toJson<String>(message),
       'gptResponseId': serializer.toJson<String?>(gptResponseId),
-      'audioPath': serializer.toJson<String?>(audioPath),
     };
   }
 
-  Message copyWith({
+  MessageDb copyWith({
     int? messageId,
     int? chatId,
     DateTime? createdAt,
     String? message,
     Value<String?> gptResponseId = const Value.absent(),
-    Value<String?> audioPath = const Value.absent(),
-  }) => Message(
+  }) => MessageDb(
     messageId: messageId ?? this.messageId,
     chatId: chatId ?? this.chatId,
     createdAt: createdAt ?? this.createdAt,
@@ -675,10 +640,9 @@ class Message extends DataClass implements Insertable<Message> {
     gptResponseId: gptResponseId.present
         ? gptResponseId.value
         : this.gptResponseId,
-    audioPath: audioPath.present ? audioPath.value : this.audioPath,
   );
-  Message copyWithCompanion(MessagesCompanion data) {
-    return Message(
+  MessageDb copyWithCompanion(MessagesCompanion data) {
+    return MessageDb(
       messageId: data.messageId.present ? data.messageId.value : this.messageId,
       chatId: data.chatId.present ? data.chatId.value : this.chatId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -686,58 +650,47 @@ class Message extends DataClass implements Insertable<Message> {
       gptResponseId: data.gptResponseId.present
           ? data.gptResponseId.value
           : this.gptResponseId,
-      audioPath: data.audioPath.present ? data.audioPath.value : this.audioPath,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('Message(')
+    return (StringBuffer('MessageDb(')
           ..write('messageId: $messageId, ')
           ..write('chatId: $chatId, ')
           ..write('createdAt: $createdAt, ')
           ..write('message: $message, ')
-          ..write('gptResponseId: $gptResponseId, ')
-          ..write('audioPath: $audioPath')
+          ..write('gptResponseId: $gptResponseId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    messageId,
-    chatId,
-    createdAt,
-    message,
-    gptResponseId,
-    audioPath,
-  );
+  int get hashCode =>
+      Object.hash(messageId, chatId, createdAt, message, gptResponseId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Message &&
+      (other is MessageDb &&
           other.messageId == this.messageId &&
           other.chatId == this.chatId &&
           other.createdAt == this.createdAt &&
           other.message == this.message &&
-          other.gptResponseId == this.gptResponseId &&
-          other.audioPath == this.audioPath);
+          other.gptResponseId == this.gptResponseId);
 }
 
-class MessagesCompanion extends UpdateCompanion<Message> {
+class MessagesCompanion extends UpdateCompanion<MessageDb> {
   final Value<int> messageId;
   final Value<int> chatId;
   final Value<DateTime> createdAt;
   final Value<String> message;
   final Value<String?> gptResponseId;
-  final Value<String?> audioPath;
   const MessagesCompanion({
     this.messageId = const Value.absent(),
     this.chatId = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.message = const Value.absent(),
     this.gptResponseId = const Value.absent(),
-    this.audioPath = const Value.absent(),
   });
   MessagesCompanion.insert({
     this.messageId = const Value.absent(),
@@ -745,16 +698,14 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.createdAt = const Value.absent(),
     required String message,
     this.gptResponseId = const Value.absent(),
-    this.audioPath = const Value.absent(),
   }) : chatId = Value(chatId),
        message = Value(message);
-  static Insertable<Message> custom({
+  static Insertable<MessageDb> custom({
     Expression<int>? messageId,
     Expression<int>? chatId,
     Expression<DateTime>? createdAt,
     Expression<String>? message,
     Expression<String>? gptResponseId,
-    Expression<String>? audioPath,
   }) {
     return RawValuesInsertable({
       if (messageId != null) 'message_id': messageId,
@@ -762,7 +713,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (createdAt != null) 'created_at': createdAt,
       if (message != null) 'message': message,
       if (gptResponseId != null) 'gpt_response_id': gptResponseId,
-      if (audioPath != null) 'audio_path': audioPath,
     });
   }
 
@@ -772,7 +722,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Value<DateTime>? createdAt,
     Value<String>? message,
     Value<String?>? gptResponseId,
-    Value<String?>? audioPath,
   }) {
     return MessagesCompanion(
       messageId: messageId ?? this.messageId,
@@ -780,7 +729,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       createdAt: createdAt ?? this.createdAt,
       message: message ?? this.message,
       gptResponseId: gptResponseId ?? this.gptResponseId,
-      audioPath: audioPath ?? this.audioPath,
     );
   }
 
@@ -802,9 +750,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     if (gptResponseId.present) {
       map['gpt_response_id'] = Variable<String>(gptResponseId.value);
     }
-    if (audioPath.present) {
-      map['audio_path'] = Variable<String>(audioPath.value);
-    }
     return map;
   }
 
@@ -815,503 +760,14 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('chatId: $chatId, ')
           ..write('createdAt: $createdAt, ')
           ..write('message: $message, ')
-          ..write('gptResponseId: $gptResponseId, ')
-          ..write('audioPath: $audioPath')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $RealtimeSessionsTable extends RealtimeSessions
-    with TableInfo<$RealtimeSessionsTable, RealtimeSession> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $RealtimeSessionsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _sessionIdMeta = const VerificationMeta(
-    'sessionId',
-  );
-  @override
-  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
-    'session_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta(
-    'createdAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  static const VerificationMeta _languageMeta = const VerificationMeta(
-    'language',
-  );
-  @override
-  late final GeneratedColumn<String> language = GeneratedColumn<String>(
-    'language',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _levelMeta = const VerificationMeta('level');
-  @override
-  late final GeneratedColumn<String> level = GeneratedColumn<String>(
-    'level',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _clientSecretMeta = const VerificationMeta(
-    'clientSecret',
-  );
-  @override
-  late final GeneratedColumn<String> clientSecret = GeneratedColumn<String>(
-    'client_secret',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _clientSecretExpiresAtMeta =
-      const VerificationMeta('clientSecretExpiresAt');
-  @override
-  late final GeneratedColumn<DateTime> clientSecretExpiresAt =
-      GeneratedColumn<DateTime>(
-        'client_secret_expires_at',
-        aliasedName,
-        true,
-        type: DriftSqlType.dateTime,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
-  @override
-  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
-    'topic',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    sessionId,
-    createdAt,
-    language,
-    level,
-    clientSecret,
-    clientSecretExpiresAt,
-    topic,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'realtime_sessions';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<RealtimeSession> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('session_id')) {
-      context.handle(
-        _sessionIdMeta,
-        sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_sessionIdMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(
-        _createdAtMeta,
-        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
-      );
-    }
-    if (data.containsKey('language')) {
-      context.handle(
-        _languageMeta,
-        language.isAcceptableOrUnknown(data['language']!, _languageMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_languageMeta);
-    }
-    if (data.containsKey('level')) {
-      context.handle(
-        _levelMeta,
-        level.isAcceptableOrUnknown(data['level']!, _levelMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_levelMeta);
-    }
-    if (data.containsKey('client_secret')) {
-      context.handle(
-        _clientSecretMeta,
-        clientSecret.isAcceptableOrUnknown(
-          data['client_secret']!,
-          _clientSecretMeta,
-        ),
-      );
-    }
-    if (data.containsKey('client_secret_expires_at')) {
-      context.handle(
-        _clientSecretExpiresAtMeta,
-        clientSecretExpiresAt.isAcceptableOrUnknown(
-          data['client_secret_expires_at']!,
-          _clientSecretExpiresAtMeta,
-        ),
-      );
-    }
-    if (data.containsKey('topic')) {
-      context.handle(
-        _topicMeta,
-        topic.isAcceptableOrUnknown(data['topic']!, _topicMeta),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {sessionId};
-  @override
-  RealtimeSession map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return RealtimeSession(
-      sessionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}session_id'],
-      )!,
-      createdAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}created_at'],
-      )!,
-      language: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}language'],
-      )!,
-      level: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}level'],
-      )!,
-      clientSecret: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}client_secret'],
-      ),
-      clientSecretExpiresAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}client_secret_expires_at'],
-      ),
-      topic: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}topic'],
-      ),
-    );
-  }
-
-  @override
-  $RealtimeSessionsTable createAlias(String alias) {
-    return $RealtimeSessionsTable(attachedDatabase, alias);
-  }
-}
-
-class RealtimeSession extends DataClass implements Insertable<RealtimeSession> {
-  final String sessionId;
-  final DateTime createdAt;
-  final String language;
-  final String level;
-  final String? clientSecret;
-  final DateTime? clientSecretExpiresAt;
-  final String? topic;
-  const RealtimeSession({
-    required this.sessionId,
-    required this.createdAt,
-    required this.language,
-    required this.level,
-    this.clientSecret,
-    this.clientSecretExpiresAt,
-    this.topic,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['session_id'] = Variable<String>(sessionId);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['language'] = Variable<String>(language);
-    map['level'] = Variable<String>(level);
-    if (!nullToAbsent || clientSecret != null) {
-      map['client_secret'] = Variable<String>(clientSecret);
-    }
-    if (!nullToAbsent || clientSecretExpiresAt != null) {
-      map['client_secret_expires_at'] = Variable<DateTime>(
-        clientSecretExpiresAt,
-      );
-    }
-    if (!nullToAbsent || topic != null) {
-      map['topic'] = Variable<String>(topic);
-    }
-    return map;
-  }
-
-  RealtimeSessionsCompanion toCompanion(bool nullToAbsent) {
-    return RealtimeSessionsCompanion(
-      sessionId: Value(sessionId),
-      createdAt: Value(createdAt),
-      language: Value(language),
-      level: Value(level),
-      clientSecret: clientSecret == null && nullToAbsent
-          ? const Value.absent()
-          : Value(clientSecret),
-      clientSecretExpiresAt: clientSecretExpiresAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(clientSecretExpiresAt),
-      topic: topic == null && nullToAbsent
-          ? const Value.absent()
-          : Value(topic),
-    );
-  }
-
-  factory RealtimeSession.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return RealtimeSession(
-      sessionId: serializer.fromJson<String>(json['sessionId']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      language: serializer.fromJson<String>(json['language']),
-      level: serializer.fromJson<String>(json['level']),
-      clientSecret: serializer.fromJson<String?>(json['clientSecret']),
-      clientSecretExpiresAt: serializer.fromJson<DateTime?>(
-        json['clientSecretExpiresAt'],
-      ),
-      topic: serializer.fromJson<String?>(json['topic']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'sessionId': serializer.toJson<String>(sessionId),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'language': serializer.toJson<String>(language),
-      'level': serializer.toJson<String>(level),
-      'clientSecret': serializer.toJson<String?>(clientSecret),
-      'clientSecretExpiresAt': serializer.toJson<DateTime?>(
-        clientSecretExpiresAt,
-      ),
-      'topic': serializer.toJson<String?>(topic),
-    };
-  }
-
-  RealtimeSession copyWith({
-    String? sessionId,
-    DateTime? createdAt,
-    String? language,
-    String? level,
-    Value<String?> clientSecret = const Value.absent(),
-    Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
-    Value<String?> topic = const Value.absent(),
-  }) => RealtimeSession(
-    sessionId: sessionId ?? this.sessionId,
-    createdAt: createdAt ?? this.createdAt,
-    language: language ?? this.language,
-    level: level ?? this.level,
-    clientSecret: clientSecret.present ? clientSecret.value : this.clientSecret,
-    clientSecretExpiresAt: clientSecretExpiresAt.present
-        ? clientSecretExpiresAt.value
-        : this.clientSecretExpiresAt,
-    topic: topic.present ? topic.value : this.topic,
-  );
-  RealtimeSession copyWithCompanion(RealtimeSessionsCompanion data) {
-    return RealtimeSession(
-      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      language: data.language.present ? data.language.value : this.language,
-      level: data.level.present ? data.level.value : this.level,
-      clientSecret: data.clientSecret.present
-          ? data.clientSecret.value
-          : this.clientSecret,
-      clientSecretExpiresAt: data.clientSecretExpiresAt.present
-          ? data.clientSecretExpiresAt.value
-          : this.clientSecretExpiresAt,
-      topic: data.topic.present ? data.topic.value : this.topic,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('RealtimeSession(')
-          ..write('sessionId: $sessionId, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('language: $language, ')
-          ..write('level: $level, ')
-          ..write('clientSecret: $clientSecret, ')
-          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
-          ..write('topic: $topic')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    sessionId,
-    createdAt,
-    language,
-    level,
-    clientSecret,
-    clientSecretExpiresAt,
-    topic,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is RealtimeSession &&
-          other.sessionId == this.sessionId &&
-          other.createdAt == this.createdAt &&
-          other.language == this.language &&
-          other.level == this.level &&
-          other.clientSecret == this.clientSecret &&
-          other.clientSecretExpiresAt == this.clientSecretExpiresAt &&
-          other.topic == this.topic);
-}
-
-class RealtimeSessionsCompanion extends UpdateCompanion<RealtimeSession> {
-  final Value<String> sessionId;
-  final Value<DateTime> createdAt;
-  final Value<String> language;
-  final Value<String> level;
-  final Value<String?> clientSecret;
-  final Value<DateTime?> clientSecretExpiresAt;
-  final Value<String?> topic;
-  final Value<int> rowid;
-  const RealtimeSessionsCompanion({
-    this.sessionId = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.language = const Value.absent(),
-    this.level = const Value.absent(),
-    this.clientSecret = const Value.absent(),
-    this.clientSecretExpiresAt = const Value.absent(),
-    this.topic = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  RealtimeSessionsCompanion.insert({
-    required String sessionId,
-    this.createdAt = const Value.absent(),
-    required String language,
-    required String level,
-    this.clientSecret = const Value.absent(),
-    this.clientSecretExpiresAt = const Value.absent(),
-    this.topic = const Value.absent(),
-    this.rowid = const Value.absent(),
-  }) : sessionId = Value(sessionId),
-       language = Value(language),
-       level = Value(level);
-  static Insertable<RealtimeSession> custom({
-    Expression<String>? sessionId,
-    Expression<DateTime>? createdAt,
-    Expression<String>? language,
-    Expression<String>? level,
-    Expression<String>? clientSecret,
-    Expression<DateTime>? clientSecretExpiresAt,
-    Expression<String>? topic,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (sessionId != null) 'session_id': sessionId,
-      if (createdAt != null) 'created_at': createdAt,
-      if (language != null) 'language': language,
-      if (level != null) 'level': level,
-      if (clientSecret != null) 'client_secret': clientSecret,
-      if (clientSecretExpiresAt != null)
-        'client_secret_expires_at': clientSecretExpiresAt,
-      if (topic != null) 'topic': topic,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  RealtimeSessionsCompanion copyWith({
-    Value<String>? sessionId,
-    Value<DateTime>? createdAt,
-    Value<String>? language,
-    Value<String>? level,
-    Value<String?>? clientSecret,
-    Value<DateTime?>? clientSecretExpiresAt,
-    Value<String?>? topic,
-    Value<int>? rowid,
-  }) {
-    return RealtimeSessionsCompanion(
-      sessionId: sessionId ?? this.sessionId,
-      createdAt: createdAt ?? this.createdAt,
-      language: language ?? this.language,
-      level: level ?? this.level,
-      clientSecret: clientSecret ?? this.clientSecret,
-      clientSecretExpiresAt:
-          clientSecretExpiresAt ?? this.clientSecretExpiresAt,
-      topic: topic ?? this.topic,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (sessionId.present) {
-      map['session_id'] = Variable<String>(sessionId.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (language.present) {
-      map['language'] = Variable<String>(language.value);
-    }
-    if (level.present) {
-      map['level'] = Variable<String>(level.value);
-    }
-    if (clientSecret.present) {
-      map['client_secret'] = Variable<String>(clientSecret.value);
-    }
-    if (clientSecretExpiresAt.present) {
-      map['client_secret_expires_at'] = Variable<DateTime>(
-        clientSecretExpiresAt.value,
-      );
-    }
-    if (topic.present) {
-      map['topic'] = Variable<String>(topic.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('RealtimeSessionsCompanion(')
-          ..write('sessionId: $sessionId, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('language: $language, ')
-          ..write('level: $level, ')
-          ..write('clientSecret: $clientSecret, ')
-          ..write('clientSecretExpiresAt: $clientSecretExpiresAt, ')
-          ..write('topic: $topic, ')
-          ..write('rowid: $rowid')
+          ..write('gptResponseId: $gptResponseId')
           ..write(')'))
         .toString();
   }
 }
 
 class $SessionsDurationsTable extends SessionsDurations
-    with TableInfo<$SessionsDurationsTable, SessionsDuration> {
+    with TableInfo<$SessionsDurationsTable, SessionDurationDb> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1363,7 +819,7 @@ class $SessionsDurationsTable extends SessionsDurations
   static const String $name = 'sessions_durations';
   @override
   VerificationContext validateIntegrity(
-    Insertable<SessionsDuration> instance, {
+    Insertable<SessionDurationDb> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -1397,9 +853,9 @@ class $SessionsDurationsTable extends SessionsDurations
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  SessionsDuration map(Map<String, dynamic> data, {String? tablePrefix}) {
+  SessionDurationDb map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SessionsDuration(
+    return SessionDurationDb(
       sessionId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}session_id'],
@@ -1421,12 +877,12 @@ class $SessionsDurationsTable extends SessionsDurations
   }
 }
 
-class SessionsDuration extends DataClass
-    implements Insertable<SessionsDuration> {
+class SessionDurationDb extends DataClass
+    implements Insertable<SessionDurationDb> {
   final int sessionId;
   final DateTime createdAt;
   final int durationInMilliseconds;
-  const SessionsDuration({
+  const SessionDurationDb({
     required this.sessionId,
     required this.createdAt,
     required this.durationInMilliseconds,
@@ -1448,12 +904,12 @@ class SessionsDuration extends DataClass
     );
   }
 
-  factory SessionsDuration.fromJson(
+  factory SessionDurationDb.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SessionsDuration(
+    return SessionDurationDb(
       sessionId: serializer.fromJson<int>(json['sessionId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       durationInMilliseconds: serializer.fromJson<int>(
@@ -1471,18 +927,18 @@ class SessionsDuration extends DataClass
     };
   }
 
-  SessionsDuration copyWith({
+  SessionDurationDb copyWith({
     int? sessionId,
     DateTime? createdAt,
     int? durationInMilliseconds,
-  }) => SessionsDuration(
+  }) => SessionDurationDb(
     sessionId: sessionId ?? this.sessionId,
     createdAt: createdAt ?? this.createdAt,
     durationInMilliseconds:
         durationInMilliseconds ?? this.durationInMilliseconds,
   );
-  SessionsDuration copyWithCompanion(SessionsDurationsCompanion data) {
-    return SessionsDuration(
+  SessionDurationDb copyWithCompanion(SessionsDurationsCompanion data) {
+    return SessionDurationDb(
       sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       durationInMilliseconds: data.durationInMilliseconds.present
@@ -1493,7 +949,7 @@ class SessionsDuration extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('SessionsDuration(')
+    return (StringBuffer('SessionDurationDb(')
           ..write('sessionId: $sessionId, ')
           ..write('createdAt: $createdAt, ')
           ..write('durationInMilliseconds: $durationInMilliseconds')
@@ -1506,13 +962,13 @@ class SessionsDuration extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SessionsDuration &&
+      (other is SessionDurationDb &&
           other.sessionId == this.sessionId &&
           other.createdAt == this.createdAt &&
           other.durationInMilliseconds == this.durationInMilliseconds);
 }
 
-class SessionsDurationsCompanion extends UpdateCompanion<SessionsDuration> {
+class SessionsDurationsCompanion extends UpdateCompanion<SessionDurationDb> {
   final Value<int> sessionId;
   final Value<DateTime> createdAt;
   final Value<int> durationInMilliseconds;
@@ -1529,7 +985,7 @@ class SessionsDurationsCompanion extends UpdateCompanion<SessionsDuration> {
     this.durationInMilliseconds = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : sessionId = Value(sessionId);
-  static Insertable<SessionsDuration> custom({
+  static Insertable<SessionDurationDb> custom({
     Expression<int>? sessionId,
     Expression<DateTime>? createdAt,
     Expression<int>? durationInMilliseconds,
@@ -1596,16 +1052,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ChatsTable chats = $ChatsTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
-  late final $RealtimeSessionsTable realtimeSessions = $RealtimeSessionsTable(
-    this,
-  );
   late final $SessionsDurationsTable sessionsDurations =
       $SessionsDurationsTable(this);
   late final ChatDao chatDao = ChatDao(this as AppDatabase);
   late final MessageDao messageDao = MessageDao(this as AppDatabase);
-  late final RealtimeSessionDao realtimeSessionDao = RealtimeSessionDao(
-    this as AppDatabase,
-  );
   late final SessionsDurationsDao sessionsDurationsDao = SessionsDurationsDao(
     this as AppDatabase,
   );
@@ -1616,7 +1066,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     chats,
     messages,
-    realtimeSessions,
     sessionsDurations,
   ];
 }
@@ -1627,7 +1076,7 @@ typedef $$ChatsTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       required String language,
       required String level,
-      Value<String?> teacherLanguage,
+      required String teacherLanguage,
       required String topic,
     });
 typedef $$ChatsTableUpdateCompanionBuilder =
@@ -1636,7 +1085,7 @@ typedef $$ChatsTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<String> language,
       Value<String> level,
-      Value<String?> teacherLanguage,
+      Value<String> teacherLanguage,
       Value<String> topic,
     });
 
@@ -1754,14 +1203,14 @@ class $$ChatsTableTableManager
         RootTableManager<
           _$AppDatabase,
           $ChatsTable,
-          Chat,
+          ChatDb,
           $$ChatsTableFilterComposer,
           $$ChatsTableOrderingComposer,
           $$ChatsTableAnnotationComposer,
           $$ChatsTableCreateCompanionBuilder,
           $$ChatsTableUpdateCompanionBuilder,
-          (Chat, BaseReferences<_$AppDatabase, $ChatsTable, Chat>),
-          Chat,
+          (ChatDb, BaseReferences<_$AppDatabase, $ChatsTable, ChatDb>),
+          ChatDb,
           PrefetchHooks Function()
         > {
   $$ChatsTableTableManager(_$AppDatabase db, $ChatsTable table)
@@ -1781,7 +1230,7 @@ class $$ChatsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String> language = const Value.absent(),
                 Value<String> level = const Value.absent(),
-                Value<String?> teacherLanguage = const Value.absent(),
+                Value<String> teacherLanguage = const Value.absent(),
                 Value<String> topic = const Value.absent(),
               }) => ChatsCompanion(
                 chatId: chatId,
@@ -1797,7 +1246,7 @@ class $$ChatsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 required String language,
                 required String level,
-                Value<String?> teacherLanguage = const Value.absent(),
+                required String teacherLanguage,
                 required String topic,
               }) => ChatsCompanion.insert(
                 chatId: chatId,
@@ -1819,14 +1268,14 @@ typedef $$ChatsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $ChatsTable,
-      Chat,
+      ChatDb,
       $$ChatsTableFilterComposer,
       $$ChatsTableOrderingComposer,
       $$ChatsTableAnnotationComposer,
       $$ChatsTableCreateCompanionBuilder,
       $$ChatsTableUpdateCompanionBuilder,
-      (Chat, BaseReferences<_$AppDatabase, $ChatsTable, Chat>),
-      Chat,
+      (ChatDb, BaseReferences<_$AppDatabase, $ChatsTable, ChatDb>),
+      ChatDb,
       PrefetchHooks Function()
     >;
 typedef $$MessagesTableCreateCompanionBuilder =
@@ -1836,7 +1285,6 @@ typedef $$MessagesTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       required String message,
       Value<String?> gptResponseId,
-      Value<String?> audioPath,
     });
 typedef $$MessagesTableUpdateCompanionBuilder =
     MessagesCompanion Function({
@@ -1845,7 +1293,6 @@ typedef $$MessagesTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<String> message,
       Value<String?> gptResponseId,
-      Value<String?> audioPath,
     });
 
 class $$MessagesTableFilterComposer
@@ -1879,11 +1326,6 @@ class $$MessagesTableFilterComposer
 
   ColumnFilters<String> get gptResponseId => $composableBuilder(
     column: $table.gptResponseId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get audioPath => $composableBuilder(
-    column: $table.audioPath,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1921,11 +1363,6 @@ class $$MessagesTableOrderingComposer
     column: $table.gptResponseId,
     builder: (column) => ColumnOrderings(column),
   );
-
-  ColumnOrderings<String> get audioPath => $composableBuilder(
-    column: $table.audioPath,
-    builder: (column) => ColumnOrderings(column),
-  );
 }
 
 class $$MessagesTableAnnotationComposer
@@ -1953,9 +1390,6 @@ class $$MessagesTableAnnotationComposer
     column: $table.gptResponseId,
     builder: (column) => column,
   );
-
-  GeneratedColumn<String> get audioPath =>
-      $composableBuilder(column: $table.audioPath, builder: (column) => column);
 }
 
 class $$MessagesTableTableManager
@@ -1963,14 +1397,14 @@ class $$MessagesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $MessagesTable,
-          Message,
+          MessageDb,
           $$MessagesTableFilterComposer,
           $$MessagesTableOrderingComposer,
           $$MessagesTableAnnotationComposer,
           $$MessagesTableCreateCompanionBuilder,
           $$MessagesTableUpdateCompanionBuilder,
-          (Message, BaseReferences<_$AppDatabase, $MessagesTable, Message>),
-          Message,
+          (MessageDb, BaseReferences<_$AppDatabase, $MessagesTable, MessageDb>),
+          MessageDb,
           PrefetchHooks Function()
         > {
   $$MessagesTableTableManager(_$AppDatabase db, $MessagesTable table)
@@ -1991,14 +1425,12 @@ class $$MessagesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String> message = const Value.absent(),
                 Value<String?> gptResponseId = const Value.absent(),
-                Value<String?> audioPath = const Value.absent(),
               }) => MessagesCompanion(
                 messageId: messageId,
                 chatId: chatId,
                 createdAt: createdAt,
                 message: message,
                 gptResponseId: gptResponseId,
-                audioPath: audioPath,
               ),
           createCompanionCallback:
               ({
@@ -2007,14 +1439,12 @@ class $$MessagesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 required String message,
                 Value<String?> gptResponseId = const Value.absent(),
-                Value<String?> audioPath = const Value.absent(),
               }) => MessagesCompanion.insert(
                 messageId: messageId,
                 chatId: chatId,
                 createdAt: createdAt,
                 message: message,
                 gptResponseId: gptResponseId,
-                audioPath: audioPath,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -2028,262 +1458,14 @@ typedef $$MessagesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $MessagesTable,
-      Message,
+      MessageDb,
       $$MessagesTableFilterComposer,
       $$MessagesTableOrderingComposer,
       $$MessagesTableAnnotationComposer,
       $$MessagesTableCreateCompanionBuilder,
       $$MessagesTableUpdateCompanionBuilder,
-      (Message, BaseReferences<_$AppDatabase, $MessagesTable, Message>),
-      Message,
-      PrefetchHooks Function()
-    >;
-typedef $$RealtimeSessionsTableCreateCompanionBuilder =
-    RealtimeSessionsCompanion Function({
-      required String sessionId,
-      Value<DateTime> createdAt,
-      required String language,
-      required String level,
-      Value<String?> clientSecret,
-      Value<DateTime?> clientSecretExpiresAt,
-      Value<String?> topic,
-      Value<int> rowid,
-    });
-typedef $$RealtimeSessionsTableUpdateCompanionBuilder =
-    RealtimeSessionsCompanion Function({
-      Value<String> sessionId,
-      Value<DateTime> createdAt,
-      Value<String> language,
-      Value<String> level,
-      Value<String?> clientSecret,
-      Value<DateTime?> clientSecretExpiresAt,
-      Value<String?> topic,
-      Value<int> rowid,
-    });
-
-class $$RealtimeSessionsTableFilterComposer
-    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
-  $$RealtimeSessionsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get sessionId => $composableBuilder(
-    column: $table.sessionId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get language => $composableBuilder(
-    column: $table.language,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get level => $composableBuilder(
-    column: $table.level,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get clientSecret => $composableBuilder(
-    column: $table.clientSecret,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get clientSecretExpiresAt => $composableBuilder(
-    column: $table.clientSecretExpiresAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get topic => $composableBuilder(
-    column: $table.topic,
-    builder: (column) => ColumnFilters(column),
-  );
-}
-
-class $$RealtimeSessionsTableOrderingComposer
-    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
-  $$RealtimeSessionsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get sessionId => $composableBuilder(
-    column: $table.sessionId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get language => $composableBuilder(
-    column: $table.language,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get level => $composableBuilder(
-    column: $table.level,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get clientSecret => $composableBuilder(
-    column: $table.clientSecret,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get clientSecretExpiresAt => $composableBuilder(
-    column: $table.clientSecretExpiresAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get topic => $composableBuilder(
-    column: $table.topic,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$RealtimeSessionsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $RealtimeSessionsTable> {
-  $$RealtimeSessionsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get sessionId =>
-      $composableBuilder(column: $table.sessionId, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-
-  GeneratedColumn<String> get language =>
-      $composableBuilder(column: $table.language, builder: (column) => column);
-
-  GeneratedColumn<String> get level =>
-      $composableBuilder(column: $table.level, builder: (column) => column);
-
-  GeneratedColumn<String> get clientSecret => $composableBuilder(
-    column: $table.clientSecret,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<DateTime> get clientSecretExpiresAt => $composableBuilder(
-    column: $table.clientSecretExpiresAt,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get topic =>
-      $composableBuilder(column: $table.topic, builder: (column) => column);
-}
-
-class $$RealtimeSessionsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $RealtimeSessionsTable,
-          RealtimeSession,
-          $$RealtimeSessionsTableFilterComposer,
-          $$RealtimeSessionsTableOrderingComposer,
-          $$RealtimeSessionsTableAnnotationComposer,
-          $$RealtimeSessionsTableCreateCompanionBuilder,
-          $$RealtimeSessionsTableUpdateCompanionBuilder,
-          (
-            RealtimeSession,
-            BaseReferences<
-              _$AppDatabase,
-              $RealtimeSessionsTable,
-              RealtimeSession
-            >,
-          ),
-          RealtimeSession,
-          PrefetchHooks Function()
-        > {
-  $$RealtimeSessionsTableTableManager(
-    _$AppDatabase db,
-    $RealtimeSessionsTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$RealtimeSessionsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$RealtimeSessionsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$RealtimeSessionsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> sessionId = const Value.absent(),
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<String> language = const Value.absent(),
-                Value<String> level = const Value.absent(),
-                Value<String?> clientSecret = const Value.absent(),
-                Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
-                Value<String?> topic = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => RealtimeSessionsCompanion(
-                sessionId: sessionId,
-                createdAt: createdAt,
-                language: language,
-                level: level,
-                clientSecret: clientSecret,
-                clientSecretExpiresAt: clientSecretExpiresAt,
-                topic: topic,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String sessionId,
-                Value<DateTime> createdAt = const Value.absent(),
-                required String language,
-                required String level,
-                Value<String?> clientSecret = const Value.absent(),
-                Value<DateTime?> clientSecretExpiresAt = const Value.absent(),
-                Value<String?> topic = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => RealtimeSessionsCompanion.insert(
-                sessionId: sessionId,
-                createdAt: createdAt,
-                language: language,
-                level: level,
-                clientSecret: clientSecret,
-                clientSecretExpiresAt: clientSecretExpiresAt,
-                topic: topic,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ),
-      );
-}
-
-typedef $$RealtimeSessionsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $RealtimeSessionsTable,
-      RealtimeSession,
-      $$RealtimeSessionsTableFilterComposer,
-      $$RealtimeSessionsTableOrderingComposer,
-      $$RealtimeSessionsTableAnnotationComposer,
-      $$RealtimeSessionsTableCreateCompanionBuilder,
-      $$RealtimeSessionsTableUpdateCompanionBuilder,
-      (
-        RealtimeSession,
-        BaseReferences<_$AppDatabase, $RealtimeSessionsTable, RealtimeSession>,
-      ),
-      RealtimeSession,
+      (MessageDb, BaseReferences<_$AppDatabase, $MessagesTable, MessageDb>),
+      MessageDb,
       PrefetchHooks Function()
     >;
 typedef $$SessionsDurationsTableCreateCompanionBuilder =
@@ -2377,21 +1559,21 @@ class $$SessionsDurationsTableTableManager
         RootTableManager<
           _$AppDatabase,
           $SessionsDurationsTable,
-          SessionsDuration,
+          SessionDurationDb,
           $$SessionsDurationsTableFilterComposer,
           $$SessionsDurationsTableOrderingComposer,
           $$SessionsDurationsTableAnnotationComposer,
           $$SessionsDurationsTableCreateCompanionBuilder,
           $$SessionsDurationsTableUpdateCompanionBuilder,
           (
-            SessionsDuration,
+            SessionDurationDb,
             BaseReferences<
               _$AppDatabase,
               $SessionsDurationsTable,
-              SessionsDuration
+              SessionDurationDb
             >,
           ),
-          SessionsDuration,
+          SessionDurationDb,
           PrefetchHooks Function()
         > {
   $$SessionsDurationsTableTableManager(
@@ -2446,21 +1628,21 @@ typedef $$SessionsDurationsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $SessionsDurationsTable,
-      SessionsDuration,
+      SessionDurationDb,
       $$SessionsDurationsTableFilterComposer,
       $$SessionsDurationsTableOrderingComposer,
       $$SessionsDurationsTableAnnotationComposer,
       $$SessionsDurationsTableCreateCompanionBuilder,
       $$SessionsDurationsTableUpdateCompanionBuilder,
       (
-        SessionsDuration,
+        SessionDurationDb,
         BaseReferences<
           _$AppDatabase,
           $SessionsDurationsTable,
-          SessionsDuration
+          SessionDurationDb
         >,
       ),
-      SessionsDuration,
+      SessionDurationDb,
       PrefetchHooks Function()
     >;
 
@@ -2471,8 +1653,6 @@ class $AppDatabaseManager {
       $$ChatsTableTableManager(_db, _db.chats);
   $$MessagesTableTableManager get messages =>
       $$MessagesTableTableManager(_db, _db.messages);
-  $$RealtimeSessionsTableTableManager get realtimeSessions =>
-      $$RealtimeSessionsTableTableManager(_db, _db.realtimeSessions);
   $$SessionsDurationsTableTableManager get sessionsDurations =>
       $$SessionsDurationsTableTableManager(_db, _db.sessionsDurations);
 }

@@ -1,0 +1,105 @@
+/// Поддерживаемые языки
+enum Language {
+  japanese,
+  portugueseEuropean,
+  portugueseBrazilian,
+  spanish,
+  french,
+  italian,
+  german,
+  russian,
+  english;
+
+  String get value {
+    switch (this) {
+      case Language.japanese:
+        return 'japanese';
+      case Language.portugueseEuropean:
+        return 'portuguese_european';
+      case Language.portugueseBrazilian:
+        return 'portuguese_brazilian';
+      case Language.spanish:
+        return 'spanish';
+      case Language.french:
+        return 'french';
+      case Language.italian:
+        return 'italian';
+      case Language.german:
+        return 'german';
+      case Language.russian:
+        return 'russian';
+      case Language.english:
+        return 'english';
+    }
+  }
+
+  static Language? fromLanguage(String language) {
+    switch (language) {
+      case 'japanese':
+        return Language.japanese;
+      case 'portuguese_european':
+        return Language.portugueseEuropean;
+      case 'portuguese_brazilian':
+        return Language.portugueseBrazilian;
+      case 'spanish':
+        return Language.spanish;
+      case 'french':
+        return Language.french;
+      case 'italian':
+        return Language.italian;
+      case 'german':
+        return Language.german;
+      case 'russian':
+        return Language.russian;
+      case 'english':
+        return Language.english;
+      default:
+        return null;
+    }
+  }
+
+  String get localizedName {
+    switch (this) {
+      case Language.japanese:
+        return '日本語';
+      case Language.portugueseEuropean:
+        return 'Português (Europa)';
+      case Language.portugueseBrazilian:
+        return 'Português (Brasil)';
+      case Language.spanish:
+        return 'Español';
+      case Language.french:
+        return 'Français';
+      case Language.italian:
+        return 'Italiano';
+      case Language.german:
+        return 'Deutsch';
+      case Language.russian:
+        return 'Русский';
+      case Language.english:
+        return 'English';
+    }
+  }
+
+  String get localeCode {
+    switch (this) {
+      case Language.japanese:
+        return 'ja';
+      case Language.portugueseEuropean:
+      case Language.portugueseBrazilian:
+        return 'pt';
+      case Language.spanish:
+        return 'es';
+      case Language.french:
+        return 'fr';
+      case Language.italian:
+        return 'it';
+      case Language.german:
+        return 'de';
+      case Language.russian:
+        return 'ru';
+      case Language.english:
+        return 'en';
+    }
+  }
+}

@@ -3,13 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../presentation/screens/chat_list_screen.dart';
-import '../../presentation/screens/chat_screen.dart';
-import '../../presentation/screens/create_chat_screen.dart';
-import '../../presentation/screens/create_realtime_session_screen.dart';
-import '../../presentation/screens/initialize_screen.dart';
-import '../../presentation/screens/realtime_session_detail_screen.dart';
-import '../../presentation/screens/realtime_session_list_screen.dart';
+import '../../features/chats/presentation/chat_list_screen.dart';
+import '../../features/chats/presentation/chat_screen.dart';
+import '../../features/initialize/initialize_screen.dart';
+import '../../features/onboarding/presentation/onboarding_screen.dart';
+import '../../features/paywall/presentation/paywall_screen.dart';
+import '../../features/realtime_call/presentation/realtime_call_screen.dart';
 import 'modal_screens/app_bottom_sheet_screen.dart';
 import 'modal_screens/app_dialog_screen.dart';
 import 'modal_screens/app_full_screen.dart';
@@ -21,12 +20,16 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
     AutoRoute(page: InitializeRoute.page, initial: true),
-    AutoRoute(page: ChatListRoute.page),
+    CustomRoute<void>(
+      page: ChatListRoute.page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          FadeTransition(opacity: animation, child: child),
+    ),
     AutoRoute(page: ChatRoute.page),
-    AutoRoute(page: RealtimeSessionListRoute.page),
-    AutoRoute(page: RealtimeSessionDetailRoute.page),
-    AutoRoute(page: CreateChatRoute.page),
-    AutoRoute(page: CreateRealtimeSessionRoute.page),
+    AutoRoute(page: RealtimeCallRoute.page),
+    AutoRoute(page: OnboardingRoute.page),
+    AutoRoute(page: PaywallRoute.page),
+
     CustomRoute<void>(
       page: AppDialogRoute.page,
       fullscreenDialog: true,

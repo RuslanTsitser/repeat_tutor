@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 
 import 'daos/chat_dao.dart';
 import 'daos/message_dao.dart';
-import 'daos/realtime_session_dao.dart';
 import 'daos/sessions_durations_dao.dart';
 import 'open_connection/open_db_connection.dart';
 import 'tables.dart';
@@ -11,8 +10,8 @@ part 'app_database.g.dart';
 
 /// Главный класс базы данных приложения
 @DriftDatabase(
-  tables: [Chats, Messages, RealtimeSessions, SessionsDurations],
-  daos: [ChatDao, MessageDao, RealtimeSessionDao, SessionsDurationsDao],
+  tables: [Chats, Messages, SessionsDurations],
+  daos: [ChatDao, MessageDao, SessionsDurationsDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(openDbConnection());

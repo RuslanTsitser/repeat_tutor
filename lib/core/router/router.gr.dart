@@ -362,38 +362,6 @@ class ChatRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [CreateChatScreen]
-class CreateChatRoute extends PageRouteInfo<void> {
-  const CreateChatRoute({List<PageRouteInfo>? children})
-    : super(CreateChatRoute.name, initialChildren: children);
-
-  static const String name = 'CreateChatRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const CreateChatScreen();
-    },
-  );
-}
-
-/// generated route for
-/// [CreateRealtimeSessionScreen]
-class CreateRealtimeSessionRoute extends PageRouteInfo<void> {
-  const CreateRealtimeSessionRoute({List<PageRouteInfo>? children})
-    : super(CreateRealtimeSessionRoute.name, initialChildren: children);
-
-  static const String name = 'CreateRealtimeSessionRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const CreateRealtimeSessionScreen();
-    },
-  );
-}
-
-/// generated route for
 /// [InitializeScreen]
 class InitializeRoute extends PageRouteInfo<void> {
   const InitializeRoute({List<PageRouteInfo>? children})
@@ -410,33 +378,49 @@ class InitializeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [RealtimeSessionDetailScreen]
-class RealtimeSessionDetailRoute extends PageRouteInfo<void> {
-  const RealtimeSessionDetailRoute({List<PageRouteInfo>? children})
-    : super(RealtimeSessionDetailRoute.name, initialChildren: children);
+/// [OnboardingScreen]
+class OnboardingRoute extends PageRouteInfo<void> {
+  const OnboardingRoute({List<PageRouteInfo>? children})
+    : super(OnboardingRoute.name, initialChildren: children);
 
-  static const String name = 'RealtimeSessionDetailRoute';
+  static const String name = 'OnboardingRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const RealtimeSessionDetailScreen();
+      return const OnboardingScreen();
     },
   );
 }
 
 /// generated route for
-/// [RealtimeSessionListScreen]
-class RealtimeSessionListRoute extends PageRouteInfo<void> {
-  const RealtimeSessionListRoute({List<PageRouteInfo>? children})
-    : super(RealtimeSessionListRoute.name, initialChildren: children);
+/// [PaywallScreen]
+class PaywallRoute extends PageRouteInfo<void> {
+  const PaywallRoute({List<PageRouteInfo>? children})
+    : super(PaywallRoute.name, initialChildren: children);
 
-  static const String name = 'RealtimeSessionListRoute';
+  static const String name = 'PaywallRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const RealtimeSessionListScreen();
+      return const PaywallScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [RealtimeCallScreen]
+class RealtimeCallRoute extends PageRouteInfo<void> {
+  const RealtimeCallRoute({List<PageRouteInfo>? children})
+    : super(RealtimeCallRoute.name, initialChildren: children);
+
+  static const String name = 'RealtimeCallRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const RealtimeCallScreen();
     },
   );
 }

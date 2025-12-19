@@ -1,32 +1,32 @@
 // Chat providers
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../presentation/notifiers/chat_notifier.dart';
-import '../presentation/notifiers/create_realtime_session_notifier.dart';
-import '../presentation/notifiers/message_notifier.dart';
-import '../presentation/notifiers/realtime_call_notifier.dart';
-import '../presentation/notifiers/realtime_session_notifier.dart';
+import '../features/chats/logic/chat_list_notifier.dart';
+import '../features/chats/logic/chat_notifier.dart';
+import '../features/chats/logic/create_chat_notifier.dart';
+import '../features/realtime_call/logic/realtime_call_notifier.dart';
+import 'core.dart';
+import 'repositories.dart';
 
 final chatProvider = ChangeNotifierProvider((ref) {
-  return ChatNotifier();
+  return ChatListNotifier(
+    chatRepository: ref.watch(chatRepositoryProvider),
+  );
 });
 
 // Message providers
 final messageProvider = ChangeNotifierProvider((ref) {
-  return MessageNotifier();
+  return ChatNotifier();
 });
 
 /// Провайдер для списка сессий
-final realtimeSessionListProvider = ChangeNotifierProvider((ref) {
-  return RealtimeSessionListNotifier();
-});
-
-/// Провайдер для формы создания сессии
-final createRealtimeSessionProvider = ChangeNotifierProvider.autoDispose((ref) {
-  return CreateRealtimeSessionNotifier();
+final createChatProvider = ChangeNotifierProvider((ref) {
+  return CreateChatNotifier();
 });
 
 /// Провайдер для звонка (family для разных сессий)
 final realtimeCallProvider = ChangeNotifierProvider((ref) {
-  return RealtimeCallNotifier();
+  return RealtimeCallNotifier(
+    realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
+  );
 });

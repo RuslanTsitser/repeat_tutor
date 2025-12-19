@@ -11,7 +11,7 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
   MessageDao(super.db);
 
   /// Получить все сообщения для чата
-  Future<List<Message>> getMessagesByChatId(int chatId) {
+  Future<List<MessageDb>> getMessagesByChatId(int chatId) {
     return (select(messages)
           ..where((tbl) => tbl.chatId.equals(chatId))
           ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
@@ -23,13 +23,11 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
     required String message,
     required String? gptResponseId,
     required int chatId,
-    String? audioPath,
   }) => into(messages).insert(
     MessagesCompanion(
       message: Value(message),
       gptResponseId: Value(gptResponseId),
       chatId: Value(chatId),
-      audioPath: Value(audioPath),
     ),
   );
 
@@ -45,7 +43,7 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
     return (delete(messages)..where((tbl) => tbl.chatId.equals(chatId))).go();
   }
 
-  Stream<List<Message>> getMessagesStream(int chatId) {
+  Stream<List<MessageDb>> getMessagesStream(int chatId) {
     return (select(messages)
           ..where((tbl) => tbl.chatId.equals(chatId))
           ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
