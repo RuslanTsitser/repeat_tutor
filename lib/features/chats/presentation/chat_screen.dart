@@ -19,12 +19,26 @@ class ChatScreen extends ConsumerWidget {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: const CupertinoPageScaffold(
+      child: CupertinoPageScaffold(
         resizeToAvoidBottomInset: true,
         navigationBar: CupertinoNavigationBar(
-          middle: Text('Чат'),
+          middle: const Text('Чат'),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              final chat = ref.read(chatNotifierProvider).state.chat;
+              ref
+                  .read(startRealtimeCallUseCaseProvider)
+                  .execute(
+                    language: chat.chatLanguage,
+                    level: chat.level,
+                    teacherLanguage: chat.teacherLanguage,
+                  );
+            },
+            child: const Icon(CupertinoIcons.phone),
+          ),
         ),
-        child: _Body(),
+        child: const _Body(),
       ),
     );
   }
@@ -77,8 +91,8 @@ class __BodyState extends ConsumerState<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    final messageNotifier = ref.watch(messageProvider);
-    final MessagesState state = messageNotifier.state;
+    final chatNotifier = ref.watch(chatNotifierProvider);
+    final MessagesState state = chatNotifier.state;
     final List<Message> messages = state.messages;
     final bool isLoading = state.isLoading;
     final String? error = state.error;
@@ -338,7 +352,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               ),
             ),
             const SizedBox(width: 8),
-            if (ref.watch(messageProvider).state.isAudioRecordingMode)
+            if (ref.watch(chatNotifierProvider).state.isAudioRecordingMode)
               CupertinoButton(
                 onLongPress: ref
                     .read(addMessageUseCaseProvider)
@@ -346,7 +360,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 padding: EdgeInsets.zero,
                 onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
                 minimumSize: const Size(0, 0),
-                child: ref.watch(messageProvider).state.isMessageSending
+                child: ref.watch(chatNotifierProvider).state.isMessageSending
                     ? Container(
                         width: 36,
                         height: 36,
@@ -356,7 +370,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                         ),
                         child: const CupertinoActivityIndicator(),
                       )
-                    : (ref.watch(messageProvider).state.isSpeechRecording)
+                    : (ref.watch(chatNotifierProvider).state.isSpeechRecording)
                     ? Container(
                         width: 36,
                         height: 36,

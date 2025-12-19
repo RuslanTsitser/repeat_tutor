@@ -8,14 +8,14 @@ import '../features/realtime_call/logic/realtime_call_notifier.dart';
 import 'core.dart';
 import 'repositories.dart';
 
-final chatProvider = ChangeNotifierProvider((ref) {
+final chatListNotifierProvider = ChangeNotifierProvider((ref) {
   return ChatListNotifier(
     chatRepository: ref.watch(chatRepositoryProvider),
   );
 });
 
 // Message providers
-final messageProvider = ChangeNotifierProvider((ref) {
+final chatNotifierProvider = ChangeNotifierProvider((ref) {
   return ChatNotifier();
 });
 

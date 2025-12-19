@@ -4,6 +4,7 @@ import '../features/chats/use_case/add_message_use_case.dart';
 import '../features/chats/use_case/create_chat_use_case.dart';
 import '../features/chats/use_case/delete_chat_use_case.dart';
 import '../features/chats/use_case/open_chat_use_case.dart';
+import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
 import 'core.dart';
 import 'repositories.dart';
 import 'state_managers.dart';
@@ -11,7 +12,7 @@ import 'state_managers.dart';
 final openChatUseCaseProvider = Provider((ref) {
   return OpenChatUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
-    messageNotifier: ref.watch(messageProvider),
+    messageNotifier: ref.watch(chatNotifierProvider),
     appRouter: ref.watch(routerProvider),
   );
 });
@@ -32,9 +33,18 @@ final deleteChatUseCaseProvider = Provider((ref) {
 final addMessageUseCaseProvider = Provider((ref) {
   return AddMessageUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
-    messageNotifier: ref.watch(messageProvider),
+    chatNotifier: ref.watch(chatNotifierProvider),
     speechRecognizer: ref.watch(speechRecognizerProvider),
     audioService: ref.watch(audioServiceProvider),
     gptService: ref.watch(gptServiceProvider),
+  );
+});
+
+final startRealtimeCallUseCaseProvider = Provider((ref) {
+  return StartRealtimeCallUseCase(
+    gptService: ref.watch(gptServiceProvider),
+    realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
+    realtimeCallNotifier: ref.watch(realtimeCallProvider),
+    appRouter: ref.watch(routerProvider),
   );
 });

@@ -33,7 +33,7 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatNotifier = ref.watch(chatProvider);
+    final chatNotifier = ref.watch(chatListNotifierProvider);
     final ChatsState state = chatNotifier.state;
     final bool isLoading = state.isLoading;
     final String? error = state.error;
@@ -64,7 +64,7 @@ class _Body extends ConsumerWidget {
             const SizedBox(height: 16),
             CupertinoButton.filled(
               onPressed: () {
-                ref.read(chatProvider).getChats();
+                ref.read(chatListNotifierProvider).getChats();
               },
               child: const Text('Повторить'),
             ),

@@ -11,25 +11,25 @@ import '../logic/chat_notifier.dart';
 class AddMessageUseCase {
   const AddMessageUseCase({
     required this.chatRepository,
-    required this.messageNotifier,
+    required this.chatNotifier,
     required this.speechRecognizer,
     required this.audioService,
     required this.gptService,
   });
   final ChatRepository chatRepository;
-  final ChatNotifier messageNotifier;
+  final ChatNotifier chatNotifier;
   final SpeechRecognizer speechRecognizer;
   final AudioService audioService;
   final GptService gptService;
 
   Future<void> addMessage(String message) async {
-    final lastGptResponseId = messageNotifier.state.messages
+    final lastGptResponseId = chatNotifier.state.messages
         .lastWhereOrNull((message) => !message.isMe)
         ?.gptResponseId;
     await chatRepository.addMessage(
       message: message,
       gptResponseId: lastGptResponseId,
-      chat: messageNotifier.state.chat,
+      chat: chatNotifier.state.chat,
     );
   }
 
@@ -40,15 +40,15 @@ class AddMessageUseCase {
       return;
     }
 
-    messageNotifier.setState(
-      messageNotifier.state.copyWith(
-        isAudioRecordingMode: !messageNotifier.state.isAudioRecordingMode,
+    chatNotifier.setState(
+      chatNotifier.state.copyWith(
+        isAudioRecordingMode: !chatNotifier.state.isAudioRecordingMode,
       ),
     );
   }
 
   Future<void> toggleRecording() async {
-    if (messageNotifier.state.isSpeechRecording) {
+    if (chatNotifier.state.isSpeechRecording) {
       await stopAudioRecording();
       return;
     } else {
@@ -57,37 +57,37 @@ class AddMessageUseCase {
   }
 
   Future<void> startAudioRecording() async {
-    if (messageNotifier.state.isAudioRecordingMode) {
+    if (chatNotifier.state.isAudioRecordingMode) {
       return;
     }
     await audioService.startRecording();
-    messageNotifier.setState(
-      messageNotifier.state.copyWith(
+    chatNotifier.setState(
+      chatNotifier.state.copyWith(
         isAudioRecordingMode: true,
       ),
     );
   }
 
   Future<void> stopAudioRecording() async {
-    if (!messageNotifier.state.isAudioRecordingMode) {
+    if (!chatNotifier.state.isAudioRecordingMode) {
       return;
     }
     final result = await audioService.stopRecording();
 
-    messageNotifier.setState(
-      messageNotifier.state.copyWith(
+    chatNotifier.setState(
+      chatNotifier.state.copyWith(
         isSpeechRecording: false,
       ),
     );
     if (result != null) {
-      messageNotifier.setState(
-        messageNotifier.state.copyWith(
+      chatNotifier.setState(
+        chatNotifier.state.copyWith(
           isMessageSending: true,
         ),
       );
       final text = await gptService.sendAudio(result);
-      messageNotifier.setState(
-        messageNotifier.state.copyWith(
+      chatNotifier.setState(
+        chatNotifier.state.copyWith(
           isMessageSending: false,
         ),
       );
