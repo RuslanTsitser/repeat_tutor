@@ -20,7 +20,7 @@ final messageProvider = ChangeNotifierProvider((ref) {
 });
 
 /// Провайдер для списка сессий
-final createChatProvider = ChangeNotifierProvider((ref) {
+final createChatProvider = ChangeNotifierProvider.autoDispose((ref) {
   return CreateChatNotifier();
 });
 

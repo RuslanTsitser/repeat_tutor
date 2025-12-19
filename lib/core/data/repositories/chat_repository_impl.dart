@@ -23,11 +23,13 @@ class ChatRepositoryImpl implements ChatRepository {
     required String language,
     required String level,
     required String topic,
+    required String teacherLanguage,
   }) async {
     await _database.chatDao.insertChat(
       language: language,
       level: level,
       topic: topic,
+      teacherLanguage: teacherLanguage,
     );
   }
 

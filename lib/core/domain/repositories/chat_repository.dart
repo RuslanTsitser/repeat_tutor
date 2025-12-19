@@ -11,6 +11,7 @@ abstract interface class ChatRepository {
     required String language,
     required String level,
     required String topic,
+    required String teacherLanguage,
   });
 
   /// Удалить чат

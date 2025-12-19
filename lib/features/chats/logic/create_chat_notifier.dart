@@ -20,7 +20,7 @@ class CreateChatState {
     return const CreateChatState(
       language: Language.english,
       level: DifficultyLevel.beginner,
-      teacherLanguage: null,
+      teacherLanguage: Language.english,
       topic: '',
     );
   }
@@ -32,7 +32,7 @@ class CreateChatState {
   });
   final Language language;
   final DifficultyLevel level;
-  final Language? teacherLanguage;
+  final Language teacherLanguage;
   final String topic;
 
   CreateChatState copyWith({

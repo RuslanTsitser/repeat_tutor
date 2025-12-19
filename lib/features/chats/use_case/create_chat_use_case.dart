@@ -1,5 +1,8 @@
 import '../../../core/domain/repositories/chat_repository.dart';
+import '../../../core/router/common/bottom_sheet.dart';
 import '../../../core/router/router.dart';
+import '../logic/create_chat_notifier.dart';
+import '../presentation/create_chat_bottom_sheet.dart';
 
 class CreateChatUseCase {
   const CreateChatUseCase({
@@ -10,6 +13,17 @@ class CreateChatUseCase {
   final AppRouter router;
 
   Future<void> execute() async {
-    // TODO: Implement create chat use case
+    final state = await router.showAppBottomSheet<CreateChatState>(
+      isScrollControlled: true,
+      builder: (context) => const CreateChatBottomSheet(),
+    );
+    if (state != null) {
+      await chatRepository.createChat(
+        language: state.language.name,
+        level: state.level.name,
+        topic: state.topic,
+        teacherLanguage: state.teacherLanguage.name,
+      );
+    }
   }
 }

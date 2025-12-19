@@ -26,11 +26,13 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     required String language,
     required String level,
     required String topic,
+    required String teacherLanguage,
   }) => into(chats).insert(
     ChatsCompanion(
       language: Value(language),
       level: Value(level),
       topic: Value(topic),
+      teacherLanguage: Value(teacherLanguage),
     ),
   );
 
