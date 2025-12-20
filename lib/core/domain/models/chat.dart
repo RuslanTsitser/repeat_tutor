@@ -20,7 +20,14 @@ class Chat {
   final DateTime createdAt;
   final LastMessage? lastMessage;
 
-  String get systemPrompt => TutorInstruction.build(
+  String get chattyPrompt => TutorInstruction.chattyTutor(
+    languageName: chatLanguage.localizedName,
+    levelName: level.value,
+    teacherLanguageName: teacherLanguage.localizedName,
+    topic: topic,
+  );
+
+  String get repeatPrompt => TutorInstruction.repeatTutor(
     languageName: chatLanguage.localizedName,
     levelName: level.value,
     teacherLanguageName: teacherLanguage.localizedName,

@@ -183,4 +183,141 @@ class GptServiceImpl implements GptService {
       rethrow;
     }
   }
+
+  @override
+  Future<TutorAnswer> getTutorAnswer({
+    required String systemPrompt,
+    required String text,
+    String? previousMessageId,
+  }) async {
+    const url = 'https://api.openai.com/v1/tutor/answers';
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        url,
+        data: {
+          if (previousMessageId != null)
+            'previous_response_id': previousMessageId,
+          'model': 'gpt-4.1',
+          'input': text,
+          'instructions': systemPrompt,
+          'text': _tutorAnswerFormat,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $_apiKey',
+          },
+        ),
+      );
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        return TutorAnswer.fromJson(response.data as Map<String, dynamic>);
+      }
+      throw Exception(
+        'HTTP ошибка: ${response.statusCode} - ${response.data}',
+      );
+    } on Exception catch (e) {
+      if (e is DioException) {
+        final errorMessage = e.response?.data?.toString() ?? e.message;
+        throw Exception('Ошибка API: $errorMessage');
+      }
+      rethrow;
+    }
+  }
 }
+
+const _tutorAnswerFormat = {
+  'format': {
+    'type': 'json_schema',
+    'name': 'tutor_answer',
+    'strict': true,
+    'schema': {
+      'type': 'object',
+      'additionalProperties': false,
+      'properties': {
+        'case_type': {
+          'type': 'string',
+          'enum': [
+            'correct_answer',
+            'corrected_answer',
+            'native_language_answer',
+            'off_topic_answer',
+            'no_answer',
+            'user_question',
+            'mixed_case',
+          ],
+          'description': 'Тип ситуации в текущем ходе диалога',
+        },
+        'assistant_message': {
+          'type': 'string',
+          'description':
+              'Основной текст ответа пользователю (на teacherLanguageName)',
+        },
+        'correction': {
+          'type': ['object', 'null'],
+          'additionalProperties': false,
+          'properties': {
+            'original': {
+              'type': 'string',
+              'description': 'Исходный ответ пользователя',
+            },
+            'corrected_markdown': {
+              'type': 'string',
+              'description':
+                  'Исправленный вариант с markdown (~~ошибка~~ **правильно**)',
+            },
+            'explanation': {
+              'type': 'string',
+              'description':
+                  'Короткое объяснение ошибки на teacherLanguageName',
+            },
+          },
+          'required': ['original', 'corrected_markdown', 'explanation'],
+        },
+        'suggested_translation': {
+          'type': ['object', 'null'],
+          'additionalProperties': false,
+          'properties': {
+            'user_meaning': {
+              'type': 'string',
+              'description': 'Что пользователь хотел сказать',
+            },
+            'translation': {
+              'type': 'string',
+              'description': 'Как это сказать на languageName',
+            },
+          },
+          'required': ['user_meaning', 'translation'],
+        },
+        'user_question_answer': {
+          'type': ['object', 'null'],
+          'additionalProperties': false,
+          'properties': {
+            'question': {
+              'type': 'string',
+              'description': 'Вопрос пользователя',
+            },
+            'answer': {
+              'type': 'string',
+              'description': 'Ответ на вопрос (на teacherLanguageName)',
+            },
+          },
+          'required': ['question', 'answer'],
+        },
+        'conversation_continue': {
+          'type': 'string',
+          'description': 'Фраза или вопрос для продолжения разговора',
+        },
+      },
+      'required': [
+        'case_type',
+        'assistant_message',
+        'correction',
+        'suggested_translation',
+        'user_question_answer',
+        'conversation_continue',
+      ],
+    },
+  },
+};

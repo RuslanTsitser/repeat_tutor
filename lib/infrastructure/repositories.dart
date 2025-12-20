@@ -8,6 +8,5 @@ import 'core.dart';
 /// Провайдер для ChatRepository
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
   final database = ref.watch(databaseProvider);
-  final gptService = ref.watch(gptServiceProvider);
-  return ChatRepositoryImpl(database, gptService);
+  return ChatRepositoryImpl(database);
 });

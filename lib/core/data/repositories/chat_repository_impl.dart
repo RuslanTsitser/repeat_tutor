@@ -2,15 +2,13 @@ import '../../database/app_database.dart';
 import '../../domain/models/chat.dart' as model;
 import '../../domain/models/message.dart' as model;
 import '../../domain/repositories/chat_repository.dart';
-import '../../gpt/gpt_service.dart';
 import '../mappers/chat_db_mappers.dart';
 import '../mappers/message_db_mappers.dart';
 
 /// Реализация репозитория для работы с чатами
 class ChatRepositoryImpl implements ChatRepository {
-  const ChatRepositoryImpl(this._database, this._gptService);
+  const ChatRepositoryImpl(this._database);
   final AppDatabase _database;
-  final GptService _gptService;
 
   @override
   Future<List<model.Chat>> getChats() async {
@@ -68,17 +66,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }) async {
     await _database.messageDao.insertMessage(
       message: message,
-      gptResponseId: null,
-      chatId: chat.chatId,
-    );
-    final gptResponse = await _gptService.sendMessage(
-      systemPrompt: chat.systemPrompt,
-      previousMessageId: gptResponseId,
-      text: message,
-    );
-    await _database.messageDao.insertMessage(
-      message: gptResponse.text,
-      gptResponseId: gptResponse.id,
+      gptResponseId: gptResponseId,
       chatId: chat.chatId,
     );
   }
