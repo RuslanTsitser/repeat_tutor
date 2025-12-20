@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -459,6 +461,8 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
   final FocusNode focusNode = FocusNode();
   double _previousKeyboardHeight = 0;
   bool _hasText = false;
+  Duration _recordingDuration = Duration.zero;
+  Timer? _recordingTimer;
 
   @override
   void initState() {
@@ -484,9 +488,38 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
 
   @override
   void dispose() {
+    _recordingTimer?.cancel();
     messageController.dispose();
     focusNode.dispose();
     super.dispose();
+  }
+
+  void _startRecordingTimer() {
+    _recordingDuration = Duration.zero;
+    _recordingTimer?.cancel();
+    _recordingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _recordingDuration = Duration(seconds: timer.tick);
+        });
+      }
+    });
+  }
+
+  void _stopRecordingTimer() {
+    _recordingTimer?.cancel();
+    _recordingTimer = null;
+    if (mounted) {
+      setState(() {
+        _recordingDuration = Duration.zero;
+      });
+    }
+  }
+
+  String _formatDuration(Duration duration) {
+    final minutes = duration.inMinutes;
+    final seconds = duration.inSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 
   void _scrollToBottom() {
@@ -513,6 +546,17 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    final isSpeechRecording = ref
+        .watch(chatNotifierProvider)
+        .state
+        .isSpeechRecording;
+
+    // Управление таймером записи
+    if (isSpeechRecording && _recordingTimer == null) {
+      _startRecordingTimer();
+    } else if (!isSpeechRecording && _recordingTimer != null) {
+      _stopRecordingTimer();
+    }
 
     // Скролл при изменении высоты клавиатуры
     if (bottomPadding != _previousKeyboardHeight && bottomPadding > 0) {
@@ -524,6 +568,127 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
       _previousKeyboardHeight = 0;
     }
 
+    // Состояние записи аудио
+    if (isSpeechRecording) {
+      return Container(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 13,
+          bottom: 13 + bottomPadding,
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Container(
+            height: 69,
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 1,
+              bottom: 0,
+            ),
+            decoration: const BoxDecoration(
+              color: Color(0xFFFEF2F2),
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xFFFFC9C9),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE7000B).withOpacity(0.709),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        _formatDuration(_recordingDuration),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF82181A),
+                          letterSpacing: -0.3125,
+                          height: 24 / 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // Кнопка отмены записи (мусорка)
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: ref
+                      .read(addMessageUseCaseProvider)
+                      .cancelAudioRecording,
+                  minimumSize: const Size(0, 0),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF3F4F6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.delete,
+                      color: Color(0xFF101828),
+                      size: 20,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // Кнопка закончить запись (отправить)
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: ref
+                      .read(addMessageUseCaseProvider)
+                      .stopAudioRecording,
+                  minimumSize: const Size(0, 0),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFE7000B),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Обычное состояние с полем ввода
     return Container(
       padding: EdgeInsets.only(
         left: 16,
@@ -595,71 +760,35 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                   color: Color(0xFFF3F4F6),
                   shape: BoxShape.circle,
                 ),
-                child: ref.watch(chatNotifierProvider).state.isSpeechRecording
-                    ? const Icon(
-                        CupertinoIcons.stop,
-                        color: CupertinoColors.systemRed,
-                        size: 20,
-                      )
-                    : const Icon(
-                        CupertinoIcons.mic,
-                        color: Color(0xFF101828),
-                        size: 20,
-                      ),
+                child: const Icon(
+                  CupertinoIcons.mic,
+                  color: Color(0xFF101828),
+                  size: 20,
+                ),
               ),
             ),
             const SizedBox(width: 8),
             // Кнопка отправки
-            if (ref.watch(chatNotifierProvider).state.isAudioRecordingMode)
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
-                minimumSize: const Size(0, 0),
-                child: ref.watch(chatNotifierProvider).state.isMessageSending
-                    ? Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFD1D5DC),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const CupertinoActivityIndicator(),
-                      )
-                    : Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFD1D5DC),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.arrow_up,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-              )
-            else
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: _hasText ? _sendMessage : null,
-                minimumSize: const Size(0, 0),
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: _hasText
-                        ? const Color(0xFFD1D5DC)
-                        : const Color(0xFFD1D5DC).withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.arrow_up,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: _hasText ? _sendMessage : null,
+              minimumSize: const Size(0, 0),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: _hasText
+                      ? const Color(0xFFD1D5DC)
+                      : const Color(0xFFD1D5DC).withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  CupertinoIcons.arrow_up,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
+            ),
           ],
         ),
       ),

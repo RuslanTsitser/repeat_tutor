@@ -117,4 +117,16 @@ class AddMessageUseCase {
       await addMessage(text);
     }
   }
+
+  Future<void> cancelAudioRecording() async {
+    if (!chatNotifier.state.isSpeechRecording) {
+      return;
+    }
+    await audioService.stopRecording();
+    chatNotifier.setState(
+      chatNotifier.state.copyWith(
+        isSpeechRecording: false,
+      ),
+    );
+  }
 }
