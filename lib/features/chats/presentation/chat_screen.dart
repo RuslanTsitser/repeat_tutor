@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../../core/domain/models/message.dart';
 import '../../../infrastructure/state_managers.dart';
@@ -216,16 +217,20 @@ class _MessageBubble extends StatelessWidget {
                 child: Stack(
                   children: [
                     if (message.text.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 32.0,
-                          bottom: 16.0,
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 16,
                         ),
-                        child: Text(
-                          message.text,
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 16,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 32.0,
+                            bottom: 16.0,
+                          ),
+                          child: MarkdownWidget(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            data: message.text,
                           ),
                         ),
                       ),
