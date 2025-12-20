@@ -15,44 +15,50 @@ class ChatListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chatNotifier = ref.watch(chatListNotifierProvider);
+    final chats = chatNotifier.state.chats;
+    final hasChats = chats.isNotEmpty;
+
     return CupertinoPageScaffold(
       child: SafeArea(
         child: Stack(
           children: [
             const _Body(),
-            Positioned(
-              right: 16,
-              bottom: 80,
-              child: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => ref.read(createChatUseCaseProvider).execute(),
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF155DFC),
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.06),
-                        blurRadius: 4,
-                        offset: const Offset(0, -4),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    CupertinoIcons.add,
-                    color: CupertinoColors.white,
-                    size: 24,
+            if (hasChats)
+              Positioned(
+                right: 16,
+                bottom: 80,
+                child: CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () =>
+                      ref.read(createChatUseCaseProvider).execute(),
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF155DFC),
+                      borderRadius: BorderRadius.circular(28),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          blurRadius: 4,
+                          offset: const Offset(0, -4),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.add,
+                      color: CupertinoColors.white,
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
-            ),
             const Positioned(
               left: 0,
               right: 0,
@@ -141,25 +147,9 @@ class _Body extends ConsumerWidget {
         ),
         Expanded(
           child: chats.isEmpty
-              ? const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        CupertinoIcons.chat_bubble_2,
-                        size: 64,
-                        color: CupertinoColors.systemGrey,
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        'Нет чатов',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: CupertinoColors.systemGrey,
-                        ),
-                      ),
-                    ],
-                  ),
+              ? _EmptyState(
+                  onCreateChat: () =>
+                      ref.read(createChatUseCaseProvider).execute(),
                 )
               : ListView.separated(
                   padding: const EdgeInsets.only(bottom: 141),
@@ -270,6 +260,81 @@ class _ChatListItem extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({
+    required this.onCreateChat,
+  });
+  final VoidCallback onCreateChat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 8),
+          const Icon(
+            CupertinoIcons.chat_bubble_2,
+            size: 64,
+            color: Color(0xFF9CA3AF),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'No chats yet',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF101828),
+              letterSpacing: -0.4492,
+              height: 28 / 20,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              'Start your first conversation and begin practicing a new language',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Color(0xFF4A5565),
+                letterSpacing: -0.3125,
+                height: 24 / 16,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: onCreateChat,
+            child: Container(
+              width: 192,
+              height: 48,
+              decoration: BoxDecoration(
+                color: const Color(0xFF155DFC),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  'Start your first chat',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: CupertinoColors.white,
+                    letterSpacing: -0.3125,
+                    height: 24 / 16,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
