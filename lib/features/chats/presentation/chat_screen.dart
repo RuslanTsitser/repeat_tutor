@@ -90,15 +90,15 @@ class __BodyState extends ConsumerState<_Body> {
   void initState() {
     super.initState();
     // Скролл до конца после первой загрузки сообщений
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (_scrollController.hasClients) {
-          _scrollController.jumpTo(
-            _scrollController.position.maxScrollExtent,
-          );
-        }
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Future.delayed(const Duration(milliseconds: 300), () {
+    //     if (_scrollController.hasClients) {
+    //       _scrollController.jumpTo(
+    //         _scrollController.position.maxScrollExtent,
+    //       );
+    //     }
+    //   });
+    // });
   }
 
   @override
@@ -111,7 +111,7 @@ class __BodyState extends ConsumerState<_Body> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
+          0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -123,7 +123,7 @@ class __BodyState extends ConsumerState<_Body> {
   Widget build(BuildContext context) {
     final chatNotifier = ref.watch(chatNotifierProvider);
     final MessagesState state = chatNotifier.state;
-    final List<Message> messages = state.messages;
+    final List<Message> messages = state.messages.reversed.toList();
     final bool isLoading = state.isLoading;
     final String? error = state.error;
 
@@ -163,6 +163,7 @@ class __BodyState extends ConsumerState<_Body> {
                     top: true,
                     bottom: false,
                     child: ListView.builder(
+                      reverse: true,
                       controller: _scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       itemCount: messages.length,
