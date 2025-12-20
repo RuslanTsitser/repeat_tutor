@@ -28,9 +28,15 @@ class AddMessageUseCase {
         ?.gptResponseId;
     await chatRepository.addMessage(
       message: message,
-      gptResponseId: lastGptResponseId,
+      gptResponseId: null,
       chat: chatNotifier.state.chat,
     );
+    final tutorAnswer = await gptService.getTutorAnswer(
+      systemPrompt: chatNotifier.state.chat.chattyPrompt,
+      text: message,
+      previousMessageId: lastGptResponseId,
+    );
+    // TODO: Tutor answer logic
   }
 
   Future<void> toggleAudioMode() async {
