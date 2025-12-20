@@ -217,64 +217,75 @@ class _MessageBubble extends StatelessWidget {
                   child: const Text('Delete'),
                 ),
               ],
-              builder: (context, animation) => Container(
-                padding: const EdgeInsets.only(
-                  left: 17,
-                  right: 17,
-                  top: 1,
-                  bottom: 1,
-                ),
-                decoration: BoxDecoration(
-                  color: isMe ? const Color(0xFF155DFC) : Colors.white,
-                  border: isMe
-                      ? null
-                      : const Border.fromBorderSide(
-                          BorderSide(
-                            color: Color(0xFFE5E7EB),
-                            width: 1,
-                          ),
-                        ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(isMe ? 16 : 6),
-                    topRight: Radius.circular(isMe ? 6 : 16),
-                    bottomLeft: const Radius.circular(16),
-                    bottomRight: const Radius.circular(16),
+              builder: (context, animation) {
+                return Container(
+                  padding: const EdgeInsets.only(
+                    left: 17,
+                    right: 17,
+                    top: 1,
+                    bottom: 1,
                   ),
-                  boxShadow: isMe
-                      ? null
-                      : [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 3,
-                            offset: const Offset(0, 1),
+                  decoration: BoxDecoration(
+                    color: isMe ? const Color(0xFF155DFC) : Colors.white,
+                    border: isMe
+                        ? null
+                        : const Border.fromBorderSide(
+                            BorderSide(
+                              color: Color(0xFFE5E7EB),
+                              width: 1,
+                            ),
                           ),
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 2,
-                            offset: const Offset(0, -1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(isMe ? 16 : 6),
+                      topRight: Radius.circular(isMe ? 6 : 16),
+                      bottomLeft: const Radius.circular(16),
+                      bottomRight: const Radius.circular(16),
+                    ),
+                    boxShadow: isMe
+                        ? null
+                        : [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 3,
+                              offset: const Offset(0, 1),
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 2,
+                              offset: const Offset(0, -1),
+                            ),
+                          ],
+                  ),
+                  child: (!isMe && tutorAnswer != null)
+                      ? animation.value > 0
+                            ? SizedBox(
+                                height: 200,
+                                child: SingleChildScrollView(
+                                  child: _buildTutorMessageContent(tutorAnswer),
+                                ),
+                              )
+                            : _buildTutorMessageContent(tutorAnswer)
+                      : (message.text.isNotEmpty)
+                      ? DefaultTextStyle(
+                          style: TextStyle(
+                            color: isMe
+                                ? Colors.white
+                                : const Color(0xFF101828),
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            letterSpacing: -0.3125,
+                            height: 24 / 16,
                           ),
-                        ],
-                ),
-                child: (!isMe && tutorAnswer != null)
-                    ? _buildTutorMessageContent(tutorAnswer)
-                    : (message.text.isNotEmpty)
-                    ? DefaultTextStyle(
-                        style: TextStyle(
-                          color: isMe ? Colors.white : const Color(0xFF101828),
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          letterSpacing: -0.3125,
-                          height: 24 / 16,
-                        ),
-                        child: MarkdownWidget(
-                          padding: EdgeInsets.zero,
-                          selectable: false,
-                          shrinkWrap: true,
-                          data: message.text,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-              ),
+                          child: MarkdownWidget(
+                            padding: EdgeInsets.zero,
+                            selectable: false,
+                            shrinkWrap: true,
+                            data: message.text,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                );
+              },
             ),
           ),
         ],
@@ -342,6 +353,7 @@ class _MessageBubble extends StatelessWidget {
       ),
       child: MarkdownWidget(
         padding: EdgeInsets.zero,
+        selectable: false,
         shrinkWrap: true,
         data: text,
       ),
