@@ -168,6 +168,9 @@ class __BodyState extends ConsumerState<_Body> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       itemCount: messages.length,
                       itemBuilder: (context, index) => _MessageBubble(
+                        onMessageUpdated: () {
+                          _scrollToBottom();
+                        },
                         message: messages[index],
                         onDeletePressed: () {
                           ref
@@ -185,13 +188,29 @@ class __BodyState extends ConsumerState<_Body> {
   }
 }
 
-class _MessageBubble extends StatelessWidget {
+class _MessageBubble extends StatefulWidget {
   const _MessageBubble({
     required this.message,
     required this.onDeletePressed,
+    required this.onMessageUpdated,
   });
   final Message message;
   final VoidCallback onDeletePressed;
+  final VoidCallback onMessageUpdated;
+
+  @override
+  State<_MessageBubble> createState() => __MessageBubbleState();
+}
+
+class __MessageBubbleState extends State<_MessageBubble> {
+  Message get message => widget.message;
+  @override
+  void didUpdateWidget(covariant _MessageBubble oldWidget) {
+    if (oldWidget.message.text != message.text) {
+      widget.onMessageUpdated();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +233,7 @@ class _MessageBubble extends StatelessWidget {
                 CupertinoContextMenuAction(
                   onPressed: () {
                     Navigator.pop(context);
-                    onDeletePressed();
+                    widget.onDeletePressed();
                   },
                   trailingIcon: CupertinoIcons.delete,
                   child: const Text('Delete'),
