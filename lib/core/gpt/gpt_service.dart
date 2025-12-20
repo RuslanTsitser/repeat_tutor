@@ -163,4 +163,23 @@ enum CaseType {
         throw ArgumentError('Unknown case_type: $value');
     }
   }
+
+  String toStringValue() {
+    switch (this) {
+      case CaseType.correctAnswer:
+        return 'correct_answer';
+      case CaseType.correctedAnswer:
+        return 'corrected_answer';
+      case CaseType.nativeLanguageAnswer:
+        return 'native_language_answer';
+      case CaseType.offTopicAnswer:
+        return 'off_topic_answer';
+      case CaseType.noAnswer:
+        return 'no_answer';
+      case CaseType.userQuestion:
+        return 'user_question';
+      case CaseType.mixedCase:
+        return 'mixed_case';
+    }
+  }
 }

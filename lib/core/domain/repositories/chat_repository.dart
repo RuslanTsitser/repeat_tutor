@@ -36,5 +36,15 @@ abstract interface class ChatRepository {
     required String message,
     required String? gptResponseId,
     required Chat chat,
+    String? caseType,
+    String? assistantMessage,
+    String? correctionOriginal,
+    String? correctionCorrectedMarkdown,
+    String? correctionExplanation,
+    String? suggestedTranslationUserMeaning,
+    String? suggestedTranslationTranslation,
+    String? userQuestionAnswerQuestion,
+    String? userQuestionAnswerAnswer,
+    String? conversationContinue,
   });
 }

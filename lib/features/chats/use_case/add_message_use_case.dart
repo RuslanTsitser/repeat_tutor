@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import '../../../core/audio/audio_service.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
 import '../../../core/gpt/gpt_service.dart';
-import '../../../core/logging/app_logger.dart';
 import '../../../core/permission/microphone_permission_request.dart';
 import '../../../core/speech/speech_recognizer.dart';
 import '../logic/chat_notifier.dart';
@@ -29,6 +28,7 @@ class AddMessageUseCase {
         ?.gptResponseId;
     await chatRepository.addMessage(
       message: message,
+      conversationContinue: null,
       gptResponseId: null,
       chat: chatNotifier.state.chat,
     );
@@ -37,136 +37,22 @@ class AddMessageUseCase {
       text: message,
       previousMessageId: lastGptResponseId,
     );
-    final responseBuffer = StringBuffer();
-    switch (tutorAnswer.caseType) {
-      case CaseType.correctAnswer:
-        responseBuffer
-          ..write(tutorAnswer.assistantMessage)
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'correctAnswer',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-      case CaseType.correctedAnswer:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        final correction = tutorAnswer.correction;
-        if (correction != null) {
-          responseBuffer
-            ..write('\n\n')
-            ..write(correction.correctedMarkdown)
-            ..write('\n')
-            ..write(correction.explanation);
-        }
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'correctedAnswer',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'correction': {
-            'correctedMarkdown': correction?.correctedMarkdown,
-            'explanation': correction?.explanation,
-          },
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-      case CaseType.nativeLanguageAnswer:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        final translation = tutorAnswer.suggestedTranslation;
-        if (translation != null) {
-          responseBuffer
-            ..write('\n\n')
-            ..write(translation.userMeaning)
-            ..write(' -> ')
-            ..write(translation.translation);
-        }
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'nativeLanguageAnswer',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'translation': {
-            'userMeaning': translation?.userMeaning,
-            'translation': translation?.translation,
-          },
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-      case CaseType.userQuestion:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'userQuestion',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-      case CaseType.offTopicAnswer:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'offTopicAnswer',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-      case CaseType.noAnswer:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'noAnswer',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-
-      case CaseType.mixedCase:
-        responseBuffer.write(tutorAnswer.assistantMessage);
-        final correction = tutorAnswer.correction;
-        final qa = tutorAnswer.userQuestionAnswer;
-        if (qa != null) {
-          responseBuffer
-            ..write('\n\n')
-            ..write(qa.question)
-            ..write('\n')
-            ..write(qa.answer);
-        }
-        if (correction != null) {
-          responseBuffer
-            ..write('\n\n')
-            ..write(correction.correctedMarkdown)
-            ..write('\n')
-            ..write(correction.explanation);
-        }
-        responseBuffer
-          ..write('\n\n')
-          ..write(tutorAnswer.conversationContinue);
-        logInfo({
-          'caseType': 'mixedCase',
-          'assistantMessage': tutorAnswer.assistantMessage,
-          'correction': {
-            'correctedMarkdown': correction?.correctedMarkdown,
-            'explanation': correction?.explanation,
-          },
-          'conversationContinue': tutorAnswer.conversationContinue,
-        });
-        break;
-    }
-
     await chatRepository.addMessage(
-      message: responseBuffer.toString(),
+      message: message,
       gptResponseId: gptResponseId,
       chat: chatNotifier.state.chat,
+      caseType: tutorAnswer.caseType.toStringValue(),
+      assistantMessage: tutorAnswer.assistantMessage,
+      correctionOriginal: tutorAnswer.correction?.original,
+      correctionCorrectedMarkdown: tutorAnswer.correction?.correctedMarkdown,
+      correctionExplanation: tutorAnswer.correction?.explanation,
+      suggestedTranslationUserMeaning:
+          tutorAnswer.suggestedTranslation?.userMeaning,
+      suggestedTranslationTranslation:
+          tutorAnswer.suggestedTranslation?.translation,
+      userQuestionAnswerQuestion: tutorAnswer.userQuestionAnswer?.question,
+      userQuestionAnswerAnswer: tutorAnswer.userQuestionAnswer?.answer,
+      conversationContinue: tutorAnswer.conversationContinue,
     );
   }
 

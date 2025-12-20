@@ -65,11 +65,31 @@ class ChatRepositoryImpl implements ChatRepository {
     required String message,
     required String? gptResponseId,
     required model.Chat chat,
+    String? caseType,
+    String? assistantMessage,
+    String? correctionOriginal,
+    String? correctionCorrectedMarkdown,
+    String? correctionExplanation,
+    String? suggestedTranslationUserMeaning,
+    String? suggestedTranslationTranslation,
+    String? userQuestionAnswerQuestion,
+    String? userQuestionAnswerAnswer,
+    String? conversationContinue,
   }) async {
     await _database.messageDao.insertMessage(
       message: message,
       gptResponseId: gptResponseId,
       chatId: chat.chatId,
+      caseType: caseType,
+      assistantMessage: assistantMessage,
+      correctionOriginal: correctionOriginal,
+      correctionCorrectedMarkdown: correctionCorrectedMarkdown,
+      correctionExplanation: correctionExplanation,
+      suggestedTranslationUserMeaning: suggestedTranslationUserMeaning,
+      suggestedTranslationTranslation: suggestedTranslationTranslation,
+      userQuestionAnswerQuestion: userQuestionAnswerQuestion,
+      userQuestionAnswerAnswer: userQuestionAnswerAnswer,
+      conversationContinue: conversationContinue,
     );
   }
 

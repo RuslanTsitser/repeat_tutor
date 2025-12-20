@@ -468,6 +468,116 @@ class $MessagesTable extends Messages
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _caseTypeMeta = const VerificationMeta(
+    'caseType',
+  );
+  @override
+  late final GeneratedColumn<String> caseType = GeneratedColumn<String>(
+    'case_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _assistantMessageMeta = const VerificationMeta(
+    'assistantMessage',
+  );
+  @override
+  late final GeneratedColumn<String> assistantMessage = GeneratedColumn<String>(
+    'assistant_message',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _correctionOriginalMeta =
+      const VerificationMeta('correctionOriginal');
+  @override
+  late final GeneratedColumn<String> correctionOriginal =
+      GeneratedColumn<String>(
+        'correction_original',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _correctionCorrectedMarkdownMeta =
+      const VerificationMeta('correctionCorrectedMarkdown');
+  @override
+  late final GeneratedColumn<String> correctionCorrectedMarkdown =
+      GeneratedColumn<String>(
+        'correction_corrected_markdown',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _correctionExplanationMeta =
+      const VerificationMeta('correctionExplanation');
+  @override
+  late final GeneratedColumn<String> correctionExplanation =
+      GeneratedColumn<String>(
+        'correction_explanation',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _suggestedTranslationUserMeaningMeta =
+      const VerificationMeta('suggestedTranslationUserMeaning');
+  @override
+  late final GeneratedColumn<String> suggestedTranslationUserMeaning =
+      GeneratedColumn<String>(
+        'suggested_translation_user_meaning',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _suggestedTranslationTranslationMeta =
+      const VerificationMeta('suggestedTranslationTranslation');
+  @override
+  late final GeneratedColumn<String> suggestedTranslationTranslation =
+      GeneratedColumn<String>(
+        'suggested_translation_translation',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _userQuestionAnswerQuestionMeta =
+      const VerificationMeta('userQuestionAnswerQuestion');
+  @override
+  late final GeneratedColumn<String> userQuestionAnswerQuestion =
+      GeneratedColumn<String>(
+        'user_question_answer_question',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _userQuestionAnswerAnswerMeta =
+      const VerificationMeta('userQuestionAnswerAnswer');
+  @override
+  late final GeneratedColumn<String> userQuestionAnswerAnswer =
+      GeneratedColumn<String>(
+        'user_question_answer_answer',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _conversationContinueMeta =
+      const VerificationMeta('conversationContinue');
+  @override
+  late final GeneratedColumn<String> conversationContinue =
+      GeneratedColumn<String>(
+        'conversation_continue',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     messageId,
@@ -475,6 +585,16 @@ class $MessagesTable extends Messages
     createdAt,
     message,
     gptResponseId,
+    caseType,
+    assistantMessage,
+    correctionOriginal,
+    correctionCorrectedMarkdown,
+    correctionExplanation,
+    suggestedTranslationUserMeaning,
+    suggestedTranslationTranslation,
+    userQuestionAnswerQuestion,
+    userQuestionAnswerAnswer,
+    conversationContinue,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -525,6 +645,93 @@ class $MessagesTable extends Messages
         ),
       );
     }
+    if (data.containsKey('case_type')) {
+      context.handle(
+        _caseTypeMeta,
+        caseType.isAcceptableOrUnknown(data['case_type']!, _caseTypeMeta),
+      );
+    }
+    if (data.containsKey('assistant_message')) {
+      context.handle(
+        _assistantMessageMeta,
+        assistantMessage.isAcceptableOrUnknown(
+          data['assistant_message']!,
+          _assistantMessageMeta,
+        ),
+      );
+    }
+    if (data.containsKey('correction_original')) {
+      context.handle(
+        _correctionOriginalMeta,
+        correctionOriginal.isAcceptableOrUnknown(
+          data['correction_original']!,
+          _correctionOriginalMeta,
+        ),
+      );
+    }
+    if (data.containsKey('correction_corrected_markdown')) {
+      context.handle(
+        _correctionCorrectedMarkdownMeta,
+        correctionCorrectedMarkdown.isAcceptableOrUnknown(
+          data['correction_corrected_markdown']!,
+          _correctionCorrectedMarkdownMeta,
+        ),
+      );
+    }
+    if (data.containsKey('correction_explanation')) {
+      context.handle(
+        _correctionExplanationMeta,
+        correctionExplanation.isAcceptableOrUnknown(
+          data['correction_explanation']!,
+          _correctionExplanationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('suggested_translation_user_meaning')) {
+      context.handle(
+        _suggestedTranslationUserMeaningMeta,
+        suggestedTranslationUserMeaning.isAcceptableOrUnknown(
+          data['suggested_translation_user_meaning']!,
+          _suggestedTranslationUserMeaningMeta,
+        ),
+      );
+    }
+    if (data.containsKey('suggested_translation_translation')) {
+      context.handle(
+        _suggestedTranslationTranslationMeta,
+        suggestedTranslationTranslation.isAcceptableOrUnknown(
+          data['suggested_translation_translation']!,
+          _suggestedTranslationTranslationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('user_question_answer_question')) {
+      context.handle(
+        _userQuestionAnswerQuestionMeta,
+        userQuestionAnswerQuestion.isAcceptableOrUnknown(
+          data['user_question_answer_question']!,
+          _userQuestionAnswerQuestionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('user_question_answer_answer')) {
+      context.handle(
+        _userQuestionAnswerAnswerMeta,
+        userQuestionAnswerAnswer.isAcceptableOrUnknown(
+          data['user_question_answer_answer']!,
+          _userQuestionAnswerAnswerMeta,
+        ),
+      );
+    }
+    if (data.containsKey('conversation_continue')) {
+      context.handle(
+        _conversationContinueMeta,
+        conversationContinue.isAcceptableOrUnknown(
+          data['conversation_continue']!,
+          _conversationContinueMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -554,6 +761,46 @@ class $MessagesTable extends Messages
         DriftSqlType.string,
         data['${effectivePrefix}gpt_response_id'],
       ),
+      caseType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}case_type'],
+      ),
+      assistantMessage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}assistant_message'],
+      ),
+      correctionOriginal: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}correction_original'],
+      ),
+      correctionCorrectedMarkdown: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}correction_corrected_markdown'],
+      ),
+      correctionExplanation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}correction_explanation'],
+      ),
+      suggestedTranslationUserMeaning: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}suggested_translation_user_meaning'],
+      ),
+      suggestedTranslationTranslation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}suggested_translation_translation'],
+      ),
+      userQuestionAnswerQuestion: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_question_answer_question'],
+      ),
+      userQuestionAnswerAnswer: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_question_answer_answer'],
+      ),
+      conversationContinue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}conversation_continue'],
+      ),
     );
   }
 
@@ -569,12 +816,32 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
   final DateTime createdAt;
   final String message;
   final String? gptResponseId;
+  final String? caseType;
+  final String? assistantMessage;
+  final String? correctionOriginal;
+  final String? correctionCorrectedMarkdown;
+  final String? correctionExplanation;
+  final String? suggestedTranslationUserMeaning;
+  final String? suggestedTranslationTranslation;
+  final String? userQuestionAnswerQuestion;
+  final String? userQuestionAnswerAnswer;
+  final String? conversationContinue;
   const MessageDb({
     required this.messageId,
     required this.chatId,
     required this.createdAt,
     required this.message,
     this.gptResponseId,
+    this.caseType,
+    this.assistantMessage,
+    this.correctionOriginal,
+    this.correctionCorrectedMarkdown,
+    this.correctionExplanation,
+    this.suggestedTranslationUserMeaning,
+    this.suggestedTranslationTranslation,
+    this.userQuestionAnswerQuestion,
+    this.userQuestionAnswerAnswer,
+    this.conversationContinue,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -585,6 +852,46 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
     map['message'] = Variable<String>(message);
     if (!nullToAbsent || gptResponseId != null) {
       map['gpt_response_id'] = Variable<String>(gptResponseId);
+    }
+    if (!nullToAbsent || caseType != null) {
+      map['case_type'] = Variable<String>(caseType);
+    }
+    if (!nullToAbsent || assistantMessage != null) {
+      map['assistant_message'] = Variable<String>(assistantMessage);
+    }
+    if (!nullToAbsent || correctionOriginal != null) {
+      map['correction_original'] = Variable<String>(correctionOriginal);
+    }
+    if (!nullToAbsent || correctionCorrectedMarkdown != null) {
+      map['correction_corrected_markdown'] = Variable<String>(
+        correctionCorrectedMarkdown,
+      );
+    }
+    if (!nullToAbsent || correctionExplanation != null) {
+      map['correction_explanation'] = Variable<String>(correctionExplanation);
+    }
+    if (!nullToAbsent || suggestedTranslationUserMeaning != null) {
+      map['suggested_translation_user_meaning'] = Variable<String>(
+        suggestedTranslationUserMeaning,
+      );
+    }
+    if (!nullToAbsent || suggestedTranslationTranslation != null) {
+      map['suggested_translation_translation'] = Variable<String>(
+        suggestedTranslationTranslation,
+      );
+    }
+    if (!nullToAbsent || userQuestionAnswerQuestion != null) {
+      map['user_question_answer_question'] = Variable<String>(
+        userQuestionAnswerQuestion,
+      );
+    }
+    if (!nullToAbsent || userQuestionAnswerAnswer != null) {
+      map['user_question_answer_answer'] = Variable<String>(
+        userQuestionAnswerAnswer,
+      );
+    }
+    if (!nullToAbsent || conversationContinue != null) {
+      map['conversation_continue'] = Variable<String>(conversationContinue);
     }
     return map;
   }
@@ -598,6 +905,40 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
       gptResponseId: gptResponseId == null && nullToAbsent
           ? const Value.absent()
           : Value(gptResponseId),
+      caseType: caseType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(caseType),
+      assistantMessage: assistantMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assistantMessage),
+      correctionOriginal: correctionOriginal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctionOriginal),
+      correctionCorrectedMarkdown:
+          correctionCorrectedMarkdown == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctionCorrectedMarkdown),
+      correctionExplanation: correctionExplanation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctionExplanation),
+      suggestedTranslationUserMeaning:
+          suggestedTranslationUserMeaning == null && nullToAbsent
+          ? const Value.absent()
+          : Value(suggestedTranslationUserMeaning),
+      suggestedTranslationTranslation:
+          suggestedTranslationTranslation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(suggestedTranslationTranslation),
+      userQuestionAnswerQuestion:
+          userQuestionAnswerQuestion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(userQuestionAnswerQuestion),
+      userQuestionAnswerAnswer: userQuestionAnswerAnswer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(userQuestionAnswerAnswer),
+      conversationContinue: conversationContinue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(conversationContinue),
     );
   }
 
@@ -612,6 +953,32 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       message: serializer.fromJson<String>(json['message']),
       gptResponseId: serializer.fromJson<String?>(json['gptResponseId']),
+      caseType: serializer.fromJson<String?>(json['caseType']),
+      assistantMessage: serializer.fromJson<String?>(json['assistantMessage']),
+      correctionOriginal: serializer.fromJson<String?>(
+        json['correctionOriginal'],
+      ),
+      correctionCorrectedMarkdown: serializer.fromJson<String?>(
+        json['correctionCorrectedMarkdown'],
+      ),
+      correctionExplanation: serializer.fromJson<String?>(
+        json['correctionExplanation'],
+      ),
+      suggestedTranslationUserMeaning: serializer.fromJson<String?>(
+        json['suggestedTranslationUserMeaning'],
+      ),
+      suggestedTranslationTranslation: serializer.fromJson<String?>(
+        json['suggestedTranslationTranslation'],
+      ),
+      userQuestionAnswerQuestion: serializer.fromJson<String?>(
+        json['userQuestionAnswerQuestion'],
+      ),
+      userQuestionAnswerAnswer: serializer.fromJson<String?>(
+        json['userQuestionAnswerAnswer'],
+      ),
+      conversationContinue: serializer.fromJson<String?>(
+        json['conversationContinue'],
+      ),
     );
   }
   @override
@@ -623,6 +990,28 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'message': serializer.toJson<String>(message),
       'gptResponseId': serializer.toJson<String?>(gptResponseId),
+      'caseType': serializer.toJson<String?>(caseType),
+      'assistantMessage': serializer.toJson<String?>(assistantMessage),
+      'correctionOriginal': serializer.toJson<String?>(correctionOriginal),
+      'correctionCorrectedMarkdown': serializer.toJson<String?>(
+        correctionCorrectedMarkdown,
+      ),
+      'correctionExplanation': serializer.toJson<String?>(
+        correctionExplanation,
+      ),
+      'suggestedTranslationUserMeaning': serializer.toJson<String?>(
+        suggestedTranslationUserMeaning,
+      ),
+      'suggestedTranslationTranslation': serializer.toJson<String?>(
+        suggestedTranslationTranslation,
+      ),
+      'userQuestionAnswerQuestion': serializer.toJson<String?>(
+        userQuestionAnswerQuestion,
+      ),
+      'userQuestionAnswerAnswer': serializer.toJson<String?>(
+        userQuestionAnswerAnswer,
+      ),
+      'conversationContinue': serializer.toJson<String?>(conversationContinue),
     };
   }
 
@@ -632,6 +1021,16 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
     DateTime? createdAt,
     String? message,
     Value<String?> gptResponseId = const Value.absent(),
+    Value<String?> caseType = const Value.absent(),
+    Value<String?> assistantMessage = const Value.absent(),
+    Value<String?> correctionOriginal = const Value.absent(),
+    Value<String?> correctionCorrectedMarkdown = const Value.absent(),
+    Value<String?> correctionExplanation = const Value.absent(),
+    Value<String?> suggestedTranslationUserMeaning = const Value.absent(),
+    Value<String?> suggestedTranslationTranslation = const Value.absent(),
+    Value<String?> userQuestionAnswerQuestion = const Value.absent(),
+    Value<String?> userQuestionAnswerAnswer = const Value.absent(),
+    Value<String?> conversationContinue = const Value.absent(),
   }) => MessageDb(
     messageId: messageId ?? this.messageId,
     chatId: chatId ?? this.chatId,
@@ -640,6 +1039,34 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
     gptResponseId: gptResponseId.present
         ? gptResponseId.value
         : this.gptResponseId,
+    caseType: caseType.present ? caseType.value : this.caseType,
+    assistantMessage: assistantMessage.present
+        ? assistantMessage.value
+        : this.assistantMessage,
+    correctionOriginal: correctionOriginal.present
+        ? correctionOriginal.value
+        : this.correctionOriginal,
+    correctionCorrectedMarkdown: correctionCorrectedMarkdown.present
+        ? correctionCorrectedMarkdown.value
+        : this.correctionCorrectedMarkdown,
+    correctionExplanation: correctionExplanation.present
+        ? correctionExplanation.value
+        : this.correctionExplanation,
+    suggestedTranslationUserMeaning: suggestedTranslationUserMeaning.present
+        ? suggestedTranslationUserMeaning.value
+        : this.suggestedTranslationUserMeaning,
+    suggestedTranslationTranslation: suggestedTranslationTranslation.present
+        ? suggestedTranslationTranslation.value
+        : this.suggestedTranslationTranslation,
+    userQuestionAnswerQuestion: userQuestionAnswerQuestion.present
+        ? userQuestionAnswerQuestion.value
+        : this.userQuestionAnswerQuestion,
+    userQuestionAnswerAnswer: userQuestionAnswerAnswer.present
+        ? userQuestionAnswerAnswer.value
+        : this.userQuestionAnswerAnswer,
+    conversationContinue: conversationContinue.present
+        ? conversationContinue.value
+        : this.conversationContinue,
   );
   MessageDb copyWithCompanion(MessagesCompanion data) {
     return MessageDb(
@@ -650,6 +1077,36 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
       gptResponseId: data.gptResponseId.present
           ? data.gptResponseId.value
           : this.gptResponseId,
+      caseType: data.caseType.present ? data.caseType.value : this.caseType,
+      assistantMessage: data.assistantMessage.present
+          ? data.assistantMessage.value
+          : this.assistantMessage,
+      correctionOriginal: data.correctionOriginal.present
+          ? data.correctionOriginal.value
+          : this.correctionOriginal,
+      correctionCorrectedMarkdown: data.correctionCorrectedMarkdown.present
+          ? data.correctionCorrectedMarkdown.value
+          : this.correctionCorrectedMarkdown,
+      correctionExplanation: data.correctionExplanation.present
+          ? data.correctionExplanation.value
+          : this.correctionExplanation,
+      suggestedTranslationUserMeaning:
+          data.suggestedTranslationUserMeaning.present
+          ? data.suggestedTranslationUserMeaning.value
+          : this.suggestedTranslationUserMeaning,
+      suggestedTranslationTranslation:
+          data.suggestedTranslationTranslation.present
+          ? data.suggestedTranslationTranslation.value
+          : this.suggestedTranslationTranslation,
+      userQuestionAnswerQuestion: data.userQuestionAnswerQuestion.present
+          ? data.userQuestionAnswerQuestion.value
+          : this.userQuestionAnswerQuestion,
+      userQuestionAnswerAnswer: data.userQuestionAnswerAnswer.present
+          ? data.userQuestionAnswerAnswer.value
+          : this.userQuestionAnswerAnswer,
+      conversationContinue: data.conversationContinue.present
+          ? data.conversationContinue.value
+          : this.conversationContinue,
     );
   }
 
@@ -660,14 +1117,43 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
           ..write('chatId: $chatId, ')
           ..write('createdAt: $createdAt, ')
           ..write('message: $message, ')
-          ..write('gptResponseId: $gptResponseId')
+          ..write('gptResponseId: $gptResponseId, ')
+          ..write('caseType: $caseType, ')
+          ..write('assistantMessage: $assistantMessage, ')
+          ..write('correctionOriginal: $correctionOriginal, ')
+          ..write('correctionCorrectedMarkdown: $correctionCorrectedMarkdown, ')
+          ..write('correctionExplanation: $correctionExplanation, ')
+          ..write(
+            'suggestedTranslationUserMeaning: $suggestedTranslationUserMeaning, ',
+          )
+          ..write(
+            'suggestedTranslationTranslation: $suggestedTranslationTranslation, ',
+          )
+          ..write('userQuestionAnswerQuestion: $userQuestionAnswerQuestion, ')
+          ..write('userQuestionAnswerAnswer: $userQuestionAnswerAnswer, ')
+          ..write('conversationContinue: $conversationContinue')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(messageId, chatId, createdAt, message, gptResponseId);
+  int get hashCode => Object.hash(
+    messageId,
+    chatId,
+    createdAt,
+    message,
+    gptResponseId,
+    caseType,
+    assistantMessage,
+    correctionOriginal,
+    correctionCorrectedMarkdown,
+    correctionExplanation,
+    suggestedTranslationUserMeaning,
+    suggestedTranslationTranslation,
+    userQuestionAnswerQuestion,
+    userQuestionAnswerAnswer,
+    conversationContinue,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -676,7 +1162,20 @@ class MessageDb extends DataClass implements Insertable<MessageDb> {
           other.chatId == this.chatId &&
           other.createdAt == this.createdAt &&
           other.message == this.message &&
-          other.gptResponseId == this.gptResponseId);
+          other.gptResponseId == this.gptResponseId &&
+          other.caseType == this.caseType &&
+          other.assistantMessage == this.assistantMessage &&
+          other.correctionOriginal == this.correctionOriginal &&
+          other.correctionCorrectedMarkdown ==
+              this.correctionCorrectedMarkdown &&
+          other.correctionExplanation == this.correctionExplanation &&
+          other.suggestedTranslationUserMeaning ==
+              this.suggestedTranslationUserMeaning &&
+          other.suggestedTranslationTranslation ==
+              this.suggestedTranslationTranslation &&
+          other.userQuestionAnswerQuestion == this.userQuestionAnswerQuestion &&
+          other.userQuestionAnswerAnswer == this.userQuestionAnswerAnswer &&
+          other.conversationContinue == this.conversationContinue);
 }
 
 class MessagesCompanion extends UpdateCompanion<MessageDb> {
@@ -685,12 +1184,32 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
   final Value<DateTime> createdAt;
   final Value<String> message;
   final Value<String?> gptResponseId;
+  final Value<String?> caseType;
+  final Value<String?> assistantMessage;
+  final Value<String?> correctionOriginal;
+  final Value<String?> correctionCorrectedMarkdown;
+  final Value<String?> correctionExplanation;
+  final Value<String?> suggestedTranslationUserMeaning;
+  final Value<String?> suggestedTranslationTranslation;
+  final Value<String?> userQuestionAnswerQuestion;
+  final Value<String?> userQuestionAnswerAnswer;
+  final Value<String?> conversationContinue;
   const MessagesCompanion({
     this.messageId = const Value.absent(),
     this.chatId = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.message = const Value.absent(),
     this.gptResponseId = const Value.absent(),
+    this.caseType = const Value.absent(),
+    this.assistantMessage = const Value.absent(),
+    this.correctionOriginal = const Value.absent(),
+    this.correctionCorrectedMarkdown = const Value.absent(),
+    this.correctionExplanation = const Value.absent(),
+    this.suggestedTranslationUserMeaning = const Value.absent(),
+    this.suggestedTranslationTranslation = const Value.absent(),
+    this.userQuestionAnswerQuestion = const Value.absent(),
+    this.userQuestionAnswerAnswer = const Value.absent(),
+    this.conversationContinue = const Value.absent(),
   });
   MessagesCompanion.insert({
     this.messageId = const Value.absent(),
@@ -698,6 +1217,16 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
     this.createdAt = const Value.absent(),
     required String message,
     this.gptResponseId = const Value.absent(),
+    this.caseType = const Value.absent(),
+    this.assistantMessage = const Value.absent(),
+    this.correctionOriginal = const Value.absent(),
+    this.correctionCorrectedMarkdown = const Value.absent(),
+    this.correctionExplanation = const Value.absent(),
+    this.suggestedTranslationUserMeaning = const Value.absent(),
+    this.suggestedTranslationTranslation = const Value.absent(),
+    this.userQuestionAnswerQuestion = const Value.absent(),
+    this.userQuestionAnswerAnswer = const Value.absent(),
+    this.conversationContinue = const Value.absent(),
   }) : chatId = Value(chatId),
        message = Value(message);
   static Insertable<MessageDb> custom({
@@ -706,6 +1235,16 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
     Expression<DateTime>? createdAt,
     Expression<String>? message,
     Expression<String>? gptResponseId,
+    Expression<String>? caseType,
+    Expression<String>? assistantMessage,
+    Expression<String>? correctionOriginal,
+    Expression<String>? correctionCorrectedMarkdown,
+    Expression<String>? correctionExplanation,
+    Expression<String>? suggestedTranslationUserMeaning,
+    Expression<String>? suggestedTranslationTranslation,
+    Expression<String>? userQuestionAnswerQuestion,
+    Expression<String>? userQuestionAnswerAnswer,
+    Expression<String>? conversationContinue,
   }) {
     return RawValuesInsertable({
       if (messageId != null) 'message_id': messageId,
@@ -713,6 +1252,23 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
       if (createdAt != null) 'created_at': createdAt,
       if (message != null) 'message': message,
       if (gptResponseId != null) 'gpt_response_id': gptResponseId,
+      if (caseType != null) 'case_type': caseType,
+      if (assistantMessage != null) 'assistant_message': assistantMessage,
+      if (correctionOriginal != null) 'correction_original': correctionOriginal,
+      if (correctionCorrectedMarkdown != null)
+        'correction_corrected_markdown': correctionCorrectedMarkdown,
+      if (correctionExplanation != null)
+        'correction_explanation': correctionExplanation,
+      if (suggestedTranslationUserMeaning != null)
+        'suggested_translation_user_meaning': suggestedTranslationUserMeaning,
+      if (suggestedTranslationTranslation != null)
+        'suggested_translation_translation': suggestedTranslationTranslation,
+      if (userQuestionAnswerQuestion != null)
+        'user_question_answer_question': userQuestionAnswerQuestion,
+      if (userQuestionAnswerAnswer != null)
+        'user_question_answer_answer': userQuestionAnswerAnswer,
+      if (conversationContinue != null)
+        'conversation_continue': conversationContinue,
     });
   }
 
@@ -722,6 +1278,16 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
     Value<DateTime>? createdAt,
     Value<String>? message,
     Value<String?>? gptResponseId,
+    Value<String?>? caseType,
+    Value<String?>? assistantMessage,
+    Value<String?>? correctionOriginal,
+    Value<String?>? correctionCorrectedMarkdown,
+    Value<String?>? correctionExplanation,
+    Value<String?>? suggestedTranslationUserMeaning,
+    Value<String?>? suggestedTranslationTranslation,
+    Value<String?>? userQuestionAnswerQuestion,
+    Value<String?>? userQuestionAnswerAnswer,
+    Value<String?>? conversationContinue,
   }) {
     return MessagesCompanion(
       messageId: messageId ?? this.messageId,
@@ -729,6 +1295,24 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
       createdAt: createdAt ?? this.createdAt,
       message: message ?? this.message,
       gptResponseId: gptResponseId ?? this.gptResponseId,
+      caseType: caseType ?? this.caseType,
+      assistantMessage: assistantMessage ?? this.assistantMessage,
+      correctionOriginal: correctionOriginal ?? this.correctionOriginal,
+      correctionCorrectedMarkdown:
+          correctionCorrectedMarkdown ?? this.correctionCorrectedMarkdown,
+      correctionExplanation:
+          correctionExplanation ?? this.correctionExplanation,
+      suggestedTranslationUserMeaning:
+          suggestedTranslationUserMeaning ??
+          this.suggestedTranslationUserMeaning,
+      suggestedTranslationTranslation:
+          suggestedTranslationTranslation ??
+          this.suggestedTranslationTranslation,
+      userQuestionAnswerQuestion:
+          userQuestionAnswerQuestion ?? this.userQuestionAnswerQuestion,
+      userQuestionAnswerAnswer:
+          userQuestionAnswerAnswer ?? this.userQuestionAnswerAnswer,
+      conversationContinue: conversationContinue ?? this.conversationContinue,
     );
   }
 
@@ -750,6 +1334,50 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
     if (gptResponseId.present) {
       map['gpt_response_id'] = Variable<String>(gptResponseId.value);
     }
+    if (caseType.present) {
+      map['case_type'] = Variable<String>(caseType.value);
+    }
+    if (assistantMessage.present) {
+      map['assistant_message'] = Variable<String>(assistantMessage.value);
+    }
+    if (correctionOriginal.present) {
+      map['correction_original'] = Variable<String>(correctionOriginal.value);
+    }
+    if (correctionCorrectedMarkdown.present) {
+      map['correction_corrected_markdown'] = Variable<String>(
+        correctionCorrectedMarkdown.value,
+      );
+    }
+    if (correctionExplanation.present) {
+      map['correction_explanation'] = Variable<String>(
+        correctionExplanation.value,
+      );
+    }
+    if (suggestedTranslationUserMeaning.present) {
+      map['suggested_translation_user_meaning'] = Variable<String>(
+        suggestedTranslationUserMeaning.value,
+      );
+    }
+    if (suggestedTranslationTranslation.present) {
+      map['suggested_translation_translation'] = Variable<String>(
+        suggestedTranslationTranslation.value,
+      );
+    }
+    if (userQuestionAnswerQuestion.present) {
+      map['user_question_answer_question'] = Variable<String>(
+        userQuestionAnswerQuestion.value,
+      );
+    }
+    if (userQuestionAnswerAnswer.present) {
+      map['user_question_answer_answer'] = Variable<String>(
+        userQuestionAnswerAnswer.value,
+      );
+    }
+    if (conversationContinue.present) {
+      map['conversation_continue'] = Variable<String>(
+        conversationContinue.value,
+      );
+    }
     return map;
   }
 
@@ -760,7 +1388,21 @@ class MessagesCompanion extends UpdateCompanion<MessageDb> {
           ..write('chatId: $chatId, ')
           ..write('createdAt: $createdAt, ')
           ..write('message: $message, ')
-          ..write('gptResponseId: $gptResponseId')
+          ..write('gptResponseId: $gptResponseId, ')
+          ..write('caseType: $caseType, ')
+          ..write('assistantMessage: $assistantMessage, ')
+          ..write('correctionOriginal: $correctionOriginal, ')
+          ..write('correctionCorrectedMarkdown: $correctionCorrectedMarkdown, ')
+          ..write('correctionExplanation: $correctionExplanation, ')
+          ..write(
+            'suggestedTranslationUserMeaning: $suggestedTranslationUserMeaning, ',
+          )
+          ..write(
+            'suggestedTranslationTranslation: $suggestedTranslationTranslation, ',
+          )
+          ..write('userQuestionAnswerQuestion: $userQuestionAnswerQuestion, ')
+          ..write('userQuestionAnswerAnswer: $userQuestionAnswerAnswer, ')
+          ..write('conversationContinue: $conversationContinue')
           ..write(')'))
         .toString();
   }
@@ -1285,6 +1927,16 @@ typedef $$MessagesTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       required String message,
       Value<String?> gptResponseId,
+      Value<String?> caseType,
+      Value<String?> assistantMessage,
+      Value<String?> correctionOriginal,
+      Value<String?> correctionCorrectedMarkdown,
+      Value<String?> correctionExplanation,
+      Value<String?> suggestedTranslationUserMeaning,
+      Value<String?> suggestedTranslationTranslation,
+      Value<String?> userQuestionAnswerQuestion,
+      Value<String?> userQuestionAnswerAnswer,
+      Value<String?> conversationContinue,
     });
 typedef $$MessagesTableUpdateCompanionBuilder =
     MessagesCompanion Function({
@@ -1293,6 +1945,16 @@ typedef $$MessagesTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<String> message,
       Value<String?> gptResponseId,
+      Value<String?> caseType,
+      Value<String?> assistantMessage,
+      Value<String?> correctionOriginal,
+      Value<String?> correctionCorrectedMarkdown,
+      Value<String?> correctionExplanation,
+      Value<String?> suggestedTranslationUserMeaning,
+      Value<String?> suggestedTranslationTranslation,
+      Value<String?> userQuestionAnswerQuestion,
+      Value<String?> userQuestionAnswerAnswer,
+      Value<String?> conversationContinue,
     });
 
 class $$MessagesTableFilterComposer
@@ -1326,6 +1988,58 @@ class $$MessagesTableFilterComposer
 
   ColumnFilters<String> get gptResponseId => $composableBuilder(
     column: $table.gptResponseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get caseType => $composableBuilder(
+    column: $table.caseType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get assistantMessage => $composableBuilder(
+    column: $table.assistantMessage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get correctionOriginal => $composableBuilder(
+    column: $table.correctionOriginal,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get correctionCorrectedMarkdown => $composableBuilder(
+    column: $table.correctionCorrectedMarkdown,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get correctionExplanation => $composableBuilder(
+    column: $table.correctionExplanation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get suggestedTranslationUserMeaning =>
+      $composableBuilder(
+        column: $table.suggestedTranslationUserMeaning,
+        builder: (column) => ColumnFilters(column),
+      );
+
+  ColumnFilters<String> get suggestedTranslationTranslation =>
+      $composableBuilder(
+        column: $table.suggestedTranslationTranslation,
+        builder: (column) => ColumnFilters(column),
+      );
+
+  ColumnFilters<String> get userQuestionAnswerQuestion => $composableBuilder(
+    column: $table.userQuestionAnswerQuestion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userQuestionAnswerAnswer => $composableBuilder(
+    column: $table.userQuestionAnswerAnswer,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get conversationContinue => $composableBuilder(
+    column: $table.conversationContinue,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1363,6 +2077,58 @@ class $$MessagesTableOrderingComposer
     column: $table.gptResponseId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get caseType => $composableBuilder(
+    column: $table.caseType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get assistantMessage => $composableBuilder(
+    column: $table.assistantMessage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get correctionOriginal => $composableBuilder(
+    column: $table.correctionOriginal,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get correctionCorrectedMarkdown => $composableBuilder(
+    column: $table.correctionCorrectedMarkdown,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get correctionExplanation => $composableBuilder(
+    column: $table.correctionExplanation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get suggestedTranslationUserMeaning =>
+      $composableBuilder(
+        column: $table.suggestedTranslationUserMeaning,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get suggestedTranslationTranslation =>
+      $composableBuilder(
+        column: $table.suggestedTranslationTranslation,
+        builder: (column) => ColumnOrderings(column),
+      );
+
+  ColumnOrderings<String> get userQuestionAnswerQuestion => $composableBuilder(
+    column: $table.userQuestionAnswerQuestion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userQuestionAnswerAnswer => $composableBuilder(
+    column: $table.userQuestionAnswerAnswer,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get conversationContinue => $composableBuilder(
+    column: $table.conversationContinue,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MessagesTableAnnotationComposer
@@ -1388,6 +2154,56 @@ class $$MessagesTableAnnotationComposer
 
   GeneratedColumn<String> get gptResponseId => $composableBuilder(
     column: $table.gptResponseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get caseType =>
+      $composableBuilder(column: $table.caseType, builder: (column) => column);
+
+  GeneratedColumn<String> get assistantMessage => $composableBuilder(
+    column: $table.assistantMessage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get correctionOriginal => $composableBuilder(
+    column: $table.correctionOriginal,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get correctionCorrectedMarkdown => $composableBuilder(
+    column: $table.correctionCorrectedMarkdown,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get correctionExplanation => $composableBuilder(
+    column: $table.correctionExplanation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get suggestedTranslationUserMeaning =>
+      $composableBuilder(
+        column: $table.suggestedTranslationUserMeaning,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get suggestedTranslationTranslation =>
+      $composableBuilder(
+        column: $table.suggestedTranslationTranslation,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<String> get userQuestionAnswerQuestion => $composableBuilder(
+    column: $table.userQuestionAnswerQuestion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get userQuestionAnswerAnswer => $composableBuilder(
+    column: $table.userQuestionAnswerAnswer,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get conversationContinue => $composableBuilder(
+    column: $table.conversationContinue,
     builder: (column) => column,
   );
 }
@@ -1425,12 +2241,38 @@ class $$MessagesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String> message = const Value.absent(),
                 Value<String?> gptResponseId = const Value.absent(),
+                Value<String?> caseType = const Value.absent(),
+                Value<String?> assistantMessage = const Value.absent(),
+                Value<String?> correctionOriginal = const Value.absent(),
+                Value<String?> correctionCorrectedMarkdown =
+                    const Value.absent(),
+                Value<String?> correctionExplanation = const Value.absent(),
+                Value<String?> suggestedTranslationUserMeaning =
+                    const Value.absent(),
+                Value<String?> suggestedTranslationTranslation =
+                    const Value.absent(),
+                Value<String?> userQuestionAnswerQuestion =
+                    const Value.absent(),
+                Value<String?> userQuestionAnswerAnswer = const Value.absent(),
+                Value<String?> conversationContinue = const Value.absent(),
               }) => MessagesCompanion(
                 messageId: messageId,
                 chatId: chatId,
                 createdAt: createdAt,
                 message: message,
                 gptResponseId: gptResponseId,
+                caseType: caseType,
+                assistantMessage: assistantMessage,
+                correctionOriginal: correctionOriginal,
+                correctionCorrectedMarkdown: correctionCorrectedMarkdown,
+                correctionExplanation: correctionExplanation,
+                suggestedTranslationUserMeaning:
+                    suggestedTranslationUserMeaning,
+                suggestedTranslationTranslation:
+                    suggestedTranslationTranslation,
+                userQuestionAnswerQuestion: userQuestionAnswerQuestion,
+                userQuestionAnswerAnswer: userQuestionAnswerAnswer,
+                conversationContinue: conversationContinue,
               ),
           createCompanionCallback:
               ({
@@ -1439,12 +2281,38 @@ class $$MessagesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 required String message,
                 Value<String?> gptResponseId = const Value.absent(),
+                Value<String?> caseType = const Value.absent(),
+                Value<String?> assistantMessage = const Value.absent(),
+                Value<String?> correctionOriginal = const Value.absent(),
+                Value<String?> correctionCorrectedMarkdown =
+                    const Value.absent(),
+                Value<String?> correctionExplanation = const Value.absent(),
+                Value<String?> suggestedTranslationUserMeaning =
+                    const Value.absent(),
+                Value<String?> suggestedTranslationTranslation =
+                    const Value.absent(),
+                Value<String?> userQuestionAnswerQuestion =
+                    const Value.absent(),
+                Value<String?> userQuestionAnswerAnswer = const Value.absent(),
+                Value<String?> conversationContinue = const Value.absent(),
               }) => MessagesCompanion.insert(
                 messageId: messageId,
                 chatId: chatId,
                 createdAt: createdAt,
                 message: message,
                 gptResponseId: gptResponseId,
+                caseType: caseType,
+                assistantMessage: assistantMessage,
+                correctionOriginal: correctionOriginal,
+                correctionCorrectedMarkdown: correctionCorrectedMarkdown,
+                correctionExplanation: correctionExplanation,
+                suggestedTranslationUserMeaning:
+                    suggestedTranslationUserMeaning,
+                suggestedTranslationTranslation:
+                    suggestedTranslationTranslation,
+                userQuestionAnswerQuestion: userQuestionAnswerQuestion,
+                userQuestionAnswerAnswer: userQuestionAnswerAnswer,
+                conversationContinue: conversationContinue,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
