@@ -17,6 +17,9 @@ abstract interface class ChatRepository {
   /// Удалить чат
   Future<void> deleteChat(int chatId);
 
+  /// Удалить все сообщения для чата
+  Future<void> deleteMessage(int messageId);
+
   /// Получить поток всех чатов
   Stream<List<Chat>> getChatsStream();
 

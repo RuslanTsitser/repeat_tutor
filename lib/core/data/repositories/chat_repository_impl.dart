@@ -70,4 +70,9 @@ class ChatRepositoryImpl implements ChatRepository {
       chatId: chat.chatId,
     );
   }
+
+  @override
+  Future<void> deleteMessage(int messageId) async {
+    await _database.messageDao.deleteMessage(messageId);
+  }
 }
