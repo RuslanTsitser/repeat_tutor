@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../../core/domain/models/message.dart';
+import '../../../core/gpt/gpt_service.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../logic/chat_notifier.dart';
@@ -16,18 +16,45 @@ class ChatScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chat = ref.watch(chatNotifierProvider).state.chat;
+    final chatTitle =
+        '${chat.chatLanguage.localizedName} ${chat.level.value}\n${chat.topic}';
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: CupertinoPageScaffold(
+        backgroundColor: const Color(0xFFF9FAFB),
         resizeToAvoidBottomInset: true,
         navigationBar: CupertinoNavigationBar(
-          middle: const Text('Чат'),
+          backgroundColor: Colors.white,
+          border: const Border(
+            bottom: BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+          leading: CupertinoNavigationBarBackButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          middle: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              chatTitle,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF0A0A0A),
+                letterSpacing: 0.0703,
+              ),
+            ),
+          ),
           trailing: CupertinoButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              final chat = ref.read(chatNotifierProvider).state.chat;
               ref
                   .read(startRealtimeCallUseCaseProvider)
                   .execute(
@@ -123,31 +150,34 @@ class __BodyState extends ConsumerState<_Body> {
       );
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: messages.isEmpty
-              ? const Center(child: Text('Нет сообщений'))
-              : SafeArea(
-                  top: true,
-                  bottom: false,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) => _MessageBubble(
-                      message: messages[index],
-                      onDeletePressed: () {
-                        ref
-                            .read(deleteChatUseCaseProvider)
-                            .deleteMessage(messages[index].id);
-                      },
+    return Container(
+      color: const Color(0xFFF9FAFB),
+      child: Column(
+        children: [
+          Expanded(
+            child: messages.isEmpty
+                ? const Center(child: Text('Нет сообщений'))
+                : SafeArea(
+                    top: true,
+                    bottom: false,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) => _MessageBubble(
+                        message: messages[index],
+                        onDeletePressed: () {
+                          ref
+                              .read(deleteChatUseCaseProvider)
+                              .deleteMessage(messages[index].id);
+                        },
+                      ),
                     ),
                   ),
-                ),
-        ),
-        _MessageInput(scrollController: _scrollController),
-      ],
+          ),
+          _MessageInput(scrollController: _scrollController),
+        ],
+      ),
     );
   }
 }
@@ -159,40 +189,22 @@ class _MessageBubble extends StatelessWidget {
   });
   final Message message;
   final VoidCallback onDeletePressed;
+
   @override
   Widget build(BuildContext context) {
-    final bubbleColor = message.isMe
-        ? CupertinoColors.systemBlue
-        : CupertinoColors.systemGrey5;
-    final textColor = message.isMe
-        ? CupertinoColors.white
-        : CupertinoColors.black;
+    final isMe = message.isMe;
+    final tutorAnswer = message.tutorAnswer;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Row(
-        mainAxisAlignment: message.isMe
+        mainAxisAlignment: isMe
             ? MainAxisAlignment.end
             : MainAxisAlignment.start,
         children: [
-          if (!message.isMe) ...[
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: CupertinoColors.systemGrey4,
-              child: Text(
-                message.text[0].toUpperCase(),
-                style: const TextStyle(
-                  color: CupertinoColors.systemGrey,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
             ),
             child: CupertinoContextMenu.builder(
               actions: [
@@ -206,66 +218,216 @@ class _MessageBubble extends StatelessWidget {
                 ),
               ],
               builder: (context, animation) => Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
+                padding: const EdgeInsets.only(
+                  left: 17,
+                  right: 17,
+                  top: 1,
+                  bottom: 1,
                 ),
                 decoration: BoxDecoration(
-                  color: bubbleColor,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isMe ? const Color(0xFF155DFC) : Colors.white,
+                  border: isMe
+                      ? null
+                      : const Border.fromBorderSide(
+                          BorderSide(
+                            color: Color(0xFFE5E7EB),
+                            width: 1,
+                          ),
+                        ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(isMe ? 16 : 6),
+                    topRight: Radius.circular(isMe ? 6 : 16),
+                    bottomLeft: const Radius.circular(16),
+                    bottomRight: const Radius.circular(16),
+                  ),
+                  boxShadow: isMe
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 2,
+                            offset: const Offset(0, -1),
+                          ),
+                        ],
                 ),
-                child: Stack(
-                  children: [
-                    if (message.text.isNotEmpty)
-                      DefaultTextStyle(
+                child: (!isMe && tutorAnswer != null)
+                    ? _buildTutorMessageContent(tutorAnswer)
+                    : (message.text.isNotEmpty)
+                    ? DefaultTextStyle(
                         style: TextStyle(
-                          color: textColor,
+                          color: isMe ? Colors.white : const Color(0xFF101828),
                           fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          letterSpacing: -0.3125,
+                          height: 24 / 16,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 32.0,
-                            bottom: 16.0,
-                          ),
-                          child: MarkdownWidget(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            data: message.text,
-                          ),
+                        child: MarkdownWidget(
+                          padding: EdgeInsets.zero,
+                          selectable: false,
+                          shrinkWrap: true,
+                          data: message.text,
                         ),
-                      ),
-
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Text(
-                        DateFormat('HH:mm').format(message.createdAt),
-                        style: TextStyle(
-                          color: message.isMe
-                              ? CupertinoColors.white.withValues(alpha: 0.7)
-                              : CupertinoColors.systemGrey,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
           ),
-          if (message.isMe) ...[
-            const SizedBox(width: 8),
-            const CircleAvatar(
-              radius: 16,
-              backgroundColor: CupertinoColors.systemBlue,
-              child: Icon(
-                CupertinoIcons.person_fill,
-                color: CupertinoColors.white,
-                size: 16,
-              ),
-            ),
-          ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildTutorMessageContent(TutorAnswer tutorAnswer) {
+    final List<Widget> children = [];
+
+    if (tutorAnswer.assistantMessage.isNotEmpty) {
+      children.add(_buildMessageBlock(tutorAnswer.assistantMessage));
+    }
+
+    if (tutorAnswer.correction != null) {
+      if (children.isNotEmpty) {
+        children.add(const SizedBox(height: 12));
+      }
+      children.add(_buildCorrectionBlock(tutorAnswer.correction!));
+    }
+
+    if (tutorAnswer.correction?.explanation != null &&
+        tutorAnswer.correction!.explanation.isNotEmpty) {
+      if (children.isNotEmpty) {
+        children.add(const SizedBox(height: 12));
+      }
+      children.add(_buildMessageBlock(tutorAnswer.correction!.explanation));
+    }
+
+    if (tutorAnswer.suggestedTranslation != null) {
+      if (children.isNotEmpty) {
+        children.add(const SizedBox(height: 12));
+      }
+      children.add(_buildTranslationBlock(tutorAnswer.suggestedTranslation!));
+    }
+
+    if (tutorAnswer.userQuestionAnswer != null) {
+      if (children.isNotEmpty) {
+        children.add(const SizedBox(height: 12));
+      }
+      children.add(_buildMessageBlock(tutorAnswer.userQuestionAnswer!.answer));
+    }
+
+    if (tutorAnswer.conversationContinue.isNotEmpty) {
+      if (children.isNotEmpty) {
+        children.add(const SizedBox(height: 12));
+      }
+      children.add(_buildMessageBlock(tutorAnswer.conversationContinue));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    );
+  }
+
+  Widget _buildMessageBlock(String text) {
+    return DefaultTextStyle(
+      style: const TextStyle(
+        color: Color(0xFF101828),
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+        letterSpacing: -0.3125,
+        height: 24 / 16,
+      ),
+      child: MarkdownWidget(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        data: text,
+      ),
+    );
+  }
+
+  Widget _buildCorrectionBlock(Correction correction) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 13,
+        vertical: 11,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFBEB),
+        border: Border.all(
+          color: const Color(0xFFFEE685),
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DefaultTextStyle(
+            style: const TextStyle(
+              color: Color(0xFF6A7282),
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              letterSpacing: -0.3125,
+              height: 24 / 16,
+              decoration: TextDecoration.lineThrough,
+              decorationColor: Color(0xFF6A7282),
+            ),
+            child: MarkdownWidget(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              data: correction.original,
+            ),
+          ),
+          const SizedBox(height: 4),
+          DefaultTextStyle(
+            style: const TextStyle(
+              color: Color(0xFF101828),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.3125,
+              height: 24 / 16,
+            ),
+            child: MarkdownWidget(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              data: correction.correctedMarkdown,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTranslationBlock(SuggestedTranslation translation) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 13,
+        vertical: 11,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF6FF),
+        border: Border.all(
+          color: const Color(0xFFBEDBFF),
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DefaultTextStyle(
+        style: const TextStyle(
+          color: Color(0xFF1C398E),
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.3125,
+          height: 24 / 16,
+        ),
+        child: MarkdownWidget(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          data: translation.translation,
+        ),
       ),
     );
   }
@@ -342,17 +504,17 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
 
     return Container(
       padding: EdgeInsets.only(
-        left: 8,
-        right: 8,
-        top: 8,
-        bottom: 8 + bottomPadding,
+        left: 16,
+        right: 16,
+        top: 13,
+        bottom: 13 + bottomPadding,
       ),
       decoration: const BoxDecoration(
-        color: CupertinoColors.systemGrey6,
+        color: Colors.white,
         border: Border(
           top: BorderSide(
-            color: CupertinoColors.systemGrey4,
-            width: 0.5,
+            color: Color(0xFFE5E7EB),
+            width: 1,
           ),
         ),
       ),
@@ -362,26 +524,39 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: CupertinoTextField(
-                controller: messageController,
-                focusNode: focusNode,
-                placeholder: 'Сообщение',
-                minLines: 1,
-                maxLines: 5,
-                textCapitalization: TextCapitalization.sentences,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+              child: Container(
+                height: 50,
                 decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16777200),
                   border: Border.all(
-                    color: CupertinoColors.systemGrey4,
+                    color: const Color(0xFFD1D5DC),
                     width: 1,
                   ),
                 ),
-                onSubmitted: (_) => _sendMessage(),
+                child: CupertinoTextField(
+                  controller: messageController,
+                  focusNode: focusNode,
+                  placeholder: 'Type your message...',
+                  placeholderStyle: const TextStyle(
+                    color: Color(0xFF99A1AF),
+                    fontSize: 16,
+                    letterSpacing: -0.3125,
+                  ),
+                  minLines: 1,
+                  maxLines: 5,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    letterSpacing: -0.3125,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: const BoxDecoration(),
+                  onSubmitted: (_) => _sendMessage(),
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -395,18 +570,18 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 minimumSize: const Size(0, 0),
                 child: ref.watch(chatNotifierProvider).state.isMessageSending
                     ? Container(
-                        width: 36,
-                        height: 36,
+                        width: 48,
+                        height: 48,
                         decoration: const BoxDecoration(
-                          color: CupertinoColors.systemBlue,
+                          color: Color(0xFFD1D5DC),
                           shape: BoxShape.circle,
                         ),
                         child: const CupertinoActivityIndicator(),
                       )
                     : (ref.watch(chatNotifierProvider).state.isSpeechRecording)
                     ? Container(
-                        width: 36,
-                        height: 36,
+                        width: 48,
+                        height: 48,
                         decoration: const BoxDecoration(
                           color: CupertinoColors.systemRed,
                           shape: BoxShape.circle,
@@ -414,20 +589,20 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                         child: const Icon(
                           CupertinoIcons.stop,
                           color: CupertinoColors.white,
-                          size: 18,
+                          size: 20,
                         ),
                       )
                     : Container(
-                        width: 36,
-                        height: 36,
+                        width: 48,
+                        height: 48,
                         decoration: const BoxDecoration(
-                          color: CupertinoColors.systemBlue,
+                          color: Color(0xFFD1D5DC),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           CupertinoIcons.mic,
-                          color: CupertinoColors.white,
-                          size: 18,
+                          color: Colors.white,
+                          size: 20,
                         ),
                       ),
               )
@@ -440,16 +615,16 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 onPressed: _sendMessage,
                 minimumSize: const Size(0, 0),
                 child: Container(
-                  width: 36,
-                  height: 36,
+                  width: 48,
+                  height: 48,
                   decoration: const BoxDecoration(
-                    color: CupertinoColors.systemBlue,
+                    color: Color(0xFFD1D5DC),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     CupertinoIcons.arrow_up,
-                    color: CupertinoColors.white,
-                    size: 18,
+                    color: Colors.white,
+                    size: 20,
                   ),
                 ),
               ),
