@@ -285,7 +285,13 @@ class _MessageBubble extends StatelessWidget {
                             data: message.text,
                           ),
                         )
-                      : const CupertinoActivityIndicator(), // TODO: add loading indicator
+                      : const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CupertinoActivityIndicator(
+                            color: Color(0xFFFFFFFF),
+                            radius: 10,
+                          ),
+                        ),
                 );
               },
             ),
