@@ -21,13 +21,14 @@ class ChatListScreen extends ConsumerWidget {
 
     return CupertinoPageScaffold(
       child: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
             const _Body(),
             if (hasChats)
               Positioned(
                 right: 16,
-                bottom: 80,
+                bottom: 16,
                 child: CupertinoButton(
                   padding: EdgeInsets.zero,
                   onPressed: () =>
@@ -59,12 +60,6 @@ class ChatListScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            const Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: _BottomNavigation(),
-            ),
           ],
         ),
       ),
@@ -332,85 +327,6 @@ class _EmptyState extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomNavigation extends StatelessWidget {
-  const _BottomNavigation();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 61,
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFE5E7EB),
-            width: 1,
-          ),
-        ),
-      ),
-      child: const Row(
-        children: [
-          Expanded(
-            child: _BottomNavItem(
-              icon: CupertinoIcons.chat_bubble,
-              label: 'Чаты',
-              isActive: true,
-            ),
-          ),
-          Expanded(
-            child: _BottomNavItem(
-              icon: CupertinoIcons.person,
-              label: 'Профиль',
-              isActive: false,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomNavItem extends StatelessWidget {
-  const _BottomNavItem({
-    required this.icon,
-    required this.label,
-    required this.isActive,
-  });
-  final IconData icon;
-  final String label;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      color: CupertinoColors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 24,
-            color: isActive ? const Color(0xFF155DFC) : const Color(0xFF6A7282),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: isActive
-                  ? const Color(0xFF155DFC)
-                  : const Color(0xFF6A7282),
-              height: 16 / 12,
             ),
           ),
         ],

@@ -13,7 +13,7 @@ class InitializeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializeServiceProvider, (previous, next) {
       if (next.hasValue) {
-        ref.read(routerProvider).replace(const ChatListRoute());
+        ref.read(routerProvider).replace(const HomeRoute());
       }
     });
     return const CupertinoPageScaffold(

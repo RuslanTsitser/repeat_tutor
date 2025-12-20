@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 import '../../features/chats/presentation/chat_list_screen.dart';
 import '../../features/chats/presentation/chat_screen.dart';
+import '../../features/home/home_screen.dart';
 import '../../features/initialize/initialize_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/paywall/presentation/paywall_screen.dart';
+import '../../features/profile/profile_screen.dart';
 import '../../features/realtime_call/presentation/realtime_call_screen.dart';
 import 'modal_screens/app_bottom_sheet_screen.dart';
 import 'modal_screens/app_dialog_screen.dart';
@@ -21,9 +23,13 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => <AutoRoute>[
     AutoRoute(page: InitializeRoute.page, initial: true),
     CustomRoute<void>(
-      page: ChatListRoute.page,
+      page: HomeRoute.page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           FadeTransition(opacity: animation, child: child),
+      children: [
+        AutoRoute(page: ChatListRoute.page, initial: true),
+        AutoRoute(page: ProfileRoute.page),
+      ],
     ),
     AutoRoute(page: ChatRoute.page),
     AutoRoute(page: RealtimeCallRoute.page),
