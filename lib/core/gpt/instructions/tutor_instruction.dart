@@ -44,6 +44,27 @@ Always speak to the user in {teacherLanguageName}. The user can speak in any lan
 6. Если юзер дал ответ на своем языке или ответ неправильный, то предложите ему вариант, как это сказать на языке {languageName}.
 7. После ответа юзера продолжите разговор
 
+Формирование полей (важно для UI, без дублей):
+
+- assistant_message: только общий комментарий/похвала/переход. 
+  НЕ включай дословно corrected_markdown, translation, answer из user_question_answer.
+  Допускается 1 короткая фраза-объяснение, но не повторяй содержимое других полей.
+  Не задавай вопросы в этом поле.
+
+- correction.corrected_markdown: содержит исправленную фразу с ~~ **.
+  assistant_message НЕ повторяет corrected_markdown.
+
+- suggested_translation.translation: содержит фразу на {languageName}.
+  assistant_message НЕ повторяет translation.
+
+- user_question_answer.answer: содержит ответ на вопрос пользователя.
+  assistant_message НЕ повторяет answer.
+  Для case_type=user_question: assistant_message должен быть коротким (например: "Отвечаю на твой вопрос:"),
+  а основной текст ответа должен быть в user_question_answer.answer.
+
+- conversation_continue: следующий вопрос/продолжение темы.
+  assistant_message НЕ повторяет conversation_continue.
+
 Всегда общайтесь с пользователем на языке {teacherLanguageName}. Пользователь может говорить на любом языке, но вы должны отвечать только на языке {teacherLanguageName}.
 '''
         .replaceAll('{topic}', topic)

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../core/audio/audio_service.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
 import '../../../core/gpt/gpt_service.dart';
+import '../../../core/logging/app_logger.dart';
 import '../../../core/permission/microphone_permission_request.dart';
 import '../../../core/speech/speech_recognizer.dart';
 import '../logic/chat_notifier.dart';
@@ -43,6 +44,11 @@ class AddMessageUseCase {
           ..write(tutorAnswer.assistantMessage)
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'correctAnswer',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
       case CaseType.correctedAnswer:
         responseBuffer.write(tutorAnswer.assistantMessage);
@@ -57,6 +63,15 @@ class AddMessageUseCase {
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'correctedAnswer',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'correction': {
+            'correctedMarkdown': correction?.correctedMarkdown,
+            'explanation': correction?.explanation,
+          },
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
       case CaseType.nativeLanguageAnswer:
         responseBuffer.write(tutorAnswer.assistantMessage);
@@ -71,24 +86,48 @@ class AddMessageUseCase {
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'nativeLanguageAnswer',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'translation': {
+            'userMeaning': translation?.userMeaning,
+            'translation': translation?.translation,
+          },
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
       case CaseType.userQuestion:
         responseBuffer.write(tutorAnswer.assistantMessage);
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'userQuestion',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
       case CaseType.offTopicAnswer:
         responseBuffer.write(tutorAnswer.assistantMessage);
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'offTopicAnswer',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
       case CaseType.noAnswer:
         responseBuffer.write(tutorAnswer.assistantMessage);
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'noAnswer',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
 
       case CaseType.mixedCase:
@@ -112,6 +151,15 @@ class AddMessageUseCase {
         responseBuffer
           ..write('\n\n')
           ..write(tutorAnswer.conversationContinue);
+        logInfo({
+          'caseType': 'mixedCase',
+          'assistantMessage': tutorAnswer.assistantMessage,
+          'correction': {
+            'correctedMarkdown': correction?.correctedMarkdown,
+            'explanation': correction?.explanation,
+          },
+          'conversationContinue': tutorAnswer.conversationContinue,
+        });
         break;
     }
 
