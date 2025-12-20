@@ -134,8 +134,14 @@ class __BodyState extends ConsumerState<_Body> {
                     controller: _scrollController,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     itemCount: messages.length,
-                    itemBuilder: (context, index) =>
-                        _MessageBubble(message: messages[index]),
+                    itemBuilder: (context, index) => _MessageBubble(
+                      message: messages[index],
+                      onDeletePressed: () {
+                        ref
+                            .read(deleteChatUseCaseProvider)
+                            .deleteMessage(messages[index].id);
+                      },
+                    ),
                   ),
                 ),
         ),
@@ -148,9 +154,10 @@ class __BodyState extends ConsumerState<_Body> {
 class _MessageBubble extends StatelessWidget {
   const _MessageBubble({
     required this.message,
+    required this.onDeletePressed,
   });
   final Message message;
-
+  final VoidCallback onDeletePressed;
   @override
   Widget build(BuildContext context) {
     final bubbleColor = message.isMe
@@ -160,8 +167,8 @@ class _MessageBubble extends StatelessWidget {
         ? CupertinoColors.white
         : CupertinoColors.black;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Row(
         mainAxisAlignment: message.isMe
             ? MainAxisAlignment.end
@@ -182,41 +189,62 @@ class _MessageBubble extends StatelessWidget {
             ),
             const SizedBox(width: 8),
           ],
-          Flexible(
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: bubbleColor,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (message.text.isNotEmpty)
-                    Text(
-                      message.text,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 16,
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.7,
+            ),
+            child: CupertinoContextMenu.builder(
+              actions: [
+                CupertinoContextMenuAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    onDeletePressed();
+                  },
+                  trailingIcon: CupertinoIcons.delete,
+                  child: const Text('Delete'),
+                ),
+              ],
+              builder: (context, animation) => Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: bubbleColor,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Stack(
+                  children: [
+                    if (message.text.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: 32.0,
+                          bottom: 16.0,
+                        ),
+                        child: Text(
+                          message.text,
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                    ),
 
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      DateFormat('HH:mm').format(message.createdAt),
-                      style: TextStyle(
-                        color: message.isMe
-                            ? CupertinoColors.white.withValues(alpha: 0.7)
-                            : CupertinoColors.systemGrey,
-                        fontSize: 12,
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        DateFormat('HH:mm').format(message.createdAt),
+                        style: TextStyle(
+                          color: message.isMe
+                              ? CupertinoColors.white.withValues(alpha: 0.7)
+                              : CupertinoColors.systemGrey,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
