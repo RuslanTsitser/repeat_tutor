@@ -48,7 +48,7 @@ class _BottomNavigation extends StatelessWidget {
                     onTap: () => tabsRouter.setActiveIndex(0),
                     icon: CupertinoIcons.chat_bubble,
                     label: 'Чаты',
-                    isActive: true,
+                    isActive: tabsRouter.activeIndex == 0,
                   ),
                 ),
                 Expanded(
@@ -56,7 +56,7 @@ class _BottomNavigation extends StatelessWidget {
                     onTap: () => tabsRouter.setActiveIndex(1),
                     icon: CupertinoIcons.person,
                     label: 'Профиль',
-                    isActive: false,
+                    isActive: tabsRouter.activeIndex == 1,
                   ),
                 ),
               ],
