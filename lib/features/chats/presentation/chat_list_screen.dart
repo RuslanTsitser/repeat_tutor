@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/domain/models/chat.dart';
 import '../../../infrastructure/state_managers.dart';
@@ -123,53 +124,65 @@ class _ChatListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoListTile(
-      leading: CircleAvatar(
-        radius: 20,
-        backgroundColor: CupertinoColors.systemGrey4,
-        child: Text(
-          chat.topic.isEmpty ? '?' : chat.topic[0].toUpperCase(),
-          style: const TextStyle(
-            color: CupertinoColors.systemGrey,
-            fontWeight: FontWeight.w600,
-          ),
+    return CupertinoContextMenu.builder(
+      actions: [
+        CupertinoContextMenuAction(
+          onPressed: () {
+            Navigator.pop(context);
+            onDeletePressed();
+          },
+          trailingIcon: CupertinoIcons.delete,
+          child: const Text('Delete'),
         ),
-      ),
-      title: Text(
-        chat.topic,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
+      ],
+      builder: (context, animation) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: CupertinoColors.systemBackground,
+          borderRadius: BorderRadius.circular(10),
         ),
-      ),
-      subtitle: Text(
-        chat.chatLanguage.name,
-        style: const TextStyle(
-          color: CupertinoColors.systemGrey,
-          fontSize: 14,
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            chat.createdAt.toLocal().toString(),
-            style: const TextStyle(
-              color: CupertinoColors.systemGrey,
-              fontSize: 12,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: SizedBox(
+            height: 45,
+            child: CupertinoListTile(
+              leading: CircleAvatar(
+                radius: 20,
+                backgroundColor: CupertinoColors.systemGrey4,
+                child: Text(
+                  chat.topic.isEmpty ? '?' : chat.topic[0].toUpperCase(),
+                  style: const TextStyle(
+                    color: CupertinoColors.systemGrey,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              title: Text(
+                chat.topic,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                chat.chatLanguage.localizedName,
+                style: const TextStyle(
+                  color: CupertinoColors.systemGrey,
+                  fontSize: 14,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: Text(
+                '${DateFormat('dd.MM.yyyy').format(chat.createdAt)}\n${DateFormat('HH:mm').format(chat.createdAt)}',
+                style: const TextStyle(
+                  color: CupertinoColors.systemGrey,
+                  fontSize: 12,
+                ),
+              ),
+              onTap: onTap,
             ),
           ),
-
-          CupertinoButton(
-            onPressed: onDeletePressed,
-            padding: EdgeInsets.zero,
-            child: const Icon(CupertinoIcons.delete),
-          ),
-        ],
+        ),
       ),
-      onTap: onTap,
     );
   }
 }
