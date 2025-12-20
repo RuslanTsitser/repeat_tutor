@@ -1,3 +1,5 @@
+import '../../gpt/gpt_service.dart';
+
 class Message {
   const Message({
     required this.id,
@@ -5,6 +7,7 @@ class Message {
     required this.text,
     required this.chatId,
     required this.createdAt,
+    this.tutorAnswer,
   });
 
   final int id;
@@ -12,6 +15,7 @@ class Message {
   final String text;
   final int chatId;
   final DateTime createdAt;
+  final TutorAnswer? tutorAnswer;
 
   bool get isMe => gptResponseId == null;
 }
