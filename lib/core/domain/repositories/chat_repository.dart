@@ -1,3 +1,5 @@
+import '../enums/difficulty_level.dart';
+import '../enums/language.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 
@@ -8,10 +10,10 @@ abstract interface class ChatRepository {
 
   /// Создать новый чат
   Future<void> createChat({
-    required String language,
-    required String level,
+    required Language language,
+    required DifficultyLevel level,
     required String topic,
-    required String teacherLanguage,
+    required Language teacherLanguage,
   });
 
   /// Удалить чат

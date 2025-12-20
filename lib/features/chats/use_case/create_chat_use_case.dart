@@ -19,10 +19,10 @@ class CreateChatUseCase {
     );
     if (state != null) {
       await chatRepository.createChat(
-        language: state.language.value,
-        level: state.level.value,
+        language: state.language,
+        level: state.level,
         topic: state.topic,
-        teacherLanguage: state.teacherLanguage.value,
+        teacherLanguage: state.teacherLanguage,
       );
     }
   }

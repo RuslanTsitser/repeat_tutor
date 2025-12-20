@@ -1,4 +1,6 @@
 import '../../database/app_database.dart';
+import '../../domain/enums/difficulty_level.dart';
+import '../../domain/enums/language.dart';
 import '../../domain/models/chat.dart' as model;
 import '../../domain/models/message.dart' as model;
 import '../../domain/repositories/chat_repository.dart';
@@ -18,16 +20,16 @@ class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<void> createChat({
-    required String language,
-    required String level,
+    required Language language,
+    required DifficultyLevel level,
     required String topic,
-    required String teacherLanguage,
+    required Language teacherLanguage,
   }) async {
     await _database.chatDao.insertChat(
-      language: language,
-      level: level,
+      language: language.value,
+      level: level.value,
       topic: topic,
-      teacherLanguage: teacherLanguage,
+      teacherLanguage: teacherLanguage.value,
     );
   }
 
