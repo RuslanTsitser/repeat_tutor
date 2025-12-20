@@ -32,7 +32,7 @@ class StartRealtimeCallUseCase {
       ),
     );
 
-    final instructions = TutorInstruction.build(
+    final instructions = TutorInstruction.repeatTutor(
       languageName: language.localizedName,
       levelName: level.localizedName,
       teacherLanguageName: teacherLanguage.localizedName,
@@ -41,5 +41,6 @@ class StartRealtimeCallUseCase {
     final newSession = await gptService.createSession(instructions);
     await realtimeWebRTCConnection.connect(newSession.clientSecret);
     await appRouter.push(const RealtimeCallRoute());
+    realtimeWebRTCConnection.disconnect();
   }
 }
