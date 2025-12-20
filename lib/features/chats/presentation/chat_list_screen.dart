@@ -146,22 +146,23 @@ class _Body extends ConsumerWidget {
                   onCreateChat: () =>
                       ref.read(createChatUseCaseProvider).execute(),
                 )
-              : ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 141),
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 141),
                   itemCount: chats.length,
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 1,
-                    color: Color(0xFFE5E7EB),
-                  ),
                   itemBuilder: (context, index) {
                     final chat = chats[index];
-                    return _ChatListItem(
-                      chat: chat,
-                      onTap: () =>
-                          ref.read(openChatUseCaseProvider).execute(chat),
-                      onDeletePressed: () => ref
-                          .read(deleteChatUseCaseProvider)
-                          .execute(chat.chatId),
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        bottom: index < chats.length - 1 ? 12 : 0,
+                      ),
+                      child: _ChatListItem(
+                        chat: chat,
+                        onTap: () =>
+                            ref.read(openChatUseCaseProvider).execute(chat),
+                        onDeletePressed: () => ref
+                            .read(deleteChatUseCaseProvider)
+                            .execute(chat.chatId),
+                      ),
                     );
                   },
                 ),
@@ -215,29 +216,52 @@ class _ChatListItem extends StatelessWidget {
         padding: EdgeInsets.zero,
         onPressed: onTap,
         child: Container(
-          height: 81,
-          padding: const EdgeInsets.only(left: 16, top: 16),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+          height: 82,
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          decoration: BoxDecoration(
             color: CupertinoColors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: const Color(0xFFE5E7EB),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 2,
+                offset: const Offset(0, -1),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 4,
             children: [
-              Text(
-                _getChatTitle(),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF101828),
-                  letterSpacing: -0.3125,
-                  height: 24 / 16,
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    _getChatTitle(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF101828),
+                      letterSpacing: -0.3125,
+                      height: 24 / 16,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 4),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topLeft,
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   child: Text(
                     chat.lastMessage?.text ?? '',
                     style: const TextStyle(
