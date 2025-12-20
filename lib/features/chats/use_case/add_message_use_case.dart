@@ -146,19 +146,19 @@ class AddMessageUseCase {
   }
 
   Future<void> startAudioRecording() async {
-    if (chatNotifier.state.isAudioRecordingMode) {
+    if (chatNotifier.state.isSpeechRecording) {
       return;
     }
     await audioService.startRecording();
     chatNotifier.setState(
       chatNotifier.state.copyWith(
-        isAudioRecordingMode: true,
+        isSpeechRecording: true,
       ),
     );
   }
 
   Future<void> stopAudioRecording() async {
-    if (!chatNotifier.state.isAudioRecordingMode) {
+    if (!chatNotifier.state.isSpeechRecording) {
       return;
     }
     final result = await audioService.stopRecording();
