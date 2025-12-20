@@ -159,8 +159,11 @@ class GptServiceImpl implements GptService {
       final response = await _dio.post<Map<String, dynamic>>(
         url,
         data: FormData.fromMap({
-          'model': 'gpt-4o-mini-transcribe',
+          'model': 'gpt-4o-transcribe',
           'file': await MultipartFile.fromFile(filePath),
+          'prompt': '''Фразу нельзя переводить, 
+нужно вернуть текст как есть, даже если в ней есть несколько языков. 
+Русский и другие, которые на кириллице, должны быть кириллицей, другие языки латиницей.''',
         }),
         options: Options(
           headers: {
