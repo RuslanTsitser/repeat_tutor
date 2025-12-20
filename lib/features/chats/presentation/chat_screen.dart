@@ -458,6 +458,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
   final TextEditingController messageController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   double _previousKeyboardHeight = 0;
+  bool _hasText = false;
 
   @override
   void initState() {
@@ -467,6 +468,15 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
       if (focusNode.hasFocus) {
         Future.delayed(const Duration(milliseconds: 300), () {
           _scrollToBottom();
+        });
+      }
+    });
+    // Слушатель для обновления состояния кнопки отправки
+    messageController.addListener(() {
+      final hasText = messageController.text.trim().isNotEmpty;
+      if (hasText != _hasText) {
+        setState(() {
+          _hasText = hasText;
         });
       }
     });
@@ -572,11 +582,36 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               ),
             ),
             const SizedBox(width: 8),
+            // Кнопка микрофона (всегда видна)
+            CupertinoButton(
+              onLongPress: ref.read(addMessageUseCaseProvider).toggleAudioMode,
+              padding: EdgeInsets.zero,
+              onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
+              minimumSize: const Size(0, 0),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF3F4F6),
+                  shape: BoxShape.circle,
+                ),
+                child: ref.watch(chatNotifierProvider).state.isSpeechRecording
+                    ? const Icon(
+                        CupertinoIcons.stop,
+                        color: CupertinoColors.systemRed,
+                        size: 20,
+                      )
+                    : const Icon(
+                        CupertinoIcons.mic,
+                        color: Color(0xFF101828),
+                        size: 20,
+                      ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            // Кнопка отправки
             if (ref.watch(chatNotifierProvider).state.isAudioRecordingMode)
               CupertinoButton(
-                onLongPress: ref
-                    .read(addMessageUseCaseProvider)
-                    .toggleAudioMode,
                 padding: EdgeInsets.zero,
                 onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
                 minimumSize: const Size(0, 0),
@@ -590,20 +625,6 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                         ),
                         child: const CupertinoActivityIndicator(),
                       )
-                    : (ref.watch(chatNotifierProvider).state.isSpeechRecording)
-                    ? Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: CupertinoColors.systemRed,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.stop,
-                          color: CupertinoColors.white,
-                          size: 20,
-                        ),
-                      )
                     : Container(
                         width: 48,
                         height: 48,
@@ -612,7 +633,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
-                          CupertinoIcons.mic,
+                          CupertinoIcons.arrow_up,
                           color: Colors.white,
                           size: 20,
                         ),
@@ -620,17 +641,16 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
               )
             else
               CupertinoButton(
-                onLongPress: ref
-                    .read(addMessageUseCaseProvider)
-                    .toggleAudioMode,
                 padding: EdgeInsets.zero,
-                onPressed: _sendMessage,
+                onPressed: _hasText ? _sendMessage : null,
                 minimumSize: const Size(0, 0),
                 child: Container(
                   width: 48,
                   height: 48,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFD1D5DC),
+                  decoration: BoxDecoration(
+                    color: _hasText
+                        ? const Color(0xFFD1D5DC)
+                        : const Color(0xFFD1D5DC).withOpacity(0.5),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
