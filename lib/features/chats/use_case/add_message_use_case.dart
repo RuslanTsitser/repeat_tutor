@@ -31,12 +31,95 @@ class AddMessageUseCase {
       gptResponseId: null,
       chat: chatNotifier.state.chat,
     );
-    final tutorAnswer = await gptService.getTutorAnswer(
+    final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
       systemPrompt: chatNotifier.state.chat.chattyPrompt,
       text: message,
       previousMessageId: lastGptResponseId,
     );
-    // TODO: Tutor answer logic
+    final responseBuffer = StringBuffer();
+    switch (tutorAnswer.caseType) {
+      case CaseType.correctAnswer:
+        responseBuffer
+          ..write(tutorAnswer.assistantMessage)
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+      case CaseType.correctedAnswer:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        final correction = tutorAnswer.correction;
+        if (correction != null) {
+          responseBuffer
+            ..write('\n\n')
+            ..write(correction.correctedMarkdown)
+            ..write('\n')
+            ..write(correction.explanation);
+        }
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+      case CaseType.nativeLanguageAnswer:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        final translation = tutorAnswer.suggestedTranslation;
+        if (translation != null) {
+          responseBuffer
+            ..write('\n\n')
+            ..write(translation.userMeaning)
+            ..write(' -> ')
+            ..write(translation.translation);
+        }
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+      case CaseType.userQuestion:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+      case CaseType.offTopicAnswer:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+      case CaseType.noAnswer:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+
+      case CaseType.mixedCase:
+        responseBuffer.write(tutorAnswer.assistantMessage);
+        final correction = tutorAnswer.correction;
+        final qa = tutorAnswer.userQuestionAnswer;
+        if (qa != null) {
+          responseBuffer
+            ..write('\n\n')
+            ..write(qa.question)
+            ..write('\n')
+            ..write(qa.answer);
+        }
+        if (correction != null) {
+          responseBuffer
+            ..write('\n\n')
+            ..write(correction.correctedMarkdown)
+            ..write('\n')
+            ..write(correction.explanation);
+        }
+        responseBuffer
+          ..write('\n\n')
+          ..write(tutorAnswer.conversationContinue);
+        break;
+    }
+
+    await chatRepository.addMessage(
+      message: responseBuffer.toString(),
+      gptResponseId: gptResponseId,
+      chat: chatNotifier.state.chat,
+    );
   }
 
   Future<void> toggleAudioMode() async {
