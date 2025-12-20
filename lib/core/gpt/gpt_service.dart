@@ -18,7 +18,7 @@ abstract interface class GptService {
   Future<String> sendAudio(String filePath);
 
   /// Отправляет ответ на вопрос от юзера
-  Future<TutorAnswer> getTutorAnswer({
+  Future<(TutorAnswer, String)> getTutorAnswer({
     required String systemPrompt,
     required String text,
     String? previousMessageId,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import 'gpt_service.dart';
@@ -185,12 +187,12 @@ class GptServiceImpl implements GptService {
   }
 
   @override
-  Future<TutorAnswer> getTutorAnswer({
+  Future<(TutorAnswer, String)> getTutorAnswer({
     required String systemPrompt,
     required String text,
     String? previousMessageId,
   }) async {
-    const url = 'https://api.openai.com/v1/tutor/answers';
+    const url = 'https://api.openai.com/v1/responses';
     try {
       final response = await _dio.post<Map<String, dynamic>>(
         url,
@@ -212,7 +214,14 @@ class GptServiceImpl implements GptService {
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300) {
-        return TutorAnswer.fromJson(response.data as Map<String, dynamic>);
+        final text =
+            // ignore: avoid_dynamic_calls
+            response.data?['output'][0]['content'][0]['text'] as String;
+        final id = response.data?['id'] as String;
+        return (
+          TutorAnswer.fromJson(jsonDecode(text) as Map<String, dynamic>),
+          id,
+        );
       }
       throw Exception(
         'HTTP ошибка: ${response.statusCode} - ${response.data}',
