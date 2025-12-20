@@ -19,7 +19,7 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
   }
 
   /// Добавить новое сообщение
-  Future<void> insertMessage({
+  Future<int> insertMessage({
     required String message,
     required String? gptResponseId,
     required int chatId,
@@ -50,6 +50,45 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
       conversationContinue: Value(conversationContinue),
     ),
   );
+
+  /// Обновить сообщение
+  Future<void> updateMessage({
+    required int messageId,
+    required String message,
+    required String? gptResponseId,
+    required int chatId,
+    String? caseType,
+    String? assistantMessage,
+    String? correctionOriginal,
+    String? correctionCorrectedMarkdown,
+    String? correctionExplanation,
+    String? suggestedTranslationUserMeaning,
+    String? suggestedTranslationTranslation,
+    String? userQuestionAnswerQuestion,
+    String? userQuestionAnswerAnswer,
+    String? conversationContinue,
+  }) =>
+      (update(messages)..where((tbl) => tbl.messageId.equals(messageId))).write(
+        MessagesCompanion(
+          message: Value(message),
+          gptResponseId: Value(gptResponseId),
+          chatId: Value(chatId),
+          caseType: Value(caseType),
+          assistantMessage: Value(assistantMessage),
+          correctionOriginal: Value(correctionOriginal),
+          correctionCorrectedMarkdown: Value(correctionCorrectedMarkdown),
+          correctionExplanation: Value(correctionExplanation),
+          suggestedTranslationUserMeaning: Value(
+            suggestedTranslationUserMeaning,
+          ),
+          suggestedTranslationTranslation: Value(
+            suggestedTranslationTranslation,
+          ),
+          userQuestionAnswerQuestion: Value(userQuestionAnswerQuestion),
+          userQuestionAnswerAnswer: Value(userQuestionAnswerAnswer),
+          conversationContinue: Value(conversationContinue),
+        ),
+      );
 
   /// Удалить сообщение
   Future<void> deleteMessage(int messageId) {

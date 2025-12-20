@@ -61,7 +61,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<void> addMessage({
+  Future<int> addMessage({
     required String message,
     required String? gptResponseId,
     required model.Chat chat,
@@ -76,7 +76,7 @@ class ChatRepositoryImpl implements ChatRepository {
     String? userQuestionAnswerAnswer,
     String? conversationContinue,
   }) async {
-    await _database.messageDao.insertMessage(
+    return _database.messageDao.insertMessage(
       message: message,
       gptResponseId: gptResponseId,
       chatId: chat.chatId,
@@ -96,5 +96,40 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<void> deleteMessage(int messageId) async {
     await _database.messageDao.deleteMessage(messageId);
+  }
+
+  @override
+  Future<void> updateMessage({
+    required int messageId,
+    required String message,
+    required String? gptResponseId,
+    required model.Chat chat,
+    String? caseType,
+    String? assistantMessage,
+    String? correctionOriginal,
+    String? correctionCorrectedMarkdown,
+    String? correctionExplanation,
+    String? suggestedTranslationUserMeaning,
+    String? suggestedTranslationTranslation,
+    String? userQuestionAnswerQuestion,
+    String? userQuestionAnswerAnswer,
+    String? conversationContinue,
+  }) {
+    return _database.messageDao.updateMessage(
+      messageId: messageId,
+      message: message,
+      gptResponseId: gptResponseId,
+      chatId: chat.chatId,
+      caseType: caseType,
+      assistantMessage: assistantMessage,
+      correctionOriginal: correctionOriginal,
+      correctionCorrectedMarkdown: correctionCorrectedMarkdown,
+      correctionExplanation: correctionExplanation,
+      suggestedTranslationUserMeaning: suggestedTranslationUserMeaning,
+      suggestedTranslationTranslation: suggestedTranslationTranslation,
+      userQuestionAnswerQuestion: userQuestionAnswerQuestion,
+      userQuestionAnswerAnswer: userQuestionAnswerAnswer,
+      conversationContinue: conversationContinue,
+    );
   }
 }

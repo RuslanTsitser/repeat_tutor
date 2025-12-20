@@ -108,13 +108,49 @@ class AddMessageUseCase {
           isMessageSending: true,
         ),
       );
-      final text = await gptService.sendAudio(result);
+      final lastGptResponseId = chatNotifier.state.messages
+          .lastWhereOrNull((message) => !message.isMe)
+          ?.gptResponseId;
+      final messageId = await chatRepository.addMessage(
+        message: '',
+        conversationContinue: null,
+        gptResponseId: null,
+        chat: chatNotifier.state.chat,
+      );
+      final message = await gptService.sendAudio(result);
+      await chatRepository.updateMessage(
+        messageId: messageId,
+        message: message,
+        gptResponseId: null,
+        chat: chatNotifier.state.chat,
+      );
       chatNotifier.setState(
         chatNotifier.state.copyWith(
           isMessageSending: false,
         ),
       );
-      await addMessage(text);
+      final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
+        systemPrompt: chatNotifier.state.chat.chattyPrompt,
+        text: message,
+        previousMessageId: lastGptResponseId,
+      );
+      await chatRepository.addMessage(
+        message: message,
+        gptResponseId: gptResponseId,
+        chat: chatNotifier.state.chat,
+        caseType: tutorAnswer.caseType.toStringValue(),
+        assistantMessage: tutorAnswer.assistantMessage,
+        correctionOriginal: tutorAnswer.correction?.original,
+        correctionCorrectedMarkdown: tutorAnswer.correction?.correctedMarkdown,
+        correctionExplanation: tutorAnswer.correction?.explanation,
+        suggestedTranslationUserMeaning:
+            tutorAnswer.suggestedTranslation?.userMeaning,
+        suggestedTranslationTranslation:
+            tutorAnswer.suggestedTranslation?.translation,
+        userQuestionAnswerQuestion: tutorAnswer.userQuestionAnswer?.question,
+        userQuestionAnswerAnswer: tutorAnswer.userQuestionAnswer?.answer,
+        conversationContinue: tutorAnswer.conversationContinue,
+      );
     }
   }
 

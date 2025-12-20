@@ -247,12 +247,12 @@ class _MessageBubble extends StatelessWidget {
                         ? null
                         : [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                               blurRadius: 3,
                               offset: const Offset(0, 1),
                             ),
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 2,
                               offset: const Offset(0, -1),
                             ),
@@ -285,7 +285,7 @@ class _MessageBubble extends StatelessWidget {
                             data: message.text,
                           ),
                         )
-                      : const SizedBox.shrink(),
+                      : const CupertinoActivityIndicator(), // TODO: add loading indicator
                 );
               },
             ),
@@ -614,7 +614,9 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE7000B).withOpacity(0.709),
+                          color: const Color(
+                            0xFFE7000B,
+                          ).withValues(alpha: 0.709),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -749,7 +751,6 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
             const SizedBox(width: 8),
             // Кнопка микрофона (всегда видна)
             CupertinoButton(
-              onLongPress: ref.read(addMessageUseCaseProvider).toggleAudioMode,
               padding: EdgeInsets.zero,
               onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
               minimumSize: const Size(0, 0),

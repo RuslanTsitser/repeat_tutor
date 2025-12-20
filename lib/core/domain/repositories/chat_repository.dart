@@ -31,8 +31,26 @@ abstract interface class ChatRepository {
   /// Получить поток всех сообщений для чата
   Stream<List<Message>> getMessagesStream(int chatId);
 
+  /// Добавить новое сообщение и вернуть его id
+  Future<int> addMessage({
+    required String message,
+    required String? gptResponseId,
+    required Chat chat,
+    String? caseType,
+    String? assistantMessage,
+    String? correctionOriginal,
+    String? correctionCorrectedMarkdown,
+    String? correctionExplanation,
+    String? suggestedTranslationUserMeaning,
+    String? suggestedTranslationTranslation,
+    String? userQuestionAnswerQuestion,
+    String? userQuestionAnswerAnswer,
+    String? conversationContinue,
+  });
+
   /// Добавить новое сообщение
-  Future<void> addMessage({
+  Future<void> updateMessage({
+    required int messageId,
     required String message,
     required String? gptResponseId,
     required Chat chat,
