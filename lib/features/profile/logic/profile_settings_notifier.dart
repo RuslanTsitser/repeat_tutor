@@ -20,7 +20,7 @@ class ProfileSettingsNotifier extends ChangeNotifier {
        _state = ProfileSettingsState.initial() {
     _loadSettings();
     _loadDurations();
-    _loadIsPremium();
+    loadIsPremium();
   }
 
   final SettingsDao _settingsDao;
@@ -124,7 +124,7 @@ class ProfileSettingsNotifier extends ChangeNotifier {
     await _loadDurations();
   }
 
-  Future<void> _loadIsPremium() async {
+  Future<void> loadIsPremium() async {
     await _abTestService.checkUserPremium();
     setState(_state.copyWith(isPremium: _abTestService.isPremium));
   }

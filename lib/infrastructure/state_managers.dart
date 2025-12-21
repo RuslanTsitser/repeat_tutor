@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/chats/logic/chat_list_notifier.dart';
 import '../features/chats/logic/chat_notifier.dart';
 import '../features/chats/logic/create_chat_notifier.dart';
+import '../features/paywall/logic/paywall_change_notifier.dart';
 import '../features/profile/logic/profile_settings_notifier.dart';
 import '../features/realtime_call/logic/realtime_call_notifier.dart';
 import 'core.dart';
@@ -40,6 +41,12 @@ final profileSettingsProvider = ChangeNotifierProvider((ref) {
   return ProfileSettingsNotifier(
     settingsDao: settingsDao,
     sessionsDurationsDao: sessionsDurationsDao,
+    abTestService: ref.watch(abTestServiceProvider),
+  );
+});
+
+final paywallChangeNotifierProvider = ChangeNotifierProvider((ref) {
+  return PaywallChangeNotifier(
     abTestService: ref.watch(abTestServiceProvider),
   );
 });
