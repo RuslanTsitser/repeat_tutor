@@ -28,6 +28,7 @@ class Chat {
   );
 
   String get repeatPrompt => TutorInstruction.repeatTutor(
+    topic: topic,
     languageName: chatLanguage.localizedName,
     levelName: level.value,
     teacherLanguageName: teacherLanguage.localizedName,

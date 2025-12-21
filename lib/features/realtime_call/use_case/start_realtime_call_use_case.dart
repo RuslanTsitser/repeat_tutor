@@ -50,6 +50,7 @@ class StartRealtimeCallUseCase {
     );
 
     final instructions = TutorInstruction.repeatTutor(
+      topic: topic,
       languageName: language.localizedName,
       levelName: level.localizedName,
       teacherLanguageName: teacherLanguage.localizedName,
