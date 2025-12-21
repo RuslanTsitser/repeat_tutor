@@ -22,7 +22,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
       setState(
         state.copyWith(
           error: error.toString(),
-          isConnecting: false,
+          status: RealtimeCallStatus.error,
         ),
       );
     };
@@ -30,8 +30,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
     realtimeWebRTCConnection.onConnect = () {
       setState(
         state.copyWith(
-          isConnected: true,
-          isConnecting: false,
+          status: RealtimeCallStatus.connected,
         ),
       );
     };
@@ -39,9 +38,7 @@ class RealtimeCallNotifier extends ChangeNotifier {
     realtimeWebRTCConnection.onDisconnect = () {
       setState(
         state.copyWith(
-          isConnected: false,
-          isConnecting: false,
-          isRecording: false,
+          status: RealtimeCallStatus.disconnected,
         ),
       );
     };
@@ -56,49 +53,46 @@ class RealtimeCallNotifier extends ChangeNotifier {
   }
 }
 
+enum RealtimeCallStatus {
+  initial,
+  connected,
+  disconnected,
+  error,
+}
+
 class RealtimeCallState {
   const RealtimeCallState({
     required this.session,
-    required this.isConnected,
-    required this.isConnecting,
-    required this.isRecording,
+    required this.status,
+    required this.isMuted,
     required this.error,
   });
 
   factory RealtimeCallState.initial() {
     return const RealtimeCallState(
       session: null,
-      isConnected: false,
-      isConnecting: false,
-      isRecording: false,
+      status: RealtimeCallStatus.initial,
+      isMuted: false,
       error: null,
     );
   }
 
-  static const Object _errorSentinel = Object();
-  static const Object _sessionSentinel = Object();
-
   final RealtimeSession? session;
-  final bool isConnected;
-  final bool isConnecting;
-  final bool isRecording;
+  final RealtimeCallStatus status;
+  final bool isMuted;
   final String? error;
 
   RealtimeCallState copyWith({
-    Object? session = _sessionSentinel,
-    bool? isConnected,
-    bool? isConnecting,
-    bool? isRecording,
-    Object? error = _errorSentinel,
+    RealtimeSession? session,
+    RealtimeCallStatus? status,
+    bool? isMuted,
+    String? error,
   }) {
     return RealtimeCallState(
-      session: identical(session, _sessionSentinel)
-          ? this.session
-          : session as RealtimeSession?,
-      isConnected: isConnected ?? this.isConnected,
-      isConnecting: isConnecting ?? this.isConnecting,
-      isRecording: isRecording ?? this.isRecording,
-      error: identical(error, _errorSentinel) ? this.error : error as String?,
+      session: session ?? this.session,
+      status: status ?? this.status,
+      isMuted: isMuted ?? this.isMuted,
+      error: error ?? this.error,
     );
   }
 }

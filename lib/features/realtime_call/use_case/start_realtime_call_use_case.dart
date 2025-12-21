@@ -27,7 +27,7 @@ class StartRealtimeCallUseCase {
     final currentState = realtimeCallNotifier.state;
     realtimeCallNotifier.setState(
       currentState.copyWith(
-        isConnecting: true,
+        status: RealtimeCallStatus.initial,
         error: null,
       ),
     );
