@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/models/chat.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -182,20 +181,9 @@ class _ChatListItem extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onDeletePressed;
 
-  String _getLevelLabel(DifficultyLevel level) {
-    switch (level) {
-      case DifficultyLevel.beginner:
-        return 'A1';
-      case DifficultyLevel.intermediate:
-        return 'A2';
-      case DifficultyLevel.advanced:
-        return 'A3';
-    }
-  }
-
   String _getChatTitle() {
     final language = chat.chatLanguage.localizedName;
-    final level = _getLevelLabel(chat.level);
+    final level = chat.level.shortLocalizedName;
     return '$language $level – ${chat.topic}';
   }
 

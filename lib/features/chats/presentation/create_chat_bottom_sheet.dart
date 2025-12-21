@@ -260,17 +260,6 @@ class _LevelDropdown extends StatelessWidget {
   final DifficultyLevel value;
   final ValueChanged<DifficultyLevel> onChanged;
 
-  String _getLevelLabel(DifficultyLevel level) {
-    switch (level) {
-      case DifficultyLevel.beginner:
-        return 'A1 - Beginner';
-      case DifficultyLevel.intermediate:
-        return 'A2 - Elementary';
-      case DifficultyLevel.advanced:
-        return 'B1 - Intermediate';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -298,7 +287,7 @@ class _LevelDropdown extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              _getLevelLabel(value),
+              value.localizedName,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.normal,
@@ -556,17 +545,6 @@ class _LevelPicker extends StatelessWidget {
   final DifficultyLevel selectedValue;
   final ValueChanged<DifficultyLevel> onSelected;
 
-  String _getLevelLabel(DifficultyLevel level) {
-    switch (level) {
-      case DifficultyLevel.beginner:
-        return 'A1 - Beginner';
-      case DifficultyLevel.intermediate:
-        return 'A2 - Elementary';
-      case DifficultyLevel.advanced:
-        return 'B1 - Intermediate';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -622,7 +600,7 @@ class _LevelPicker extends StatelessWidget {
               children: DifficultyLevel.values.map((level) {
                 return Center(
                   child: Text(
-                    _getLevelLabel(level),
+                    level.localizedName,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
