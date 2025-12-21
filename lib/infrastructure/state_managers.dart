@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/chats/logic/chat_list_notifier.dart';
 import '../features/chats/logic/chat_notifier.dart';
 import '../features/chats/logic/create_chat_notifier.dart';
+import '../features/profile/logic/profile_settings_notifier.dart';
 import '../features/realtime_call/logic/realtime_call_notifier.dart';
 import 'core.dart';
 import 'repositories.dart';
@@ -28,5 +29,16 @@ final createChatProvider = ChangeNotifierProvider.autoDispose((ref) {
 final realtimeCallProvider = ChangeNotifierProvider((ref) {
   return RealtimeCallNotifier(
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
+  );
+});
+
+/// Провайдер для настроек профиля
+final profileSettingsProvider = ChangeNotifierProvider((ref) {
+  final database = ref.watch(databaseProvider);
+  final settingsDao = database.settingsDao;
+  final sessionsDurationsDao = database.sessionsDurationsDao;
+  return ProfileSettingsNotifier(
+    settingsDao: settingsDao,
+    sessionsDurationsDao: sessionsDurationsDao,
   );
 });
