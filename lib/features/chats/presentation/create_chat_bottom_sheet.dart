@@ -96,6 +96,17 @@ class CreateChatBottomSheet extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
+                  // Topic
+                  _FormField(
+                    label: 'Topic',
+                    child: _TopicInput(
+                      value: state.topic,
+                      onChanged: (topic) {
+                        entity.setState(state.copyWith(topic: topic));
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   // Language to learn
                   _FormField(
                     label: 'Language to learn',
@@ -103,6 +114,19 @@ class CreateChatBottomSheet extends ConsumerWidget {
                       value: state.language,
                       onChanged: (language) {
                         entity.setState(state.copyWith(language: language));
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Teacher language
+                  _FormField(
+                    label: 'Teacher language',
+                    child: _LanguageDropdown(
+                      value: state.teacherLanguage,
+                      onChanged: (teacherLanguage) {
+                        entity.setState(
+                          state.copyWith(teacherLanguage: teacherLanguage),
+                        );
                       },
                     ),
                   ),
@@ -117,17 +141,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  // Topic
-                  _FormField(
-                    label: 'Topic',
-                    child: _TopicInput(
-                      value: state.topic,
-                      onChanged: (topic) {
-                        entity.setState(state.copyWith(topic: topic));
-                      },
-                    ),
-                  ),
+
                   const SizedBox(height: 8),
                   // Buttons
                   Row(
@@ -150,7 +164,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
 
                   SizedBox(
                     height: max(
-                      MediaQuery.viewInsetsOf(context).bottom,
+                      MediaQuery.viewInsetsOf(context).bottom * 0.4,
                       16,
                     ),
                   ),
