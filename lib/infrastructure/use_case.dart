@@ -50,6 +50,7 @@ final startRealtimeCallUseCaseProvider = Provider((ref) {
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     appRouter: ref.watch(routerProvider),
     sessionsDurationsDao: ref.watch(databaseProvider).sessionsDurationsDao,
+    openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
   );
 });
 

@@ -1,3 +1,4 @@
+import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/database/daos/sessions_durations_dao.dart';
 import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/enums/language.dart';
@@ -6,6 +7,7 @@ import '../../../core/gpt/gpt_service.dart';
 import '../../../core/gpt/instructions/tutor_instruction.dart';
 import '../../../core/realtime/realtime_webrtc_manager.dart';
 import '../../../core/router/router.dart';
+import '../../paywall/use_case/open_paywall_use_case.dart';
 import '../logic/realtime_call_notifier.dart';
 
 /// Use case для создания новой Realtime-сессии.
@@ -16,12 +18,14 @@ class StartRealtimeCallUseCase {
     required this.realtimeCallNotifier,
     required this.appRouter,
     required this.sessionsDurationsDao,
+    required this.openPaywallUseCase,
   });
   final GptService gptService;
   final RealtimeWebRTCConnection realtimeWebRTCConnection;
   final RealtimeCallNotifier realtimeCallNotifier;
   final AppRouter appRouter;
   final SessionsDurationsDao sessionsDurationsDao;
+  final OpenPaywallUseCase openPaywallUseCase;
 
   Future<void> execute({
     required String topic,
@@ -29,6 +33,13 @@ class StartRealtimeCallUseCase {
     required DifficultyLevel level,
     required Language teacherLanguage,
   }) async {
+    final isPremium = await openPaywallUseCase.openPaywall(
+      placementType: PlacementType.placementRealtimeCall,
+    );
+    if (!isPremium) {
+      return;
+    }
+
     final currentState = realtimeCallNotifier.state;
     realtimeCallNotifier.setState(
       currentState.copyWith(
