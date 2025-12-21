@@ -44,12 +44,34 @@ class SessionsDurationsDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<Duration> getAllSessionsDurations() async {
-    final totalDurationExpression =
-        sessionsDurations.durationInMilliseconds.sum();
-    final totalDuration = await (selectOnly(sessionsDurations)
-          ..addColumns([totalDurationExpression]))
-        .map((row) => row.read(totalDurationExpression) ?? 0)
-        .getSingle();
+    final totalDurationExpression = sessionsDurations.durationInMilliseconds
+        .sum();
+    final totalDuration =
+        await (selectOnly(sessionsDurations)
+              ..addColumns([totalDurationExpression]))
+            .map((row) => row.read(totalDurationExpression) ?? 0)
+            .getSingle();
     return Duration(milliseconds: totalDuration);
+  }
+
+  Future<Duration> getTodaySessionsDuration() async {
+    final now = DateTime.now();
+    final startOfDay = DateTime(now.year, now.month, now.day);
+    final endOfDay = startOfDay.add(const Duration(days: 1));
+
+    final todaySessions =
+        await (select(sessionsDurations)..where(
+              (tbl) =>
+                  (tbl.createdAt.isBiggerOrEqualValue(startOfDay)) &
+                  (tbl.createdAt.isSmallerThanValue(endOfDay)),
+            ))
+            .get();
+
+    final totalMilliseconds = todaySessions.fold<int>(
+      0,
+      (sum, session) => sum + session.durationInMilliseconds,
+    );
+
+    return Duration(milliseconds: totalMilliseconds);
   }
 }
