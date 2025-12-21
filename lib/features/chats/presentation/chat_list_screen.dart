@@ -327,9 +327,11 @@ class _EmptyState extends StatelessWidget {
                 color: const Color(0xFF155DFC),
                 borderRadius: BorderRadius.circular(10),
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Center(
                 child: Text(
                   S.of(context).startYourFirstChat,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
