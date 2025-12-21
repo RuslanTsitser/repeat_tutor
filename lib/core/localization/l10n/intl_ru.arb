@@ -19,5 +19,12 @@
   "egFreeTimeShoppingTravel": "например, свободное время, покупки, путешествия",
   "cancel": "Отмена",
   "chats": "Чаты",
-  "profile": "Профиль"
+  "profile": "Профиль",
+  "exampleTopicFreeTime": "Свободное время",
+  "exampleTopicShopping": "Покупки",
+  "exampleTopicTravel": "Путешествия",
+  "exampleTopicFood": "Еда",
+  "exampleTopicWork": "Работа",
+  "exampleTopicHobbies": "Хобби",
+  "exampleTopicSports": "Спорт"
 }

@@ -203,6 +203,66 @@ class S {
   String get profile {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
+
+  /// `Free time`
+  String get exampleTopicFreeTime {
+    return Intl.message(
+      'Free time',
+      name: 'exampleTopicFreeTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shopping`
+  String get exampleTopicShopping {
+    return Intl.message(
+      'Shopping',
+      name: 'exampleTopicShopping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel`
+  String get exampleTopicTravel {
+    return Intl.message(
+      'Travel',
+      name: 'exampleTopicTravel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food`
+  String get exampleTopicFood {
+    return Intl.message('Food', name: 'exampleTopicFood', desc: '', args: []);
+  }
+
+  /// `Work`
+  String get exampleTopicWork {
+    return Intl.message('Work', name: 'exampleTopicWork', desc: '', args: []);
+  }
+
+  /// `Hobbies`
+  String get exampleTopicHobbies {
+    return Intl.message(
+      'Hobbies',
+      name: 'exampleTopicHobbies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sports`
+  String get exampleTopicSports {
+    return Intl.message(
+      'Sports',
+      name: 'exampleTopicSports',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

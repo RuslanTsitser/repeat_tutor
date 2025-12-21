@@ -33,6 +33,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "Error loading chats",
     ),
+    "exampleTopicFood": MessageLookupByLibrary.simpleMessage("Food"),
+    "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("Free time"),
+    "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("Hobbies"),
+    "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("Shopping"),
+    "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sports"),
+    "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Travel"),
+    "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Work"),
     "hello": MessageLookupByLibrary.simpleMessage("hello!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Language to learn",

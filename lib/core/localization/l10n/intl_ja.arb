@@ -18,5 +18,12 @@
   "egFreeTimeShoppingTravel": "例: 自由時間, 買い物, 旅行",
   "cancel": "キャンセル",
   "chats": "チャット",
-  "profile": "プロフィール"
+  "profile": "プロフィール",
+  "exampleTopicFreeTime": "自由時間",
+  "exampleTopicShopping": "買い物",
+  "exampleTopicTravel": "旅行",
+  "exampleTopicFood": "食べ物",
+  "exampleTopicWork": "仕事",
+  "exampleTopicHobbies": "趣味",
+  "exampleTopicSports": "スポーツ"
 }

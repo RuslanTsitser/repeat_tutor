@@ -100,11 +100,41 @@ class CreateChatBottomSheet extends ConsumerWidget {
                   // Topic
                   _FormField(
                     label: S.of(context).topic,
-                    child: _TopicInput(
-                      value: state.topic,
-                      onChanged: (topic) {
-                        entity.setState(state.copyWith(topic: topic));
-                      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _TopicInput(
+                          value: state.topic,
+                          onChanged: (topic) {
+                            entity.setState(state.copyWith(topic: topic));
+                          },
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            ...[
+                              S.of(context).exampleTopicFreeTime,
+                              S.of(context).exampleTopicShopping,
+                              S.of(context).exampleTopicTravel,
+                              S.of(context).exampleTopicFood,
+                              S.of(context).exampleTopicWork,
+                              S.of(context).exampleTopicHobbies,
+                              S.of(context).exampleTopicSports,
+                            ].map(
+                              (topic) => _TopicChip(
+                                label: topic,
+                                onTap: () {
+                                  entity.setState(
+                                    state.copyWith(topic: topic),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -316,6 +346,43 @@ class _LevelDropdown extends StatelessWidget {
               color: Color(0xFF101828),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TopicChip extends StatelessWidget {
+  const _TopicChip({
+    required this.label,
+    required this.onTap,
+  });
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF3F4F6),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFFE5E7EB),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Color(0xFF101828),
+            letterSpacing: -0.3125,
+          ),
         ),
       ),
     );

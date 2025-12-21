@@ -33,6 +33,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "チャットの読み込みに失敗しました",
     ),
+    "exampleTopicFood": MessageLookupByLibrary.simpleMessage("食べ物"),
+    "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("自由時間"),
+    "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("趣味"),
+    "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("買い物"),
+    "exampleTopicSports": MessageLookupByLibrary.simpleMessage("スポーツ"),
+    "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("旅行"),
+    "exampleTopicWork": MessageLookupByLibrary.simpleMessage("仕事"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
     "level": MessageLookupByLibrary.simpleMessage("レベル"),
     "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),

@@ -18,5 +18,12 @@
   "egFreeTimeShoppingTravel": "ex. Temps libre, Shopping, Voyage",
   "cancel": "Annuler",
   "chats": "Chatear",
-  "profile": "Profil"
+  "profile": "Profil",
+  "exampleTopicFreeTime": "Temps libre",
+  "exampleTopicShopping": "Compras",
+  "exampleTopicTravel": "Voyage",
+  "exampleTopicFood": "Nourriture",
+  "exampleTopicWork": "Travail",
+  "exampleTopicHobbies": "Hobbys",
+  "exampleTopicSports": "Sport"
 }
