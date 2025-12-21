@@ -60,6 +60,7 @@ class ChatScreen extends ConsumerWidget {
               ref
                   .read(startRealtimeCallUseCaseProvider)
                   .execute(
+                    topic: chat.topic,
                     language: chat.chatLanguage,
                     level: chat.level,
                     teacherLanguage: chat.teacherLanguage,
