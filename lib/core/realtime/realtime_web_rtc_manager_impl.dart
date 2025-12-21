@@ -25,6 +25,12 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   void Function()? onDisconnect;
 
   @override
+  void Function()? onMuted;
+
+  @override
+  void Function()? onUnMuted;
+
+  @override
   Future<void> connect(String clientSecret) async {
     try {
       // Создаем конфигурацию peer connection
@@ -51,6 +57,12 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
         final tracks = _localStream!.getAudioTracks();
         for (final track in tracks) {
           await _peerConnection!.addTrack(track, _localStream!);
+          track.onMute = () {
+            onMuted?.call();
+          };
+          track.onUnMute = () {
+            onUnMuted?.call();
+          };
         }
       }
 
@@ -117,5 +129,18 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       _isConnected = false;
       onDisconnect?.call();
     }
+  }
+
+  @override
+  Future<void> setMicEnabled(bool enabled) async {
+    if (_localStream == null) return;
+    for (var track in _localStream!.getAudioTracks()) {
+      await Helper.setMicrophoneMute(enabled, track);
+    }
+  }
+
+  @override
+  Future<void> setSpeakerEnabled(bool enabled) async {
+    await Helper.setSpeakerphoneOn(enabled);
   }
 }

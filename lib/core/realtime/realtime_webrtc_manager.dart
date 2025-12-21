@@ -12,9 +12,21 @@ abstract interface class RealtimeWebRTCConnection {
   /// Обработчик события отключения от Realtime API через WebRTC
   void Function()? onDisconnect;
 
+  /// Обработчик события мутации микрофона
+  void Function()? onMuted;
+
+  /// Обработчик события размутации микрофона
+  void Function()? onUnMuted;
+
   /// Подключение к Realtime API через WebRTC
   Future<void> connect(String clientSecret);
 
   /// Отключение от Realtime API через WebRTC
   void disconnect();
+
+  /// Установка состояния микрофона
+  Future<void> setMicEnabled(bool enabled);
+
+  /// Установка состояния динамика
+  Future<void> setSpeakerEnabled(bool enabled);
 }

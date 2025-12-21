@@ -42,6 +42,22 @@ class RealtimeCallNotifier extends ChangeNotifier {
         ),
       );
     };
+
+    realtimeWebRTCConnection.onMuted = () {
+      setState(
+        state.copyWith(
+          isMuted: true,
+        ),
+      );
+    };
+
+    realtimeWebRTCConnection.onUnMuted = () {
+      setState(
+        state.copyWith(
+          isMuted: false,
+        ),
+      );
+    };
   }
 
   RealtimeCallState _state = RealtimeCallState.initial();

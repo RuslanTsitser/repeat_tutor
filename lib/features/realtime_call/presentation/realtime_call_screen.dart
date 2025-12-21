@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../../../infrastructure/use_case.dart';
 import '../logic/realtime_call_notifier.dart';
 
 @RoutePage()
@@ -263,13 +264,7 @@ class _ControlButtons extends ConsumerWidget {
           CupertinoButton(
             padding: EdgeInsets.zero,
             onPressed: state.status == RealtimeCallStatus.connected
-                ? () {
-                    // TODO: Implement mute/unmute
-                    final notifier = ref.read(realtimeCallProvider);
-                    notifier.setState(
-                      state.copyWith(isMuted: !state.isMuted),
-                    );
-                  }
+                ? () => ref.read(startRealtimeCallUseCaseProvider).toggleMic()
                 : null,
             child: Container(
               width: 64,

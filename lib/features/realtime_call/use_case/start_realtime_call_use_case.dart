@@ -60,8 +60,14 @@ class StartRealtimeCallUseCase {
     );
     await realtimeWebRTCConnection.connect(newSession.clientSecret);
     final sessionId = await sessionsDurationsDao.startSession();
+    await realtimeWebRTCConnection.setSpeakerEnabled(true);
     await appRouter.push(const RealtimeCallRoute());
     realtimeWebRTCConnection.disconnect();
     await sessionsDurationsDao.finishSession(sessionId);
+  }
+
+  Future<void> toggleMic() async {
+    final currentState = realtimeCallNotifier.state;
+    await realtimeWebRTCConnection.setMicEnabled(!currentState.isMuted);
   }
 }
