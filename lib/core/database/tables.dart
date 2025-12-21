@@ -38,3 +38,13 @@ class SessionsDurations extends Table {
   IntColumn get durationInMilliseconds =>
       integer().withDefault(const Constant(0))();
 }
+
+@DataClassName('SettingDb')
+class Settings extends Table {
+  TextColumn get key => text()();
+  TextColumn get value => text()();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+
+  @override
+  Set<Column> get primaryKey => {key};
+}

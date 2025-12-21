@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'daos/chat_dao.dart';
 import 'daos/message_dao.dart';
 import 'daos/sessions_durations_dao.dart';
+import 'daos/settings_dao.dart';
 import 'open_connection/open_db_connection.dart';
 import 'tables.dart';
 
@@ -10,14 +11,14 @@ part 'app_database.g.dart';
 
 /// Главный класс базы данных приложения
 @DriftDatabase(
-  tables: [Chats, Messages, SessionsDurations],
-  daos: [ChatDao, MessageDao, SessionsDurationsDao],
+  tables: [Chats, Messages, SessionsDurations, Settings],
+  daos: [ChatDao, MessageDao, SessionsDurationsDao, SettingsDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(openDbConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -25,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
       await m.createAll();
     },
     onUpgrade: (Migrator m, int from, int to) async {
-      if (from == 1 && to == 2) {
+      if (from < 2) {
         await m.addColumn(messages, messages.caseType);
         await m.addColumn(messages, messages.assistantMessage);
         await m.addColumn(messages, messages.correctionOriginal);
@@ -36,6 +37,9 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(messages, messages.userQuestionAnswerQuestion);
         await m.addColumn(messages, messages.userQuestionAnswerAnswer);
         await m.addColumn(messages, messages.conversationContinue);
+      }
+      if (from < 3) {
+        await m.createTable(settings);
       }
     },
   );
