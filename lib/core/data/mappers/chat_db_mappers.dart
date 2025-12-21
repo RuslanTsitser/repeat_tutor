@@ -4,7 +4,19 @@ import '../../domain/enums/language.dart';
 import '../../domain/models/chat.dart';
 
 abstract class ChatDbMappers {
-  static Chat toDomain(ChatDb chat) {
+  static Chat toDomain(
+    ChatDb chat, {
+    List<MessageDb>? messages,
+  }) {
+    final message = messages?.isNotEmpty ?? false ? messages!.last : null;
+    final lastMessage = message != null
+        ? LastMessage(
+            text: message.gptResponseId != null
+                ? message.assistantMessage ?? message.message
+                : message.message,
+            id: message.messageId.toString(),
+          )
+        : null;
     return Chat(
       chatId: chat.chatId,
       topic: chat.topic,
@@ -12,6 +24,7 @@ abstract class ChatDbMappers {
       level: DifficultyLevel.fromValue(chat.level)!,
       teacherLanguage: Language.fromLanguage(chat.teacherLanguage)!,
       createdAt: chat.createdAt,
+      lastMessage: lastMessage,
     );
   }
 

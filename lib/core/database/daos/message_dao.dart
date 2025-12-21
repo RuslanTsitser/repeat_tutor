@@ -108,4 +108,14 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
           ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)]))
         .watch();
   }
+
+  Future<MessageDb?> getChatsLastMessage(int chatId) async {
+    final result =
+        await (select(messages)
+              ..where((tbl) => tbl.chatId.equals(chatId))
+              ..orderBy([(tbl) => OrderingTerm.desc(tbl.createdAt)])
+              ..limit(1))
+            .getSingleOrNull();
+    return result;
+  }
 }

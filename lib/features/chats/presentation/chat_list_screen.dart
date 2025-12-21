@@ -249,20 +249,17 @@ class _ChatListItem extends StatelessWidget {
                 ),
               ),
               Flexible(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    chat.lastMessage?.text ?? '',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF4A5565),
-                      letterSpacing: -0.1504,
-                      height: 20 / 14,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                child: Text(
+                  chat.lastMessage?.text ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF4A5565),
+                    letterSpacing: -0.1504,
+                    height: 20 / 14,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

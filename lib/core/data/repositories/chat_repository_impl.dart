@@ -15,7 +15,23 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<List<model.Chat>> getChats() async {
     final chatRows = await _database.chatDao.getAllChats();
-    return chatRows.map(ChatDbMappers.toDomain).toList();
+    final result = <model.Chat>[];
+    for (final chatRow in chatRows) {
+      final lastMessageRow = await _database.messageDao.getChatsLastMessage(
+        chatRow.chatId,
+      );
+      if (lastMessageRow != null) {
+        result.add(
+          ChatDbMappers.toDomain(
+            chatRow,
+            messages: [lastMessageRow],
+          ),
+        );
+      } else {
+        result.add(ChatDbMappers.toDomain(chatRow));
+      }
+    }
+    return result;
   }
 
   @override
