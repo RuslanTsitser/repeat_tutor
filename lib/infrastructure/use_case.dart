@@ -46,5 +46,6 @@ final startRealtimeCallUseCaseProvider = Provider((ref) {
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     appRouter: ref.watch(routerProvider),
+    sessionsDurationsDao: ref.watch(databaseProvider).sessionsDurationsDao,
   );
 });

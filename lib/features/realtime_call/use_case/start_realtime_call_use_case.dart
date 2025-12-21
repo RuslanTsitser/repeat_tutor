@@ -1,3 +1,4 @@
+import '../../../core/database/daos/sessions_durations_dao.dart';
 import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/enums/language.dart';
 import '../../../core/domain/models/realtime_session.dart';
@@ -14,11 +15,13 @@ class StartRealtimeCallUseCase {
     required this.realtimeWebRTCConnection,
     required this.realtimeCallNotifier,
     required this.appRouter,
+    required this.sessionsDurationsDao,
   });
   final GptService gptService;
   final RealtimeWebRTCConnection realtimeWebRTCConnection;
   final RealtimeCallNotifier realtimeCallNotifier;
   final AppRouter appRouter;
+  final SessionsDurationsDao sessionsDurationsDao;
 
   Future<void> execute({
     required String topic,
@@ -56,7 +59,9 @@ class StartRealtimeCallUseCase {
       ),
     );
     await realtimeWebRTCConnection.connect(newSession.clientSecret);
+    final sessionId = await sessionsDurationsDao.startSession();
     await appRouter.push(const RealtimeCallRoute());
     realtimeWebRTCConnection.disconnect();
+    await sessionsDurationsDao.finishSession(sessionId);
   }
 }
