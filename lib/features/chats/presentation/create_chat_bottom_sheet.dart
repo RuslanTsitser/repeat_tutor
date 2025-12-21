@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/enums/language.dart';
+import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 
@@ -59,9 +60,9 @@ class CreateChatBottomSheet extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'New chat',
-                    style: TextStyle(
+                  Text(
+                    S.of(context).newChat,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF0A0A0A),
@@ -98,7 +99,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
                   const SizedBox(height: 16),
                   // Topic
                   _FormField(
-                    label: 'Topic',
+                    label: S.of(context).topic,
                     child: _TopicInput(
                       value: state.topic,
                       onChanged: (topic) {
@@ -109,7 +110,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
                   const SizedBox(height: 16),
                   // Language to learn
                   _FormField(
-                    label: 'Language to learn',
+                    label: S.of(context).languageToLearn,
                     child: _LanguageDropdown(
                       value: state.language,
                       onChanged: (language) {
@@ -120,7 +121,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
                   const SizedBox(height: 16),
                   // Teacher language
                   _FormField(
-                    label: 'Teacher language',
+                    label: S.of(context).teacherLanguage,
                     child: _LanguageDropdown(
                       value: state.teacherLanguage,
                       onChanged: (teacherLanguage) {
@@ -133,7 +134,7 @@ class CreateChatBottomSheet extends ConsumerWidget {
                   const SizedBox(height: 16),
                   // Level
                   _FormField(
-                    label: 'Level',
+                    label: S.of(context).level,
                     child: _LevelDropdown(
                       value: state.level,
                       onChanged: (level) {
@@ -371,7 +372,7 @@ class _TopicInputState extends State<_TopicInput> {
       ),
       child: CupertinoTextField(
         controller: _controller,
-        placeholder: 'e.g. Free time, Shopping, Travel',
+        placeholder: S.of(context).egFreeTimeShoppingTravel,
         placeholderStyle: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
@@ -414,10 +415,10 @@ class _CancelButton extends StatelessWidget {
             width: 1,
           ),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            'Cancel',
-            style: TextStyle(
+            S.of(context).cancel,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Color(0xFF364153),

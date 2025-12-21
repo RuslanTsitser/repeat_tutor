@@ -1,0 +1,22 @@
+{
+  "voiceCallInProgress": "音声通話中",
+  "connected": "接続中",
+  "disconnected": "切断中",
+  "errorLoadingChats": "チャットの読み込みに失敗しました",
+  "retry": "再試行",
+  "delete": "削除",
+  "noChatsYet": "チャットがありません",
+  "startYourFirstConversationAndBeginPracticingANewLanguage": "最初の会話を始めて新しい言語を練習しましょう",
+  "startYourFirstChat": "最初のチャットを始めましょう",
+  "noMessages": "メッセージがありません",
+  "typeYourMessage": "メッセージを入力してください...",
+  "newChat": "新しいチャット",
+  "topic": "トピック",
+  "languageToLearn": "学ぶ言語",
+  "teacherLanguage": "先生の言語",
+  "level": "レベル",
+  "egFreeTimeShoppingTravel": "例: 自由時間, 買い物, 旅行",
+  "cancel": "キャンセル",
+  "chats": "チャット",
+  "profile": "プロフィール"
+}

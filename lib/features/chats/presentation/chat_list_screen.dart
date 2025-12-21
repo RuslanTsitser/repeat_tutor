@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/models/chat.dart';
+import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../logic/chat_list_notifier.dart';
@@ -95,7 +96,7 @@ class _Body extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Ошибка загрузки чатов',
+              S.of(context).errorLoadingChats,
               style: CupertinoTheme.of(context).textTheme.textStyle,
               textAlign: TextAlign.center,
             ),
@@ -104,7 +105,7 @@ class _Body extends ConsumerWidget {
               onPressed: () {
                 ref.read(chatListNotifierProvider).getChats();
               },
-              child: const Text('Повторить'),
+              child: Text(S.of(context).retry),
             ),
           ],
         ),
@@ -125,11 +126,11 @@ class _Body extends ConsumerWidget {
               ),
             ),
           ),
-          child: const Align(
+          child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              'Чаты',
-              style: TextStyle(
+              S.of(context).chats,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF0A0A0A),
@@ -197,7 +198,7 @@ class _ChatListItem extends StatelessWidget {
             onDeletePressed();
           },
           trailingIcon: CupertinoIcons.delete,
-          child: const Text('Delete'),
+          child: Text(S.of(context).delete),
         ),
       ],
       builder: (context, animation) => CupertinoButton(
@@ -291,9 +292,9 @@ class _EmptyState extends StatelessWidget {
             color: Color(0xFF9CA3AF),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'No chats yet',
-            style: TextStyle(
+          Text(
+            S.of(context).noChatsYet,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
               color: Color(0xFF101828),
@@ -302,12 +303,14 @@ class _EmptyState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'Start your first conversation and begin practicing a new language',
+              S
+                  .of(context)
+                  .startYourFirstConversationAndBeginPracticingANewLanguage,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.normal,
                 color: Color(0xFF4A5565),
@@ -327,10 +330,10 @@ class _EmptyState extends StatelessWidget {
                 color: const Color(0xFF155DFC),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Start your first chat',
-                  style: TextStyle(
+                  S.of(context).startYourFirstChat,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: CupertinoColors.white,

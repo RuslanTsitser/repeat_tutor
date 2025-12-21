@@ -8,6 +8,7 @@ import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../../core/domain/models/message.dart';
 import '../../../core/gpt/gpt_service.dart';
+import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../logic/chat_notifier.dart';
@@ -88,21 +89,6 @@ class __BodyState extends ConsumerState<_Body> {
   bool _isInitialLoad = true;
 
   @override
-  void initState() {
-    super.initState();
-    // Скролл до конца после первой загрузки сообщений
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Future.delayed(const Duration(milliseconds: 300), () {
-    //     if (_scrollController.hasClients) {
-    //       _scrollController.jumpTo(
-    //         _scrollController.position.maxScrollExtent,
-    //       );
-    //     }
-    //   });
-    // });
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -159,7 +145,7 @@ class __BodyState extends ConsumerState<_Body> {
         children: [
           Expanded(
             child: messages.isEmpty
-                ? const Center(child: Text('Нет сообщений'))
+                ? Center(child: Text(S.of(context).noMessages))
                 : SafeArea(
                     top: true,
                     bottom: false,
@@ -237,7 +223,7 @@ class __MessageBubbleState extends State<_MessageBubble> {
                     widget.onDeletePressed();
                   },
                   trailingIcon: CupertinoIcons.delete,
-                  child: const Text('Delete'),
+                  child: Text(S.of(context).delete),
                 ),
               ],
               builder: (context, animation) {
@@ -753,7 +739,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 child: CupertinoTextField(
                   controller: messageController,
                   focusNode: focusNode,
-                  placeholder: 'Type your message...',
+                  placeholder: S.of(context).typeYourMessage,
                   placeholderStyle: const TextStyle(
                     color: Color(0xFF99A1AF),
                     fontSize: 16,
@@ -807,7 +793,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                 decoration: BoxDecoration(
                   color: _hasText
                       ? const Color(0xFFD1D5DC)
-                      : const Color(0xFFD1D5DC).withOpacity(0.5),
+                      : const Color(0xFFD1D5DC).withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

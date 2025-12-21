@@ -22,6 +22,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "hello": MessageLookupByLibrary.simpleMessage("привет!")
-      };
+    "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+    "chats": MessageLookupByLibrary.simpleMessage("Чаты"),
+    "connected": MessageLookupByLibrary.simpleMessage("Подключен"),
+    "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
+    "disconnected": MessageLookupByLibrary.simpleMessage("Отключен"),
+    "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
+      "например, свободное время, покупки, путешествия",
+    ),
+    "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
+      "Ошибка загрузки чатов",
+    ),
+    "hello": MessageLookupByLibrary.simpleMessage("привет!"),
+    "languageToLearn": MessageLookupByLibrary.simpleMessage(
+      "Язык для изучения",
+    ),
+    "level": MessageLookupByLibrary.simpleMessage("Уровень"),
+    "newChat": MessageLookupByLibrary.simpleMessage("Новый чат"),
+    "noChatsYet": MessageLookupByLibrary.simpleMessage("Нет чатов"),
+    "noMessages": MessageLookupByLibrary.simpleMessage("Нет сообщений"),
+    "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
+    "retry": MessageLookupByLibrary.simpleMessage("Повторить"),
+    "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
+      "Начните свою первую беседу",
+    ),
+    "startYourFirstConversationAndBeginPracticingANewLanguage":
+        MessageLookupByLibrary.simpleMessage(
+          "Начните свою первую беседу и начните практиковать новый язык",
+        ),
+    "teacherLanguage": MessageLookupByLibrary.simpleMessage(
+      "Язык преподавателя",
+    ),
+    "topic": MessageLookupByLibrary.simpleMessage("Тема"),
+    "typeYourMessage": MessageLookupByLibrary.simpleMessage(
+      "Введите ваше сообщение...",
+    ),
+    "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
+      "Звонок в процессе",
+    ),
+  };
 }

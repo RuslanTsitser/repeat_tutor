@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a fr locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,45 +18,46 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'fr';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "chats": MessageLookupByLibrary.simpleMessage("Chats"),
-    "connected": MessageLookupByLibrary.simpleMessage("Connected"),
-    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-    "disconnected": MessageLookupByLibrary.simpleMessage("Disconnected"),
+    "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
+    "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
+    "connected": MessageLookupByLibrary.simpleMessage("Connecté"),
+    "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
+    "disconnected": MessageLookupByLibrary.simpleMessage("Déconnecté"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
-      "e.g. Free time, Shopping, Travel",
+      "ex. Temps libre, Shopping, Voyage",
     ),
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
-      "Error loading chats",
+      "Erreur lors du chargement des chats",
     ),
-    "hello": MessageLookupByLibrary.simpleMessage("hello!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
-      "Language to learn",
+      "Langage à apprendre",
     ),
-    "level": MessageLookupByLibrary.simpleMessage("Level"),
-    "newChat": MessageLookupByLibrary.simpleMessage("New chat"),
-    "noChatsYet": MessageLookupByLibrary.simpleMessage("No chats yet"),
-    "noMessages": MessageLookupByLibrary.simpleMessage("No messages"),
-    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
-    "retry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "level": MessageLookupByLibrary.simpleMessage("Niveau"),
+    "newChat": MessageLookupByLibrary.simpleMessage("Nouveau chat"),
+    "noChatsYet": MessageLookupByLibrary.simpleMessage("Aucun chat"),
+    "noMessages": MessageLookupByLibrary.simpleMessage("Aucun message"),
+    "profile": MessageLookupByLibrary.simpleMessage("Profil"),
+    "retry": MessageLookupByLibrary.simpleMessage("Réessayer"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
-      "Start your first chat",
+      "Commencez votre premier chat",
     ),
     "startYourFirstConversationAndBeginPracticingANewLanguage":
         MessageLookupByLibrary.simpleMessage(
-          "Start your first conversation and begin practicing a new language",
+          "Commencez votre première conversation et commencez à pratiquer un nouveau langage",
         ),
-    "teacherLanguage": MessageLookupByLibrary.simpleMessage("Teacher language"),
-    "topic": MessageLookupByLibrary.simpleMessage("Topic"),
+    "teacherLanguage": MessageLookupByLibrary.simpleMessage(
+      "Langage du professeur",
+    ),
+    "topic": MessageLookupByLibrary.simpleMessage("Thème"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
-      "Type your message...",
+      "Écrivez votre message...",
     ),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
-      "Voice call in progress",
+      "Appel vocal en cours",
     ),
   };
 }

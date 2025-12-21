@@ -1,3 +1,23 @@
 {
-  "hello": "hello!"
+  "hello": "hello!",
+  "voiceCallInProgress": "Voice call in progress",
+  "connected": "Connected",
+  "disconnected": "Disconnected",
+  "errorLoadingChats": "Error loading chats",
+  "retry": "Retry",
+  "delete": "Delete",
+  "noChatsYet": "No chats yet",
+  "startYourFirstConversationAndBeginPracticingANewLanguage": "Start your first conversation and begin practicing a new language",
+  "startYourFirstChat": "Start your first chat",
+  "noMessages": "No messages",
+  "typeYourMessage": "Type your message...",
+  "newChat": "New chat",
+  "topic": "Topic",
+  "languageToLearn": "Language to learn",
+  "teacherLanguage": "Teacher language",
+  "level": "Level",
+  "egFreeTimeShoppingTravel": "e.g. Free time, Shopping, Travel",
+  "cancel": "Cancel",
+  "chats": "Chats",
+  "profile": "Profile"
 }

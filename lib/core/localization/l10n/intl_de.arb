@@ -1,0 +1,22 @@
+{
+  "voiceCallInProgress": "Sprachanruf läuft",
+  "connected": "Verbunden",
+  "disconnected": "Getrennt",
+  "errorLoadingChats": "Fehler beim Laden der Chats",
+  "retry": "Wiederholen",
+  "delete": "Löschen",
+  "noChatsYet": "Keine Chats",
+  "startYourFirstConversationAndBeginPracticingANewLanguage": "Starte deine erste Konversation und beginne mit dem Üben einer neuen Sprache",
+  "startYourFirstChat": "Starte dein erstes Chat",
+  "noMessages": "Keine Nachrichten",
+  "typeYourMessage": "Gib deine Nachricht ein...",
+  "newChat": "Neuer Chat",
+  "topic": "Thema",
+  "languageToLearn": "Sprache zu lernen",
+  "teacherLanguage": "Sprache des Lehrers",
+  "level": "Schwierigkeitsgrad",
+  "egFreeTimeShoppingTravel": "z.B. Freizeit, Einkaufen, Reisen",
+  "cancel": "Abbrechen",
+  "chats": "Chatear",
+  "profile": "Profil"
+}

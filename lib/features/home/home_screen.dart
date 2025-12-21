@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../core/localization/generated/l10n.dart';
 import '../../core/router/router.dart';
 
 @RoutePage()
@@ -47,7 +48,7 @@ class _BottomNavigation extends StatelessWidget {
                   child: _BottomNavItem(
                     onTap: () => tabsRouter.setActiveIndex(0),
                     icon: CupertinoIcons.chat_bubble,
-                    label: 'Чаты',
+                    label: S.of(context).chats,
                     isActive: tabsRouter.activeIndex == 0,
                   ),
                 ),
@@ -55,7 +56,7 @@ class _BottomNavigation extends StatelessWidget {
                   child: _BottomNavItem(
                     onTap: () => tabsRouter.setActiveIndex(1),
                     icon: CupertinoIcons.person,
-                    label: 'Профиль',
+                    label: S.of(context).profile,
                     isActive: tabsRouter.activeIndex == 1,
                   ),
                 ),

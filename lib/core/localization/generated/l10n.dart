@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +56,152 @@ class S {
 
   /// `hello!`
   String get hello {
+    return Intl.message('hello!', name: 'hello', desc: '', args: []);
+  }
+
+  /// `Voice call in progress`
+  String get voiceCallInProgress {
     return Intl.message(
-      'hello!',
-      name: 'hello',
+      'Voice call in progress',
+      name: 'voiceCallInProgress',
       desc: '',
       args: [],
     );
+  }
+
+  /// `Connected`
+  String get connected {
+    return Intl.message('Connected', name: 'connected', desc: '', args: []);
+  }
+
+  /// `Disconnected`
+  String get disconnected {
+    return Intl.message(
+      'Disconnected',
+      name: 'disconnected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error loading chats`
+  String get errorLoadingChats {
+    return Intl.message(
+      'Error loading chats',
+      name: 'errorLoadingChats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get retry {
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `No chats yet`
+  String get noChatsYet {
+    return Intl.message('No chats yet', name: 'noChatsYet', desc: '', args: []);
+  }
+
+  /// `Start your first conversation and begin practicing a new language`
+  String get startYourFirstConversationAndBeginPracticingANewLanguage {
+    return Intl.message(
+      'Start your first conversation and begin practicing a new language',
+      name: 'startYourFirstConversationAndBeginPracticingANewLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start your first chat`
+  String get startYourFirstChat {
+    return Intl.message(
+      'Start your first chat',
+      name: 'startYourFirstChat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No messages`
+  String get noMessages {
+    return Intl.message('No messages', name: 'noMessages', desc: '', args: []);
+  }
+
+  /// `Type your message...`
+  String get typeYourMessage {
+    return Intl.message(
+      'Type your message...',
+      name: 'typeYourMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New chat`
+  String get newChat {
+    return Intl.message('New chat', name: 'newChat', desc: '', args: []);
+  }
+
+  /// `Topic`
+  String get topic {
+    return Intl.message('Topic', name: 'topic', desc: '', args: []);
+  }
+
+  /// `Language to learn`
+  String get languageToLearn {
+    return Intl.message(
+      'Language to learn',
+      name: 'languageToLearn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Teacher language`
+  String get teacherLanguage {
+    return Intl.message(
+      'Teacher language',
+      name: 'teacherLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Level`
+  String get level {
+    return Intl.message('Level', name: 'level', desc: '', args: []);
+  }
+
+  /// `e.g. Free time, Shopping, Travel`
+  String get egFreeTimeShoppingTravel {
+    return Intl.message(
+      'e.g. Free time, Shopping, Travel',
+      name: 'egFreeTimeShoppingTravel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Chats`
+  String get chats {
+    return Intl.message('Chats', name: 'chats', desc: '', args: []);
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
 }
 
@@ -67,6 +211,13 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'it'),
+      Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'pt'),
+      Locale.fromSubtags(languageCode: 'pt', countryCode: 'PT'),
       Locale.fromSubtags(languageCode: 'ru'),
     ];
   }

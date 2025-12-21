@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -162,9 +163,9 @@ class _RealtimeCallScreenState extends ConsumerState<RealtimeCallScreen> {
                     ),
                     const SizedBox(height: 8),
                     // Подзаголовок
-                    const Text(
-                      'Voice call in progress',
-                      style: TextStyle(
+                    Text(
+                      S.of(context).voiceCallInProgress,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
                         color: Color(0xFF4A5565),
@@ -202,8 +203,8 @@ class _RealtimeCallScreenState extends ConsumerState<RealtimeCallScreen> {
                         const SizedBox(width: 8),
                         Text(
                           state.status == RealtimeCallStatus.connected
-                              ? 'Connected'
-                              : 'Disconnected',
+                              ? S.of(context).connected
+                              : S.of(context).disconnected,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,

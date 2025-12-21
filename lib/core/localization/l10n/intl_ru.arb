@@ -1,3 +1,23 @@
 {
-  "hello": "привет!"
+  "hello": "привет!",
+  "voiceCallInProgress": "Звонок в процессе",
+  "connected": "Подключен",
+  "disconnected": "Отключен",
+  "errorLoadingChats": "Ошибка загрузки чатов",
+  "retry": "Повторить",
+  "delete": "Удалить",
+  "noChatsYet": "Нет чатов",
+  "startYourFirstConversationAndBeginPracticingANewLanguage": "Начните свою первую беседу и начните практиковать новый язык",
+  "startYourFirstChat": "Начните свою первую беседу",
+  "noMessages": "Нет сообщений",
+  "typeYourMessage": "Введите ваше сообщение...",
+  "newChat": "Новый чат",
+  "topic": "Тема",
+  "languageToLearn": "Язык для изучения",
+  "teacherLanguage": "Язык преподавателя",
+  "level": "Уровень",
+  "egFreeTimeShoppingTravel": "например, свободное время, покупки, путешествия",
+  "cancel": "Отмена",
+  "chats": "Чаты",
+  "profile": "Профиль"
 }
