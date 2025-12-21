@@ -25,7 +25,7 @@ class CreateChatUseCase {
         language: state.language,
         level: state.level,
         topic: state.topic,
-        teacherLanguage: profileSettingsNotifier.state.defaultTeacherLanguage,
+        teacherLanguage: state.teacherLanguage,
       );
     }
   }

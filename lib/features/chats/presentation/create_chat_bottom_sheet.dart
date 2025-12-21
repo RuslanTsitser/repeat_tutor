@@ -8,12 +8,42 @@ import '../../../core/domain/enums/language.dart';
 import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../logic/create_chat_notifier.dart';
 
-class CreateChatBottomSheet extends ConsumerWidget {
+class CreateChatBottomSheet extends ConsumerStatefulWidget {
   const CreateChatBottomSheet({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreateChatBottomSheet> createState() =>
+      _CreateChatBottomSheetState();
+}
+
+class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref
+          .read(createChatProvider.notifier)
+          .setState(
+            CreateChatState(
+              language: ref
+                  .read(profileSettingsProvider)
+                  .state
+                  .defaultLanguageToLearn,
+              level: DifficultyLevel.beginner,
+              teacherLanguage: ref
+                  .read(profileSettingsProvider)
+                  .state
+                  .defaultTeacherLanguage,
+              topic: '',
+            ),
+          );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final entity = ref.watch(createChatProvider);
     final state = entity.state;
 
