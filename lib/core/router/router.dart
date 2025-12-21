@@ -33,8 +33,14 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(page: ChatRoute.page),
     AutoRoute(page: RealtimeCallRoute.page),
-    AutoRoute(page: OnboardingRoute.page),
-    AutoRoute(page: PaywallRoute.page),
+    CustomRoute<void>(
+      page: OnboardingRoute.page,
+      transitionsBuilder: TransitionsBuilders.slideBottom,
+    ),
+    CustomRoute<void>(
+      page: PaywallRoute.page,
+      transitionsBuilder: TransitionsBuilders.slideBottom,
+    ),
 
     CustomRoute<void>(
       page: AppDialogRoute.page,

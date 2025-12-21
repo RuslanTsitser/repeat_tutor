@@ -13,10 +13,19 @@ class SettingsDao extends DatabaseAccessor<AppDatabase>
 
   /// Получить значение настройки по ключу
   Future<String?> getValue(String key) async {
-    final setting = await (select(settings)
-          ..where((tbl) => tbl.key.equals(key)))
-        .getSingleOrNull();
+    final setting = await (select(
+      settings,
+    )..where((tbl) => tbl.key.equals(key))).getSingleOrNull();
     return setting?.value;
+  }
+
+  Future<bool> getBoolValue(String key) async {
+    final value = await getValue(key);
+    return value == 'true';
+  }
+
+  Future<void> setBoolValue(String key, bool value) async {
+    await setValue(key, value ? 'true' : 'false');
   }
 
   /// Установить значение настройки
@@ -41,4 +50,3 @@ class SettingsDao extends DatabaseAccessor<AppDatabase>
     return {for (var setting in allSettings) setting.key: setting.value};
   }
 }
-

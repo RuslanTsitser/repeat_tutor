@@ -4,6 +4,7 @@ import '../features/chats/use_case/add_message_use_case.dart';
 import '../features/chats/use_case/create_chat_use_case.dart';
 import '../features/chats/use_case/delete_chat_use_case.dart';
 import '../features/chats/use_case/open_chat_use_case.dart';
+import '../features/initialize/use_case/open_home_screen_use_case.dart';
 import '../features/paywall/use_case/open_paywall_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
@@ -67,5 +68,13 @@ final openPaywallUseCaseProvider = Provider((ref) {
     paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
     appRouter: ref.watch(routerProvider),
     profileSettingsNotifier: ref.watch(profileSettingsProvider),
+  );
+});
+
+final openHomeScreenUseCaseProvider = Provider((ref) {
+  return OpenHomeScreenUseCase(
+    appRouter: ref.watch(routerProvider),
+    profileSettingsNotifier: ref.watch(profileSettingsProvider),
+    settingsDao: ref.watch(databaseProvider).settingsDao,
   );
 });
