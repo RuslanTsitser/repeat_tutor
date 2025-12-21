@@ -40,5 +40,6 @@ final profileSettingsProvider = ChangeNotifierProvider((ref) {
   return ProfileSettingsNotifier(
     settingsDao: settingsDao,
     sessionsDurationsDao: sessionsDurationsDao,
+    abTestService: ref.watch(abTestServiceProvider),
   );
 });

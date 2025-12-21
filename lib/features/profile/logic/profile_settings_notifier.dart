@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/database/daos/sessions_durations_dao.dart';
 import '../../../core/database/daos/settings_dao.dart';
 import '../../../core/domain/enums/language.dart';
@@ -10,15 +11,19 @@ class ProfileSettingsNotifier extends ChangeNotifier {
   ProfileSettingsNotifier({
     required SettingsDao settingsDao,
     required SessionsDurationsDao sessionsDurationsDao,
+    required AbTestService abTestService,
   }) : _settingsDao = settingsDao,
        _sessionsDurationsDao = sessionsDurationsDao,
+       _abTestService = abTestService,
        _state = ProfileSettingsState.initial() {
     _loadSettings();
     _loadDurations();
+    _loadIsPremium();
   }
 
   final SettingsDao _settingsDao;
   final SessionsDurationsDao _sessionsDurationsDao;
+  final AbTestService _abTestService;
   ProfileSettingsState _state = ProfileSettingsState.initial();
   ProfileSettingsState get state => _state;
 
@@ -75,6 +80,11 @@ class ProfileSettingsNotifier extends ChangeNotifier {
   Future<void> refreshDurations() async {
     await _loadDurations();
   }
+
+  Future<void> _loadIsPremium() async {
+    await _abTestService.checkUserPremium();
+    setState(_state.copyWith(isPremium: _abTestService.isPremium));
+  }
 }
 
 class ProfileSettingsState {
@@ -84,6 +94,7 @@ class ProfileSettingsState {
       todayDuration: Duration.zero,
       totalDuration: Duration.zero,
       isLoading: false,
+      isPremium: false,
     );
   }
 
@@ -92,18 +103,21 @@ class ProfileSettingsState {
     required this.todayDuration,
     required this.totalDuration,
     required this.isLoading,
+    required this.isPremium,
   });
 
   final Language defaultTeacherLanguage;
   final Duration todayDuration;
   final Duration totalDuration;
   final bool isLoading;
+  final bool isPremium;
 
   ProfileSettingsState copyWith({
     Language? defaultTeacherLanguage,
     Duration? todayDuration,
     Duration? totalDuration,
     bool? isLoading,
+    bool? isPremium,
   }) {
     return ProfileSettingsState(
       defaultTeacherLanguage:
@@ -111,6 +125,7 @@ class ProfileSettingsState {
       todayDuration: todayDuration ?? this.todayDuration,
       totalDuration: totalDuration ?? this.totalDuration,
       isLoading: isLoading ?? this.isLoading,
+      isPremium: isPremium ?? this.isPremium,
     );
   }
 }
