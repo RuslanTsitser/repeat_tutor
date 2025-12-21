@@ -25,5 +25,11 @@
   "exampleTopicFood": "Comida",
   "exampleTopicWork": "Trabalho",
   "exampleTopicHobbies": "Hobbies",
-  "exampleTopicSports": "Esportes"
+  "exampleTopicSports": "Desportos",
+  "settings": "Configurações",
+  "tutorLanguage": "Idioma do tutor",
+  "callDuration": "Duração das chamadas",
+  "today": "Hoje",
+  "total": "Total",
+  "appLanguage": "Idioma da aplicação"
 }

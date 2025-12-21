@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "appLanguage": MessageLookupByLibrary.simpleMessage("アプリの言語"),
+    "callDuration": MessageLookupByLibrary.simpleMessage("通話時間"),
     "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
     "chats": MessageLookupByLibrary.simpleMessage("チャット"),
     "connected": MessageLookupByLibrary.simpleMessage("接続中"),
@@ -47,13 +49,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
+    "settings": MessageLookupByLibrary.simpleMessage("設定"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "最初のチャットを始めましょう",
     ),
     "startYourFirstConversationAndBeginPracticingANewLanguage":
         MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
+    "today": MessageLookupByLibrary.simpleMessage("今日"),
     "topic": MessageLookupByLibrary.simpleMessage("トピック"),
+    "total": MessageLookupByLibrary.simpleMessage("合計"),
+    "tutorLanguage": MessageLookupByLibrary.simpleMessage("チューターの言語"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "メッセージを入力してください...",
     ),

@@ -80,14 +80,13 @@ class _SettingsSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(profileSettingsProvider);
     final state = settings.state;
-    final selectedLanguage = state.defaultTeacherLanguage;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Settings',
-          style: TextStyle(
+        Text(
+          S.of(context).settings,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: Color(0xFF6A7282),
@@ -96,9 +95,57 @@ class _SettingsSection extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const Text(
-          'Default teacher language',
-          style: TextStyle(
+        _LanguageSelector(
+          label: S.of(context).appLanguage,
+          selectedLanguage: state.defaultLanguage,
+          onLanguageSelected: (language) {
+            ref.read(profileSettingsProvider).setDefaultLanguage(language);
+          },
+        ),
+        const SizedBox(height: 12),
+        _LanguageSelector(
+          label: S.of(context).languageToLearn,
+          selectedLanguage: state.defaultLanguageToLearn,
+          onLanguageSelected: (language) {
+            ref
+                .read(profileSettingsProvider)
+                .setDefaultLanguageToLearn(language);
+          },
+        ),
+        const SizedBox(height: 12),
+        _LanguageSelector(
+          label: S.of(context).tutorLanguage,
+          selectedLanguage: state.defaultTeacherLanguage,
+          onLanguageSelected: (language) {
+            ref
+                .read(profileSettingsProvider)
+                .setDefaultTeacherLanguage(language);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _LanguageSelector extends StatelessWidget {
+  const _LanguageSelector({
+    required this.label,
+    required this.selectedLanguage,
+    required this.onLanguageSelected,
+  });
+
+  final String label;
+  final Language selectedLanguage;
+  final ValueChanged<Language> onLanguageSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.normal,
             color: Color(0xFF364153),
@@ -109,7 +156,7 @@ class _SettingsSection extends ConsumerWidget {
         const SizedBox(height: 12),
         CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () => _showLanguagePicker(context, ref, selectedLanguage),
+          onPressed: () => _showLanguagePicker(context, selectedLanguage),
           child: Container(
             height: 45,
             width: double.infinity,
@@ -150,16 +197,14 @@ class _SettingsSection extends ConsumerWidget {
 
   void _showLanguagePicker(
     BuildContext context,
-    WidgetRef ref,
     Language selectedLanguage,
   ) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (context) => _LanguagePicker(
+        title: label,
         selectedValue: selectedLanguage,
-        onSelected: (language) {
-          ref.read(profileSettingsProvider).setDefaultTeacherLanguage(language);
-        },
+        onSelected: onLanguageSelected,
       ),
     );
   }
@@ -167,10 +212,12 @@ class _SettingsSection extends ConsumerWidget {
 
 class _LanguagePicker extends StatelessWidget {
   const _LanguagePicker({
+    required this.title,
     required this.selectedValue,
     required this.onSelected,
   });
 
+  final String title;
   final Language selectedValue;
   final ValueChanged<Language> onSelected;
 
@@ -213,9 +260,9 @@ class _LanguagePicker extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(
-                  'Default teacher language',
-                  style: TextStyle(
+                Text(
+                  title,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF101828),
@@ -266,9 +313,9 @@ class _CallDurationSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Call Duration',
-          style: TextStyle(
+        Text(
+          S.of(context).callDuration,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: Color(0xFF6A7282),
@@ -280,12 +327,12 @@ class _CallDurationSection extends ConsumerWidget {
         Column(
           children: [
             _DurationRow(
-              label: 'Today',
+              label: S.of(context).today,
               duration: state.todayDuration,
               showBorder: true,
             ),
             _DurationRow(
-              label: 'Total',
+              label: S.of(context).total,
               duration: state.totalDuration,
               showBorder: false,
             ),

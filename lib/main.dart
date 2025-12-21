@@ -9,6 +9,7 @@ import 'core/plugins/app_directory.dart';
 import 'core/plugins/app_version.dart';
 import 'core/plugins/app_wakelock.dart';
 import 'infrastructure/core.dart';
+import 'infrastructure/state_managers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +28,13 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final profileSettings = ref.watch(profileSettingsProvider);
+    final defaultLanguage = profileSettings.state.defaultLanguage;
+    final locale = defaultLanguage.toLocale();
+
     return CupertinoApp.router(
       routerConfig: router.config(),
+      locale: locale,
       supportedLocales: S.delegate.supportedLocales,
       localizationsDelegates: const [
         S.delegate,

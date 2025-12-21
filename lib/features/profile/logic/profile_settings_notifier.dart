@@ -7,6 +7,8 @@ import '../../../core/domain/enums/language.dart';
 
 class ProfileSettingsNotifier extends ChangeNotifier {
   static const String _defaultTeacherLanguageKey = 'default_teacher_language';
+  static const String _defaultLanguageKey = 'default_language';
+  static const String _defaultLanguageToLearnKey = 'default_language_to_learn';
 
   ProfileSettingsNotifier({
     required SettingsDao settingsDao,
@@ -34,13 +36,34 @@ class ProfileSettingsNotifier extends ChangeNotifier {
 
   Future<void> _loadSettings() async {
     try {
-      final savedLanguageValue = await _settingsDao.getValue(
+      final savedTeacherLanguageValue = await _settingsDao.getValue(
         _defaultTeacherLanguageKey,
       );
+
+      if (savedTeacherLanguageValue != null) {
+        final language = Language.fromLanguage(savedTeacherLanguageValue);
+        if (language != null) {
+          setState(_state.copyWith(defaultTeacherLanguage: language));
+        }
+      }
+      final savedLanguageValue = await _settingsDao.getValue(
+        _defaultLanguageKey,
+      );
+
       if (savedLanguageValue != null) {
         final language = Language.fromLanguage(savedLanguageValue);
         if (language != null) {
-          setState(_state.copyWith(defaultTeacherLanguage: language));
+          setState(_state.copyWith(defaultLanguage: language));
+        }
+      }
+      final savedLanguageToLearnValue = await _settingsDao.getValue(
+        _defaultLanguageToLearnKey,
+      );
+
+      if (savedLanguageToLearnValue != null) {
+        final language = Language.fromLanguage(savedLanguageToLearnValue);
+        if (language != null) {
+          setState(_state.copyWith(defaultLanguageToLearn: language));
         }
       }
     } catch (e) {
@@ -55,6 +78,26 @@ class ProfileSettingsNotifier extends ChangeNotifier {
         language.value,
       );
       setState(_state.copyWith(defaultTeacherLanguage: language));
+    }
+  }
+
+  Future<void> setDefaultLanguageToLearn(Language language) async {
+    if (_state.defaultLanguageToLearn != language) {
+      await _settingsDao.setValue(
+        _defaultLanguageToLearnKey,
+        language.value,
+      );
+      setState(_state.copyWith(defaultLanguageToLearn: language));
+    }
+  }
+
+  Future<void> setDefaultLanguage(Language language) async {
+    if (_state.defaultLanguage != language) {
+      await _settingsDao.setValue(
+        _defaultLanguageKey,
+        language.value,
+      );
+      setState(_state.copyWith(defaultLanguage: language));
     }
   }
 
@@ -91,6 +134,8 @@ class ProfileSettingsState {
   factory ProfileSettingsState.initial() {
     return const ProfileSettingsState(
       defaultTeacherLanguage: Language.english,
+      defaultLanguageToLearn: Language.english,
+      defaultLanguage: Language.english,
       todayDuration: Duration.zero,
       totalDuration: Duration.zero,
       isLoading: false,
@@ -100,6 +145,8 @@ class ProfileSettingsState {
 
   const ProfileSettingsState({
     required this.defaultTeacherLanguage,
+    required this.defaultLanguageToLearn,
+    required this.defaultLanguage,
     required this.todayDuration,
     required this.totalDuration,
     required this.isLoading,
@@ -107,6 +154,8 @@ class ProfileSettingsState {
   });
 
   final Language defaultTeacherLanguage;
+  final Language defaultLanguageToLearn;
+  final Language defaultLanguage;
   final Duration todayDuration;
   final Duration totalDuration;
   final bool isLoading;
@@ -114,6 +163,8 @@ class ProfileSettingsState {
 
   ProfileSettingsState copyWith({
     Language? defaultTeacherLanguage,
+    Language? defaultLanguageToLearn,
+    Language? defaultLanguage,
     Duration? todayDuration,
     Duration? totalDuration,
     bool? isLoading,
@@ -122,6 +173,9 @@ class ProfileSettingsState {
     return ProfileSettingsState(
       defaultTeacherLanguage:
           defaultTeacherLanguage ?? this.defaultTeacherLanguage,
+      defaultLanguageToLearn:
+          defaultLanguageToLearn ?? this.defaultLanguageToLearn,
+      defaultLanguage: defaultLanguage ?? this.defaultLanguage,
       todayDuration: todayDuration ?? this.todayDuration,
       totalDuration: totalDuration ?? this.totalDuration,
       isLoading: isLoading ?? this.isLoading,

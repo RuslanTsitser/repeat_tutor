@@ -25,5 +25,11 @@
   "exampleTopicFood": "食べ物",
   "exampleTopicWork": "仕事",
   "exampleTopicHobbies": "趣味",
-  "exampleTopicSports": "スポーツ"
+  "exampleTopicSports": "スポーツ",
+  "settings": "設定",
+  "tutorLanguage": "チューターの言語",
+  "callDuration": "通話時間",
+  "today": "今日",
+  "total": "合計",
+  "appLanguage": "アプリの言語"
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 /// Поддерживаемые языки
 enum Language {
   japanese,
@@ -100,6 +102,30 @@ enum Language {
         return 'ru';
       case Language.english:
         return 'en';
+    }
+  }
+
+  /// Конвертирует Language в Locale для использования в приложении
+  Locale toLocale() {
+    switch (this) {
+      case Language.japanese:
+        return const Locale.fromSubtags(languageCode: 'ja');
+      case Language.portugueseEuropean:
+        return const Locale.fromSubtags(languageCode: 'pt', countryCode: 'PT');
+      case Language.portugueseBrazilian:
+        return const Locale.fromSubtags(languageCode: 'pt');
+      case Language.spanish:
+        return const Locale.fromSubtags(languageCode: 'es');
+      case Language.french:
+        return const Locale.fromSubtags(languageCode: 'fr');
+      case Language.italian:
+        return const Locale.fromSubtags(languageCode: 'it');
+      case Language.german:
+        return const Locale.fromSubtags(languageCode: 'de');
+      case Language.russian:
+        return const Locale.fromSubtags(languageCode: 'ru');
+      case Language.english:
+        return const Locale.fromSubtags(languageCode: 'en');
     }
   }
 }

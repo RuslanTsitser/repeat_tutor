@@ -22,6 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "appLanguage": MessageLookupByLibrary.simpleMessage(
+      "Langue de l\'application",
+    ),
+    "callDuration": MessageLookupByLibrary.simpleMessage("Durée des appels"),
     "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
     "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
     "connected": MessageLookupByLibrary.simpleMessage("Connecté"),
@@ -49,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noMessages": MessageLookupByLibrary.simpleMessage("Aucun message"),
     "profile": MessageLookupByLibrary.simpleMessage("Profil"),
     "retry": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "settings": MessageLookupByLibrary.simpleMessage("Paramètres"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "Commencez votre premier chat",
     ),
@@ -59,7 +64,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Langage du professeur",
     ),
+    "today": MessageLookupByLibrary.simpleMessage("Aujourd\'hui"),
     "topic": MessageLookupByLibrary.simpleMessage("Thème"),
+    "total": MessageLookupByLibrary.simpleMessage("Total"),
+    "tutorLanguage": MessageLookupByLibrary.simpleMessage("Langue du tuteur"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Écrivez votre message...",
     ),

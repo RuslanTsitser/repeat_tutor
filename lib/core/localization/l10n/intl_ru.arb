@@ -26,5 +26,11 @@
   "exampleTopicFood": "Еда",
   "exampleTopicWork": "Работа",
   "exampleTopicHobbies": "Хобби",
-  "exampleTopicSports": "Спорт"
+  "exampleTopicSports": "Спорт",
+  "settings": "Настройки",
+  "tutorLanguage": "Язык преподавателя",
+  "callDuration": "Длительность звонков",
+  "today": "Сегодня",
+  "total": "Всего",
+  "appLanguage": "Язык приложения"
 }
