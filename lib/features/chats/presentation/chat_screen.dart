@@ -473,7 +473,6 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
   final TextEditingController messageController = TextEditingController();
   final FocusNode focusNode = FocusNode();
   double _previousKeyboardHeight = 0;
-  bool _hasText = false;
   Duration _recordingDuration = Duration.zero;
   Timer? _recordingTimer;
 
@@ -485,15 +484,6 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
       if (focusNode.hasFocus) {
         Future.delayed(const Duration(milliseconds: 300), () {
           _scrollToBottom();
-        });
-      }
-    });
-    // Слушатель для обновления состояния кнопки отправки
-    messageController.addListener(() {
-      final hasText = messageController.text.trim().isNotEmpty;
-      if (hasText != _hasText) {
-        setState(() {
-          _hasText = hasText;
         });
       }
     });
@@ -539,7 +529,7 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.scrollController.hasClients) {
         widget.scrollController.animateTo(
-          widget.scrollController.position.maxScrollExtent,
+          0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -783,25 +773,31 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
             ),
             const SizedBox(width: 8),
             // Кнопка отправки
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: _hasText ? _sendMessage : null,
-              minimumSize: const Size(0, 0),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: _hasText
-                      ? const Color(0xFFD1D5DC)
-                      : const Color(0xFFD1D5DC).withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  CupertinoIcons.arrow_up,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
+            ValueListenableBuilder(
+              valueListenable: messageController,
+              builder: (context, value, child) {
+                final hasText = messageController.text.isNotEmpty;
+                return CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: hasText ? _sendMessage : null,
+                  minimumSize: const Size(0, 0),
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: hasText
+                          ? const Color(0xFF155DFC)
+                          : const Color(0xFFD1D5DC).withValues(alpha: 0.5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.arrow_up,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
