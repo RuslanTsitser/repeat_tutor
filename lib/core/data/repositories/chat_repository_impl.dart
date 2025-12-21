@@ -68,6 +68,13 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
+  Stream<model.Message?> getLastMessageStream() {
+    return _database.messageDao.getLastMessageStream().map(
+      (row) => row != null ? MessageDbMappers.toDomain(row) : null,
+    );
+  }
+
+  @override
   Stream<List<model.Message>> getMessagesStream(int chatId) {
     return _database.messageDao
         .getMessagesStream(chatId)

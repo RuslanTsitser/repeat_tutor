@@ -31,6 +31,9 @@ abstract interface class ChatRepository {
   /// Получить поток всех сообщений для чата
   Stream<List<Message>> getMessagesStream(int chatId);
 
+  /// Получить поток последнего сообщения для чата
+  Stream<Message?> getLastMessageStream();
+
   /// Добавить новое сообщение и вернуть его id
   Future<int> addMessage({
     required String message,

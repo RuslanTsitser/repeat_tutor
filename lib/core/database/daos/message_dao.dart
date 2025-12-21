@@ -18,6 +18,14 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
         .get();
   }
 
+  /// Получить все сообщения
+  Stream<MessageDb?> getLastMessageStream() {
+    return (select(messages)
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.createdAt)])
+          ..limit(1))
+        .watchSingleOrNull();
+  }
+
   /// Добавить новое сообщение
   Future<int> insertMessage({
     required String message,

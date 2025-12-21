@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../../core/domain/models/chat.dart';
+import '../../../core/domain/models/message.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
 
 /// Нотатор для управления состоянием чатов
@@ -12,15 +13,43 @@ class ChatListNotifier extends ChangeNotifier {
     required this.chatRepository,
   }) {
     _subscribeToChats();
+    _subscribeToMessages();
     getChats();
   }
   final ChatRepository chatRepository;
 
   StreamSubscription<List<Chat>>? _subscription;
+  StreamSubscription<Message?>? _lastMessageSubscription;
 
   void _subscribeToChats() {
     _subscription = chatRepository.getChatsStream().listen((chats) {
       setState(state.copyWith(chats: chats));
+    });
+  }
+
+  void _subscribeToMessages() {
+    _lastMessageSubscription = chatRepository.getLastMessageStream().listen((
+      message,
+    ) {
+      if (message != null) {
+        final lastMessage = LastMessage(
+          text: message.isMe
+              ? message.text
+              : message.tutorAnswer?.assistantMessage ?? message.text,
+          id: message.id.toString(),
+        );
+        setState(
+          state.copyWith(
+            chats: state.chats
+                .map(
+                  (chat) => chat.chatId == message.chatId
+                      ? chat.copyWithLastMessage(lastMessage: lastMessage)
+                      : chat,
+                )
+                .toList(),
+          ),
+        );
+      }
     });
   }
 
@@ -41,6 +70,8 @@ class ChatListNotifier extends ChangeNotifier {
   void dispose() {
     _subscription?.cancel();
     _subscription = null;
+    _lastMessageSubscription?.cancel();
+    _lastMessageSubscription = null;
     super.dispose();
   }
 }

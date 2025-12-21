@@ -32,6 +32,18 @@ class Chat {
     levelName: level.value,
     teacherLanguageName: teacherLanguage.localizedName,
   );
+
+  Chat copyWithLastMessage({LastMessage? lastMessage}) {
+    return Chat(
+      chatId: chatId,
+      topic: topic,
+      chatLanguage: chatLanguage,
+      level: level,
+      teacherLanguage: teacherLanguage,
+      createdAt: createdAt,
+      lastMessage: lastMessage,
+    );
+  }
 }
 
 class LastMessage {
