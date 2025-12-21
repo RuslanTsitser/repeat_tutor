@@ -21,6 +21,7 @@ final createChatUseCaseProvider = Provider((ref) {
   return CreateChatUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
     router: ref.watch(routerProvider),
+    profileSettingsNotifier: ref.watch(profileSettingsProvider),
   );
 });
 

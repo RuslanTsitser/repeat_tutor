@@ -119,19 +119,19 @@ class CreateChatBottomSheet extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Teacher language
-                  _FormField(
-                    label: S.of(context).teacherLanguage,
-                    child: _LanguageDropdown(
-                      value: state.teacherLanguage,
-                      onChanged: (teacherLanguage) {
-                        entity.setState(
-                          state.copyWith(teacherLanguage: teacherLanguage),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                  // // Teacher language
+                  // _FormField(
+                  //   label: S.of(context).teacherLanguage,
+                  //   child: _LanguageDropdown(
+                  //     value: state.teacherLanguage,
+                  //     onChanged: (teacherLanguage) {
+                  //       entity.setState(
+                  //         state.copyWith(teacherLanguage: teacherLanguage),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
                   // Level
                   _FormField(
                     label: S.of(context).level,
