@@ -2,18 +2,24 @@ import 'dart:async';
 
 import '../../../core/domain/models/chat.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
+import '../../../core/localization/generated/l10n.dart';
 import '../../../core/router/router.dart';
 import '../logic/chat_notifier.dart';
+import 'add_message_use_case.dart';
 
 class OpenChatUseCase {
   const OpenChatUseCase({
     required this.chatRepository,
     required this.messageNotifier,
     required this.appRouter,
+    required this.addMessageUseCase,
+    required this.l10n,
   });
   final ChatRepository chatRepository;
   final ChatNotifier messageNotifier;
   final AppRouter appRouter;
+  final AddMessageUseCase addMessageUseCase;
+  final S l10n;
 
   Future<void> execute(Chat chat) async {
     messageNotifier.unsubscribeFromMessages();
@@ -38,5 +44,8 @@ class OpenChatUseCase {
         error: null,
       ),
     );
+    if (messages.isEmpty) {
+      await addMessageUseCase.addMessage(l10n.hello);
+    }
   }
 }

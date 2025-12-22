@@ -17,6 +17,8 @@ final openChatUseCaseProvider = Provider((ref) {
     chatRepository: ref.watch(chatRepositoryProvider),
     messageNotifier: ref.watch(chatNotifierProvider),
     appRouter: ref.watch(routerProvider),
+    addMessageUseCase: ref.watch(addMessageUseCaseProvider),
+    l10n: ref.watch(l10nProvider),
   );
 });
 

@@ -7,6 +7,7 @@ import '../core/audio/audio_service_impl.dart';
 import '../core/database/app_database.dart';
 import '../core/gpt/gpt_service.dart';
 import '../core/gpt/gpt_service_impl.dart';
+import '../core/localization/generated/l10n.dart';
 import '../core/logging/app_logger.dart';
 import '../core/realtime/realtime_web_rtc_manager_impl.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
@@ -84,4 +85,8 @@ final speechRecognizerProvider = Provider<SpeechRecognizer>((ref) {
 
 final audioServiceProvider = Provider<AudioService>((ref) {
   return AudioServiceImpl();
+});
+
+final l10nProvider = Provider<S>((ref) {
+  return S.current;
 });
