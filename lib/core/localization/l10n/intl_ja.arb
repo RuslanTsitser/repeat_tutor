@@ -31,5 +31,6 @@
   "callDuration": "通話時間",
   "today": "今日",
   "total": "合計",
-  "appLanguage": "アプリの言語"
+  "appLanguage": "アプリの言語",
+  "hello": "こんにちは！"
 }

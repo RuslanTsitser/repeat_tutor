@@ -22,59 +22,51 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "appLanguage": MessageLookupByLibrary.simpleMessage("Lingua dell\'app"),
-    "callDuration": MessageLookupByLibrary.simpleMessage(
-      "Durata delle chiamate",
-    ),
-    "cancel": MessageLookupByLibrary.simpleMessage("Annulla"),
-    "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
-    "connected": MessageLookupByLibrary.simpleMessage("Connesso"),
-    "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
-    "disconnected": MessageLookupByLibrary.simpleMessage("Disconnesso"),
-    "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
-      "es. Tempo libero, Shopping, Viaggio",
-    ),
-    "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
-      "Errore nel caricamento dei chats",
-    ),
-    "exampleTopicFood": MessageLookupByLibrary.simpleMessage("Cibo"),
-    "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage(
-      "Tempo libero",
-    ),
-    "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("Hobbys"),
-    "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("Compras"),
-    "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sport"),
-    "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Viaggio"),
-    "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Lavoro"),
-    "languageToLearn": MessageLookupByLibrary.simpleMessage(
-      "Lingua da imparare",
-    ),
-    "level": MessageLookupByLibrary.simpleMessage("Livello"),
-    "newChat": MessageLookupByLibrary.simpleMessage("Nuovo chat"),
-    "noChatsYet": MessageLookupByLibrary.simpleMessage("Nessun chat"),
-    "noMessages": MessageLookupByLibrary.simpleMessage("Nessun messaggio"),
-    "profile": MessageLookupByLibrary.simpleMessage("Profilo"),
-    "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
-    "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
-    "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
-      "Inizia il tuo primo chat",
-    ),
-    "startYourFirstConversationAndBeginPracticingANewLanguage":
-        MessageLookupByLibrary.simpleMessage(
-          "Inizia la tua prima conversazione e inizia a praticare un nuovo linguaggio",
-        ),
-    "teacherLanguage": MessageLookupByLibrary.simpleMessage(
-      "Lingua del professore",
-    ),
-    "today": MessageLookupByLibrary.simpleMessage("Oggi"),
-    "topic": MessageLookupByLibrary.simpleMessage("Argomento"),
-    "total": MessageLookupByLibrary.simpleMessage("Totale"),
-    "tutorLanguage": MessageLookupByLibrary.simpleMessage("Lingua del tutor"),
-    "typeYourMessage": MessageLookupByLibrary.simpleMessage(
-      "Scrivi il tuo messaggio...",
-    ),
-    "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
-      "Chiamata vocale in corso",
-    ),
-  };
+        "appLanguage": MessageLookupByLibrary.simpleMessage("Lingua dell\'app"),
+        "callDuration":
+            MessageLookupByLibrary.simpleMessage("Durata delle chiamate"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Annulla"),
+        "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
+        "connected": MessageLookupByLibrary.simpleMessage("Connesso"),
+        "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
+        "disconnected": MessageLookupByLibrary.simpleMessage("Disconnesso"),
+        "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
+            "es. Tempo libero, Shopping, Viaggio"),
+        "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
+            "Errore nel caricamento dei chats"),
+        "exampleTopicFood": MessageLookupByLibrary.simpleMessage("Cibo"),
+        "exampleTopicFreeTime":
+            MessageLookupByLibrary.simpleMessage("Tempo libero"),
+        "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("Hobbys"),
+        "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("Compras"),
+        "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sport"),
+        "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Viaggio"),
+        "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Lavoro"),
+        "hello": MessageLookupByLibrary.simpleMessage("Ciao!"),
+        "languageToLearn":
+            MessageLookupByLibrary.simpleMessage("Lingua da imparare"),
+        "level": MessageLookupByLibrary.simpleMessage("Livello"),
+        "newChat": MessageLookupByLibrary.simpleMessage("Nuovo chat"),
+        "noChatsYet": MessageLookupByLibrary.simpleMessage("Nessun chat"),
+        "noMessages": MessageLookupByLibrary.simpleMessage("Nessun messaggio"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profilo"),
+        "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
+        "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+        "startYourFirstChat":
+            MessageLookupByLibrary.simpleMessage("Inizia il tuo primo chat"),
+        "startYourFirstConversationAndBeginPracticingANewLanguage":
+            MessageLookupByLibrary.simpleMessage(
+                "Inizia la tua prima conversazione e inizia a praticare un nuovo linguaggio"),
+        "teacherLanguage":
+            MessageLookupByLibrary.simpleMessage("Lingua del professore"),
+        "today": MessageLookupByLibrary.simpleMessage("Oggi"),
+        "topic": MessageLookupByLibrary.simpleMessage("Argomento"),
+        "total": MessageLookupByLibrary.simpleMessage("Totale"),
+        "tutorLanguage":
+            MessageLookupByLibrary.simpleMessage("Lingua del tutor"),
+        "typeYourMessage":
+            MessageLookupByLibrary.simpleMessage("Scrivi il tuo messaggio..."),
+        "voiceCallInProgress":
+            MessageLookupByLibrary.simpleMessage("Chiamata vocale in corso")
+      };
 }

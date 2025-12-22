@@ -31,5 +31,6 @@
   "callDuration": "Anrufdauer",
   "today": "Heute",
   "total": "Gesamt",
-  "appLanguage": "App-Sprache"
+  "appLanguage": "App-Sprache",
+  "hello": "Hallo!"
 }

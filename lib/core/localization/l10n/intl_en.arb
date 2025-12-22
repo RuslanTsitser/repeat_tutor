@@ -1,5 +1,4 @@
 {
-  "hello": "hello!",
   "voiceCallInProgress": "Voice call in progress",
   "connected": "Connected",
   "disconnected": "Disconnected",
@@ -32,5 +31,6 @@
   "callDuration": "Call Duration",
   "today": "Today",
   "total": "Total",
-  "appLanguage": "App language"
+  "appLanguage": "App language",
+  "hello": "Hello!"
 }

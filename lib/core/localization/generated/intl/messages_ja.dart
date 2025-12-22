@@ -22,47 +22,44 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "appLanguage": MessageLookupByLibrary.simpleMessage("アプリの言語"),
-    "callDuration": MessageLookupByLibrary.simpleMessage("通話時間"),
-    "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
-    "chats": MessageLookupByLibrary.simpleMessage("チャット"),
-    "connected": MessageLookupByLibrary.simpleMessage("接続中"),
-    "delete": MessageLookupByLibrary.simpleMessage("削除"),
-    "disconnected": MessageLookupByLibrary.simpleMessage("切断中"),
-    "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
-      "例: 自由時間, 買い物, 旅行",
-    ),
-    "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
-      "チャットの読み込みに失敗しました",
-    ),
-    "exampleTopicFood": MessageLookupByLibrary.simpleMessage("食べ物"),
-    "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("自由時間"),
-    "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("趣味"),
-    "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("買い物"),
-    "exampleTopicSports": MessageLookupByLibrary.simpleMessage("スポーツ"),
-    "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("旅行"),
-    "exampleTopicWork": MessageLookupByLibrary.simpleMessage("仕事"),
-    "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
-    "level": MessageLookupByLibrary.simpleMessage("レベル"),
-    "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
-    "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
-    "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
-    "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
-    "retry": MessageLookupByLibrary.simpleMessage("再試行"),
-    "settings": MessageLookupByLibrary.simpleMessage("設定"),
-    "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
-      "最初のチャットを始めましょう",
-    ),
-    "startYourFirstConversationAndBeginPracticingANewLanguage":
-        MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
-    "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
-    "today": MessageLookupByLibrary.simpleMessage("今日"),
-    "topic": MessageLookupByLibrary.simpleMessage("トピック"),
-    "total": MessageLookupByLibrary.simpleMessage("合計"),
-    "tutorLanguage": MessageLookupByLibrary.simpleMessage("チューターの言語"),
-    "typeYourMessage": MessageLookupByLibrary.simpleMessage(
-      "メッセージを入力してください...",
-    ),
-    "voiceCallInProgress": MessageLookupByLibrary.simpleMessage("音声通話中"),
-  };
+        "appLanguage": MessageLookupByLibrary.simpleMessage("アプリの言語"),
+        "callDuration": MessageLookupByLibrary.simpleMessage("通話時間"),
+        "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "chats": MessageLookupByLibrary.simpleMessage("チャット"),
+        "connected": MessageLookupByLibrary.simpleMessage("接続中"),
+        "delete": MessageLookupByLibrary.simpleMessage("削除"),
+        "disconnected": MessageLookupByLibrary.simpleMessage("切断中"),
+        "egFreeTimeShoppingTravel":
+            MessageLookupByLibrary.simpleMessage("例: 自由時間, 買い物, 旅行"),
+        "errorLoadingChats":
+            MessageLookupByLibrary.simpleMessage("チャットの読み込みに失敗しました"),
+        "exampleTopicFood": MessageLookupByLibrary.simpleMessage("食べ物"),
+        "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("自由時間"),
+        "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("趣味"),
+        "exampleTopicShopping": MessageLookupByLibrary.simpleMessage("買い物"),
+        "exampleTopicSports": MessageLookupByLibrary.simpleMessage("スポーツ"),
+        "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("旅行"),
+        "exampleTopicWork": MessageLookupByLibrary.simpleMessage("仕事"),
+        "hello": MessageLookupByLibrary.simpleMessage("こんにちは！"),
+        "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
+        "level": MessageLookupByLibrary.simpleMessage("レベル"),
+        "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
+        "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
+        "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
+        "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
+        "retry": MessageLookupByLibrary.simpleMessage("再試行"),
+        "settings": MessageLookupByLibrary.simpleMessage("設定"),
+        "startYourFirstChat":
+            MessageLookupByLibrary.simpleMessage("最初のチャットを始めましょう"),
+        "startYourFirstConversationAndBeginPracticingANewLanguage":
+            MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
+        "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
+        "today": MessageLookupByLibrary.simpleMessage("今日"),
+        "topic": MessageLookupByLibrary.simpleMessage("トピック"),
+        "total": MessageLookupByLibrary.simpleMessage("合計"),
+        "tutorLanguage": MessageLookupByLibrary.simpleMessage("チューターの言語"),
+        "typeYourMessage":
+            MessageLookupByLibrary.simpleMessage("メッセージを入力してください..."),
+        "voiceCallInProgress": MessageLookupByLibrary.simpleMessage("音声通話中")
+      };
 }

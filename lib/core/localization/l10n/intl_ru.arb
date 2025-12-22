@@ -1,5 +1,4 @@
 {
-  "hello": "привет!",
   "voiceCallInProgress": "Звонок в процессе",
   "connected": "Подключен",
   "disconnected": "Отключен",
@@ -32,5 +31,6 @@
   "callDuration": "Длительность звонков",
   "today": "Сегодня",
   "total": "Всего",
-  "appLanguage": "Язык приложения"
+  "appLanguage": "Язык приложения",
+  "hello": "Привет!"
 }
