@@ -28,6 +28,9 @@ class PurchaseUseCase {
   }
 
   Future<void> close() async {
+    await abTestService.logClosePaywall(
+      paywallChangeNotifier.state.placementType,
+    );
     appRouter.pop();
   }
 }

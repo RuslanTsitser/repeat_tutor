@@ -68,6 +68,7 @@ final purchaseUseCaseProvider = Provider((ref) {
 final openPaywallUseCaseProvider = Provider((ref) {
   return OpenPaywallUseCase(
     paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
+    abTestService: ref.watch(abTestServiceProvider),
     appRouter: ref.watch(routerProvider),
     profileSettingsNotifier: ref.watch(profileSettingsProvider),
   );
@@ -78,5 +79,6 @@ final openHomeScreenUseCaseProvider = Provider((ref) {
     appRouter: ref.watch(routerProvider),
     profileSettingsNotifier: ref.watch(profileSettingsProvider),
     settingsDao: ref.watch(databaseProvider).settingsDao,
+    openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
   );
 });
