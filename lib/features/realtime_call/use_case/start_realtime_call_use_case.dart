@@ -1,4 +1,3 @@
-import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/database/daos/sessions_durations_dao.dart';
 import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/enums/language.dart';
@@ -6,7 +5,6 @@ import '../../../core/domain/models/realtime_session.dart';
 import '../../../core/gpt/gpt_service.dart';
 import '../../../core/gpt/instructions/tutor_instruction.dart';
 import '../../../core/realtime/realtime_webrtc_manager.dart';
-import '../../../core/router/router.dart';
 import '../../paywall/use_case/open_paywall_use_case.dart';
 import '../logic/realtime_call_notifier.dart';
 
@@ -16,39 +14,22 @@ class StartRealtimeCallUseCase {
     required this.gptService,
     required this.realtimeWebRTCConnection,
     required this.realtimeCallNotifier,
-    required this.appRouter,
     required this.sessionsDurationsDao,
     required this.openPaywallUseCase,
   });
   final GptService gptService;
   final RealtimeWebRTCConnection realtimeWebRTCConnection;
   final RealtimeCallNotifier realtimeCallNotifier;
-  final AppRouter appRouter;
   final SessionsDurationsDao sessionsDurationsDao;
   final OpenPaywallUseCase openPaywallUseCase;
 
-  Future<void> execute({
+  Future<void> start({
     required String topic,
     required Language language,
     required DifficultyLevel level,
     required Language teacherLanguage,
   }) async {
-    final isPremium = await openPaywallUseCase.openPaywall(
-      placementType: PlacementType.placementRealtimeCall,
-    );
-    if (!isPremium) {
-      return;
-    }
-
-    final currentState = realtimeCallNotifier.state;
-    realtimeCallNotifier.setState(
-      currentState.copyWith(
-        status: RealtimeCallStatus.initial,
-        error: null,
-        session: null,
-      ),
-    );
-
+    realtimeCallNotifier.setState(RealtimeCallState.initial());
     final instructions = TutorInstruction.repeatTutor(
       topic: topic,
       languageName: language.localizedName,
@@ -59,7 +40,7 @@ class StartRealtimeCallUseCase {
     final newSession = await gptService.createSession(instructions);
     final createdAt = DateTime.now();
     realtimeCallNotifier.setState(
-      currentState.copyWith(
+      realtimeCallNotifier.state.copyWith(
         session: RealtimeSession(
           createdAt: createdAt,
           topic: topic,
@@ -72,9 +53,18 @@ class StartRealtimeCallUseCase {
     );
     await realtimeWebRTCConnection.connect(newSession.clientSecret);
     final sessionId = await sessionsDurationsDao.startSession();
+    realtimeCallNotifier.setState(
+      realtimeCallNotifier.state.copyWith(
+        sessionId: sessionId,
+      ),
+    );
     await realtimeWebRTCConnection.setSpeakerEnabled(true);
-    await appRouter.push(const RealtimeCallRoute());
+  }
+
+  Future<void> stop() async {
     realtimeWebRTCConnection.disconnect();
+    final sessionId = realtimeCallNotifier.state.sessionId;
+    if (sessionId == null) return;
     await sessionsDurationsDao.finishSession(sessionId);
   }
 

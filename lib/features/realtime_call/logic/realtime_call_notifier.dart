@@ -78,6 +78,7 @@ enum RealtimeCallStatus {
 
 class RealtimeCallState {
   const RealtimeCallState({
+    required this.sessionId,
     required this.session,
     required this.status,
     required this.isMuted,
@@ -86,6 +87,7 @@ class RealtimeCallState {
 
   factory RealtimeCallState.initial() {
     return const RealtimeCallState(
+      sessionId: null,
       session: null,
       status: RealtimeCallStatus.initial,
       isMuted: false,
@@ -93,18 +95,21 @@ class RealtimeCallState {
     );
   }
 
+  final int? sessionId;
   final RealtimeSession? session;
   final RealtimeCallStatus status;
   final bool isMuted;
   final String? error;
 
   RealtimeCallState copyWith({
+    int? sessionId,
     RealtimeSession? session,
     RealtimeCallStatus? status,
     bool? isMuted,
     String? error,
   }) {
     return RealtimeCallState(
+      sessionId: sessionId ?? this.sessionId,
       session: session ?? this.session,
       status: status ?? this.status,
       isMuted: isMuted ?? this.isMuted,
