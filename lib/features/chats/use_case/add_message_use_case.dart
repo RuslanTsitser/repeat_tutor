@@ -37,12 +37,19 @@ class AddMessageUseCase {
         chat: chatNotifier.state.chat,
       );
     }
+    final messageId = await chatRepository.addMessage(
+      message: '',
+      conversationContinue: null,
+      gptResponseId: 'null',
+      chat: chatNotifier.state.chat,
+    );
     final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
       systemPrompt: chatNotifier.state.chat.chattyPrompt,
       text: message,
       previousMessageId: lastGptResponseId,
     );
-    await chatRepository.addMessage(
+    await chatRepository.updateMessage(
+      messageId: messageId,
       message: message,
       gptResponseId: gptResponseId,
       chat: chatNotifier.state.chat,

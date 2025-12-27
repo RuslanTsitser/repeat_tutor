@@ -292,10 +292,12 @@ class __MessageBubbleState extends State<_MessageBubble> {
                             data: message.text,
                           ),
                         )
-                      : const Padding(
-                          padding: EdgeInsets.all(8.0),
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: CupertinoActivityIndicator(
-                            color: Color(0xFFFFFFFF),
+                            color: !isMe
+                                ? const Color(0xFF155DFC)
+                                : const Color(0xFFFFFFFF),
                             radius: 10,
                           ),
                         ),
