@@ -3,24 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/chats/use_case/add_message_use_case.dart';
 import '../features/chats/use_case/create_chat_use_case.dart';
 import '../features/chats/use_case/delete_chat_use_case.dart';
-import '../features/chats/use_case/open_chat_use_case.dart';
-import '../features/initialize/use_case/open_home_screen_use_case.dart';
-import '../features/paywall/use_case/open_paywall_use_case.dart';
+import '../features/initialize/use_case/open_screen_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
 import 'core.dart';
 import 'repositories.dart';
 import 'state_managers.dart';
-
-final openChatUseCaseProvider = Provider((ref) {
-  return OpenChatUseCase(
-    chatRepository: ref.watch(chatRepositoryProvider),
-    messageNotifier: ref.watch(chatNotifierProvider),
-    appRouter: ref.watch(routerProvider),
-    addMessageUseCase: ref.watch(addMessageUseCaseProvider),
-    l10n: ref.watch(l10nProvider),
-  );
-});
 
 final createChatUseCaseProvider = Provider((ref) {
   return CreateChatUseCase(
@@ -52,7 +40,6 @@ final startRealtimeCallUseCaseProvider = Provider((ref) {
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
     sessionsDurationsDao: ref.watch(databaseProvider).sessionsDurationsDao,
-    openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
   );
 });
 
@@ -65,20 +52,6 @@ final purchaseUseCaseProvider = Provider((ref) {
   );
 });
 
-final openPaywallUseCaseProvider = Provider((ref) {
-  return OpenPaywallUseCase(
-    paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
-    abTestService: ref.watch(abTestServiceProvider),
-    appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileProvider),
-  );
-});
-
-final openHomeScreenUseCaseProvider = Provider((ref) {
-  return OpenHomeScreenUseCase(
-    appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileProvider),
-    settingsDao: ref.watch(databaseProvider).settingsDao,
-    openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
-  );
+final openScreenUseCaseProvider = Provider((ref) {
+  return OpenScreenUseCase(ref: ref);
 });

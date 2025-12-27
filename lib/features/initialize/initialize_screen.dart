@@ -13,7 +13,7 @@ class InitializeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializeServiceProvider, (previous, next) {
       if (next.hasValue) {
-        ref.read(openHomeScreenUseCaseProvider).execute();
+        ref.read(openScreenUseCaseProvider).openHomeScreen();
       }
     });
     return const CupertinoPageScaffold(

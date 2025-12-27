@@ -158,7 +158,7 @@ class _Body extends ConsumerWidget {
                       child: _ChatListItem(
                         chat: chat,
                         onTap: () =>
-                            ref.read(openChatUseCaseProvider).execute(chat),
+                            ref.read(openScreenUseCaseProvider).openChat(chat),
                         onDeletePressed: () => ref
                             .read(deleteChatUseCaseProvider)
                             .execute(chat.chatId),

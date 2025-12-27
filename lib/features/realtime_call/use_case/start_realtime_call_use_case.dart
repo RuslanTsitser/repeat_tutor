@@ -5,7 +5,6 @@ import '../../../core/domain/models/realtime_session.dart';
 import '../../../core/gpt/gpt_service.dart';
 import '../../../core/gpt/instructions/tutor_instruction.dart';
 import '../../../core/realtime/realtime_webrtc_manager.dart';
-import '../../paywall/use_case/open_paywall_use_case.dart';
 import '../logic/realtime_call_notifier.dart';
 
 /// Use case для создания новой Realtime-сессии.
@@ -15,13 +14,11 @@ class StartRealtimeCallUseCase {
     required this.realtimeWebRTCConnection,
     required this.realtimeCallNotifier,
     required this.sessionsDurationsDao,
-    required this.openPaywallUseCase,
   });
   final GptService gptService;
   final RealtimeWebRTCConnection realtimeWebRTCConnection;
   final RealtimeCallNotifier realtimeCallNotifier;
   final SessionsDurationsDao sessionsDurationsDao;
-  final OpenPaywallUseCase openPaywallUseCase;
 
   Future<void> start({
     required String topic,
