@@ -46,7 +46,12 @@ class AddButton extends ConsumerWidget {
     return AddButtonWrapper(
       child: CupertinoButton(
         padding: EdgeInsets.zero,
-        onPressed: () => ref.read(createChatUseCaseProvider).execute(),
+        onPressed: () async {
+          final chat = await ref.read(createChatUseCaseProvider).execute();
+          if (chat != null) {
+            ref.read(openScreenUseCaseProvider).openChat(chat);
+          }
+        },
         child: Container(
           width: 56,
           height: 56,
