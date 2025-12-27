@@ -1,24 +1,21 @@
 import 'package:ab_test_service/ab_test_service/model/user_premium_source.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/ab_test/enum/product_type.dart';
-import '../../../core/router/router.dart';
-import '../../profile/logic/profile_notifier.dart';
-import '../logic/paywall_change_notifier.dart';
+import '../../../infrastructure/core.dart';
+import '../../../infrastructure/state_managers.dart';
+import '../../../infrastructure/use_case.dart';
 
 class PurchaseUseCase {
   const PurchaseUseCase({
-    required this.abTestService,
-    required this.paywallChangeNotifier,
-    required this.appRouter,
-    required this.profileSettingsNotifier,
+    required this.ref,
   });
-  final AbTestService abTestService;
-  final PaywallChangeNotifier paywallChangeNotifier;
-  final AppRouter appRouter;
-  final ProfileNotifier profileSettingsNotifier;
+  final Ref ref;
 
   Future<void> purchase({required ProductType productType}) async {
+    final abTestService = ref.read(abTestServiceProvider);
+    final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
+    final appRouter = ref.read(routerProvider);
     await abTestService.purchasePaywall(
       paywallChangeNotifier.state.placementType,
       productType: productType,
@@ -33,6 +30,9 @@ class PurchaseUseCase {
   }
 
   Future<void> close() async {
+    final abTestService = ref.read(abTestServiceProvider);
+    final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
+    final appRouter = ref.read(routerProvider);
     await abTestService.logClosePaywall(
       paywallChangeNotifier.state.placementType,
     );
@@ -40,7 +40,9 @@ class PurchaseUseCase {
   }
 
   Future<void> setDebugPremium() async {
+    final abTestService = ref.read(abTestServiceProvider);
+    final profileSettingsUseCase = ref.read(profileSettingsUseCaseProvider);
     await abTestService.setPremium(UserPremiumSource.debug);
-    await profileSettingsNotifier.loadIsPremium();
+    await profileSettingsUseCase.loadIsPremium();
   }
 }

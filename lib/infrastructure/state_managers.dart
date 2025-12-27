@@ -36,14 +36,7 @@ final realtimeCallProvider = ChangeNotifierProvider((ref) {
 
 /// Провайдер для настроек профиля
 final profileProvider = ChangeNotifierProvider((ref) {
-  final database = ref.watch(databaseProvider);
-  final settingsDao = database.settingsDao;
-  final sessionsDurationsDao = database.sessionsDurationsDao;
-  return ProfileNotifier(
-    settingsDao: settingsDao,
-    sessionsDurationsDao: sessionsDurationsDao,
-    abTestService: ref.watch(abTestServiceProvider),
-  );
+  return ProfileNotifier();
 });
 
 final paywallChangeNotifierProvider = ChangeNotifierProvider((ref) {

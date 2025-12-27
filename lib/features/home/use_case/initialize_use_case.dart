@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../../../infrastructure/use_case.dart';
 import '../logic/home_screen_notifier.dart';
 
 class InitializeUseCase {
@@ -13,7 +14,11 @@ class InitializeUseCase {
   Future<void> execute() async {
     final abTestService = ref.watch(abTestServiceProvider);
     final homeScreenNotifier = ref.watch(homeScreenNotifierProvider);
+    final profileSettingsUseCase = ref.watch(profileSettingsUseCaseProvider);
     await abTestService.init();
+    await profileSettingsUseCase.loadSettings();
+    await profileSettingsUseCase.loadIsPremium();
+    await profileSettingsUseCase.refreshDurations();
     homeScreenNotifier.setState(
       homeScreenNotifier.state.copyWith(tab: HomeScreenTab.home),
     );

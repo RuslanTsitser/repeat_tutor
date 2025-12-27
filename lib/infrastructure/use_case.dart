@@ -6,6 +6,7 @@ import '../features/chats/use_case/delete_chat_use_case.dart';
 import '../features/home/use_case/initialize_use_case.dart';
 import '../features/home/use_case/open_screen_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
+import '../features/profile/use_case/profile_settings_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
 import 'core.dart';
 import 'repositories.dart';
@@ -45,12 +46,7 @@ final startRealtimeCallUseCaseProvider = Provider((ref) {
 });
 
 final purchaseUseCaseProvider = Provider((ref) {
-  return PurchaseUseCase(
-    abTestService: ref.watch(abTestServiceProvider),
-    paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
-    appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileProvider),
-  );
+  return PurchaseUseCase(ref: ref);
 });
 
 final openScreenUseCaseProvider = Provider((ref) {
@@ -59,4 +55,8 @@ final openScreenUseCaseProvider = Provider((ref) {
 
 final initializeUseCaseProvider = Provider((ref) {
   return InitializeUseCase(ref: ref);
+});
+
+final profileSettingsUseCaseProvider = Provider((ref) {
+  return ProfileSettingsUseCase(ref: ref);
 });

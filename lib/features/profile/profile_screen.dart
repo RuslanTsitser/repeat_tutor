@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/domain/enums/language.dart';
 import '../../core/localization/generated/l10n.dart';
 import '../../infrastructure/state_managers.dart';
+import '../../infrastructure/use_case.dart';
 
 @RoutePage()
 class ProfileScreen extends StatelessWidget {
@@ -99,7 +100,9 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).appLanguage,
           selectedLanguage: state.defaultLanguage,
           onLanguageSelected: (language) {
-            ref.read(profileProvider).setDefaultLanguage(language);
+            ref
+                .read(profileSettingsUseCaseProvider)
+                .setDefaultLanguage(language);
           },
         ),
         const SizedBox(height: 12),
@@ -107,7 +110,9 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).languageToLearn,
           selectedLanguage: state.defaultLanguageToLearn,
           onLanguageSelected: (language) {
-            ref.read(profileProvider).setDefaultLanguageToLearn(language);
+            ref
+                .read(profileSettingsUseCaseProvider)
+                .setDefaultLanguageToLearn(language);
           },
         ),
         const SizedBox(height: 12),
@@ -115,7 +120,9 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).tutorLanguage,
           selectedLanguage: state.defaultTeacherLanguage,
           onLanguageSelected: (language) {
-            ref.read(profileProvider).setDefaultTeacherLanguage(language);
+            ref
+                .read(profileSettingsUseCaseProvider)
+                .setDefaultTeacherLanguage(language);
           },
         ),
       ],
