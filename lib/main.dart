@@ -10,6 +10,7 @@ import 'core/plugins/app_version.dart';
 import 'core/plugins/app_wakelock.dart';
 import 'infrastructure/core.dart';
 import 'infrastructure/state_managers.dart';
+import 'infrastructure/use_case.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +23,22 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(initializeUseCaseProvider).execute();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final profile = ref.watch(profileProvider);
     final defaultLanguage = profile.state.defaultLanguage;
