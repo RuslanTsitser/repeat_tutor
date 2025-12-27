@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "startHere": MessageLookupByLibrary.simpleMessage("Start here"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "Start your first chat",
     ),
@@ -60,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Start your first conversation and begin practicing a new language",
         ),
+    "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
+      "Tap to create a new chat",
+    ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage("Teacher language"),
     "today": MessageLookupByLibrary.simpleMessage("Today"),
     "topic": MessageLookupByLibrary.simpleMessage("Topic"),

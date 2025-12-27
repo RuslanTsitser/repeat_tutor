@@ -308,6 +308,21 @@ class S {
   String get hello {
     return Intl.message('Hello!', name: 'hello', desc: '', args: []);
   }
+
+  /// `Start here`
+  String get startHere {
+    return Intl.message('Start here', name: 'startHere', desc: '', args: []);
+  }
+
+  /// `Tap to create a new chat`
+  String get tapToCreateANewChat {
+    return Intl.message(
+      'Tap to create a new chat',
+      name: 'tapToCreateANewChat',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -32,5 +32,7 @@
   "today": "今日",
   "total": "合計",
   "appLanguage": "アプリの言語",
-  "hello": "こんにちは！"
+  "hello": "こんにちは！",
+  "startHere": "ここから始める",
+  "tapToCreateANewChat": "タップして新しいチャットを作成"
 }

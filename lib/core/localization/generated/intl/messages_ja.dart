@@ -51,11 +51,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
+    "startHere": MessageLookupByLibrary.simpleMessage("ここから始める"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "最初のチャットを始めましょう",
     ),
     "startYourFirstConversationAndBeginPracticingANewLanguage":
         MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
+    "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
+      "タップして新しいチャットを作成",
+    ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
     "today": MessageLookupByLibrary.simpleMessage("今日"),
     "topic": MessageLookupByLibrary.simpleMessage("トピック"),

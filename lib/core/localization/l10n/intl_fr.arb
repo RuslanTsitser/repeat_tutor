@@ -32,5 +32,7 @@
   "today": "Aujourd'hui",
   "total": "Total",
   "appLanguage": "Langue de l'application",
-  "hello": "Bonjour!"
+  "hello": "Bonjour!",
+  "startHere": "Commencez ici",
+  "tapToCreateANewChat": "Appuyez pour créer un nouveau chat"
 }
