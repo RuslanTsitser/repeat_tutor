@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/localization/generated/l10n.dart';
 import '../../core/router/router.dart';
-import '../../infrastructure/core.dart';
+import '../../infrastructure/state_managers.dart';
+import '../onboarding/presentation/onboarding_screen.dart';
+import 'logic/home_screen_notifier.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
@@ -12,23 +14,29 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initializeService = ref.watch(initializeServiceProvider);
-    if (initializeService.isLoading) {
-      return const CupertinoPageScaffold(
-        child: Center(
-          child: CupertinoActivityIndicator(),
-        ),
-      );
+    final state = ref.watch(homeScreenNotifierProvider).state;
+    final tab = state.tab;
+
+    switch (tab) {
+      case HomeScreenTab.loading:
+        return const CupertinoPageScaffold(
+          child: Center(
+            child: CupertinoActivityIndicator(),
+          ),
+        );
+      case HomeScreenTab.onboarding:
+        return const OnboardingScreen();
+      case HomeScreenTab.home:
+        return AutoTabsScaffold(
+          bottomNavigationBuilder: (context, tabsRouter) {
+            return _BottomNavigation(tabsRouter: tabsRouter);
+          },
+          routes: const [
+            ChatListRoute(),
+            ProfileRoute(),
+          ],
+        );
     }
-    return AutoTabsScaffold(
-      bottomNavigationBuilder: (context, tabsRouter) {
-        return _BottomNavigation(tabsRouter: tabsRouter);
-      },
-      routes: const [
-        ChatListRoute(),
-        ProfileRoute(),
-      ],
-    );
   }
 }
 

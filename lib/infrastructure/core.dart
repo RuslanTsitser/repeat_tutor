@@ -74,11 +74,6 @@ final abTestServiceProvider = Provider<AbTestService>((ref) {
   return AbTestService(appKey);
 });
 
-final initializeServiceProvider = FutureProvider<void>((ref) async {
-  final abTestService = ref.watch(abTestServiceProvider);
-  await abTestService.init();
-});
-
 final speechRecognizerProvider = Provider<SpeechRecognizer>((ref) {
   return SpeechRecognizerImpl();
 });
