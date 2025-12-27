@@ -5,7 +5,7 @@ import '../features/chats/logic/chat_list_notifier.dart';
 import '../features/chats/logic/chat_notifier.dart';
 import '../features/chats/logic/create_chat_notifier.dart';
 import '../features/paywall/logic/paywall_change_notifier.dart';
-import '../features/profile/logic/profile_settings_notifier.dart';
+import '../features/profile/logic/profile_notifier.dart';
 import '../features/realtime_call/logic/realtime_call_notifier.dart';
 import 'core.dart';
 import 'repositories.dart';
@@ -34,11 +34,11 @@ final realtimeCallProvider = ChangeNotifierProvider((ref) {
 });
 
 /// Провайдер для настроек профиля
-final profileSettingsProvider = ChangeNotifierProvider((ref) {
+final profileProvider = ChangeNotifierProvider((ref) {
   final database = ref.watch(databaseProvider);
   final settingsDao = database.settingsDao;
   final sessionsDurationsDao = database.sessionsDurationsDao;
-  return ProfileSettingsNotifier(
+  return ProfileNotifier(
     settingsDao: settingsDao,
     sessionsDurationsDao: sessionsDurationsDao,
     abTestService: ref.watch(abTestServiceProvider),

@@ -28,8 +28,8 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final profileSettings = ref.watch(profileSettingsProvider);
-    final defaultLanguage = profileSettings.state.defaultLanguage;
+    final profile = ref.watch(profileProvider);
+    final defaultLanguage = profile.state.defaultLanguage;
     final locale = defaultLanguage.toLocale();
 
     return CupertinoApp.router(

@@ -5,12 +5,12 @@ import '../../../core/database/daos/sessions_durations_dao.dart';
 import '../../../core/database/daos/settings_dao.dart';
 import '../../../core/domain/enums/language.dart';
 
-class ProfileSettingsNotifier extends ChangeNotifier {
+class ProfileNotifier with ChangeNotifier {
   static const String _defaultTeacherLanguageKey = 'default_teacher_language';
   static const String _defaultLanguageKey = 'default_language';
   static const String _defaultLanguageToLearnKey = 'default_language_to_learn';
 
-  ProfileSettingsNotifier({
+  ProfileNotifier({
     required SettingsDao settingsDao,
     required SessionsDurationsDao sessionsDurationsDao,
     required AbTestService abTestService,

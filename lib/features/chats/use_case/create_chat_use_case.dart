@@ -1,7 +1,7 @@
 import '../../../core/domain/repositories/chat_repository.dart';
 import '../../../core/router/common/bottom_sheet.dart';
 import '../../../core/router/router.dart';
-import '../../profile/logic/profile_settings_notifier.dart';
+import '../../profile/logic/profile_notifier.dart';
 import '../logic/create_chat_notifier.dart';
 import '../presentation/create_chat_bottom_sheet.dart';
 
@@ -12,7 +12,7 @@ class CreateChatUseCase {
     required this.profileSettingsNotifier,
   });
   final ChatRepository chatRepository;
-  final ProfileSettingsNotifier profileSettingsNotifier;
+  final ProfileNotifier profileSettingsNotifier;
   final AppRouter router;
 
   Future<void> execute() async {

@@ -26,7 +26,7 @@ final createChatUseCaseProvider = Provider((ref) {
   return CreateChatUseCase(
     chatRepository: ref.watch(chatRepositoryProvider),
     router: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileSettingsProvider),
+    profileSettingsNotifier: ref.watch(profileProvider),
   );
 });
 
@@ -51,7 +51,6 @@ final startRealtimeCallUseCaseProvider = Provider((ref) {
     gptService: ref.watch(gptServiceProvider),
     realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
     realtimeCallNotifier: ref.watch(realtimeCallProvider),
-    appRouter: ref.watch(routerProvider),
     sessionsDurationsDao: ref.watch(databaseProvider).sessionsDurationsDao,
     openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
   );
@@ -62,7 +61,7 @@ final purchaseUseCaseProvider = Provider((ref) {
     abTestService: ref.watch(abTestServiceProvider),
     paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
     appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileSettingsProvider),
+    profileSettingsNotifier: ref.watch(profileProvider),
   );
 });
 
@@ -71,14 +70,14 @@ final openPaywallUseCaseProvider = Provider((ref) {
     paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
     abTestService: ref.watch(abTestServiceProvider),
     appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileSettingsProvider),
+    profileSettingsNotifier: ref.watch(profileProvider),
   );
 });
 
 final openHomeScreenUseCaseProvider = Provider((ref) {
   return OpenHomeScreenUseCase(
     appRouter: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileSettingsProvider),
+    profileSettingsNotifier: ref.watch(profileProvider),
     settingsDao: ref.watch(databaseProvider).settingsDao,
     openPaywallUseCase: ref.watch(openPaywallUseCaseProvider),
   );

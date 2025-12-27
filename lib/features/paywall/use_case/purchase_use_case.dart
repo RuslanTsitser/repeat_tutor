@@ -3,7 +3,7 @@ import 'package:ab_test_service/ab_test_service/model/user_premium_source.dart';
 import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/ab_test/enum/product_type.dart';
 import '../../../core/router/router.dart';
-import '../../profile/logic/profile_settings_notifier.dart';
+import '../../profile/logic/profile_notifier.dart';
 import '../logic/paywall_change_notifier.dart';
 
 class PurchaseUseCase {
@@ -16,7 +16,7 @@ class PurchaseUseCase {
   final AbTestService abTestService;
   final PaywallChangeNotifier paywallChangeNotifier;
   final AppRouter appRouter;
-  final ProfileSettingsNotifier profileSettingsNotifier;
+  final ProfileNotifier profileSettingsNotifier;
 
   Future<void> purchase({required ProductType productType}) async {
     await abTestService.purchasePaywall(

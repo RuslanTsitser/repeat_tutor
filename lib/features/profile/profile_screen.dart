@@ -78,7 +78,7 @@ class _SettingsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(profileSettingsProvider);
+    final settings = ref.watch(profileProvider);
     final state = settings.state;
 
     return Column(
@@ -99,7 +99,7 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).appLanguage,
           selectedLanguage: state.defaultLanguage,
           onLanguageSelected: (language) {
-            ref.read(profileSettingsProvider).setDefaultLanguage(language);
+            ref.read(profileProvider).setDefaultLanguage(language);
           },
         ),
         const SizedBox(height: 12),
@@ -107,9 +107,7 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).languageToLearn,
           selectedLanguage: state.defaultLanguageToLearn,
           onLanguageSelected: (language) {
-            ref
-                .read(profileSettingsProvider)
-                .setDefaultLanguageToLearn(language);
+            ref.read(profileProvider).setDefaultLanguageToLearn(language);
           },
         ),
         const SizedBox(height: 12),
@@ -117,9 +115,7 @@ class _SettingsSection extends ConsumerWidget {
           label: S.of(context).tutorLanguage,
           selectedLanguage: state.defaultTeacherLanguage,
           onLanguageSelected: (language) {
-            ref
-                .read(profileSettingsProvider)
-                .setDefaultTeacherLanguage(language);
+            ref.read(profileProvider).setDefaultTeacherLanguage(language);
           },
         ),
       ],
@@ -307,7 +303,7 @@ class _CallDurationSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(profileSettingsProvider);
+    final settings = ref.watch(profileProvider);
     final state = settings.state;
 
     return Column(
