@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/enums/language.dart';
+import '../../../core/local_storage/storage_keys.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 
@@ -10,17 +11,14 @@ class ProfileSettingsUseCase {
   });
   final Ref ref;
 
-  static const String _defaultTeacherLanguageKey = 'default_teacher_language';
-  static const String _defaultLanguageKey = 'default_language';
-  static const String _defaultLanguageToLearnKey = 'default_language_to_learn';
-
   Future<void> loadSettings() async {
-    final settingsDao = ref.read(databaseProvider).settingsDao;
+    final localStorageService = ref.read(localStorageServiceProvider);
     final profileNotifier = ref.read(profileProvider);
     try {
-      final savedTeacherLanguageValue = await settingsDao.getValue(
-        _defaultTeacherLanguageKey,
-      );
+      final savedTeacherLanguageValue = await localStorageService
+          .getValue<String>(
+            StorageKeys.defaultTeacherLanguageKey,
+          );
 
       if (savedTeacherLanguageValue != null) {
         final language = Language.fromLanguage(savedTeacherLanguageValue);
@@ -30,8 +28,8 @@ class ProfileSettingsUseCase {
           );
         }
       }
-      final savedLanguageValue = await settingsDao.getValue(
-        _defaultLanguageKey,
+      final savedLanguageValue = await localStorageService.getValue<String>(
+        StorageKeys.defaultLanguageKey,
       );
 
       if (savedLanguageValue != null) {
@@ -42,9 +40,10 @@ class ProfileSettingsUseCase {
           );
         }
       }
-      final savedLanguageToLearnValue = await settingsDao.getValue(
-        _defaultLanguageToLearnKey,
-      );
+      final savedLanguageToLearnValue = await localStorageService
+          .getValue<String>(
+            StorageKeys.defaultLanguageToLearnKey,
+          );
 
       if (savedLanguageToLearnValue != null) {
         final language = Language.fromLanguage(savedLanguageToLearnValue);
@@ -60,9 +59,9 @@ class ProfileSettingsUseCase {
   }
 
   Future<void> setDefaultTeacherLanguage(Language language) async {
-    final settingsDao = ref.read(databaseProvider).settingsDao;
-    await settingsDao.setValue(
-      _defaultTeacherLanguageKey,
+    final localStorageService = ref.read(localStorageServiceProvider);
+    await localStorageService.setValue<String>(
+      StorageKeys.defaultTeacherLanguageKey,
       language.value,
     );
     final profileNotifier = ref.read(profileProvider);
@@ -72,17 +71,17 @@ class ProfileSettingsUseCase {
   }
 
   Future<void> setDefaultLanguageToLearn(Language language) async {
-    final settingsDao = ref.read(databaseProvider).settingsDao;
-    await settingsDao.setValue(
-      _defaultLanguageToLearnKey,
+    final localStorageService = ref.read(localStorageServiceProvider);
+    await localStorageService.setValue<String>(
+      StorageKeys.defaultLanguageToLearnKey,
       language.value,
     );
   }
 
   Future<void> setDefaultLanguage(Language language) async {
-    final settingsDao = ref.read(databaseProvider).settingsDao;
-    await settingsDao.setValue(
-      _defaultLanguageKey,
+    final localStorageService = ref.read(localStorageServiceProvider);
+    await localStorageService.setValue<String>(
+      StorageKeys.defaultLanguageKey,
       language.value,
     );
   }
