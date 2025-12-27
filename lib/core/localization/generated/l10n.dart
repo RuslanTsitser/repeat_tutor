@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -62,12 +66,7 @@ class S {
 
   /// `Connected`
   String get connected {
-    return Intl.message(
-      'Connected',
-      name: 'connected',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Connected', name: 'connected', desc: '', args: []);
   }
 
   /// `Disconnected`
@@ -92,32 +91,17 @@ class S {
 
   /// `Retry`
   String get retry {
-    return Intl.message(
-      'Retry',
-      name: 'retry',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
   }
 
   /// `Delete`
   String get delete {
-    return Intl.message(
-      'Delete',
-      name: 'delete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
   }
 
   /// `No chats yet`
   String get noChatsYet {
-    return Intl.message(
-      'No chats yet',
-      name: 'noChatsYet',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No chats yet', name: 'noChatsYet', desc: '', args: []);
   }
 
   /// `Start your first conversation and begin practicing a new language`
@@ -142,12 +126,7 @@ class S {
 
   /// `No messages`
   String get noMessages {
-    return Intl.message(
-      'No messages',
-      name: 'noMessages',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No messages', name: 'noMessages', desc: '', args: []);
   }
 
   /// `Type your message...`
@@ -162,22 +141,12 @@ class S {
 
   /// `New chat`
   String get newChat {
-    return Intl.message(
-      'New chat',
-      name: 'newChat',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('New chat', name: 'newChat', desc: '', args: []);
   }
 
   /// `Topic`
   String get topic {
-    return Intl.message(
-      'Topic',
-      name: 'topic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Topic', name: 'topic', desc: '', args: []);
   }
 
   /// `Language to learn`
@@ -202,12 +171,7 @@ class S {
 
   /// `Level`
   String get level {
-    return Intl.message(
-      'Level',
-      name: 'level',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Level', name: 'level', desc: '', args: []);
   }
 
   /// `e.g. Free time, Shopping, Travel`
@@ -222,32 +186,17 @@ class S {
 
   /// `Cancel`
   String get cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
   /// `Chats`
   String get chats {
-    return Intl.message(
-      'Chats',
-      name: 'chats',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Chats', name: 'chats', desc: '', args: []);
   }
 
   /// `Profile`
   String get profile {
-    return Intl.message(
-      'Profile',
-      name: 'profile',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
 
   /// `Free time`
@@ -282,22 +231,12 @@ class S {
 
   /// `Food`
   String get exampleTopicFood {
-    return Intl.message(
-      'Food',
-      name: 'exampleTopicFood',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Food', name: 'exampleTopicFood', desc: '', args: []);
   }
 
   /// `Work`
   String get exampleTopicWork {
-    return Intl.message(
-      'Work',
-      name: 'exampleTopicWork',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Work', name: 'exampleTopicWork', desc: '', args: []);
   }
 
   /// `Hobbies`
@@ -322,12 +261,7 @@ class S {
 
   /// `Settings`
   String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'settings', desc: '', args: []);
   }
 
   /// `Tutor language`
@@ -352,22 +286,12 @@ class S {
 
   /// `Today`
   String get today {
-    return Intl.message(
-      'Today',
-      name: 'today',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Today', name: 'today', desc: '', args: []);
   }
 
   /// `Total`
   String get total {
-    return Intl.message(
-      'Total',
-      name: 'total',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total', name: 'total', desc: '', args: []);
   }
 
   /// `App language`
@@ -382,12 +306,7 @@ class S {
 
   /// `Hello!`
   String get hello {
-    return Intl.message(
-      'Hello!',
-      name: 'hello',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Hello!', name: 'hello', desc: '', args: []);
   }
 }
 
