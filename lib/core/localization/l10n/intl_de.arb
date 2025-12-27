@@ -34,5 +34,8 @@
   "appLanguage": "App-Sprache",
   "hello": "Hallo!",
   "startHere": "Hier beginnen",
-  "tapToCreateANewChat": "Tippen Sie, um einen neuen Chat zu erstellen"
+  "tapToCreateANewChat": "Tippen Sie, um einen neuen Chat zu erstellen",
+  "tapToWriteATextMessage": "Tippen Sie, um eine Textnachricht zu schreiben",
+  "youCanAlsoPracticeSpeakingWithAVoiceCall": "Sie können auch das Sprechen mit einem Sprachanruf üben",
+  "orSendAnAudioMessage": "Oder senden Sie eine Sprachnachricht"
 }

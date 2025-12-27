@@ -34,5 +34,8 @@
   "appLanguage": "アプリの言語",
   "hello": "こんにちは！",
   "startHere": "ここから始める",
-  "tapToCreateANewChat": "タップして新しいチャットを作成"
+  "tapToCreateANewChat": "タップして新しいチャットを作成",
+  "tapToWriteATextMessage": "タップしてテキストメッセージを入力",
+  "youCanAlsoPracticeSpeakingWithAVoiceCall": "音声通話で話す練習もできます",
+  "orSendAnAudioMessage": "または音声メッセージを送信"
 }

@@ -323,6 +323,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Tap to write a text message`
+  String get tapToWriteATextMessage {
+    return Intl.message(
+      'Tap to write a text message',
+      name: 'tapToWriteATextMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can also practice speaking with a voice call`
+  String get youCanAlsoPracticeSpeakingWithAVoiceCall {
+    return Intl.message(
+      'You can also practice speaking with a voice call',
+      name: 'youCanAlsoPracticeSpeakingWithAVoiceCall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or send an audio message`
+  String get orSendAnAudioMessage {
+    return Intl.message(
+      'Or send an audio message',
+      name: 'orSendAnAudioMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

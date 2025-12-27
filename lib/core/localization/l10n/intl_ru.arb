@@ -34,5 +34,8 @@
   "appLanguage": "Язык приложения",
   "hello": "Привет!",
   "startHere": "Начните здесь",
-  "tapToCreateANewChat": "Нажмите, чтобы создать новый чат"
+  "tapToCreateANewChat": "Нажмите, чтобы создать новый чат",
+  "tapToWriteATextMessage": "Нажмите, чтобы написать текстовое сообщение",
+  "youCanAlsoPracticeSpeakingWithAVoiceCall": "Вы также можете практиковать речь с помощью голосового звонка",
+  "orSendAnAudioMessage": "Или отправьте голосовое сообщение"
 }

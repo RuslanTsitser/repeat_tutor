@@ -52,6 +52,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newChat": MessageLookupByLibrary.simpleMessage("Novo chat"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Nenhum chat"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Nenhum mensagem"),
+    "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
+      "Ou envie uma mensagem de áudio",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
     "retry": MessageLookupByLibrary.simpleMessage("Reintentar"),
     "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
@@ -66,6 +69,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Toque para criar um novo chat",
     ),
+    "tapToWriteATextMessage": MessageLookupByLibrary.simpleMessage(
+      "Toque para escrever uma mensagem de texto",
+    ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Idioma do professor",
     ),
@@ -79,5 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
       "Chamada de voz em progresso",
     ),
+    "youCanAlsoPracticeSpeakingWithAVoiceCall":
+        MessageLookupByLibrary.simpleMessage(
+          "Você também pode praticar a fala com uma chamada de voz",
+        ),
   };
 }

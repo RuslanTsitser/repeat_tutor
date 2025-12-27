@@ -48,6 +48,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
     "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
+    "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
+      "または音声メッセージを送信",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
@@ -60,6 +63,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "タップして新しいチャットを作成",
     ),
+    "tapToWriteATextMessage": MessageLookupByLibrary.simpleMessage(
+      "タップしてテキストメッセージを入力",
+    ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
     "today": MessageLookupByLibrary.simpleMessage("今日"),
     "topic": MessageLookupByLibrary.simpleMessage("トピック"),
@@ -69,5 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "メッセージを入力してください...",
     ),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage("音声通話中"),
+    "youCanAlsoPracticeSpeakingWithAVoiceCall":
+        MessageLookupByLibrary.simpleMessage("音声通話で話す練習もできます"),
   };
 }

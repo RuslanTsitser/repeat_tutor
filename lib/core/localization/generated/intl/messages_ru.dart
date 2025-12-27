@@ -54,6 +54,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "newChat": MessageLookupByLibrary.simpleMessage("Новый чат"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Нет чатов"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Нет сообщений"),
+    "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
+      "Или отправьте голосовое сообщение",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
     "retry": MessageLookupByLibrary.simpleMessage("Повторить"),
     "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
@@ -68,6 +71,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Нажмите, чтобы создать новый чат",
     ),
+    "tapToWriteATextMessage": MessageLookupByLibrary.simpleMessage(
+      "Нажмите, чтобы написать текстовое сообщение",
+    ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Язык преподавателя",
     ),
@@ -81,5 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
       "Звонок в процессе",
     ),
+    "youCanAlsoPracticeSpeakingWithAVoiceCall":
+        MessageLookupByLibrary.simpleMessage(
+          "Вы также можете практиковать речь с помощью голосового звонка",
+        ),
   };
 }
