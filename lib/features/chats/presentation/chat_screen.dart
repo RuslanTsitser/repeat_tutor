@@ -11,6 +11,7 @@ import '../../../core/gpt/gpt_service.dart';
 import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
+import '../../onboarding/presentation/onboarding_chat_wrapper.dart';
 import '../logic/chat_notifier.dart';
 
 @RoutePage()
@@ -23,54 +24,58 @@ class ChatScreen extends ConsumerWidget {
     final chatTitle =
         '${chat.chatLanguage.localizedName} ${chat.level.value}\n${chat.topic}';
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: CupertinoPageScaffold(
-        backgroundColor: const Color(0xFFF9FAFB),
-        resizeToAvoidBottomInset: true,
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor: Colors.white,
-          border: const Border(
-            bottom: BorderSide(
-              color: Color(0xFFE5E7EB),
-              width: 1,
+    return OnboardingChatWrapper(
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: CupertinoPageScaffold(
+          backgroundColor: const Color(0xFFF9FAFB),
+          resizeToAvoidBottomInset: true,
+          navigationBar: CupertinoNavigationBar(
+            backgroundColor: Colors.white,
+            border: const Border(
+              bottom: BorderSide(
+                color: Color(0xFFE5E7EB),
+                width: 1,
+              ),
             ),
-          ),
-          leading: CupertinoNavigationBarBackButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          middle: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              chatTitle,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF0A0A0A),
-                letterSpacing: 0.0703,
+            leading: CupertinoNavigationBarBackButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            middle: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                chatTitle,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF0A0A0A),
+                  letterSpacing: 0.0703,
+                ),
+              ),
+            ),
+            trailing: StartVoiceCallWrapper(
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  ref
+                      .read(startRealtimeCallUseCaseProvider)
+                      .start(
+                        topic: chat.topic,
+                        language: chat.chatLanguage,
+                        level: chat.level,
+                        teacherLanguage: chat.teacherLanguage,
+                      );
+                },
+                child: const Icon(CupertinoIcons.phone),
               ),
             ),
           ),
-          trailing: CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              ref
-                  .read(startRealtimeCallUseCaseProvider)
-                  .start(
-                    topic: chat.topic,
-                    language: chat.chatLanguage,
-                    level: chat.level,
-                    teacherLanguage: chat.teacherLanguage,
-                  );
-            },
-            child: const Icon(CupertinoIcons.phone),
-          ),
+          child: const _Body(),
         ),
-        child: const _Body(),
       ),
     );
   }
@@ -714,48 +719,52 @@ class __MessageInputState extends ConsumerState<_MessageInput> {
                     width: 1,
                   ),
                 ),
-                child: CupertinoTextField(
-                  controller: messageController,
-                  focusNode: focusNode,
-                  placeholder: S.of(context).typeYourMessage,
-                  placeholderStyle: const TextStyle(
-                    color: Color(0xFF99A1AF),
-                    fontSize: 16,
-                    letterSpacing: -0.3125,
+                child: WriteTextMessageWrapper(
+                  child: CupertinoTextField(
+                    controller: messageController,
+                    focusNode: focusNode,
+                    placeholder: S.of(context).typeYourMessage,
+                    placeholderStyle: const TextStyle(
+                      color: Color(0xFF99A1AF),
+                      fontSize: 16,
+                      letterSpacing: -0.3125,
+                    ),
+                    minLines: 1,
+                    maxLines: 5,
+                    textCapitalization: TextCapitalization.sentences,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      letterSpacing: -0.3125,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: const BoxDecoration(),
+                    onSubmitted: (_) => _sendMessage(),
                   ),
-                  minLines: 1,
-                  maxLines: 5,
-                  textCapitalization: TextCapitalization.sentences,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    letterSpacing: -0.3125,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: const BoxDecoration(),
-                  onSubmitted: (_) => _sendMessage(),
                 ),
               ),
             ),
             const SizedBox(width: 8),
             // Кнопка микрофона (всегда видна)
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
-              minimumSize: const Size(0, 0),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF3F4F6),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  CupertinoIcons.mic,
-                  color: Color(0xFF101828),
-                  size: 20,
+            SendAudioMessageWrapper(
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: ref.read(addMessageUseCaseProvider).toggleRecording,
+                minimumSize: const Size(0, 0),
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF3F4F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    CupertinoIcons.mic,
+                    color: Color(0xFF101828),
+                    size: 20,
+                  ),
                 ),
               ),
             ),
