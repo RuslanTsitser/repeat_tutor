@@ -168,12 +168,6 @@ class _Body extends ConsumerWidget {
                           .read(deleteChatUseCaseProvider)
                           .execute(chat.chatId),
                     );
-                    if (index == 0) {
-                      return OpenChatWrapper(
-                        chat: chat,
-                        child: widget,
-                      );
-                    }
                     return widget;
                   },
                 ),
@@ -221,7 +215,7 @@ class _ChatListItem extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: CupertinoColors.white,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: const Color(0xFFE5E7EB),
               width: 1,
