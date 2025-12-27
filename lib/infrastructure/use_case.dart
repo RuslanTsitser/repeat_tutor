@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/chats/use_case/add_message_use_case.dart';
 import '../features/chats/use_case/create_chat_use_case.dart';
 import '../features/chats/use_case/delete_chat_use_case.dart';
-import '../features/initialize/use_case/open_screen_use_case.dart';
+import '../features/home/use_case/open_screen_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
 import 'core.dart';

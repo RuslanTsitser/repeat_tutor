@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import '../../features/chats/presentation/chat_list_screen.dart';
 import '../../features/chats/presentation/chat_screen.dart';
 import '../../features/home/home_screen.dart';
-import '../../features/initialize/initialize_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/paywall/presentation/paywall_screen.dart';
 import '../../features/profile/profile_screen.dart';
@@ -21,8 +20,8 @@ part 'router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
-    AutoRoute(page: InitializeRoute.page, initial: true),
     CustomRoute<void>(
+      initial: true,
       page: HomeRoute.page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           FadeTransition(opacity: animation, child: child),

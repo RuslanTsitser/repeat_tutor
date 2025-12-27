@@ -13,11 +13,6 @@ class OpenScreenUseCase {
   });
   final Ref ref;
 
-  Future<void> openHomeScreen() async {
-    final appRouter = ref.read(routerProvider);
-    await appRouter.replaceAll([const HomeRoute()]);
-  }
-
   Future<void> openChat(Chat chat) async {
     final appRouter = ref.read(routerProvider);
     final chatRepository = ref.read(chatRepositoryProvider);

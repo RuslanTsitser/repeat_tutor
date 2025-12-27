@@ -378,22 +378,6 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [InitializeScreen]
-class InitializeRoute extends PageRouteInfo<void> {
-  const InitializeRoute({List<PageRouteInfo>? children})
-    : super(InitializeRoute.name, initialChildren: children);
-
-  static const String name = 'InitializeRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const InitializeScreen();
-    },
-  );
-}
-
-/// generated route for
 /// [OnboardingScreen]
 class OnboardingRoute extends PageRouteInfo<void> {
   const OnboardingRoute({List<PageRouteInfo>? children})

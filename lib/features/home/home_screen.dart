@@ -1,15 +1,25 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/localization/generated/l10n.dart';
 import '../../core/router/router.dart';
+import '../../infrastructure/core.dart';
 
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final initializeService = ref.watch(initializeServiceProvider);
+    if (initializeService.isLoading) {
+      return const CupertinoPageScaffold(
+        child: Center(
+          child: CupertinoActivityIndicator(),
+        ),
+      );
+    }
     return AutoTabsScaffold(
       bottomNavigationBuilder: (context, tabsRouter) {
         return _BottomNavigation(tabsRouter: tabsRouter);
