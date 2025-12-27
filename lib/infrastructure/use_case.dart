@@ -62,6 +62,7 @@ final purchaseUseCaseProvider = Provider((ref) {
     abTestService: ref.watch(abTestServiceProvider),
     paywallChangeNotifier: ref.watch(paywallChangeNotifierProvider),
     appRouter: ref.watch(routerProvider),
+    profileSettingsNotifier: ref.watch(profileSettingsProvider),
   );
 });
 
