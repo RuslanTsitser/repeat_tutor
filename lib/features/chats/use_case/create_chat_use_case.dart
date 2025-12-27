@@ -1,3 +1,4 @@
+import '../../../core/domain/models/chat.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
 import '../../../core/router/common/bottom_sheet.dart';
 import '../../../core/router/router.dart';
@@ -15,20 +16,20 @@ class CreateChatUseCase {
   final ProfileNotifier profileSettingsNotifier;
   final AppRouter router;
 
-  Future<bool> execute() async {
+  Future<Chat?> execute() async {
     final state = await router.showAppBottomSheet<CreateChatState>(
       isScrollControlled: true,
       builder: (context) => const CreateChatBottomSheet(),
     );
     if (state != null) {
-      await chatRepository.createChat(
+      final chat = await chatRepository.createChat(
         language: state.language,
         level: state.level,
         topic: state.topic,
         teacherLanguage: state.teacherLanguage,
       );
-      return true;
+      return chat;
     }
-    return false;
+    return null;
   }
 }
