@@ -250,20 +250,6 @@ class __MessageBubbleState extends State<_MessageBubble> {
                       bottomLeft: const Radius.circular(16),
                       bottomRight: const Radius.circular(16),
                     ),
-                    boxShadow: isMe
-                        ? null
-                        : [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 3,
-                              offset: const Offset(0, 1),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 2,
-                              offset: const Offset(0, -1),
-                            ),
-                          ],
                   ),
                   child: (!isMe && tutorAnswer != null)
                       ? animation.value > 0
