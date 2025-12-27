@@ -9,6 +9,8 @@ import 'package:markdown_widget/markdown_widget.dart';
 import '../../../core/domain/models/message.dart';
 import '../../../core/gpt/gpt_service.dart';
 import '../../../core/localization/generated/l10n.dart';
+import '../../../core/router/router.dart';
+import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../../onboarding/presentation/onboarding_chat_wrapper.dart';
@@ -41,9 +43,7 @@ class ChatScreen extends ConsumerWidget {
               ),
             ),
             leading: CupertinoNavigationBarBackButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => ref.read(routerProvider).pop(),
             ),
             middle: FittedBox(
               fit: BoxFit.scaleDown,
@@ -57,25 +57,53 @@ class ChatScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            trailing: StartVoiceCallWrapper(
-              child: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  ref
-                      .read(startRealtimeCallUseCaseProvider)
-                      .start(
-                        topic: chat.topic,
-                        language: chat.chatLanguage,
-                        level: chat.level,
-                        teacherLanguage: chat.teacherLanguage,
-                      );
-                },
-                child: const Icon(CupertinoIcons.phone),
-              ),
-            ),
+            trailing: const _StartVoiceCall(),
           ),
           child: const _Body(),
         ),
+      ),
+    );
+  }
+}
+
+class _StartVoiceCall extends ConsumerStatefulWidget {
+  const _StartVoiceCall();
+
+  @override
+  ConsumerState<_StartVoiceCall> createState() => __StartVoiceCallState();
+}
+
+class __StartVoiceCallState extends ConsumerState<_StartVoiceCall> {
+  bool _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return StartVoiceCallWrapper(
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: () async {
+          setState(() {
+            _isLoading = true;
+          });
+          final chat = ref.read(chatNotifierProvider).state.chat;
+          final router = ref.read(routerProvider);
+          final useCase = ref.read(startRealtimeCallUseCaseProvider);
+          await useCase.start(
+            topic: chat.topic,
+            language: chat.chatLanguage,
+            level: chat.level,
+            teacherLanguage: chat.teacherLanguage,
+          );
+          await router.push(const RealtimeCallRoute());
+          await useCase.stop();
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        },
+        child: _isLoading
+            ? const CupertinoActivityIndicator()
+            : const Icon(CupertinoIcons.phone),
       ),
     );
   }
