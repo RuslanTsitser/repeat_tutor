@@ -7,60 +7,70 @@ import '../../../core/domain/models/chat.dart';
 import '../../../core/localization/generated/l10n.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
+import '../../onboarding/presentation/onboarding_chat_list_wrapper.dart';
 import '../logic/chat_list_notifier.dart';
 
 @RoutePage()
-class ChatListScreen extends ConsumerWidget {
+class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final chatNotifier = ref.watch(chatListNotifierProvider);
-    final chats = chatNotifier.state.chats;
-    final hasChats = chats.isNotEmpty;
-
-    return CupertinoPageScaffold(
-      child: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            const _Body(),
-            if (hasChats)
+  Widget build(BuildContext context) {
+    return const OnboardingChatListWrapper(
+      child: CupertinoPageScaffold(
+        child: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              _Body(),
               Positioned(
                 right: 16,
                 bottom: 16,
-                child: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () =>
-                      ref.read(createChatUseCaseProvider).execute(),
-                  child: Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF155DFC),
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.06),
-                          blurRadius: 4,
-                          offset: const Offset(0, -4),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      CupertinoIcons.add,
-                      color: CupertinoColors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
+                child: AddButton(),
               ),
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddButton extends ConsumerWidget {
+  const AddButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AddButtonWrapper(
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: () => ref.read(createChatUseCaseProvider).execute(),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            color: const Color(0xFF155DFC),
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.06),
+                blurRadius: 4,
+                offset: const Offset(0, -4),
+              ),
+            ],
+          ),
+          child: const Icon(
+            CupertinoIcons.add,
+            color: CupertinoColors.white,
+            size: 24,
+          ),
         ),
       ),
     );
@@ -142,28 +152,29 @@ class _Body extends ConsumerWidget {
         ),
         Expanded(
           child: chats.isEmpty
-              ? _EmptyState(
-                  onCreateChat: () =>
-                      ref.read(createChatUseCaseProvider).execute(),
-                )
-              : ListView.builder(
+              ? const _EmptyState()
+              : ListView.separated(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 141),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12),
                   itemCount: chats.length,
                   itemBuilder: (context, index) {
                     final chat = chats[index];
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        bottom: index < chats.length - 1 ? 12 : 0,
-                      ),
-                      child: _ChatListItem(
-                        chat: chat,
-                        onTap: () =>
-                            ref.read(openScreenUseCaseProvider).openChat(chat),
-                        onDeletePressed: () => ref
-                            .read(deleteChatUseCaseProvider)
-                            .execute(chat.chatId),
-                      ),
+                    final widget = _ChatListItem(
+                      chat: chat,
+                      onTap: () =>
+                          ref.read(openScreenUseCaseProvider).openChat(chat),
+                      onDeletePressed: () => ref
+                          .read(deleteChatUseCaseProvider)
+                          .execute(chat.chatId),
                     );
+                    if (index == 0) {
+                      return OpenChatWrapper(
+                        chat: chat,
+                        child: widget,
+                      );
+                    }
+                    return widget;
                   },
                 ),
         ),
@@ -207,7 +218,7 @@ class _ChatListItem extends StatelessWidget {
         child: Container(
           height: 82,
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: CupertinoColors.white,
             borderRadius: BorderRadius.circular(14),
@@ -271,10 +282,7 @@ class _ChatListItem extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({
-    required this.onCreateChat,
-  });
-  final VoidCallback onCreateChat;
+  const _EmptyState();
 
   @override
   Widget build(BuildContext context) {
@@ -313,33 +321,6 @@ class _EmptyState extends StatelessWidget {
                 color: Color(0xFF4A5565),
                 letterSpacing: -0.3125,
                 height: 24 / 16,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: onCreateChat,
-            child: Container(
-              width: 192,
-              height: 48,
-              decoration: BoxDecoration(
-                color: const Color(0xFF155DFC),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Center(
-                child: Text(
-                  S.of(context).startYourFirstChat,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: CupertinoColors.white,
-                    letterSpacing: -0.3125,
-                    height: 24 / 16,
-                  ),
-                ),
               ),
             ),
           ),

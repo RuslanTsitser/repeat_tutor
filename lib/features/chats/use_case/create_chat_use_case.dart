@@ -15,7 +15,7 @@ class CreateChatUseCase {
   final ProfileNotifier profileSettingsNotifier;
   final AppRouter router;
 
-  Future<void> execute() async {
+  Future<bool> execute() async {
     final state = await router.showAppBottomSheet<CreateChatState>(
       isScrollControlled: true,
       builder: (context) => const CreateChatBottomSheet(),
@@ -27,6 +27,8 @@ class CreateChatUseCase {
         topic: state.topic,
         teacherLanguage: state.teacherLanguage,
       );
+      return true;
     }
+    return false;
   }
 }
