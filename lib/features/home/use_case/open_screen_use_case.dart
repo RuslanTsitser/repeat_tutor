@@ -43,7 +43,7 @@ class OpenScreenUseCase {
       ),
     );
     if (messages.isEmpty) {
-      await addMessageUseCase.addMessage(l10n.hello);
+      await addMessageUseCase.addMessage(l10n.hello, addFirstMessage: false);
     }
   }
 }

@@ -22,16 +22,21 @@ class AddMessageUseCase {
   final AudioService audioService;
   final GptService gptService;
 
-  Future<void> addMessage(String message) async {
+  Future<void> addMessage(
+    String message, {
+    bool addFirstMessage = true,
+  }) async {
     final lastGptResponseId = chatNotifier.state.messages
         .lastWhereOrNull((message) => !message.isMe)
         ?.gptResponseId;
-    await chatRepository.addMessage(
-      message: message,
-      conversationContinue: null,
-      gptResponseId: null,
-      chat: chatNotifier.state.chat,
-    );
+    if (addFirstMessage) {
+      await chatRepository.addMessage(
+        message: message,
+        conversationContinue: null,
+        gptResponseId: null,
+        chat: chatNotifier.state.chat,
+      );
+    }
     final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
       systemPrompt: chatNotifier.state.chat.chattyPrompt,
       text: message,
