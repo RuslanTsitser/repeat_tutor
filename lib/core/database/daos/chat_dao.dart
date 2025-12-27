@@ -22,7 +22,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   }
 
   /// Создать новый чат
-  Future<void> insertChat({
+  Future<int> insertChat({
     required String language,
     required String level,
     required String topic,

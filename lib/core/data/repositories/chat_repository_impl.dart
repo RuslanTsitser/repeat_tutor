@@ -35,18 +35,23 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<void> createChat({
+  Future<model.Chat> createChat({
     required Language language,
     required DifficultyLevel level,
     required String topic,
     required Language teacherLanguage,
   }) async {
-    await _database.chatDao.insertChat(
+    final chatId = await _database.chatDao.insertChat(
       language: language.value,
       level: level.value,
       topic: topic,
       teacherLanguage: teacherLanguage.value,
     );
+    final chatRow = await _database.chatDao.getChatById(chatId);
+    if (chatRow == null) {
+      throw Exception('Chat not found');
+    }
+    return ChatDbMappers.toDomain(chatRow);
   }
 
   @override

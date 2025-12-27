@@ -9,7 +9,7 @@ abstract interface class ChatRepository {
   Future<List<Chat>> getChats();
 
   /// Создать новый чат
-  Future<void> createChat({
+  Future<Chat> createChat({
     required Language language,
     required DifficultyLevel level,
     required String topic,
