@@ -87,6 +87,6 @@ final l10nProvider = Provider<S>((ref) {
   return S.current;
 });
 
-final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
+final localStorageProvider = Provider<LocalStorageService>((ref) {
   return LocalStorageService.impl();
 });

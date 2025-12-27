@@ -15,8 +15,8 @@ class InitializeUseCase {
     final abTestService = ref.watch(abTestServiceProvider);
     final homeScreenNotifier = ref.watch(homeScreenNotifierProvider);
     final profileSettingsUseCase = ref.watch(profileSettingsUseCaseProvider);
-    final localStorageService = ref.watch(localStorageServiceProvider);
-    await localStorageService.init();
+    final localStorage = ref.watch(localStorageProvider);
+    await localStorage.init();
     await abTestService.init();
     await profileSettingsUseCase.loadSettings();
     await profileSettingsUseCase.loadIsPremium();

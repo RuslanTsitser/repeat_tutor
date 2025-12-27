@@ -12,7 +12,7 @@ class ProfileSettingsUseCase {
   final Ref ref;
 
   Future<void> loadSettings() async {
-    final localStorageService = ref.read(localStorageServiceProvider);
+    final localStorageService = ref.read(localStorageProvider);
     final profileNotifier = ref.read(profileProvider);
     try {
       final savedTeacherLanguageValue = await localStorageService
@@ -59,7 +59,7 @@ class ProfileSettingsUseCase {
   }
 
   Future<void> setDefaultTeacherLanguage(Language language) async {
-    final localStorageService = ref.read(localStorageServiceProvider);
+    final localStorageService = ref.read(localStorageProvider);
     await localStorageService.setValue<String>(
       StorageKeys.defaultTeacherLanguageKey,
       language.value,
@@ -71,7 +71,7 @@ class ProfileSettingsUseCase {
   }
 
   Future<void> setDefaultLanguageToLearn(Language language) async {
-    final localStorageService = ref.read(localStorageServiceProvider);
+    final localStorageService = ref.read(localStorageProvider);
     await localStorageService.setValue<String>(
       StorageKeys.defaultLanguageToLearnKey,
       language.value,
@@ -79,7 +79,7 @@ class ProfileSettingsUseCase {
   }
 
   Future<void> setDefaultLanguage(Language language) async {
-    final localStorageService = ref.read(localStorageServiceProvider);
+    final localStorageService = ref.read(localStorageProvider);
     await localStorageService.setValue<String>(
       StorageKeys.defaultLanguageKey,
       language.value,
