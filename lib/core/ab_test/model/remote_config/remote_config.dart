@@ -3,25 +3,19 @@ import 'package:ab_test_service/ab_test_service.dart';
 
 class RemoteConfig extends BaseRemoteConfig {
   const RemoteConfig({
-    this.mainProduct,
-    this.parentMainProduct,
     this.product1,
     this.parentProduct1,
     this.product2,
     this.parentProduct2,
     this.product3,
     this.parentProduct3,
+    this.product4,
+    this.parentProduct4,
     super.onboarding,
     super.paywall,
     super.onboardingPaywall,
     super.promoOfferId,
   });
-
-  /// String, название продукта product1
-  final String? mainProduct;
-
-  /// String, продукт, от которого считаем скидку для [mainProduct]
-  final String? parentMainProduct;
 
   /// String, название продукта product1
   final String? product1;
@@ -41,17 +35,23 @@ class RemoteConfig extends BaseRemoteConfig {
   /// String, продукт, от которого считаем скидку для [product3]
   final String? parentProduct3;
 
+  /// String, название продукта product4
+  final String? product4;
+
+  /// String, продукт, от которого считаем скидку для [product4]
+  final String? parentProduct4;
+
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'mainProduct': mainProduct,
-      'parentMainProduct': parentMainProduct,
       'product1': product1,
       'parentProduct1': parentProduct1,
       'product2': product2,
       'parentProduct2': parentProduct2,
       'product3': product3,
       'parentProduct3': parentProduct3,
+      'product4': product4,
+      'parentProduct4': parentProduct4,
       'onboarding': onboarding,
       'paywall': paywall,
       'onboardingPaywall': onboardingPaywall,
@@ -71,12 +71,6 @@ class RemoteConfig extends BaseRemoteConfig {
       promoOfferId: map['promoOfferId'] != null
           ? map['promoOfferId'] as String
           : null,
-      mainProduct: map['mainProduct'] != null
-          ? map['mainProduct'] as String
-          : null,
-      parentMainProduct: map['parentMainProduct'] != null
-          ? map['parentMainProduct'] as String
-          : null,
       product1: map['product1'] != null ? map['product1'] as String : null,
       parentProduct1: map['parentProduct1'] != null
           ? map['parentProduct1'] as String
@@ -89,36 +83,40 @@ class RemoteConfig extends BaseRemoteConfig {
       parentProduct3: map['parentProduct3'] != null
           ? map['parentProduct3'] as String
           : null,
+      product4: map['product4'] != null ? map['product4'] as String : null,
+      parentProduct4: map['parentProduct4'] != null
+          ? map['parentProduct4'] as String
+          : null,
     );
   }
 
   RemoteConfig copyWith({
-    String? mainProduct,
-    String? parentMainProduct,
     String? product1,
     String? parentProduct1,
     String? product2,
     String? parentProduct2,
+    String? product3,
+    String? parentProduct3,
+    String? product4,
+    String? parentProduct4,
     String? onboarding,
     String? paywall,
     String? onboardingPaywall,
     String? promoOfferId,
-    String? product3,
-    String? parentProduct3,
   }) {
     return RemoteConfig(
-      mainProduct: mainProduct ?? this.mainProduct,
-      parentMainProduct: parentMainProduct ?? this.parentMainProduct,
       product1: product1 ?? this.product1,
       parentProduct1: parentProduct1 ?? this.parentProduct1,
       product2: product2 ?? this.product2,
       parentProduct2: parentProduct2 ?? this.parentProduct2,
+      product3: product3 ?? this.product3,
+      parentProduct3: parentProduct3 ?? this.parentProduct3,
+      product4: product4 ?? this.product4,
+      parentProduct4: parentProduct4 ?? this.parentProduct4,
       onboarding: onboarding ?? this.onboarding,
       paywall: paywall ?? this.paywall,
       onboardingPaywall: onboardingPaywall ?? this.onboardingPaywall,
       promoOfferId: promoOfferId ?? this.promoOfferId,
-      product3: product3 ?? this.product3,
-      parentProduct3: parentProduct3 ?? this.parentProduct3,
     );
   }
 }

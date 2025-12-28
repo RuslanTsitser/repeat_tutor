@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 
 import '../logging/app_logger.dart' as logger;
 import 'enum/placement_type.dart';
+import 'mixin/check_user_premium_expanded.dart';
 import 'model/remote_config/remote_config.dart';
 
 /// {@template ab_test_ap_hud}
@@ -22,7 +23,7 @@ final class AbTestService
         ProductMixin,
         RemoteConfigMixin<RemoteConfig>,
         LogPaywallMixin,
-        UserPremiumMixin,
+        CheckUserPremiumExpanded,
         UserIdMixin,
         PurchaseMixin,
         ApphudUserPropertyMixin,
@@ -177,7 +178,7 @@ final class AbTestService
       generalPaywall?.products?.firstWhereOrNull(
         (element) =>
             element.name ==
-            remoteConfig(PlacementType.placementGeneral).mainProduct,
+            remoteConfig(PlacementType.placementGeneral).product1,
       );
 
   @override
