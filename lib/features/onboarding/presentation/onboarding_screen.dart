@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../../paywall/presentation/paywall_screen.dart';
 import 'ai_generated_pages/empathy_screen.dart';
 import 'ai_generated_pages/method_screen.dart';
 import 'ai_generated_pages/result_screen.dart';
@@ -21,6 +23,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   void initState() {
+    ref
+        .read(onboardingNotifierProvider)
+        .setInitialState(
+          totalSteps: 4,
+          onboardingName: 'default',
+        );
     onboardingNotifier.addListener(listener);
     super.initState();
   }
@@ -64,6 +72,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   onNext: () {
                     ref.read(onboardingNotifierProvider).nextStep();
                   },
+                ),
+                const PaywallScreen(
+                  placement: PlacementType.placementOnboarding,
                 ),
               ],
             ),
