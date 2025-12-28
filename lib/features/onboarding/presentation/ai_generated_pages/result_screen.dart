@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../core/localization/generated/l10n.dart';
+
 class ResultScreen extends StatelessWidget {
   final VoidCallback onNext;
 
@@ -145,7 +147,7 @@ class ResultScreen extends StatelessWidget {
                 Column(
                       children: [
                         Text(
-                          'Gain Real Confidence',
+                          S.of(context).gainRealConfidence,
                           style: TextStyle(
                             fontSize: titleFontSize,
                             fontWeight: FontWeight.bold,
@@ -153,7 +155,9 @@ class ResultScreen extends StatelessWidget {
                         ),
                         SizedBox(height: spacing),
                         Text(
-                          'Transform from hesitant to natural speaker. Feel the progress with every session.',
+                          S
+                              .of(context)
+                              .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: bodyFontSize,
@@ -184,7 +188,7 @@ class ResultScreen extends StatelessWidget {
                 shadowColor: const Color(0xFF5856D6).withOpacity(0.4),
               ),
               child: Text(
-                'Start Your Journey',
+                S.of(context).startYourJourney,
                 style: TextStyle(
                   fontSize: buttonFontSize,
                   fontWeight: FontWeight.w600,

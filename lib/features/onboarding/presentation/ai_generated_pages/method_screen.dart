@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../core/localization/generated/l10n.dart';
+
 class MethodScreen extends StatelessWidget {
   final VoidCallback onNext;
 
@@ -137,16 +139,18 @@ class MethodScreen extends StatelessWidget {
                 Column(
                       children: [
                         Text(
-                          'The Repetition Loop',
+                          S.of(context).theRepetitionLoop,
                           style: TextStyle(
                             fontSize: titleFontSize,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'San Francisco',
+                            fontFamily: 'SF Pro Text',
                           ),
                         ),
                         SizedBox(height: spacing),
                         Text(
-                          "Listen, speak, get gentle AI feedback, and repeat. It's the natural way to fluency.",
+                          S
+                              .of(context)
+                              .listenSpeakGetGentleAiFeedbackAndRepeatItsThe,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: bodyFontSize,
@@ -158,10 +162,14 @@ class MethodScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildTag('Personalized', tagFontSize, screenWidth),
+                            _buildTag(
+                              S.of(context).personalized,
+                              tagFontSize,
+                              screenWidth,
+                            ),
                             SizedBox(width: screenWidth * 0.02),
                             _buildTag(
-                              'Pressure-free',
+                              S.of(context).pressurefree,
                               tagFontSize,
                               screenWidth,
                             ),
@@ -191,7 +199,7 @@ class MethodScreen extends StatelessWidget {
                 shadowColor: const Color(0xFF5856D6).withOpacity(0.4),
               ),
               child: Text(
-                'Next',
+                S.of(context).nextButton,
                 style: TextStyle(
                   fontSize: buttonFontSize,
                   fontWeight: FontWeight.w600,

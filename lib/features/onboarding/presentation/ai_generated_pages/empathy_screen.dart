@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../core/localization/generated/l10n.dart';
+
 // Цвета из вашего tailwind config
 class AppColors {
   static const indigo = Color(0xFF5856D6);
@@ -20,34 +22,34 @@ class EmpathyScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
-    
+
     // Адаптивные отступы
     final horizontalPadding = screenWidth * 0.08; // 8% от ширины экрана
     final verticalPadding = screenHeight * 0.05; // 5% от высоты экрана
-    
+
     // Адаптивные размеры иллюстрации
     final illustrationSize = (screenWidth * 0.65).clamp(200.0, 280.0);
     final innerCircleSize = illustrationSize * 0.6;
-    
+
     // Адаптивные размеры элементов
     final aiFigureSize = illustrationSize * 0.375;
     final characterBoxSize = illustrationSize * 0.3125;
-    
+
     // Адаптивные размеры шрифтов
     final titleFontSize = (screenWidth * 0.075).clamp(24.0, 32.0);
     final bodyFontSize = (screenWidth * 0.045).clamp(16.0, 20.0);
     final buttonFontSize = (screenWidth * 0.042).clamp(15.0, 19.0);
     final tagFontSize = (screenWidth * 0.03).clamp(11.0, 13.0);
-    
+
     // Адаптивные размеры иконок
     final aiIconSize = aiFigureSize * 0.42;
     final characterIconSize = characterBoxSize * 0.4;
     final tagIconSize = tagFontSize;
-    
+
     // Адаптивные отступы между элементами
     final spacing = screenHeight * 0.02;
     final largeSpacing = screenHeight * 0.04;
-    
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
@@ -199,7 +201,7 @@ class EmpathyScreen extends StatelessWidget {
                               ),
                               SizedBox(width: screenWidth * 0.02),
                               Text(
-                                'Safe Space',
+                                S.of(context).safeSpace,
                                 style: TextStyle(
                                   color: AppColors.indigo,
                                   fontWeight: FontWeight.w600,
@@ -217,16 +219,18 @@ class EmpathyScreen extends StatelessWidget {
                               fontSize: titleFontSize,
                               color: Colors.black,
                               height: 1.1,
-                              fontFamily: 'San Francisco',
+                              fontFamily: 'SF Pro Text',
                             ),
                             children: [
                               TextSpan(
-                                text: 'Scared to speak?\n',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                text: S.of(context).scaredToSpeak,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               TextSpan(
-                                text: "That's totally normal.",
-                                style: TextStyle(
+                                text: S.of(context).thatsTotallyNormal,
+                                style: const TextStyle(
                                   color: AppColors.textGray,
                                   fontWeight: FontWeight.normal,
                                 ),
@@ -236,7 +240,9 @@ class EmpathyScreen extends StatelessWidget {
                         ),
                         SizedBox(height: spacing),
                         Text(
-                          'Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.',
+                          S
+                              .of(context)
+                              .practiceWithoutJudgmentMakeMistakesLearnAndGrowInA,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: bodyFontSize,
@@ -268,7 +274,7 @@ class EmpathyScreen extends StatelessWidget {
                 elevation: 8,
               ),
               child: Text(
-                'Continue',
+                S.of(context).continueButton,
                 style: TextStyle(
                   fontSize: buttonFontSize,
                   fontWeight: FontWeight.w600,
