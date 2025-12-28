@@ -9,6 +9,8 @@ class RemoteConfig extends BaseRemoteConfig {
     this.parentProduct1,
     this.product2,
     this.parentProduct2,
+    this.product3,
+    this.parentProduct3,
     super.onboarding,
     super.paywall,
     super.onboardingPaywall,
@@ -33,6 +35,12 @@ class RemoteConfig extends BaseRemoteConfig {
   /// String, продукт, от которого считаем скидку для [product2]
   final String? parentProduct2;
 
+  /// String, название продукта product3
+  final String? product3;
+
+  /// String, продукт, от которого считаем скидку для [product3]
+  final String? parentProduct3;
+
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -42,6 +50,8 @@ class RemoteConfig extends BaseRemoteConfig {
       'parentProduct1': parentProduct1,
       'product2': product2,
       'parentProduct2': parentProduct2,
+      'product3': product3,
+      'parentProduct3': parentProduct3,
       'onboarding': onboarding,
       'paywall': paywall,
       'onboardingPaywall': onboardingPaywall,
@@ -75,6 +85,10 @@ class RemoteConfig extends BaseRemoteConfig {
       parentProduct2: map['parentProduct2'] != null
           ? map['parentProduct2'] as String
           : null,
+      product3: map['product3'] != null ? map['product3'] as String : null,
+      parentProduct3: map['parentProduct3'] != null
+          ? map['parentProduct3'] as String
+          : null,
     );
   }
 
@@ -89,6 +103,8 @@ class RemoteConfig extends BaseRemoteConfig {
     String? paywall,
     String? onboardingPaywall,
     String? promoOfferId,
+    String? product3,
+    String? parentProduct3,
   }) {
     return RemoteConfig(
       mainProduct: mainProduct ?? this.mainProduct,
@@ -101,6 +117,8 @@ class RemoteConfig extends BaseRemoteConfig {
       paywall: paywall ?? this.paywall,
       onboardingPaywall: onboardingPaywall ?? this.onboardingPaywall,
       promoOfferId: promoOfferId ?? this.promoOfferId,
+      product3: product3 ?? this.product3,
+      parentProduct3: parentProduct3 ?? this.parentProduct3,
     );
   }
 }
