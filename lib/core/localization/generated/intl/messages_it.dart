@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("Annulla"),
     "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
     "connected": MessageLookupByLibrary.simpleMessage("Connesso"),
+    "continueButton": MessageLookupByLibrary.simpleMessage("Continua"),
     "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Disconnesso"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
@@ -46,19 +47,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sport"),
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Viaggio"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Lavoro"),
+    "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
+      "Acquista vera fiducia",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("Ciao!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Lingua da imparare",
     ),
     "level": MessageLookupByLibrary.simpleMessage("Livello"),
+    "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
+        MessageLookupByLibrary.simpleMessage(
+          "Ascolta, parla, ricevi feedback gentile dall\'IA e ripeti. È il modo naturale per raggiungere la fluidità.",
+        ),
     "newChat": MessageLookupByLibrary.simpleMessage("Nuovo chat"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("Avanti"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Nessun chat"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Nessun messaggio"),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Oppure invia un messaggio audio",
     ),
+    "personalized": MessageLookupByLibrary.simpleMessage("Personalizzato"),
+    "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
+        MessageLookupByLibrary.simpleMessage(
+          "Pratica senza giudizio. Fai errori, impara e cresci in uno spazio privato progettato per te.",
+        ),
+    "pressurefree": MessageLookupByLibrary.simpleMessage("Senza pressione"),
     "profile": MessageLookupByLibrary.simpleMessage("Profilo"),
     "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
+    "safeSpace": MessageLookupByLibrary.simpleMessage("Spazio sicuro"),
+    "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Paura di parlare?"),
     "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
     "startHere": MessageLookupByLibrary.simpleMessage("Inizia qui"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
@@ -68,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Inizia la tua prima conversazione e inizia a praticare un nuovo linguaggio",
         ),
+    "startYourJourney": MessageLookupByLibrary.simpleMessage(
+      "Inizia il tuo viaggio",
+    ),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Tocca per creare una nuova chat",
     ),
@@ -77,9 +97,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Lingua del professore",
     ),
+    "thatsTotallyNormal": MessageLookupByLibrary.simpleMessage(
+      "È assolutamente normale.",
+    ),
+    "theRepetitionLoop": MessageLookupByLibrary.simpleMessage(
+      "Il ciclo di ripetizione",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("Oggi"),
     "topic": MessageLookupByLibrary.simpleMessage("Argomento"),
     "total": MessageLookupByLibrary.simpleMessage("Totale"),
+    "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
+        MessageLookupByLibrary.simpleMessage(
+          "Trasformati da parlante esitante a parlante naturale. Senti i progressi con ogni sessione.",
+        ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Lingua del tutor"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Scrivi il tuo messaggio...",

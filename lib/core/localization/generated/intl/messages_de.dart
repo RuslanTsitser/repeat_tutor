@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
     "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
     "connected": MessageLookupByLibrary.simpleMessage("Verbunden"),
+    "continueButton": MessageLookupByLibrary.simpleMessage("Weiter"),
     "delete": MessageLookupByLibrary.simpleMessage("Löschen"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Getrennt"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
@@ -42,19 +43,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sport"),
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Reisen"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Arbeit"),
+    "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
+      "Echte Selbstvertrauen gewinnen",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("Hallo!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Sprache zu lernen",
     ),
     "level": MessageLookupByLibrary.simpleMessage("Schwierigkeitsgrad"),
+    "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
+        MessageLookupByLibrary.simpleMessage(
+          "Hören Sie zu, sprechen Sie, erhalten Sie sanftes KI-Feedback und wiederholen Sie. Es ist der natürliche Weg zur Sprachgewandtheit.",
+        ),
     "newChat": MessageLookupByLibrary.simpleMessage("Neuer Chat"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("Weiter"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Keine Chats"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Keine Nachrichten"),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Oder senden Sie eine Sprachnachricht",
     ),
+    "personalized": MessageLookupByLibrary.simpleMessage("Personalisierte"),
+    "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
+        MessageLookupByLibrary.simpleMessage(
+          "Üben Sie ohne Urteil. Machen Sie Fehler, lernen Sie und wachsen Sie in einem privaten Raum, der für Sie geschaffen wurde.",
+        ),
+    "pressurefree": MessageLookupByLibrary.simpleMessage("Druckfrei"),
     "profile": MessageLookupByLibrary.simpleMessage("Profil"),
     "retry": MessageLookupByLibrary.simpleMessage("Wiederholen"),
+    "safeSpace": MessageLookupByLibrary.simpleMessage("Sicherer Raum"),
+    "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Angst zu sprechen?"),
     "settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
     "startHere": MessageLookupByLibrary.simpleMessage("Hier beginnen"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
@@ -64,6 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Starte deine erste Konversation und beginne mit dem Üben einer neuen Sprache",
         ),
+    "startYourJourney": MessageLookupByLibrary.simpleMessage(
+      "Beginnen Sie Ihre Reise",
+    ),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Tippen Sie, um einen neuen Chat zu erstellen",
     ),
@@ -73,9 +93,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Sprache des Lehrers",
     ),
+    "thatsTotallyNormal": MessageLookupByLibrary.simpleMessage(
+      "Das ist völlig normal.",
+    ),
+    "theRepetitionLoop": MessageLookupByLibrary.simpleMessage(
+      "Die Wiederholungsschleife",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("Heute"),
     "topic": MessageLookupByLibrary.simpleMessage("Thema"),
     "total": MessageLookupByLibrary.simpleMessage("Gesamt"),
+    "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
+        MessageLookupByLibrary.simpleMessage(
+          "Verwandeln Sie sich von einem zögerlichen zu einem natürlichen Sprecher. Spüren Sie den Fortschritt bei jeder Sitzung.",
+        ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Sprache des Tutors"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Gib deine Nachricht ein...",

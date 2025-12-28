@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
     "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
     "connected": MessageLookupByLibrary.simpleMessage("Connecté"),
+    "continueButton": MessageLookupByLibrary.simpleMessage("Continuer"),
     "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Déconnecté"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
@@ -44,19 +45,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Sport"),
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Voyage"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Travail"),
+    "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
+      "Gagnez une vraie confiance",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("Bonjour!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Langage à apprendre",
     ),
     "level": MessageLookupByLibrary.simpleMessage("Niveau"),
+    "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
+        MessageLookupByLibrary.simpleMessage(
+          "Écoutez, parlez, recevez des commentaires doux de l\'IA et répétez. C\'est le moyen naturel d\'atteindre la fluidité.",
+        ),
     "newChat": MessageLookupByLibrary.simpleMessage("Nouveau chat"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("Suivant"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Aucun chat"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Aucun message"),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Ou envoyez un message audio",
     ),
+    "personalized": MessageLookupByLibrary.simpleMessage("Personnalisé"),
+    "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
+        MessageLookupByLibrary.simpleMessage(
+          "Pratiquez sans jugement. Faites des erreurs, apprenez et grandissez dans un espace privé conçu pour vous.",
+        ),
+    "pressurefree": MessageLookupByLibrary.simpleMessage("Sans pression"),
     "profile": MessageLookupByLibrary.simpleMessage("Profil"),
     "retry": MessageLookupByLibrary.simpleMessage("Réessayer"),
+    "safeSpace": MessageLookupByLibrary.simpleMessage("Espace sûr"),
+    "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Peur de parler ?"),
     "settings": MessageLookupByLibrary.simpleMessage("Paramètres"),
     "startHere": MessageLookupByLibrary.simpleMessage("Commencez ici"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
@@ -66,6 +83,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Commencez votre première conversation et commencez à pratiquer un nouveau langage",
         ),
+    "startYourJourney": MessageLookupByLibrary.simpleMessage(
+      "Commencez votre voyage",
+    ),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Appuyez pour créer un nouveau chat",
     ),
@@ -75,9 +95,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Langage du professeur",
     ),
+    "thatsTotallyNormal": MessageLookupByLibrary.simpleMessage(
+      "C\'est tout à fait normal.",
+    ),
+    "theRepetitionLoop": MessageLookupByLibrary.simpleMessage(
+      "La boucle de répétition",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("Aujourd\'hui"),
     "topic": MessageLookupByLibrary.simpleMessage("Thème"),
     "total": MessageLookupByLibrary.simpleMessage("Total"),
+    "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
+        MessageLookupByLibrary.simpleMessage(
+          "Transformez-vous d\'un locuteur hésitant en locuteur naturel. Ressentez les progrès à chaque session.",
+        ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Langue du tuteur"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Écrivez votre message...",

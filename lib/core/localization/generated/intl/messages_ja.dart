@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
     "chats": MessageLookupByLibrary.simpleMessage("チャット"),
     "connected": MessageLookupByLibrary.simpleMessage("接続中"),
+    "continueButton": MessageLookupByLibrary.simpleMessage("続ける"),
     "delete": MessageLookupByLibrary.simpleMessage("削除"),
     "disconnected": MessageLookupByLibrary.simpleMessage("切断中"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
@@ -42,17 +43,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicSports": MessageLookupByLibrary.simpleMessage("スポーツ"),
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("旅行"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("仕事"),
+    "gainRealConfidence": MessageLookupByLibrary.simpleMessage("本当の自信を得る"),
     "hello": MessageLookupByLibrary.simpleMessage("こんにちは！"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
     "level": MessageLookupByLibrary.simpleMessage("レベル"),
+    "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
+        MessageLookupByLibrary.simpleMessage(
+          "聞いて、話して、優しいAIフィードバックを受け取り、繰り返してください。流暢さへの自然な道です。",
+        ),
     "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("次へ"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
     "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "または音声メッセージを送信",
     ),
+    "personalized": MessageLookupByLibrary.simpleMessage("パーソナライズ"),
+    "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
+        MessageLookupByLibrary.simpleMessage(
+          "判断なしで練習してください。間違いを犯し、学び、あなたのために設計されたプライベートな空間で成長してください。",
+        ),
+    "pressurefree": MessageLookupByLibrary.simpleMessage("プレッシャーなし"),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
+    "safeSpace": MessageLookupByLibrary.simpleMessage("安全な空間"),
+    "scaredToSpeak": MessageLookupByLibrary.simpleMessage("話すのが怖いですか？"),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
     "startHere": MessageLookupByLibrary.simpleMessage("ここから始める"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
@@ -60,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "startYourFirstConversationAndBeginPracticingANewLanguage":
         MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
+    "startYourJourney": MessageLookupByLibrary.simpleMessage("あなたの旅を始める"),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "タップして新しいチャットを作成",
     ),
@@ -67,9 +83,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "タップしてテキストメッセージを入力",
     ),
     "teacherLanguage": MessageLookupByLibrary.simpleMessage("先生の言語"),
+    "thatsTotallyNormal": MessageLookupByLibrary.simpleMessage("それは全く普通のことです。"),
+    "theRepetitionLoop": MessageLookupByLibrary.simpleMessage("反復ループ"),
     "today": MessageLookupByLibrary.simpleMessage("今日"),
     "topic": MessageLookupByLibrary.simpleMessage("トピック"),
     "total": MessageLookupByLibrary.simpleMessage("合計"),
+    "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
+        MessageLookupByLibrary.simpleMessage(
+          "ためらいがちな話者から自然な話者へと変身してください。セッションごとに進歩を感じてください。",
+        ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("チューターの言語"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "メッセージを入力してください...",

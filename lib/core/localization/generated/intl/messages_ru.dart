@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
     "chats": MessageLookupByLibrary.simpleMessage("Чаты"),
     "connected": MessageLookupByLibrary.simpleMessage("Подключен"),
+    "continueButton": MessageLookupByLibrary.simpleMessage("Продолжить"),
     "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
     "disconnected": MessageLookupByLibrary.simpleMessage("Отключен"),
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
@@ -46,19 +47,37 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicSports": MessageLookupByLibrary.simpleMessage("Спорт"),
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("Путешествия"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("Работа"),
+    "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
+      "Обретите настоящую уверенность",
+    ),
     "hello": MessageLookupByLibrary.simpleMessage("Привет!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Язык для изучения",
     ),
     "level": MessageLookupByLibrary.simpleMessage("Уровень"),
+    "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
+        MessageLookupByLibrary.simpleMessage(
+          "Слушайте, говорите, получайте мягкую обратную связь от ИИ и повторяйте. Это естественный путь к беглости.",
+        ),
     "newChat": MessageLookupByLibrary.simpleMessage("Новый чат"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("Далее"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Нет чатов"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Нет сообщений"),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Или отправьте голосовое сообщение",
     ),
+    "personalized": MessageLookupByLibrary.simpleMessage("Персонализированный"),
+    "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
+        MessageLookupByLibrary.simpleMessage(
+          "Практикуйтесь без осуждения. Делайте ошибки, учитесь и развивайтесь в частном пространстве, созданном для вас.",
+        ),
+    "pressurefree": MessageLookupByLibrary.simpleMessage("Без давления"),
     "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
     "retry": MessageLookupByLibrary.simpleMessage("Повторить"),
+    "safeSpace": MessageLookupByLibrary.simpleMessage(
+      "Безопасное пространство",
+    ),
+    "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Боитесь говорить?"),
     "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
     "startHere": MessageLookupByLibrary.simpleMessage("Начните здесь"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
@@ -68,6 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Начните свою первую беседу и начните практиковать новый язык",
         ),
+    "startYourJourney": MessageLookupByLibrary.simpleMessage(
+      "Начните свой путь",
+    ),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Нажмите, чтобы создать новый чат",
     ),
@@ -77,9 +99,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "teacherLanguage": MessageLookupByLibrary.simpleMessage(
       "Язык преподавателя",
     ),
+    "thatsTotallyNormal": MessageLookupByLibrary.simpleMessage(
+      "Это совершенно нормально.",
+    ),
+    "theRepetitionLoop": MessageLookupByLibrary.simpleMessage(
+      "Цикл повторения",
+    ),
     "today": MessageLookupByLibrary.simpleMessage("Сегодня"),
     "topic": MessageLookupByLibrary.simpleMessage("Тема"),
     "total": MessageLookupByLibrary.simpleMessage("Всего"),
+    "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
+        MessageLookupByLibrary.simpleMessage(
+          "Превратитесь из неуверенного в естественного говорящего. Ощущайте прогресс с каждым занятием.",
+        ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Язык преподавателя"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Введите ваше сообщение...",

@@ -37,5 +37,18 @@
   "tapToCreateANewChat": "Appuyez pour créer un nouveau chat",
   "tapToWriteATextMessage": "Appuyez pour écrire un message texte",
   "youCanAlsoPracticeSpeakingWithAVoiceCall": "Vous pouvez également pratiquer la parole avec un appel vocal",
-  "orSendAnAudioMessage": "Ou envoyez un message audio"
+  "orSendAnAudioMessage": "Ou envoyez un message audio",
+  "safeSpace": "Espace sûr",
+  "scaredToSpeak": "Peur de parler ?",
+  "thatsTotallyNormal": "C'est tout à fait normal.",
+  "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA": "Pratiquez sans jugement. Faites des erreurs, apprenez et grandissez dans un espace privé conçu pour vous.",
+  "continueButton": "Continuer",
+  "theRepetitionLoop": "La boucle de répétition",
+  "listenSpeakGetGentleAiFeedbackAndRepeatItsThe": "Écoutez, parlez, recevez des commentaires doux de l'IA et répétez. C'est le moyen naturel d'atteindre la fluidité.",
+  "personalized": "Personnalisé",
+  "pressurefree": "Sans pression",
+  "nextButton": "Suivant",
+  "gainRealConfidence": "Gagnez une vraie confiance",
+  "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "Transformez-vous d'un locuteur hésitant en locuteur naturel. Ressentez les progrès à chaque session.",
+  "startYourJourney": "Commencez votre voyage"
 }

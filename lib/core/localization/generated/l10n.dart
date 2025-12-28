@@ -353,6 +353,121 @@ class S {
       args: [],
     );
   }
+
+  /// `Safe Space`
+  String get safeSpace {
+    return Intl.message('Safe Space', name: 'safeSpace', desc: '', args: []);
+  }
+
+  /// `Scared to speak?`
+  String get scaredToSpeak {
+    return Intl.message(
+      'Scared to speak?',
+      name: 'scaredToSpeak',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `That's totally normal.`
+  String get thatsTotallyNormal {
+    return Intl.message(
+      'That\'s totally normal.',
+      name: 'thatsTotallyNormal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.`
+  String get practiceWithoutJudgmentMakeMistakesLearnAndGrowInA {
+    return Intl.message(
+      'Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.',
+      name: 'practiceWithoutJudgmentMakeMistakesLearnAndGrowInA',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continueButton {
+    return Intl.message('Continue', name: 'continueButton', desc: '', args: []);
+  }
+
+  /// `The Repetition Loop`
+  String get theRepetitionLoop {
+    return Intl.message(
+      'The Repetition Loop',
+      name: 'theRepetitionLoop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listen, speak, get gentle AI feedback, and repeat. It's the natural way to fluency.`
+  String get listenSpeakGetGentleAiFeedbackAndRepeatItsThe {
+    return Intl.message(
+      'Listen, speak, get gentle AI feedback, and repeat. It\'s the natural way to fluency.',
+      name: 'listenSpeakGetGentleAiFeedbackAndRepeatItsThe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personalized`
+  String get personalized {
+    return Intl.message(
+      'Personalized',
+      name: 'personalized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure-free`
+  String get pressurefree {
+    return Intl.message(
+      'Pressure-free',
+      name: 'pressurefree',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get nextButton {
+    return Intl.message('Next', name: 'nextButton', desc: '', args: []);
+  }
+
+  /// `Gain Real Confidence`
+  String get gainRealConfidence {
+    return Intl.message(
+      'Gain Real Confidence',
+      name: 'gainRealConfidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transform from hesitant to natural speaker. Feel the progress with every session.`
+  String get transformFromHesitantToNaturalSpeakerFeelTheProgressWith {
+    return Intl.message(
+      'Transform from hesitant to natural speaker. Feel the progress with every session.',
+      name: 'transformFromHesitantToNaturalSpeakerFeelTheProgressWith',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Your Journey`
+  String get startYourJourney {
+    return Intl.message(
+      'Start Your Journey',
+      name: 'startYourJourney',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
