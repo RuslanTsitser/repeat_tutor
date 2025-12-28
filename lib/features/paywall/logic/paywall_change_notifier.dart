@@ -1,13 +1,12 @@
-import 'package:ab_test_service/ab_test_service.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/ab_test/enum/product_type.dart';
 
 class PaywallChangeNotifier extends ChangeNotifier {
-  final AbTestService abTestService;
-  PaywallChangeNotifier({required this.abTestService});
+  PaywallChangeNotifier({required this.placement});
+  final PlacementType placement;
+
   PaywallState _state = PaywallState.initial();
   PaywallState get state => _state;
 
@@ -15,32 +14,29 @@ class PaywallChangeNotifier extends ChangeNotifier {
     _state = value;
     notifyListeners();
   }
-
-  PaywallProduct paywallProduct(ProductType productType) {
-    return abTestService.paywallProduct(
-      state.placementType,
-      productType,
-      config: abTestService.remoteConfig(state.placementType),
-    );
-  }
 }
 
 class PaywallState {
   factory PaywallState.initial() {
     return const PaywallState(
-      placementType: PlacementType.placementGeneral,
+      idPurchasing: false,
+      selectedProductType: null,
     );
   }
   const PaywallState({
-    required this.placementType,
+    required this.idPurchasing,
+    required this.selectedProductType,
   });
-  final PlacementType placementType;
+  final bool idPurchasing;
+  final ProductType? selectedProductType;
 
   PaywallState copyWith({
-    PlacementType? placementType,
+    bool? idPurchasing,
+    ProductType? selectedProductType,
   }) {
     return PaywallState(
-      placementType: placementType ?? this.placementType,
+      idPurchasing: idPurchasing ?? this.idPurchasing,
+      selectedProductType: selectedProductType ?? this.selectedProductType,
     );
   }
 }

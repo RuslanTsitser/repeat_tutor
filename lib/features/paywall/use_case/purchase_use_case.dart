@@ -1,6 +1,7 @@
 import 'package:ab_test_service/ab_test_service/model/user_premium_source.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/ab_test/enum/product_type.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
@@ -12,29 +13,38 @@ class PurchaseUseCase {
   });
   final Ref ref;
 
-  Future<void> purchase({required ProductType productType}) async {
+  Future<void> purchase({
+    required PlacementType placement,
+    required ProductType productType,
+  }) async {
     final abTestService = ref.read(abTestServiceProvider);
-    final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
+    final paywallChangeNotifier = ref.read(
+      paywallChangeNotifierProvider(placement),
+    );
     final appRouter = ref.read(routerProvider);
+    paywallChangeNotifier.setState(
+      paywallChangeNotifier.state.copyWith(idPurchasing: true),
+    );
     await abTestService.purchasePaywall(
-      paywallChangeNotifier.state.placementType,
+      placement,
       productType: productType,
       config: abTestService.remoteConfig(
-        paywallChangeNotifier.state.placementType,
+        placement,
       ),
     );
-
+    paywallChangeNotifier.setState(
+      paywallChangeNotifier.state.copyWith(idPurchasing: false),
+    );
     if (abTestService.isPremium) {
       appRouter.pop();
     }
   }
 
-  Future<void> close() async {
+  Future<void> close({required PlacementType placement}) async {
     final abTestService = ref.read(abTestServiceProvider);
-    final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
     final appRouter = ref.read(routerProvider);
     await abTestService.logClosePaywall(
-      paywallChangeNotifier.state.placementType,
+      placement,
     );
     appRouter.pop();
   }

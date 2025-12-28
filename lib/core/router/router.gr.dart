@@ -395,18 +395,49 @@ class OnboardingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [PaywallScreen]
-class PaywallRoute extends PageRouteInfo<void> {
-  const PaywallRoute({List<PageRouteInfo>? children})
-    : super(PaywallRoute.name, initialChildren: children);
+class PaywallRoute extends PageRouteInfo<PaywallRouteArgs> {
+  PaywallRoute({
+    Key? key,
+    required PlacementType placement,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PaywallRoute.name,
+         args: PaywallRouteArgs(key: key, placement: placement),
+         initialChildren: children,
+       );
 
   static const String name = 'PaywallRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const PaywallScreen();
+      final args = data.argsAs<PaywallRouteArgs>();
+      return PaywallScreen(key: args.key, placement: args.placement);
     },
   );
+}
+
+class PaywallRouteArgs {
+  const PaywallRouteArgs({this.key, required this.placement});
+
+  final Key? key;
+
+  final PlacementType placement;
+
+  @override
+  String toString() {
+    return 'PaywallRouteArgs{key: $key, placement: $placement}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PaywallRouteArgs) return false;
+    return key == other.key && placement == other.placement;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ placement.hashCode;
 }
 
 /// generated route for
