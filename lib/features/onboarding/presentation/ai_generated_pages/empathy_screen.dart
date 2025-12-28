@@ -17,8 +17,42 @@ class EmpathyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+    
+    // Адаптивные отступы
+    final horizontalPadding = screenWidth * 0.08; // 8% от ширины экрана
+    final verticalPadding = screenHeight * 0.05; // 5% от высоты экрана
+    
+    // Адаптивные размеры иллюстрации
+    final illustrationSize = (screenWidth * 0.65).clamp(200.0, 280.0);
+    final innerCircleSize = illustrationSize * 0.6;
+    
+    // Адаптивные размеры элементов
+    final aiFigureSize = illustrationSize * 0.375;
+    final characterBoxSize = illustrationSize * 0.3125;
+    
+    // Адаптивные размеры шрифтов
+    final titleFontSize = (screenWidth * 0.075).clamp(24.0, 32.0);
+    final bodyFontSize = (screenWidth * 0.045).clamp(16.0, 20.0);
+    final buttonFontSize = (screenWidth * 0.042).clamp(15.0, 19.0);
+    final tagFontSize = (screenWidth * 0.03).clamp(11.0, 13.0);
+    
+    // Адаптивные размеры иконок
+    final aiIconSize = aiFigureSize * 0.42;
+    final characterIconSize = characterBoxSize * 0.4;
+    final tagIconSize = tagFontSize;
+    
+    // Адаптивные отступы между элементами
+    final spacing = screenHeight * 0.02;
+    final largeSpacing = screenHeight * 0.04;
+    
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       child: Column(
         children: [
           Expanded(
@@ -27,8 +61,8 @@ class EmpathyScreen extends StatelessWidget {
               children: [
                 // === Abstract Illustration Area ===
                 SizedBox(
-                  width: 256,
-                  height: 256,
+                  width: illustrationSize,
+                  height: illustrationSize,
                   child: Stack(
                     children: [
                       // Background Blobs
@@ -53,8 +87,8 @@ class EmpathyScreen extends StatelessWidget {
                       Center(
                         child:
                             Container(
-                                  width: 150,
-                                  height: 150,
+                                  width: innerCircleSize,
+                                  height: innerCircleSize,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: AppColors.indigo.withOpacity(0.5),
@@ -76,8 +110,8 @@ class EmpathyScreen extends StatelessWidget {
 
                       // User Figure (Hesitant)
                       Positioned(
-                        bottom: 40,
-                        left: 16,
+                        bottom: illustrationSize * 0.156,
+                        left: illustrationSize * 0.0625,
                         child:
                             _buildCharacterBox(
                                   icon: LucideIcons
@@ -85,6 +119,8 @@ class EmpathyScreen extends StatelessWidget {
                                   bgColor: Colors.grey[200]!,
                                   iconColor: Colors.grey,
                                   showSweat: true,
+                                  size: characterBoxSize,
+                                  iconSize: characterIconSize,
                                 )
                                 .animate(
                                   delay: 200.ms,
@@ -99,12 +135,12 @@ class EmpathyScreen extends StatelessWidget {
 
                       // AI Figure (Supportive)
                       Positioned(
-                        top: 40,
-                        right: 16,
+                        top: illustrationSize * 0.156,
+                        right: illustrationSize * 0.0625,
                         child:
                             Container(
-                                  width: 96,
-                                  height: 96,
+                                  width: aiFigureSize,
+                                  height: aiFigureSize,
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       colors: [
@@ -125,10 +161,10 @@ class EmpathyScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     LucideIcons.heartHandshake,
                                     color: Colors.white,
-                                    size: 40,
+                                    size: aiIconSize,
                                   ),
                                 )
                                 .animate(delay: 400.ms)
@@ -139,46 +175,46 @@ class EmpathyScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: largeSpacing),
 
                 // === Text Content ===
                 Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.03,
+                            vertical: screenHeight * 0.005,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.blue50,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 LucideIcons.shieldCheck,
-                                size: 12,
+                                size: tagIconSize,
                                 color: AppColors.indigo,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: screenWidth * 0.02),
                               Text(
                                 'Safe Space',
                                 style: TextStyle(
                                   color: AppColors.indigo,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                                  fontSize: tagFontSize,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: spacing),
                         RichText(
                           textAlign: TextAlign.center,
-                          text: const TextSpan(
+                          text: TextSpan(
                             style: TextStyle(
-                              fontSize: 30,
+                              fontSize: titleFontSize,
                               color: Colors.black,
                               height: 1.1,
                               fontFamily: 'San Francisco',
@@ -186,7 +222,7 @@ class EmpathyScreen extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: 'Scared to speak?\n',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: "That's totally normal.",
@@ -198,12 +234,12 @@ class EmpathyScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        const Text(
+                        SizedBox(height: spacing),
+                        Text(
                           'Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: bodyFontSize,
                             color: AppColors.textGray,
                             height: 1.5,
                           ),
@@ -224,17 +260,17 @@ class EmpathyScreen extends StatelessWidget {
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.indigo,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                 shadowColor: AppColors.indigo.withOpacity(0.5),
                 elevation: 8,
               ),
-              child: const Text(
+              child: Text(
                 'Continue',
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: buttonFontSize,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -250,27 +286,29 @@ class EmpathyScreen extends StatelessWidget {
     required IconData icon,
     required Color bgColor,
     required Color iconColor,
+    required double size,
+    required double iconSize,
     bool showSweat = false,
   }) {
     return Container(
-      width: 80,
-      height: 80,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(size * 0.2),
       ),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Icon(icon, color: iconColor, size: 32),
+          Icon(icon, color: iconColor, size: iconSize),
           if (showSweat)
             Positioned(
-              top: 16,
-              right: 16,
+              top: size * 0.2,
+              right: size * 0.2,
               child:
                   Container(
-                        width: 6,
-                        height: 6,
+                        width: size * 0.075,
+                        height: size * 0.075,
                         decoration: const BoxDecoration(
                           color: Colors.blue,
                           shape: BoxShape.circle,

@@ -9,8 +9,40 @@ class MethodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+
+    // Адаптивные отступы
+    final horizontalPadding = screenWidth * 0.08; // 8% от ширины экрана
+    final verticalPadding = screenHeight * 0.05; // 5% от высоты экрана
+
+    // Адаптивные размеры иллюстрации
+    final illustrationSize = (screenWidth * 0.7).clamp(240.0, 300.0);
+    final trackSize = illustrationSize * 0.93;
+    final centerSize = illustrationSize * 0.286;
+    final orbitRadius = trackSize * 0.1;
+
+    // Адаптивные размеры шрифтов
+    final titleFontSize = (screenWidth * 0.07).clamp(24.0, 30.0);
+    final bodyFontSize = (screenWidth * 0.045).clamp(16.0, 20.0);
+    final buttonFontSize = (screenWidth * 0.042).clamp(15.0, 19.0);
+    final tagFontSize = (screenWidth * 0.03).clamp(11.0, 13.0);
+
+    // Адаптивные размеры иконок
+    final centerIconSize = centerSize * 0.4;
+    final orbitItemSize = illustrationSize * 0.17;
+    final orbitIconSize = orbitItemSize * 0.42;
+
+    // Адаптивные отступы между элементами
+    final spacing = screenHeight * 0.02;
+    final largeSpacing = screenHeight * 0.04;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       child: Column(
         children: [
           Expanded(
@@ -19,15 +51,15 @@ class MethodScreen extends StatelessWidget {
               children: [
                 // === Method Loop Illustration ===
                 SizedBox(
-                  width: 280,
-                  height: 280,
+                  width: illustrationSize,
+                  height: illustrationSize,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
                       // Circular Track (Dashed border simulation)
                       Container(
-                        width: 260,
-                        height: 260,
+                        width: trackSize,
+                        height: trackSize,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -41,11 +73,13 @@ class MethodScreen extends StatelessWidget {
                       Transform.rotate(
                         angle: 0.785, // 45 degrees
                         child: Container(
-                          width: 80,
-                          height: 80,
+                          width: centerSize,
+                          height: centerSize,
                           decoration: BoxDecoration(
                             color: const Color(0xFF5856D6), // AppColors.indigo
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              centerSize * 0.25,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: const Color(0xFF5856D6).withOpacity(0.3),
@@ -56,10 +90,10 @@ class MethodScreen extends StatelessWidget {
                           ),
                           child: Transform.rotate(
                             angle: -0.785,
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.mic,
                               color: Colors.white,
-                              size: 32,
+                              size: centerIconSize,
                             ),
                           ),
                         ),
@@ -73,51 +107,64 @@ class MethodScreen extends StatelessWidget {
                         0,
                         LucideIcons.ear,
                         const Color(0xFF00C7BE),
+                        orbitRadius,
+                        orbitItemSize,
+                        orbitIconSize,
                       ), // Mint
                       _buildOrbitItem(
                         1,
                         LucideIcons.refreshCw,
                         const Color(0xFF007AFF),
+                        orbitRadius,
+                        orbitItemSize,
+                        orbitIconSize,
                       ), // Blue
                       _buildOrbitItem(
                         2,
                         LucideIcons.checkCircle2,
                         Colors.purple,
+                        orbitRadius,
+                        orbitItemSize,
+                        orbitIconSize,
                       ), // Purple
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: largeSpacing),
 
                 // === Text Content ===
                 Column(
                       children: [
-                        const Text(
+                        Text(
                           'The Repetition Loop',
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: titleFontSize,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'San Francisco',
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: spacing),
                         Text(
                           "Listen, speak, get gentle AI feedback, and repeat. It's the natural way to fluency.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: bodyFontSize,
                             color: Colors.grey[600],
                             height: 1.5,
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: spacing * 1.5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildTag('Personalized'),
-                            const SizedBox(width: 8),
-                            _buildTag('Pressure-free'),
+                            _buildTag('Personalized', tagFontSize, screenWidth),
+                            SizedBox(width: screenWidth * 0.02),
+                            _buildTag(
+                              'Pressure-free',
+                              tagFontSize,
+                              screenWidth,
+                            ),
                           ],
                         ),
                       ],
@@ -136,17 +183,17 @@ class MethodScreen extends StatelessWidget {
               onPressed: onNext,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF5856D6),
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 8,
                 shadowColor: const Color(0xFF5856D6).withOpacity(0.4),
               ),
-              child: const Text(
+              child: Text(
                 'Next',
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: buttonFontSize,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -158,17 +205,24 @@ class MethodScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrbitItem(int index, IconData icon, Color color) {
+  Widget _buildOrbitItem(
+    int index,
+    IconData icon,
+    Color color,
+    double orbitRadius,
+    double itemSize,
+    double iconSize,
+  ) {
     // Начальный угол для распределения элементов (0, 120, 240 градусов)
     double initialAngle = index * (3.14159 * 2 / 3);
 
     return Container(
           alignment: Alignment.topCenter, // Иконка будет на "орбите"
           child: Transform.translate(
-            offset: const Offset(0, -130), // Радиус орбиты (половина от 260)
+            offset: Offset(0, -orbitRadius), // Радиус орбиты
             child: Container(
-              width: 48,
-              height: 48,
+              width: itemSize,
+              height: itemSize,
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -180,7 +234,7 @@ class MethodScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(icon, color: color, size: 20),
+              child: Icon(icon, color: color, size: iconSize),
             ),
           ),
         )
@@ -193,9 +247,12 @@ class MethodScreen extends StatelessWidget {
     // flutter_animate rotate принимает значения от 0.0 до 1.0 (полный оборот)
   }
 
-  Widget _buildTag(String text) {
+  Widget _buildTag(String text, double fontSize, double screenWidth) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.03,
+        vertical: screenWidth * 0.015,
+      ),
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
@@ -203,7 +260,7 @@ class MethodScreen extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: fontSize,
           fontWeight: FontWeight.w600,
           color: Colors.grey[600],
         ),
