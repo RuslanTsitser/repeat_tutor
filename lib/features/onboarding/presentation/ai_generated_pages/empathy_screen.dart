@@ -93,7 +93,9 @@ class EmpathyScreen extends StatelessWidget {
                                   height: innerCircleSize,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: AppColors.indigo.withOpacity(0.5),
+                                      color: AppColors.indigo.withValues(
+                                        alpha: 0.5,
+                                      ),
                                       style: BorderStyle.solid,
                                       width: 1,
                                     ),
@@ -155,8 +157,8 @@ class EmpathyScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.indigo.withOpacity(
-                                          0.2,
+                                        color: AppColors.indigo.withValues(
+                                          alpha: 0.2,
                                         ),
                                         blurRadius: 20,
                                         offset: const Offset(0, 10),
@@ -270,7 +272,7 @@ class EmpathyScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                shadowColor: AppColors.indigo.withOpacity(0.5),
+                shadowColor: AppColors.indigo.withValues(alpha: 0.5),
                 elevation: 8,
               ),
               child: Text(

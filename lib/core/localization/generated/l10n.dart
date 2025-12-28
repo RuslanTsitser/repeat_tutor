@@ -425,10 +425,10 @@ class S {
   }
 
   /// `Pressure-free`
-  String get pressurefree {
+  String get pressureFree {
     return Intl.message(
       'Pressure-free',
-      name: 'pressurefree',
+      name: 'pressureFree',
       desc: '',
       args: [],
     );

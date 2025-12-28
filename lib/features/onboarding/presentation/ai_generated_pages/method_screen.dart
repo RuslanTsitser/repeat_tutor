@@ -84,7 +84,9 @@ class MethodScreen extends StatelessWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF5856D6).withOpacity(0.3),
+                                color: const Color(
+                                  0xFF5856D6,
+                                ).withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -169,7 +171,7 @@ class MethodScreen extends StatelessWidget {
                             ),
                             SizedBox(width: screenWidth * 0.02),
                             _buildTag(
-                              S.of(context).pressurefree,
+                              S.of(context).pressureFree,
                               tagFontSize,
                               screenWidth,
                             ),
@@ -196,7 +198,7 @@ class MethodScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 8,
-                shadowColor: const Color(0xFF5856D6).withOpacity(0.4),
+                shadowColor: const Color(0xFF5856D6).withValues(alpha: 0.4),
               ),
               child: Text(
                 S.of(context).nextButton,
@@ -237,7 +239,7 @@ class MethodScreen extends StatelessWidget {
                 border: Border.all(color: Colors.grey[200]!),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                   ),
                 ],

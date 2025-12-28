@@ -185,7 +185,7 @@ class ResultScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 elevation: 8,
-                shadowColor: const Color(0xFF5856D6).withOpacity(0.4),
+                shadowColor: const Color(0xFF5856D6).withValues(alpha: 0.4),
               ),
               child: Text(
                 S.of(context).startYourJourney,
@@ -260,7 +260,7 @@ class ResultScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(containerSize * 0.15),
         boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10),
+          BoxShadow(color: Colors.grey.withValues(alpha: 0.1), blurRadius: 10),
         ],
         border: Border.all(color: Colors.grey[100]!),
       ),

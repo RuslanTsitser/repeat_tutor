@@ -67,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.",
         ),
-    "pressurefree": MessageLookupByLibrary.simpleMessage("Pressure-free"),
+    "pressureFree": MessageLookupByLibrary.simpleMessage("Pressure-free"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Safe Space"),
