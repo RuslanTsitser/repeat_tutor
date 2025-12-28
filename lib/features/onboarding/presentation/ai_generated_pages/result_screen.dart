@@ -12,31 +12,32 @@ class ResultScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
-    
+
     // Адаптивные отступы
     final horizontalPadding = screenWidth * 0.08; // 8% от ширины экрана
     final verticalPadding = screenHeight * 0.05; // 5% от высоты экрана
-    
+
     // Адаптивные размеры иллюстрации
     final illustrationWidth = (screenWidth * 0.7).clamp(240.0, 300.0);
-    final illustrationHeight = illustrationWidth * 0.893; // Сохраняем пропорции 280:250
+    final illustrationHeight =
+        illustrationWidth * 0.893; // Сохраняем пропорции 280:250
     final barHeight = illustrationHeight * 0.64;
-    
+
     // Адаптивные размеры шрифтов
     final titleFontSize = (screenWidth * 0.07).clamp(24.0, 30.0);
     final bodyFontSize = (screenWidth * 0.045).clamp(16.0, 20.0);
     final buttonFontSize = (screenWidth * 0.042).clamp(15.0, 19.0);
-    
+
     // Адаптивные размеры элементов
     final floatingIconSize = illustrationWidth * 0.14;
     final floatingIconPadding = illustrationWidth * 0.03;
     final barWidth = illustrationWidth * 0.17;
     final starIconSize = barWidth * 0.5;
-    
+
     // Адаптивные отступы между элементами
     final spacing = screenHeight * 0.02;
     final largeSpacing = screenHeight * 0.04;
-    
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
@@ -102,10 +103,35 @@ class ResultScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            _buildBar(0.3, 0, barWidth, barHeight, starIconSize),
-                            _buildBar(0.5, 1, barWidth, barHeight, starIconSize),
-                            _buildBar(0.7, 2, barWidth, barHeight, starIconSize),
-                            _buildBar(1.0, 3, barWidth, barHeight, starIconSize, isFinal: true),
+                            _buildBar(
+                              0.3,
+                              0,
+                              barWidth,
+                              barHeight,
+                              starIconSize,
+                            ),
+                            _buildBar(
+                              0.5,
+                              1,
+                              barWidth,
+                              barHeight,
+                              starIconSize,
+                            ),
+                            _buildBar(
+                              0.7,
+                              2,
+                              barWidth,
+                              barHeight,
+                              starIconSize,
+                            ),
+                            _buildBar(
+                              1.0,
+                              3,
+                              barWidth,
+                              barHeight,
+                              starIconSize,
+                              isFinal: true,
+                            ),
                           ],
                         ),
                       ),
@@ -207,12 +233,12 @@ class ResultScreen extends StatelessWidget {
                     .scale(duration: 400.ms, curve: Curves.elasticOut)
               : null,
         )
-        .animate(delay: (200 + index * 150).ms)
+        .animate(delay: (300 + index * 250).ms)
         .scaleY(
           begin: 0,
           end: 1,
           alignment: Alignment.bottomCenter,
-          duration: 600.ms,
+          duration: 1000.ms,
           curve: Curves.elasticOut,
         );
   }
