@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/domain/enums/language.dart';
 import '../../core/localization/generated/l10n.dart';
+import '../../core/presentation/logo_app_bar.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_style.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
 
@@ -14,12 +17,12 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.white,
+      backgroundColor: AppColors.colorFFFFFFFF,
       child: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            _Header(),
+            LogoAppBar(),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -42,38 +45,6 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 65,
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xFFE5E7EB),
-            width: 1,
-          ),
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Text(
-          S.of(context).profile,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF0A0A0A),
-            letterSpacing: 0.0703,
-            height: 32 / 24,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _SettingsSection extends ConsumerWidget {
   const _SettingsSection();
 
@@ -87,15 +58,11 @@ class _SettingsSection extends ConsumerWidget {
       children: [
         Text(
           S.of(context).settings,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF6A7282),
-            letterSpacing: -0.1504,
-            height: 20 / 14,
+          style: AppTextStyle.inter14w500.copyWith(
+            color: AppColors.colorFF6A7282,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         _LanguageSelector(
           label: S.of(context).appLanguage,
           selectedLanguage: state.defaultLanguage,
@@ -105,7 +72,7 @@ class _SettingsSection extends ConsumerWidget {
                 .setDefaultLanguage(language);
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         _LanguageSelector(
           label: S.of(context).languageToLearn,
           selectedLanguage: state.defaultLanguageToLearn,
@@ -115,7 +82,7 @@ class _SettingsSection extends ConsumerWidget {
                 .setDefaultLanguageToLearn(language);
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         _LanguageSelector(
           label: S.of(context).tutorLanguage,
           selectedLanguage: state.defaultTeacherLanguage,
@@ -148,49 +115,45 @@ class _LanguageSelector extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.normal,
-            color: Color(0xFF364153),
-            letterSpacing: -0.3125,
-            height: 24 / 16,
+          style: AppTextStyle.inter16w400.copyWith(
+            color: AppColors.colorFF364153,
           ),
         ),
-        const SizedBox(height: 12),
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () => _showLanguagePicker(context, selectedLanguage),
-          child: Container(
-            height: 45,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF9FAFB),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color(0xFFE5E7EB),
-                width: 1,
+        const SizedBox(height: 16),
+        Semantics(
+          label: '$label: ${selectedLanguage.localizedName}',
+          button: true,
+          child: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () => _showLanguagePicker(context, selectedLanguage),
+            child: Container(
+              height: 44,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: AppColors.colorFFF9FAFB,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.colorFFE5E7EB,
+                  width: 1,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  selectedLanguage.localizedName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF101828),
-                    letterSpacing: -0.3125,
-                    height: 24 / 16,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    selectedLanguage.localizedName,
+                    style: AppTextStyle.inter16w500.copyWith(
+                      color: AppColors.colorFF101828,
+                    ),
                   ),
-                ),
-                const Icon(
-                  CupertinoIcons.chevron_down,
-                  size: 20,
-                  color: Color(0xFF101828),
-                ),
-              ],
+                  const Icon(
+                    CupertinoIcons.chevron_down,
+                    size: 24,
+                    color: AppColors.colorFF101828,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -229,7 +192,7 @@ class _LanguagePicker extends StatelessWidget {
     return Container(
       height: 300,
       decoration: const BoxDecoration(
-        color: CupertinoColors.white,
+        color: AppColors.colorFFFFFFFF,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -243,7 +206,7 @@ class _LanguagePicker extends StatelessWidget {
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(0xFFE5E7EB),
+                  color: AppColors.colorFFE5E7EB,
                   width: 1,
                 ),
               ),
@@ -251,27 +214,27 @@ class _LanguagePicker extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    S.of(context).cancel,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Color(0xFF364153),
+                Semantics(
+                  label: S.of(context).cancel,
+                  button: true,
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      S.of(context).cancel,
+                      style: AppTextStyle.inter16w400.copyWith(
+                        color: AppColors.colorFF364153,
+                      ),
                     ),
                   ),
                 ),
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF101828),
+                  style: AppTextStyle.inter16w500.copyWith(
+                    color: AppColors.colorFF101828,
                   ),
                 ),
-                const SizedBox(width: 60),
+                const SizedBox(width: 64),
               ],
             ),
           ),
@@ -288,11 +251,8 @@ class _LanguagePicker extends StatelessWidget {
                 return Center(
                   child: Text(
                     language.localizedName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Color(0xFF101828),
-                      letterSpacing: -0.3125,
+                    style: AppTextStyle.inter16w400.copyWith(
+                      color: AppColors.colorFF101828,
                     ),
                   ),
                 );
@@ -318,15 +278,11 @@ class _CallDurationSection extends ConsumerWidget {
       children: [
         Text(
           S.of(context).callDuration,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF6A7282),
-            letterSpacing: -0.1504,
-            height: 20 / 14,
+          style: AppTextStyle.inter14w500.copyWith(
+            color: AppColors.colorFF6A7282,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Column(
           children: [
             _DurationRow(
@@ -374,43 +330,38 @@ class _DurationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 49,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: showBorder
-          ? const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Color(0xFFF3F4F6),
-                  width: 1,
+    return Semantics(
+      label: '$label: ${_formatDuration(duration)}',
+      child: Container(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: showBorder
+            ? const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppColors.colorFFF3F4F6,
+                    width: 1,
+                  ),
                 ),
+              )
+            : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: AppTextStyle.inter16w400.copyWith(
+                color: AppColors.colorFF364153,
               ),
-            )
-          : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: Color(0xFF364153),
-              letterSpacing: -0.3125,
-              height: 24 / 16,
             ),
-          ),
-          Text(
-            _formatDuration(duration),
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF101828),
-              letterSpacing: -0.3125,
-              height: 24 / 16,
+            Text(
+              _formatDuration(duration),
+              style: AppTextStyle.inter16w500.copyWith(
+                color: AppColors.colorFF101828,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

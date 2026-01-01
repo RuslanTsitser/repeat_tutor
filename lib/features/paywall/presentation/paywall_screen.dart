@@ -4,7 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/ab_test/enum/placement_type.dart';
+import '../../../core/ab_test/enum/product_type.dart';
 import '../../../infrastructure/core.dart';
+import '../../../infrastructure/state_managers.dart';
+import '../../../infrastructure/use_case.dart';
+import '../../home/logic/home_screen_notifier.dart';
+import 'ai_generated/subscription_screen.dart';
 
 @RoutePage()
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -30,12 +35,35 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     super.dispose();
   }
 
+  ProductType _productType = ProductType.product1;
+
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      child: Center(
-        child: Text('Paywall'),
-      ),
+    return SubscriptionScreen(
+      selectedProductType: _productType,
+      onSubscribe: () async {
+        final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+        ref
+            .read(purchaseUseCaseProvider)
+            .purchase(
+              placement: widget.placement,
+              productType: _productType,
+            );
+
+        ref
+            .read(homeScreenNotifierProvider)
+            .setState(
+              homeScreenNotifier.state.copyWith(tab: HomeScreenTab.home),
+            );
+      },
+      onSelectProductType: (productType) {
+        _productType = productType;
+        setState(() {});
+      },
+      bestProduct: ProductType.product2, // Годовая подписка
+      product: ProductType.product1, // Месячная подписка
+      abTestService: abTestService,
+      placement: widget.placement,
     );
   }
 }
