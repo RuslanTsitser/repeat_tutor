@@ -35,6 +35,38 @@ mobile platforms.
 * **Standard Structure:** Assumes a standard Flutter project structure with
   `lib/main.dart` as the primary application entry point.
 
+## Flutter Version Management (Управление версией Flutter)
+
+**КРИТИЧЕСКИ ВАЖНО:** Все команды Flutter должны выполняться только через `fvm` (Flutter Version Manager).
+
+### Правила использования
+
+* **Всегда используйте `fvm`:** Все команды Flutter должны запускаться через `fvm`
+* **Запрещено:** Использование прямых команд `flutter` или `dart` без `fvm`
+* **Обязательно:** Использовать `fvm flutter` вместо `flutter`
+* **Обязательно:** Использовать `fvm dart` вместо `dart`
+
+### Примеры правильного использования
+
+```bash
+# ✅ Правильно
+fvm flutter pub get
+fvm flutter run
+fvm flutter build
+fvm dart run build_runner build
+fvm flutter test
+
+# ❌ Неправильно
+flutter pub get
+flutter run
+dart run build_runner build
+```
+
+### Исключения
+
+* Команды в CI/CD могут использовать прямые пути к Flutter SDK, если это настроено в конфигурации
+* IDE настройки могут использовать прямые пути, но при ручном запуске команд всегда используйте `fvm`
+
 ## Flutter style guide
 
 * **SOLID Principles:** Apply SOLID principles throughout the codebase.
