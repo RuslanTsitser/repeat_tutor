@@ -67,10 +67,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   onNext: () {
                     ref.read(onboardingNotifierProvider).nextStep();
                   },
+                  onPrevious: () {
+                    ref.read(onboardingNotifierProvider).previousStep();
+                  },
                 ),
                 ResultScreen(
                   onNext: () {
                     ref.read(onboardingNotifierProvider).nextStep();
+                  },
+                  onPrevious: () {
+                    ref.read(onboardingNotifierProvider).previousStep();
                   },
                 ),
                 const PaywallScreen(

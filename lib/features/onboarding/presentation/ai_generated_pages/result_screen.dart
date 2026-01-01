@@ -1,235 +1,217 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../core/localization/generated/l10n.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_style.dart';
 
 class ResultScreen extends StatelessWidget {
   final VoidCallback onNext;
+  final VoidCallback? onPrevious;
 
-  const ResultScreen({super.key, required this.onNext});
+  const ResultScreen({
+    super.key,
+    required this.onNext,
+    this.onPrevious,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final screenWidth = screenSize.width;
-    final screenHeight = screenSize.height;
-
-    // Адаптивные отступы
-    final horizontalPadding = screenWidth * 0.08; // 8% от ширины экрана
-    final verticalPadding = screenHeight * 0.05; // 5% от высоты экрана
-
-    // Адаптивные размеры иллюстрации
-    final illustrationWidth = (screenWidth * 0.7).clamp(240.0, 300.0);
-    final illustrationHeight =
-        illustrationWidth * 0.893; // Сохраняем пропорции 280:250
-    final barHeight = illustrationHeight * 0.64;
-
-    // Адаптивные размеры шрифтов
-    final titleFontSize = (screenWidth * 0.07).clamp(24.0, 30.0);
-    final bodyFontSize = (screenWidth * 0.045).clamp(16.0, 20.0);
-    final buttonFontSize = (screenWidth * 0.042).clamp(15.0, 19.0);
-
-    // Адаптивные размеры элементов
-    final floatingIconSize = illustrationWidth * 0.14;
-    final floatingIconPadding = illustrationWidth * 0.03;
-    final barWidth = illustrationWidth * 0.17;
-    final starIconSize = barWidth * 0.5;
-
-    // Адаптивные отступы между элементами
-    final spacing = screenHeight * 0.02;
-    final largeSpacing = screenHeight * 0.04;
-
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: verticalPadding,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 24.0,
       ),
       child: Column(
         children: [
-          Expanded(
+          if (onPrevious != null) ...[
+            SafeArea(
+              bottom: false,
+              child: ResultBackButton(onPrevious: onPrevious!),
+            ),
+            const SizedBox(height: 16.0),
+          ],
+          const Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // === Progress Illustration ===
-                SizedBox(
-                  width: illustrationWidth,
-                  height: illustrationHeight,
-                  child: Stack(
-                    children: [
-                      // Floating Elements
-                      Positioned(
-                        top: 0,
-                        right: illustrationWidth * 0.143,
-                        child:
-                            _buildFloatingIcon(
-                                  LucideIcons.trendingUp,
-                                  Colors.green,
-                                  floatingIconSize,
-                                  floatingIconPadding,
-                                )
-                                .animate(onPlay: (c) => c.repeat(reverse: true))
-                                .moveY(
-                                  begin: 0,
-                                  end: -10,
-                                  duration: 3.seconds,
-                                  curve: Curves.easeInOut,
-                                ),
-                      ),
-                      Positioned(
-                        top: illustrationHeight * 0.16,
-                        left: illustrationWidth * 0.057,
-                        child:
-                            _buildFloatingIcon(
-                                  LucideIcons.sparkles,
-                                  const Color(0xFF00C7BE),
-                                  floatingIconSize,
-                                  floatingIconPadding,
-                                )
-                                .animate(onPlay: (c) => c.repeat(reverse: true))
-                                .moveY(
-                                  begin: 0,
-                                  end: 10,
-                                  duration: 4.seconds,
-                                  curve: Curves.easeInOut,
-                                ),
-                      ),
-
-                      // Steps Graph
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: barHeight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            _buildBar(
-                              0.3,
-                              0,
-                              barWidth,
-                              barHeight,
-                              starIconSize,
-                            ),
-                            _buildBar(
-                              0.5,
-                              1,
-                              barWidth,
-                              barHeight,
-                              starIconSize,
-                            ),
-                            _buildBar(
-                              0.7,
-                              2,
-                              barWidth,
-                              barHeight,
-                              starIconSize,
-                            ),
-                            _buildBar(
-                              1.0,
-                              3,
-                              barWidth,
-                              barHeight,
-                              starIconSize,
-                              isFinal: true,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                FittedBox(
+                  fit: BoxFit.contain,
+                  child: ResultIllustration(),
                 ),
-
-                SizedBox(height: largeSpacing),
-
-                // === Text ===
-                Column(
-                      children: [
-                        Text(
-                          S.of(context).gainRealConfidence,
-                          style: TextStyle(
-                            fontSize: titleFontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: spacing),
-                        Text(
-                          S
-                              .of(context)
-                              .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: bodyFontSize,
-                            color: Colors.grey[600],
-                            height: 1.5,
-                          ),
-                        ),
-                      ],
-                    )
-                    .animate(delay: 600.ms)
-                    .moveY(begin: 20, end: 0, curve: Curves.easeOut)
-                    .fadeIn(),
+                SizedBox(height: 32.0),
+                ResultContent(),
               ],
             ),
           ),
 
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onNext,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5856D6),
-                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 8,
-                shadowColor: const Color(0xFF5856D6).withValues(alpha: 0.4),
-              ),
-              child: Text(
-                S.of(context).startYourJourney,
-                style: TextStyle(
-                  fontSize: buttonFontSize,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ).animate(delay: 800.ms).moveY(begin: 20, end: 0).fadeIn(),
+          ResultButton(onNext: onNext),
         ],
       ),
     );
   }
+}
 
-  Widget _buildBar(
-    double heightFactor,
-    int index,
-    double barWidth,
-    double maxHeight,
-    double starIconSize, {
-    bool isFinal = false,
-  }) {
+class ResultIllustration extends StatelessWidget {
+  const ResultIllustration({super.key});
+
+  static const double _illustrationWidth = 256.0;
+  static const double _illustrationHeight = 229.0;
+  static const double _barHeight = 147.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _illustrationWidth,
+      height: _illustrationHeight,
+      child: Stack(
+        children: [
+          // Floating Elements
+          Positioned(
+            top: 0,
+            right: 37.0,
+            child:
+                const FloatingIcon(
+                      icon: LucideIcons.trendingUp,
+                      color: Colors.green,
+                    )
+                    .animate(onPlay: (c) => c.repeat(reverse: true))
+                    .moveY(
+                      begin: 0,
+                      end: -8,
+                      duration: 3.seconds,
+                      curve: Curves.easeInOut,
+                    ),
+          ),
+          Positioned(
+            top: 37.0,
+            left: 15.0,
+            child:
+                const FloatingIcon(
+                      icon: LucideIcons.sparkles,
+                      color: Color(0xFF00C7BE),
+                    )
+                    .animate(onPlay: (c) => c.repeat(reverse: true))
+                    .moveY(
+                      begin: 0,
+                      end: 8,
+                      duration: 4.seconds,
+                      curve: Curves.easeInOut,
+                    ),
+          ),
+
+          // Steps Graph
+          const Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: _barHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ProgressBar(
+                  heightFactor: 0.3,
+                  index: 0,
+                ),
+                ProgressBar(
+                  heightFactor: 0.5,
+                  index: 1,
+                ),
+                ProgressBar(
+                  heightFactor: 0.7,
+                  index: 2,
+                ),
+                ProgressBar(
+                  heightFactor: 1.0,
+                  index: 3,
+                  isFinal: true,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FloatingIcon extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+
+  const FloatingIcon({
+    super.key,
+    required this.icon,
+    required this.color,
+  });
+
+  static const double _padding = 8.0;
+  static const double _borderRadius = 5.0;
+  static const double _iconSize = 22.0;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-          width: barWidth,
-          height: maxHeight * heightFactor, // Максимальная высота * фактор
+      padding: const EdgeInsets.all(_padding),
+      decoration: BoxDecoration(
+        color: AppColors.colorFFFFFFFF,
+        borderRadius: BorderRadius.circular(_borderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.colorFF8E8E93.withValues(alpha: 0.1),
+            blurRadius: 16,
+          ),
+        ],
+        border: Border.all(
+          color: AppColors.colorFF8E8E93.withValues(alpha: 0.1),
+        ),
+      ),
+      child: Icon(icon, color: color, size: _iconSize),
+    );
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  final double heightFactor;
+  final int index;
+  final bool isFinal;
+
+  const ProgressBar({
+    super.key,
+    required this.heightFactor,
+    required this.index,
+    this.isFinal = false,
+  });
+
+  static const double _barWidth = 44.0;
+  static const double _maxHeight = 147.0;
+  static const double _starIconSize = 22.0;
+  static const double _barBorderRadius = 11.0;
+  static const double _starTopPadding = 8.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+          width: _barWidth,
+          height: _maxHeight * heightFactor,
           decoration: BoxDecoration(
-            color: isFinal
-                ? const Color(0xFF5856D6)
-                : const Color(0xFFEFF6FF), // Indigo или LightBlue
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(barWidth * 0.25),
+            color: isFinal ? AppColors.colorFF5856D6 : AppColors.colorFFEFF6FF,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(_barBorderRadius),
             ),
           ),
           child: isFinal
-              ? Align(
+              ? const Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(top: maxHeight * 0.05),
+                        padding: EdgeInsets.only(top: _starTopPadding),
                         child: Icon(
                           LucideIcons.star,
                           color: Colors.amber,
-                          size: starIconSize,
+                          size: _starIconSize,
                         ),
                       ),
                     )
@@ -246,25 +228,116 @@ class ResultScreen extends StatelessWidget {
           curve: Curves.elasticOut,
         );
   }
+}
 
-  Widget _buildFloatingIcon(
-    IconData icon,
-    Color color,
-    double containerSize,
-    double padding,
-  ) {
-    final iconSize = containerSize * 0.6;
-    return Container(
-      padding: EdgeInsets.all(padding),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(containerSize * 0.15),
-        boxShadow: [
-          BoxShadow(color: Colors.grey.withValues(alpha: 0.1), blurRadius: 10),
-        ],
-        border: Border.all(color: Colors.grey[100]!),
+class ResultContent extends StatelessWidget {
+  const ResultContent({super.key});
+
+  static const double _spacing = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+          children: [
+            Semantics(
+              label: S.of(context).gainRealConfidence,
+              child: Text(
+                S.of(context).gainRealConfidence,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.inter24w700.scaled(context),
+              ),
+            ),
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: S
+                  .of(context)
+                  .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
+              child: Text(
+                S
+                    .of(context)
+                    .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.inter16w400
+                    .copyWith(
+                      color: AppColors.colorFF8E8E93,
+                    )
+                    .scaled(context),
+              ),
+            ),
+          ],
+        )
+        .animate(delay: 600.ms)
+        .moveY(begin: 16, end: 0, curve: Curves.easeOut)
+        .fadeIn();
+  }
+}
+
+class ResultBackButton extends StatelessWidget {
+  final VoidCallback onPrevious;
+
+  const ResultBackButton({
+    super.key,
+    required this.onPrevious,
+  });
+
+  static const double _iconSize = 24.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Back',
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: CupertinoButton(
+          onPressed: onPrevious,
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(44.0, 44.0),
+          child: const Icon(
+            LucideIcons.chevronLeft,
+            size: _iconSize,
+            color: AppColors.colorFF5856D6,
+          ),
+        ),
       ),
-      child: Icon(icon, color: color, size: iconSize),
     );
+  }
+}
+
+class ResultButton extends StatelessWidget {
+  final VoidCallback onNext;
+
+  const ResultButton({
+    super.key,
+    required this.onNext,
+  });
+
+  static const double _verticalPadding = 16.0;
+  static const double _borderRadius = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: S.of(context).startYourJourney,
+      child: SizedBox(
+        width: double.infinity,
+        child: CupertinoButton(
+          onPressed: onNext,
+          color: AppColors.colorFF5856D6,
+          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
+          minimumSize: const Size(0, 44.0),
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: Text(
+            S.of(context).startYourJourney,
+            style: AppTextStyle.inter16w600
+                .copyWith(
+                  color: AppColors.colorFFFFFFFF,
+                )
+                .scaled(context),
+          ),
+        ),
+      ),
+    ).animate(delay: 800.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
