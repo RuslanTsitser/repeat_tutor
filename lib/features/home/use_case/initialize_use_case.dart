@@ -36,4 +36,11 @@ class InitializeUseCase {
       homeScreenNotifier.state.copyWith(tab: HomeScreenTab.onboarding),
     );
   }
+
+  Future<void> setTab(HomeScreenTab tab) async {
+    final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+    homeScreenNotifier.setState(
+      homeScreenNotifier.state.copyWith(tab: tab),
+    );
+  }
 }
