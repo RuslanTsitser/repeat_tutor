@@ -1,6 +1,7 @@
 import 'package:ab_test_service/ab_test_service/model/user_premium_source.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ab_test/enum/product_type.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -15,10 +16,8 @@ class PurchaseUseCase {
     final abTestService = ref.read(abTestServiceProvider);
     final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
     final appRouter = ref.read(routerProvider);
-    final selectedProductType = paywallChangeNotifier.state.selectedProductType;
-    if (selectedProductType == null) {
-      return;
-    }
+    final selectedProductType =
+        paywallChangeNotifier.state.selectedProductType ?? ProductType.product1;
     await paywallChangeNotifier.purchase(selectedProductType);
     if (abTestService.isPremium) {
       appRouter.pop();
