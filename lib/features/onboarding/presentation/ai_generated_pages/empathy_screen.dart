@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -309,18 +309,12 @@ class EmpathyButton extends StatelessWidget {
       label: S.of(context).continueButton,
       child: SizedBox(
         width: double.infinity,
-        child: ElevatedButton(
+        child: CupertinoButton(
           onPressed: onNext,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.colorFF5856D6,
-            padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
-            minimumSize: const Size(0, 44.0), // Минимальный размер тач-таргета
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(_borderRadius),
-            ),
-            shadowColor: AppColors.colorFF5856D6.withValues(alpha: 0.5),
-            elevation: 0,
-          ),
+          color: AppColors.colorFF5856D6,
+          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
+          minimumSize: const Size(0, 44.0), // Минимальный размер тач-таргета
+          borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
             S.of(context).continueButton,
             style: AppTextStyle.inter16w600
