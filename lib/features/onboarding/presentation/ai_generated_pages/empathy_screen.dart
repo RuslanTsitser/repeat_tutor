@@ -13,11 +13,8 @@ class EmpathyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24.0,
-        vertical: 24.0,
-      ),
+    return SafeArea(
+      minimum: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const Expanded(

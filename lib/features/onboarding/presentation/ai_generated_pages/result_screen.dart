@@ -19,37 +19,40 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24.0,
-        vertical: 24.0,
-      ),
-      child: Column(
-        children: [
-          if (onPrevious != null) ...[
-            SafeArea(
-              bottom: false,
-              child: ResultBackButton(onPrevious: onPrevious!),
-            ),
-            const SizedBox(height: 16.0),
-          ],
-          const Expanded(
+    return Column(
+      children: [
+        if (onPrevious != null) ...[
+          SafeArea(
+            bottom: false,
+            child: ResultBackButton(onPrevious: onPrevious!),
+          ),
+          const SizedBox(height: 16.0),
+        ],
+        Expanded(
+          child: SafeArea(
+            minimum: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FittedBox(
-                  fit: BoxFit.contain,
-                  child: ResultIllustration(),
+                const Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: ResultIllustration(),
+                      ),
+                      SizedBox(height: 32.0),
+                      ResultContent(),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 32.0),
-                ResultContent(),
+
+                ResultButton(onNext: onNext),
               ],
             ),
           ),
-
-          ResultButton(onNext: onNext),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
