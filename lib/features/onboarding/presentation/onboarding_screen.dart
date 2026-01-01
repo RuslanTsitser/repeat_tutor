@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/enum/placement_type.dart';
+import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../paywall/presentation/paywall_screen.dart';
 import 'ai_generated_pages/empathy_screen.dart';
@@ -10,14 +11,34 @@ import 'ai_generated_pages/method_screen.dart';
 import 'ai_generated_pages/result_screen.dart';
 
 @RoutePage()
-class OnboardingScreen extends ConsumerStatefulWidget {
+class OnboardingScreen extends ConsumerWidget {
   const OnboardingScreen({super.key});
 
   @override
-  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final abTestService = ref.read(abTestServiceProvider);
+    final config = abTestService.remoteConfig(
+      PlacementType.placementOnboarding,
+    );
+    final onboardingName = config.onboarding;
+    switch (onboardingName) {
+      case 'onboarding1':
+        return const Onboarding1();
+
+      default:
+        return const Onboarding1();
+    }
+  }
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+class Onboarding1 extends ConsumerStatefulWidget {
+  const Onboarding1({super.key});
+
+  @override
+  ConsumerState<Onboarding1> createState() => _Onboarding1State();
+}
+
+class _Onboarding1State extends ConsumerState<Onboarding1> {
   final PageController _pageController = PageController();
   late final onboardingNotifier = ref.read(onboardingNotifierProvider);
 
@@ -27,7 +48,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         .read(onboardingNotifierProvider)
         .setInitialState(
           totalSteps: 4,
-          onboardingName: 'default',
+          onboardingName: 'onboarding1',
         );
     onboardingNotifier.addListener(listener);
     super.initState();
