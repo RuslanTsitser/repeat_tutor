@@ -299,7 +299,7 @@ class ResultBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Back',
+      label: S.of(context).back,
       child: Align(
         alignment: Alignment.centerLeft,
         child: CupertinoButton(

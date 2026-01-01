@@ -6,11 +6,11 @@ import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 
-class MethodScreen extends StatelessWidget {
+class PracticeScreen extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
 
-  const MethodScreen({
+  const PracticeScreen({
     super.key,
     required this.onNext,
     this.onPrevious,
@@ -23,7 +23,7 @@ class MethodScreen extends StatelessWidget {
         if (onPrevious != null) ...[
           SafeArea(
             bottom: false,
-            child: MethodBackButton(onPrevious: onPrevious!),
+            child: PracticeBackButton(onPrevious: onPrevious!),
           ),
           const SizedBox(height: 16.0),
         ],
@@ -37,23 +37,22 @@ class MethodScreen extends StatelessWidget {
                     children: [
                       FittedBox(
                         fit: BoxFit.contain,
-                        child: MethodIllustration(),
+                        child: PracticeIllustration(),
                       ),
                       SizedBox(height: 32.0),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 32.0),
                         child: SizedBox(
                           width: double.infinity,
-                          child: MethodContent(),
+                          child: PracticeContent(),
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MethodButton(onNext: onNext),
+                  child: PracticeButton(onNext: onNext),
                 ),
               ],
             ),
@@ -64,17 +63,13 @@ class MethodScreen extends StatelessWidget {
   }
 }
 
-class MethodIllustration extends StatelessWidget {
-  const MethodIllustration({super.key});
+class PracticeIllustration extends StatelessWidget {
+  const PracticeIllustration({super.key});
 
   static const double _illustrationSize = 256.0;
-  static const double _trackSize = 238.0;
-  static const double _centerSize = 73.0;
-  static const double _orbitRadius = 24.0;
-  static const double _orbitItemSize = 44.0;
-  static const double _orbitIconSize = 18.0;
-  static const double _centerIconSize = 29.0;
-  static const double _borderRadius = 18.0;
+  static const double _cardSize = 120.0;
+  static const double _iconSize = 32.0;
+  static const double _borderRadius = 16.0;
 
   @override
   Widget build(BuildContext context) {
@@ -84,110 +79,103 @@ class MethodIllustration extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Circular Track
-          Container(
-            width: _trackSize,
-            height: _trackSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.textMuted.withValues(alpha: 0.3),
-                width: 2,
-              ),
+          // Card 1 - Listen
+          Positioned(
+            top: 32.0,
+            left: 32.0,
+            child: _buildCard(
+              context,
+              LucideIcons.ear,
+              S.of(context).listen,
+              delay: 200.ms,
             ),
           ),
-
-          // Central AI Brain
-          Transform.rotate(
-            angle: 0.785, // 45 degrees
-            child: Container(
-              width: _centerSize,
-              height: _centerSize,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(_borderRadius),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Transform.rotate(
-                angle: -0.785,
-                child: const Icon(
-                  LucideIcons.mic,
-                  color: AppColors.surface,
-                  size: _centerIconSize,
-                ),
-              ),
+          // Card 2 - Speak
+          Positioned(
+            top: 32.0,
+            right: 32.0,
+            child: _buildCard(
+              context,
+              LucideIcons.mic,
+              S.of(context).speak,
+              delay: 400.ms,
             ),
-          ).animate().scale(
-            duration: 600.ms,
-            curve: Curves.elasticOut,
           ),
-
-          // Orbiting Elements
-          _buildOrbitItem(
-            0,
-            LucideIcons.ear,
-            const Color(0xFF00C7BE),
+          // Card 3 - Learn
+          Positioned(
+            bottom: 32.0,
+            left: 32.0,
+            child: _buildCard(
+              context,
+              LucideIcons.brain,
+              S.of(context).learn,
+              delay: 600.ms,
+            ),
           ),
-          _buildOrbitItem(
-            1,
-            LucideIcons.refreshCw,
-            const Color(0xFF007AFF),
-          ),
-          _buildOrbitItem(
-            2,
-            LucideIcons.checkCircle2,
-            AppColors.primary,
+          // Card 4 - Repeat
+          Positioned(
+            bottom: 32.0,
+            right: 32.0,
+            child: _buildCard(
+              context,
+              LucideIcons.refreshCw,
+              S.of(context).repeat,
+              delay: 800.ms,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOrbitItem(int index, IconData icon, Color color) {
-    // Начальный угол для распределения элементов (0, 120, 240 градусов)
-    final initialAngle = index * (3.14159 * 2 / 3);
-
+  Widget _buildCard(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Duration delay = Duration.zero,
+  }) {
     return Container(
-          alignment: Alignment.topCenter,
-          child: Transform.translate(
-            offset: const Offset(0, -_orbitRadius),
-            child: Container(
-              width: _orbitItemSize,
-              height: _orbitItemSize,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.textMuted.withValues(alpha: 0.2),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.surface.withValues(alpha: 0.05),
-                    blurRadius: 16,
-                  ),
-                ],
+          width: _cardSize,
+          height: _cardSize,
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(_borderRadius),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.textMuted.withValues(alpha: 0.1),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
               ),
-              child: Icon(icon, color: color, size: _orbitIconSize),
-            ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: AppColors.primary,
+                size: _iconSize,
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                label,
+                style: AppTextStyle.inter12w600
+                    .copyWith(
+                      color: AppColors.textMuted,
+                    )
+                    .scaled(context),
+              ),
+            ],
           ),
         )
-        .animate(onPlay: (c) => c.repeat())
-        .rotate(
-          begin: initialAngle / (2 * 3.14159),
-          end: initialAngle / (2 * 3.14159) + 1,
-          duration: 20.seconds,
-        );
+        .animate(delay: delay)
+        .scale(duration: 500.ms, curve: Curves.elasticOut)
+        .fadeIn();
   }
 }
 
-class MethodContent extends StatelessWidget {
-  const MethodContent({super.key});
+class PracticeContent extends StatelessWidget {
+  const PracticeContent({super.key});
 
   static const double _spacing = 16.0;
 
@@ -231,48 +219,10 @@ class MethodContent extends StatelessWidget {
   }
 }
 
-class MethodTag extends StatelessWidget {
-  final String text;
-
-  const MethodTag({
-    super.key,
-    required this.text,
-  });
-
-  static const double _horizontalPadding = 16.0;
-  static const double _verticalPadding = 8.0;
-  static const double _borderRadius = 8.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: text,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: _horizontalPadding,
-          vertical: _verticalPadding,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundLight,
-          borderRadius: BorderRadius.circular(_borderRadius),
-        ),
-        child: Text(
-          text,
-          style: AppTextStyle.inter12w600
-              .copyWith(
-                color: AppColors.textMuted,
-              )
-              .scaled(context),
-        ),
-      ),
-    );
-  }
-}
-
-class MethodBackButton extends StatelessWidget {
+class PracticeBackButton extends StatelessWidget {
   final VoidCallback onPrevious;
 
-  const MethodBackButton({
+  const PracticeBackButton({
     super.key,
     required this.onPrevious,
   });
@@ -301,10 +251,10 @@ class MethodBackButton extends StatelessWidget {
   }
 }
 
-class MethodButton extends StatelessWidget {
+class PracticeButton extends StatelessWidget {
   final VoidCallback onNext;
 
-  const MethodButton({
+  const PracticeButton({
     super.key,
     required this.onNext,
   });

@@ -6,11 +6,11 @@ import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 
-class MethodScreen extends StatelessWidget {
+class CycleScreen extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
 
-  const MethodScreen({
+  const CycleScreen({
     super.key,
     required this.onNext,
     this.onPrevious,
@@ -23,7 +23,7 @@ class MethodScreen extends StatelessWidget {
         if (onPrevious != null) ...[
           SafeArea(
             bottom: false,
-            child: MethodBackButton(onPrevious: onPrevious!),
+            child: CycleBackButton(onPrevious: onPrevious!),
           ),
           const SizedBox(height: 16.0),
         ],
@@ -37,23 +37,22 @@ class MethodScreen extends StatelessWidget {
                     children: [
                       FittedBox(
                         fit: BoxFit.contain,
-                        child: MethodIllustration(),
+                        child: CycleIllustration(),
                       ),
                       SizedBox(height: 32.0),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 32.0),
                         child: SizedBox(
                           width: double.infinity,
-                          child: MethodContent(),
+                          child: CycleContent(),
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MethodButton(onNext: onNext),
+                  child: CycleButton(onNext: onNext),
                 ),
               ],
             ),
@@ -64,17 +63,14 @@ class MethodScreen extends StatelessWidget {
   }
 }
 
-class MethodIllustration extends StatelessWidget {
-  const MethodIllustration({super.key});
+class CycleIllustration extends StatelessWidget {
+  const CycleIllustration({super.key});
 
   static const double _illustrationSize = 256.0;
-  static const double _trackSize = 238.0;
-  static const double _centerSize = 73.0;
-  static const double _orbitRadius = 24.0;
-  static const double _orbitItemSize = 44.0;
-  static const double _orbitIconSize = 18.0;
-  static const double _centerIconSize = 29.0;
-  static const double _borderRadius = 18.0;
+  static const double _ringSize = 200.0;
+  static const double _centerSize = 80.0;
+  static const double _stepSize = 44.0;
+  static const double _stepIconSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -84,110 +80,115 @@ class MethodIllustration extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Circular Track
+          // Ring
           Container(
-            width: _trackSize,
-            height: _trackSize,
+            width: _ringSize,
+            height: _ringSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.textMuted.withValues(alpha: 0.3),
+                color: AppColors.primary.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
-          ),
+          )
+              .animate()
+              .scale(
+                duration: 1.seconds,
+                curve: Curves.easeOut,
+              )
+              .fadeIn(duration: 1.seconds),
 
-          // Central AI Brain
-          Transform.rotate(
-            angle: 0.785, // 45 degrees
-            child: Container(
-              width: _centerSize,
-              height: _centerSize,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(_borderRadius),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Transform.rotate(
-                angle: -0.785,
-                child: const Icon(
-                  LucideIcons.mic,
-                  color: AppColors.surface,
-                  size: _centerIconSize,
-                ),
-              ),
+          // Center
+          Container(
+            width: _centerSize,
+            height: _centerSize,
+            decoration: const BoxDecoration(
+              color: AppColors.primary,
+              shape: BoxShape.circle,
             ),
-          ).animate().scale(
-            duration: 600.ms,
-            curve: Curves.elasticOut,
-          ),
+            child: const Icon(
+              LucideIcons.repeat,
+              color: AppColors.surface,
+              size: 32.0,
+            ),
+          )
+              .animate(delay: 400.ms)
+              .scale(
+                duration: 600.ms,
+                curve: Curves.elasticOut,
+              )
+              .fadeIn(),
 
-          // Orbiting Elements
-          _buildOrbitItem(
-            0,
-            LucideIcons.ear,
-            const Color(0xFF00C7BE),
+          // Steps on ring
+          Positioned(
+            top: 0,
+            child: _buildStep(
+              LucideIcons.ear,
+              delay: 200.ms,
+            ),
           ),
-          _buildOrbitItem(
-            1,
-            LucideIcons.refreshCw,
-            const Color(0xFF007AFF),
+          Positioned(
+            right: 0,
+            child: _buildStep(
+              LucideIcons.mic,
+              delay: 400.ms,
+            ),
           ),
-          _buildOrbitItem(
-            2,
-            LucideIcons.checkCircle2,
-            AppColors.primary,
+          Positioned(
+            bottom: 0,
+            child: _buildStep(
+              LucideIcons.messageSquare,
+              delay: 600.ms,
+            ),
+          ),
+          Positioned(
+            left: 0,
+            child: _buildStep(
+              LucideIcons.refreshCw,
+              delay: 800.ms,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOrbitItem(int index, IconData icon, Color color) {
-    // Начальный угол для распределения элементов (0, 120, 240 градусов)
-    final initialAngle = index * (3.14159 * 2 / 3);
-
+  Widget _buildStep(IconData icon, {Duration delay = Duration.zero}) {
     return Container(
-          alignment: Alignment.topCenter,
-          child: Transform.translate(
-            offset: const Offset(0, -_orbitRadius),
-            child: Container(
-              width: _orbitItemSize,
-              height: _orbitItemSize,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.textMuted.withValues(alpha: 0.2),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.surface.withValues(alpha: 0.05),
-                    blurRadius: 16,
-                  ),
-                ],
-              ),
-              child: Icon(icon, color: color, size: _orbitIconSize),
-            ),
+      width: _stepSize,
+      height: _stepSize,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: AppColors.primary,
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textMuted.withValues(alpha: 0.1),
+            blurRadius: 16,
           ),
+        ],
+      ),
+      child: Icon(
+        icon,
+        color: AppColors.primary,
+        size: _stepIconSize,
+      ),
+    )
+        .animate(delay: delay)
+        .scale(
+          duration: 500.ms,
+          curve: Curves.elasticOut,
         )
-        .animate(onPlay: (c) => c.repeat())
-        .rotate(
-          begin: initialAngle / (2 * 3.14159),
-          end: initialAngle / (2 * 3.14159) + 1,
-          duration: 20.seconds,
-        );
+        .fadeIn();
   }
 }
 
-class MethodContent extends StatelessWidget {
-  const MethodContent({super.key});
+class CycleContent extends StatelessWidget {
+  const CycleContent({super.key});
 
   static const double _spacing = 16.0;
 
@@ -231,48 +232,10 @@ class MethodContent extends StatelessWidget {
   }
 }
 
-class MethodTag extends StatelessWidget {
-  final String text;
-
-  const MethodTag({
-    super.key,
-    required this.text,
-  });
-
-  static const double _horizontalPadding = 16.0;
-  static const double _verticalPadding = 8.0;
-  static const double _borderRadius = 8.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: text,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: _horizontalPadding,
-          vertical: _verticalPadding,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundLight,
-          borderRadius: BorderRadius.circular(_borderRadius),
-        ),
-        child: Text(
-          text,
-          style: AppTextStyle.inter12w600
-              .copyWith(
-                color: AppColors.textMuted,
-              )
-              .scaled(context),
-        ),
-      ),
-    );
-  }
-}
-
-class MethodBackButton extends StatelessWidget {
+class CycleBackButton extends StatelessWidget {
   final VoidCallback onPrevious;
 
-  const MethodBackButton({
+  const CycleBackButton({
     super.key,
     required this.onPrevious,
   });
@@ -301,10 +264,10 @@ class MethodBackButton extends StatelessWidget {
   }
 }
 
-class MethodButton extends StatelessWidget {
+class CycleButton extends StatelessWidget {
   final VoidCallback onNext;
 
-  const MethodButton({
+  const CycleButton({
     super.key,
     required this.onNext,
   });
@@ -338,3 +301,4 @@ class MethodButton extends StatelessWidget {
     ).animate(delay: 600.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
+

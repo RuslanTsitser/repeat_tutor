@@ -1,0 +1,284 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
+import '../../../../../../core/localization/generated/l10n.dart';
+import '../../../../../../core/theme/app_colors.dart';
+import '../../../../../../core/theme/app_text_style.dart';
+
+class VictoryScreen extends StatelessWidget {
+  final VoidCallback onNext;
+  final VoidCallback? onPrevious;
+
+  const VictoryScreen({
+    super.key,
+    required this.onNext,
+    this.onPrevious,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (onPrevious != null) ...[
+          SafeArea(
+            bottom: false,
+            child: VictoryBackButton(onPrevious: onPrevious!),
+          ),
+          const SizedBox(height: 16.0),
+        ],
+        Expanded(
+          child: SafeArea(
+            child: Column(
+              children: [
+                const Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: VictoryIllustration(),
+                      ),
+                      SizedBox(height: 32.0),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: VictoryContent(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: VictoryButton(onNext: onNext),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class VictoryIllustration extends StatelessWidget {
+  const VictoryIllustration({super.key});
+
+  static const double _illustrationSize = 256.0;
+  static const double _flagSize = 120.0;
+  static const double _flagIconSize = 64.0;
+  static const double _confettiSize = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _illustrationSize,
+      height: _illustrationSize,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Flag Background
+          Container(
+            width: _flagSize,
+            height: _flagSize,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+          )
+              .animate()
+              .scale(
+                duration: 1.seconds,
+                curve: Curves.easeOut,
+              )
+              .fadeIn(duration: 1.seconds),
+
+          // Flag Icon
+          const Icon(
+            LucideIcons.flag,
+            color: AppColors.primary,
+            size: _flagIconSize,
+          )
+              .animate(delay: 400.ms)
+              .scale(
+                duration: 600.ms,
+                curve: Curves.elasticOut,
+              )
+              .fadeIn(),
+
+          // Confetti
+          Positioned(
+            top: 16.0,
+            left: 32.0,
+            child: _buildConfetti(
+              delay: 200.ms,
+            ),
+          ),
+          Positioned(
+            top: 24.0,
+            right: 40.0,
+            child: _buildConfetti(
+              delay: 400.ms,
+            ),
+          ),
+          Positioned(
+            bottom: 24.0,
+            left: 40.0,
+            child: _buildConfetti(
+              delay: 600.ms,
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            right: 32.0,
+            child: _buildConfetti(
+              delay: 800.ms,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConfetti({Duration delay = Duration.zero}) {
+    return Container(
+      width: _confettiSize,
+      height: _confettiSize,
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(2.0),
+      ),
+    )
+        .animate(
+          delay: delay,
+          onPlay: (c) => c.repeat(),
+        )
+        .moveY(
+          begin: 0,
+          end: -20,
+          duration: 2.seconds,
+          curve: Curves.easeOut,
+        )
+        .fadeOut(
+          begin: 0.8,
+          duration: 2.seconds,
+        );
+  }
+}
+
+class VictoryContent extends StatelessWidget {
+  const VictoryContent({super.key});
+
+  static const double _spacing = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Semantics(
+              label: S.of(context).gainRealConfidence,
+              child: Text(
+                S.of(context).gainRealConfidence,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.inter24w700.scaled(context),
+              ),
+            ),
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: S
+                  .of(context)
+                  .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
+              child: Text(
+                S
+                    .of(context)
+                    .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
+                textAlign: TextAlign.start,
+                style: AppTextStyle.inter16w400
+                    .copyWith(
+                      color: AppColors.textMuted,
+                    )
+                    .scaled(context),
+              ),
+            ),
+          ],
+        )
+        .animate(delay: 600.ms)
+        .moveY(begin: 16, end: 0, curve: Curves.easeOut)
+        .fadeIn();
+  }
+}
+
+class VictoryBackButton extends StatelessWidget {
+  final VoidCallback onPrevious;
+
+  const VictoryBackButton({
+    super.key,
+    required this.onPrevious,
+  });
+
+  static const double _iconSize = 24.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: S.of(context).back,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: CupertinoButton(
+          onPressed: onPrevious,
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(44.0, 44.0),
+          child: const Icon(
+            LucideIcons.chevronLeft,
+            size: _iconSize,
+            color: AppColors.primary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VictoryButton extends StatelessWidget {
+  final VoidCallback onNext;
+
+  const VictoryButton({
+    super.key,
+    required this.onNext,
+  });
+
+  static const double _verticalPadding = 16.0;
+  static const double _borderRadius = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: S.of(context).startYourJourney,
+      child: SizedBox(
+        width: double.infinity,
+        child: CupertinoButton(
+          onPressed: onNext,
+          color: AppColors.primary,
+          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
+          minimumSize: const Size(0, 44.0),
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: Text(
+            S.of(context).startYourJourney,
+            style: AppTextStyle.inter16w600
+                .copyWith(
+                  color: AppColors.surface,
+                )
+                .scaled(context),
+          ),
+        ),
+      ),
+    ).animate(delay: 800.ms).moveY(begin: 16, end: 0).fadeIn();
+  }
+}
+

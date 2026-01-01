@@ -6,11 +6,11 @@ import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 
-class MethodScreen extends StatelessWidget {
+class FlowScreen extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
 
-  const MethodScreen({
+  const FlowScreen({
     super.key,
     required this.onNext,
     this.onPrevious,
@@ -23,7 +23,7 @@ class MethodScreen extends StatelessWidget {
         if (onPrevious != null) ...[
           SafeArea(
             bottom: false,
-            child: MethodBackButton(onPrevious: onPrevious!),
+            child: FlowBackButton(onPrevious: onPrevious!),
           ),
           const SizedBox(height: 16.0),
         ],
@@ -37,23 +37,22 @@ class MethodScreen extends StatelessWidget {
                     children: [
                       FittedBox(
                         fit: BoxFit.contain,
-                        child: MethodIllustration(),
+                        child: FlowIllustration(),
                       ),
                       SizedBox(height: 32.0),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 32.0),
                         child: SizedBox(
                           width: double.infinity,
-                          child: MethodContent(),
+                          child: FlowContent(),
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MethodButton(onNext: onNext),
+                  child: FlowButton(onNext: onNext),
                 ),
               ],
             ),
@@ -64,17 +63,14 @@ class MethodScreen extends StatelessWidget {
   }
 }
 
-class MethodIllustration extends StatelessWidget {
-  const MethodIllustration({super.key});
+class FlowIllustration extends StatelessWidget {
+  const FlowIllustration({super.key});
 
   static const double _illustrationSize = 256.0;
-  static const double _trackSize = 238.0;
-  static const double _centerSize = 73.0;
-  static const double _orbitRadius = 24.0;
-  static const double _orbitItemSize = 44.0;
-  static const double _orbitIconSize = 18.0;
-  static const double _centerIconSize = 29.0;
-  static const double _borderRadius = 18.0;
+  static const double _lineWidth = 200.0;
+  static const double _lineHeight = 4.0;
+  static const double _nodeSize = 48.0;
+  static const double _nodeIconSize = 24.0;
 
   @override
   Widget build(BuildContext context) {
@@ -84,110 +80,89 @@ class MethodIllustration extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Circular Track
+          // Flow Line
           Container(
-            width: _trackSize,
-            height: _trackSize,
+            width: _lineWidth,
+            height: _lineHeight,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.textMuted.withValues(alpha: 0.3),
-                width: 2,
+              color: AppColors.primary.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+          )
+              .animate()
+              .scaleX(
+                begin: 0,
+                end: 1,
+                duration: 1.seconds,
+                curve: Curves.easeOut,
               ),
+
+          // Nodes
+          Positioned(
+            left: 32.0,
+            child: _buildNode(
+              LucideIcons.ear,
+              delay: 300.ms,
             ),
           ),
-
-          // Central AI Brain
-          Transform.rotate(
-            angle: 0.785, // 45 degrees
-            child: Container(
-              width: _centerSize,
-              height: _centerSize,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(_borderRadius),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Transform.rotate(
-                angle: -0.785,
-                child: const Icon(
-                  LucideIcons.mic,
-                  color: AppColors.surface,
-                  size: _centerIconSize,
-                ),
-              ),
+          Positioned(
+            left: 104.0,
+            child: _buildNode(
+              LucideIcons.mic,
+              delay: 500.ms,
             ),
-          ).animate().scale(
-            duration: 600.ms,
-            curve: Curves.elasticOut,
           ),
-
-          // Orbiting Elements
-          _buildOrbitItem(
-            0,
-            LucideIcons.ear,
-            const Color(0xFF00C7BE),
+          Positioned(
+            right: 104.0,
+            child: _buildNode(
+              LucideIcons.messageSquare,
+              delay: 700.ms,
+            ),
           ),
-          _buildOrbitItem(
-            1,
-            LucideIcons.refreshCw,
-            const Color(0xFF007AFF),
-          ),
-          _buildOrbitItem(
-            2,
-            LucideIcons.checkCircle2,
-            AppColors.primary,
+          Positioned(
+            right: 32.0,
+            child: _buildNode(
+              LucideIcons.refreshCw,
+              delay: 900.ms,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOrbitItem(int index, IconData icon, Color color) {
-    // Начальный угол для распределения элементов (0, 120, 240 градусов)
-    final initialAngle = index * (3.14159 * 2 / 3);
-
+  Widget _buildNode(IconData icon, {Duration delay = Duration.zero}) {
     return Container(
-          alignment: Alignment.topCenter,
-          child: Transform.translate(
-            offset: const Offset(0, -_orbitRadius),
-            child: Container(
-              width: _orbitItemSize,
-              height: _orbitItemSize,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.textMuted.withValues(alpha: 0.2),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.surface.withValues(alpha: 0.05),
-                    blurRadius: 16,
-                  ),
-                ],
-              ),
-              child: Icon(icon, color: color, size: _orbitIconSize),
-            ),
+      width: _nodeSize,
+      height: _nodeSize,
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
+        ],
+      ),
+      child: Icon(
+        icon,
+        color: AppColors.surface,
+        size: _nodeIconSize,
+      ),
+    )
+        .animate(delay: delay)
+        .scale(
+          duration: 500.ms,
+          curve: Curves.elasticOut,
         )
-        .animate(onPlay: (c) => c.repeat())
-        .rotate(
-          begin: initialAngle / (2 * 3.14159),
-          end: initialAngle / (2 * 3.14159) + 1,
-          duration: 20.seconds,
-        );
+        .fadeIn();
   }
 }
 
-class MethodContent extends StatelessWidget {
-  const MethodContent({super.key});
+class FlowContent extends StatelessWidget {
+  const FlowContent({super.key});
 
   static const double _spacing = 16.0;
 
@@ -231,48 +206,10 @@ class MethodContent extends StatelessWidget {
   }
 }
 
-class MethodTag extends StatelessWidget {
-  final String text;
-
-  const MethodTag({
-    super.key,
-    required this.text,
-  });
-
-  static const double _horizontalPadding = 16.0;
-  static const double _verticalPadding = 8.0;
-  static const double _borderRadius = 8.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: text,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: _horizontalPadding,
-          vertical: _verticalPadding,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundLight,
-          borderRadius: BorderRadius.circular(_borderRadius),
-        ),
-        child: Text(
-          text,
-          style: AppTextStyle.inter12w600
-              .copyWith(
-                color: AppColors.textMuted,
-              )
-              .scaled(context),
-        ),
-      ),
-    );
-  }
-}
-
-class MethodBackButton extends StatelessWidget {
+class FlowBackButton extends StatelessWidget {
   final VoidCallback onPrevious;
 
-  const MethodBackButton({
+  const FlowBackButton({
     super.key,
     required this.onPrevious,
   });
@@ -301,10 +238,10 @@ class MethodBackButton extends StatelessWidget {
   }
 }
 
-class MethodButton extends StatelessWidget {
+class FlowButton extends StatelessWidget {
   final VoidCallback onNext;
 
-  const MethodButton({
+  const FlowButton({
     super.key,
     required this.onNext,
   });
@@ -338,3 +275,4 @@ class MethodButton extends StatelessWidget {
     ).animate(delay: 600.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
+
