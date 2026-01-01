@@ -1,0 +1,138 @@
+---
+description: Paywall Rules
+globs:
+alwaysApply: true
+---
+
+# Paywall Rules
+
+- При создании экрана для paywall используйте [PaywallProduct] из библиотеки [ab_test_service](https://github.com/RuslanTsitser/ab_test_service.git).
+
+Основные поля:
+
+```dart
+class PaywallProduct {
+  const PaywallProduct({
+    required this.priceCurrency,
+    required this.trialPeriod,
+    this.subscriptionPeriod,
+    this.fullPrice,
+    this.fullPriceValue,
+    this.discountedPrice,
+    this.discountedPriceValue,
+    this.parentProduct,
+    this.discountPercent,
+  });
+
+  /// String, валюта цены
+  final String priceCurrency;
+  /// [TrialPeriod]
+  final TrialPeriod trialPeriod;
+  /// [SubscriptionPeriod]
+  final SubscriptionPeriod? subscriptionPeriod;
+  /// String, полная цена
+  final String? fullPrice;
+  /// double, полная цена
+  final double? fullPriceValue;
+  /// String, discountedPrice;
+  final String? discountedPrice;
+  /// double, discountedPriceValue;
+  final double? discountedPriceValue;
+  /// int, discountPercent;
+  final int? discountPercent;
+  /// [PaywallProduct], продукт, от которого считаем скидку для [discountedPrice]
+  final PaywallProduct? parentProduct;
+
+  bool get withTrial => trialPeriod != TrialPeriod.noTrial;
+
+  PaywallProduct copyWith({
+    String? priceCurrency,
+    TrialPeriod? trialPeriod,
+    SubscriptionPeriod? subscriptionPeriod,
+    String? fullPrice,
+    double? fullPriceValue,
+    String? discountedPrice,
+    double? discountedPriceValue,
+    int? discountPercent,
+    PaywallProduct? parentProduct,
+  }) =>
+      PaywallProduct(
+        priceCurrency: priceCurrency ?? this.priceCurrency,
+        trialPeriod: trialPeriod ?? this.trialPeriod,
+        subscriptionPeriod: subscriptionPeriod ?? this.subscriptionPeriod,
+        fullPrice: fullPrice ?? this.fullPrice,
+        fullPriceValue: fullPriceValue ?? this.fullPriceValue,
+        discountedPrice: discountedPrice ?? this.discountedPrice,
+        discountedPriceValue: discountedPriceValue ?? this.discountedPriceValue,
+        discountPercent: discountPercent ?? this.discountPercent,
+        parentProduct: parentProduct ?? this.parentProduct,
+      );
+}
+
+abstract class TrialPeriod {
+  static TrialPeriod get noTrial => DefaultTrialPeriodEnum.noTrial;
+  static TrialPeriod get threeDays => DefaultTrialPeriodEnum.threeDays;
+  static TrialPeriod get oneWeek => DefaultTrialPeriodEnum.oneWeek;
+  static TrialPeriod get oneMonth => DefaultTrialPeriodEnum.oneMonth;
+  static TrialPeriod get oneYear => DefaultTrialPeriodEnum.oneYear;
+
+  int get days;
+}
+
+enum DefaultTrialPeriodEnum implements TrialPeriod {
+  noTrial,
+  threeDays,
+  oneWeek,
+  oneMonth,
+  oneYear;
+
+  @override
+  int get days => switch (this) {
+        threeDays => 3,
+        oneWeek => 7,
+        oneMonth => 30,
+        oneYear => 365,
+        _ => 0,
+      };
+}
+
+abstract class SubscriptionPeriod {
+  static SubscriptionPeriod get week => DefaultSubscriptionPeriodEnum.week;
+  static SubscriptionPeriod get month => DefaultSubscriptionPeriodEnum.month;
+  static SubscriptionPeriod get year => DefaultSubscriptionPeriodEnum.year;
+
+  bool get isYear;
+  bool get isMonth;
+  bool get isWeek;
+  int get days;
+}
+
+enum DefaultSubscriptionPeriodEnum implements SubscriptionPeriod {
+  week,
+  month,
+  year;
+
+  @override
+  bool get isYear => this == year;
+
+  @override
+  bool get isMonth => this == month;
+
+  @override
+  bool get isWeek => this == week;
+
+  @override
+  int get days => switch (this) {
+        week => 7,
+        month => 30,
+        year => 365,
+      };
+}
+```
+
+- Продукт можно получить через [abTestService.paywallProduct(placement, productType, config: config)] из библиотеки [ab_test_service](https://github.com/RuslanTsitser/ab_test_service.git).
+
+```dart
+final config = abTestService.remoteConfig(placement);
+final paywallProduct = abTestService.paywallProduct(placement, productType, config: config);
+```
