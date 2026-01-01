@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "personalized": MessageLookupByLibrary.simpleMessage("パーソナライズ"),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
-          "判断なしで練習してください。間違いを犯し、学び、あなたのために設計されたプライベートな空間で成長してください。",
+          "• 判断なしで練習してください\n• 間違いを犯してください\n• 学び、成長してください",
         ),
     "pressureFree": MessageLookupByLibrary.simpleMessage("プレッシャーなし"),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),

@@ -379,10 +379,10 @@ class S {
     );
   }
 
-  /// `Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.`
+  /// `• Practice without judgment\n• Make mistakes\n• Learn and grow`
   String get practiceWithoutJudgmentMakeMistakesLearnAndGrowInA {
     return Intl.message(
-      'Practice without judgment. Make mistakes, learn, and grow in a private space designed for you.',
+      '• Practice without judgment\n• Make mistakes\n• Learn and grow',
       name: 'practiceWithoutJudgmentMakeMistakesLearnAndGrowInA',
       desc: '',
       args: [],
