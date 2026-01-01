@@ -13,11 +13,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.6"
-      resolved-ref: "15666cdd727e0d701969cb5ac4c6dd2c444e2012"
+      ref: "0.0.8"
+      resolved-ref: "1f457b2da10a6e646661ed1708b75f886e37f88b"
       url: "https://github.com/RuslanTsitser/ab_test_service.git"
     source: git
-    version: "0.0.6"
+    version: "0.0.8"
   analyzer:
     dependency: transitive
     description:
