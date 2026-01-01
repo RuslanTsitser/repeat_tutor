@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "level": MessageLookupByLibrary.simpleMessage("Schwierigkeitsgrad"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
-          "Hören Sie zu, sprechen Sie, erhalten Sie sanftes KI-Feedback und wiederholen Sie. Es ist der natürliche Weg zur Sprachgewandtheit.",
+          "• Hören Sie zu\n• Sprechen Sie\n• Erhalten Sie Feedback\n• Wiederholen Sie",
         ),
     "newChat": MessageLookupByLibrary.simpleMessage("Neuer Chat"),
     "nextButton": MessageLookupByLibrary.simpleMessage("Weiter"),
@@ -104,7 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "total": MessageLookupByLibrary.simpleMessage("Gesamt"),
     "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
         MessageLookupByLibrary.simpleMessage(
-          "Verwandeln Sie sich von einem zögerlichen zu einem natürlichen Sprecher. Spüren Sie den Fortschritt bei jeder Sitzung.",
+          "• Von Unsicherheit zu Selbstvertrauen\n• Fortschritt bei jeder Sitzung\n• Natürliche Sprache",
         ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Sprache des Tutors"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(

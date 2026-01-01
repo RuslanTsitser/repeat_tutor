@@ -404,10 +404,10 @@ class S {
     );
   }
 
-  /// `Listen, speak, get gentle AI feedback, and repeat. It's the natural way to fluency.`
+  /// `• Listen\n• Speak\n• Get feedback\n• Repeat`
   String get listenSpeakGetGentleAiFeedbackAndRepeatItsThe {
     return Intl.message(
-      'Listen, speak, get gentle AI feedback, and repeat. It\'s the natural way to fluency.',
+      '• Listen\n• Speak\n• Get feedback\n• Repeat',
       name: 'listenSpeakGetGentleAiFeedbackAndRepeatItsThe',
       desc: '',
       args: [],
@@ -449,10 +449,10 @@ class S {
     );
   }
 
-  /// `Transform from hesitant to natural speaker. Feel the progress with every session.`
+  /// `• From hesitation to confidence\n• Progress with every session\n• Natural speech`
   String get transformFromHesitantToNaturalSpeakerFeelTheProgressWith {
     return Intl.message(
-      'Transform from hesitant to natural speaker. Feel the progress with every session.',
+      '• From hesitation to confidence\n• Progress with every session\n• Natural speech',
       name: 'transformFromHesitantToNaturalSpeakerFeelTheProgressWith',
       desc: '',
       args: [],

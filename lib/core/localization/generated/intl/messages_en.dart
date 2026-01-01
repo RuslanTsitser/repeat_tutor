@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "level": MessageLookupByLibrary.simpleMessage("Level"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
-          "Listen, speak, get gentle AI feedback, and repeat. It\'s the natural way to fluency.",
+          "• Listen\n• Speak\n• Get feedback\n• Repeat",
         ),
     "newChat": MessageLookupByLibrary.simpleMessage("New chat"),
     "nextButton": MessageLookupByLibrary.simpleMessage("Next"),
@@ -102,7 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "total": MessageLookupByLibrary.simpleMessage("Total"),
     "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
         MessageLookupByLibrary.simpleMessage(
-          "Transform from hesitant to natural speaker. Feel the progress with every session.",
+          "• From hesitation to confidence\n• Progress with every session\n• Natural speech",
         ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("Tutor language"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(

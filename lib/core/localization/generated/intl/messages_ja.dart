@@ -49,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "level": MessageLookupByLibrary.simpleMessage("レベル"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
-          "聞いて、話して、優しいAIフィードバックを受け取り、繰り返してください。流暢さへの自然な道です。",
+          "• 聞いて\n• 話して\n• フィードバックを受け取り\n• 繰り返してください",
         ),
     "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
     "nextButton": MessageLookupByLibrary.simpleMessage("次へ"),
@@ -90,7 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "total": MessageLookupByLibrary.simpleMessage("合計"),
     "transformFromHesitantToNaturalSpeakerFeelTheProgressWith":
         MessageLookupByLibrary.simpleMessage(
-          "ためらいがちな話者から自然な話者へと変身してください。セッションごとに進歩を感じてください。",
+          "• ためらいから自信へ\n• セッションごとの進歩\n• 自然な話し方",
         ),
     "tutorLanguage": MessageLookupByLibrary.simpleMessage("チューターの言語"),
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
