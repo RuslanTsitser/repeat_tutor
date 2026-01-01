@@ -90,10 +90,16 @@ class ProfileSettingsUseCase {
     final sessionsDurationsDao = ref
         .read(databaseProvider)
         .sessionsDurationsDao;
-    await sessionsDurationsDao.getTodaySessionsDuration();
-    await sessionsDurationsDao.getAllSessionsDurations();
+    final todayDuration = await sessionsDurationsDao.getTodaySessionsDuration();
+    final totalDuration = await sessionsDurationsDao.getAllSessionsDurations();
     final profileNotifier = ref.read(profileProvider);
-    profileNotifier.setState(profileNotifier.state.copyWith(isLoading: false));
+    profileNotifier.setState(
+      profileNotifier.state.copyWith(
+        isLoading: false,
+        todayDuration: todayDuration,
+        totalDuration: totalDuration,
+      ),
+    );
   }
 
   Future<void> loadIsPremium() async {
