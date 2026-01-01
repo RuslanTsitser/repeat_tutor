@@ -56,13 +56,6 @@ class _SettingsSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          S.of(context).settings,
-          style: AppTextStyle.inter14w500.copyWith(
-            color: AppColors.colorFF6A7282,
-          ),
-        ),
-        const SizedBox(height: 16),
         _LanguageSelector(
           label: S.of(context).appLanguage,
           selectedLanguage: state.defaultLanguage,
