@@ -50,5 +50,12 @@
   "nextButton": "Далее",
   "gainRealConfidence": "Обретите настоящую уверенность",
   "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "• От неуверенности к уверенности\n• Прогресс с каждым занятием\n• Естественная речь",
-  "startYourJourney": "Начните свой путь"
+  "startYourJourney": "Начните свой путь",
+  "week": "Неделя",
+  "month": "Месяц",
+  "year": "Год",
+  "period": "Период",
+  "weekly": "Еженедельно",
+  "monthly": "Ежемесячно",
+  "yearly": "Ежегодно"
 }

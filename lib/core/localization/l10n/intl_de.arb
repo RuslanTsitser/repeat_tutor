@@ -50,5 +50,12 @@
   "nextButton": "Weiter",
   "gainRealConfidence": "Echte Selbstvertrauen gewinnen",
   "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "• Von Unsicherheit zu Selbstvertrauen\n• Fortschritt bei jeder Sitzung\n• Natürliche Sprache",
-  "startYourJourney": "Beginnen Sie Ihre Reise"
+  "startYourJourney": "Beginnen Sie Ihre Reise",
+  "week": "Woche",
+  "month": "Monat",
+  "year": "Jahr",
+  "period": "Zeitraum",
+  "weekly": "Wöchentlich",
+  "monthly": "Monatlich",
+  "yearly": "Jährlich"
 }

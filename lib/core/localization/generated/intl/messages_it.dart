@@ -59,6 +59,8 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "• Ascolta\n• Parla\n• Ricevi feedback\n• Ripeti",
         ),
+    "month": MessageLookupByLibrary.simpleMessage("Mese"),
+    "monthly": MessageLookupByLibrary.simpleMessage("Mensile"),
     "newChat": MessageLookupByLibrary.simpleMessage("Nuovo chat"),
     "nextButton": MessageLookupByLibrary.simpleMessage("Avanti"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Nessun chat"),
@@ -66,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Oppure invia un messaggio audio",
     ),
+    "period": MessageLookupByLibrary.simpleMessage("Periodo"),
     "personalized": MessageLookupByLibrary.simpleMessage("Personalizzato"),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
@@ -117,6 +120,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
       "Chiamata vocale in corso",
     ),
+    "week": MessageLookupByLibrary.simpleMessage("Settimana"),
+    "weekly": MessageLookupByLibrary.simpleMessage("Settimanale"),
+    "year": MessageLookupByLibrary.simpleMessage("Anno"),
+    "yearly": MessageLookupByLibrary.simpleMessage("Annuale"),
     "youCanAlsoPracticeSpeakingWithAVoiceCall":
         MessageLookupByLibrary.simpleMessage(
           "Puoi anche praticare il parlato con una chiamata vocale",

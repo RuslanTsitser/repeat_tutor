@@ -50,5 +50,12 @@
   "nextButton": "Siguiente",
   "gainRealConfidence": "Gana confianza real",
   "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "• De la vacilación a la confianza\n• Progreso con cada sesión\n• Habla natural",
-  "startYourJourney": "Comienza tu viaje"
+  "startYourJourney": "Comienza tu viaje",
+  "week": "Semana",
+  "month": "Mes",
+  "year": "Año",
+  "period": "Período",
+  "weekly": "Semanal",
+  "monthly": "Mensual",
+  "yearly": "Anual"
 }

@@ -468,6 +468,41 @@ class S {
       args: [],
     );
   }
+
+  /// `Week`
+  String get week {
+    return Intl.message('Week', name: 'week', desc: '', args: []);
+  }
+
+  /// `Month`
+  String get month {
+    return Intl.message('Month', name: 'month', desc: '', args: []);
+  }
+
+  /// `Year`
+  String get year {
+    return Intl.message('Year', name: 'year', desc: '', args: []);
+  }
+
+  /// `Period`
+  String get period {
+    return Intl.message('Period', name: 'period', desc: '', args: []);
+  }
+
+  /// `Weekly`
+  String get weekly {
+    return Intl.message('Weekly', name: 'weekly', desc: '', args: []);
+  }
+
+  /// `Monthly`
+  String get monthly {
+    return Intl.message('Monthly', name: 'monthly', desc: '', args: []);
+  }
+
+  /// `Yearly`
+  String get yearly {
+    return Intl.message('Yearly', name: 'yearly', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "• 聞いて\n• 話して\n• フィードバックを受け取り\n• 繰り返してください",
         ),
+    "month": MessageLookupByLibrary.simpleMessage("月"),
+    "monthly": MessageLookupByLibrary.simpleMessage("月次"),
     "newChat": MessageLookupByLibrary.simpleMessage("新しいチャット"),
     "nextButton": MessageLookupByLibrary.simpleMessage("次へ"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
@@ -58,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "または音声メッセージを送信",
     ),
+    "period": MessageLookupByLibrary.simpleMessage("期間"),
     "personalized": MessageLookupByLibrary.simpleMessage("パーソナライズ"),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
@@ -97,6 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "メッセージを入力してください...",
     ),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage("音声通話中"),
+    "week": MessageLookupByLibrary.simpleMessage("週"),
+    "weekly": MessageLookupByLibrary.simpleMessage("週次"),
+    "year": MessageLookupByLibrary.simpleMessage("年"),
+    "yearly": MessageLookupByLibrary.simpleMessage("年次"),
     "youCanAlsoPracticeSpeakingWithAVoiceCall":
         MessageLookupByLibrary.simpleMessage("音声通話で話す練習もできます"),
   };

@@ -50,5 +50,12 @@
   "nextButton": "Next",
   "gainRealConfidence": "Gain Real Confidence",
   "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "• From hesitation to confidence\n• Progress with every session\n• Natural speech",
-  "startYourJourney": "Start Your Journey"
+  "startYourJourney": "Start Your Journey",
+  "week": "Week",
+  "month": "Month",
+  "year": "Year",
+  "period": "Period",
+  "weekly": "Weekly",
+  "monthly": "Monthly",
+  "yearly": "Yearly"
 }

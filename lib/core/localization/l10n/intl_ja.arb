@@ -50,5 +50,12 @@
   "nextButton": "次へ",
   "gainRealConfidence": "本当の自信を得る",
   "transformFromHesitantToNaturalSpeakerFeelTheProgressWith": "• ためらいから自信へ\n• セッションごとの進歩\n• 自然な話し方",
-  "startYourJourney": "あなたの旅を始める"
+  "startYourJourney": "あなたの旅を始める",
+  "week": "週",
+  "month": "月",
+  "year": "年",
+  "period": "期間",
+  "weekly": "週次",
+  "monthly": "月次",
+  "yearly": "年次"
 }
