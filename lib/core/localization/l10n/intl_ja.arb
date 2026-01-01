@@ -85,5 +85,10 @@
   "personalizedFeedback": "パーソナライズされたフィードバック",
   "aiTutorAccess": "24/7 AIチューターアクセス",
   "getPremium": "Premiumを取得",
-  "cancelAnytime": "いつでもキャンセル可能"
+  "cancelAnytime": "いつでもキャンセル可能",
+  "back": "戻る",
+  "listen": "聞く",
+  "speak": "話す",
+  "learn": "学ぶ",
+  "repeat": "繰り返す"
 }

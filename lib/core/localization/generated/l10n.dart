@@ -753,6 +753,31 @@ class S {
       args: [],
     );
   }
+
+  /// `Back`
+  String get back {
+    return Intl.message('Back', name: 'back', desc: '', args: []);
+  }
+
+  /// `Listen`
+  String get listen {
+    return Intl.message('Listen', name: 'listen', desc: '', args: []);
+  }
+
+  /// `Speak`
+  String get speak {
+    return Intl.message('Speak', name: 'speak', desc: '', args: []);
+  }
+
+  /// `Learn`
+  String get learn {
+    return Intl.message('Learn', name: 'learn', desc: '', args: []);
+  }
+
+  /// `Repeat`
+  String get repeat {
+    return Intl.message('Repeat', name: 'repeat', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

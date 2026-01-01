@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedVoicePractice": MessageLookupByLibrary.simpleMessage("高度な音声練習"),
     "aiTutorAccess": MessageLookupByLibrary.simpleMessage("24/7 AIチューターアクセス"),
     "appLanguage": MessageLookupByLibrary.simpleMessage("アプリの言語"),
+    "back": MessageLookupByLibrary.simpleMessage("戻る"),
     "callDuration": MessageLookupByLibrary.simpleMessage("通話時間"),
     "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
     "cancelAnytime": MessageLookupByLibrary.simpleMessage("いつでもキャンセル可能"),
@@ -58,7 +59,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "goPremium": MessageLookupByLibrary.simpleMessage("Premiumになる"),
     "hello": MessageLookupByLibrary.simpleMessage("こんにちは！"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
+    "learn": MessageLookupByLibrary.simpleMessage("学ぶ"),
     "level": MessageLookupByLibrary.simpleMessage("レベル"),
+    "listen": MessageLookupByLibrary.simpleMessage("聞く"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
           "• 聞いて\n• 話して\n• フィードバックを受け取り\n• 繰り返してください",
@@ -89,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pressureFree": MessageLookupByLibrary.simpleMessage("プレッシャーなし"),
     "prioritySupport": MessageLookupByLibrary.simpleMessage("優先サポート"),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
+    "repeat": MessageLookupByLibrary.simpleMessage("繰り返す"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("安全な空間"),
     "save": MessageLookupByLibrary.simpleMessage("節約"),
@@ -96,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectPlan": MessageLookupByLibrary.simpleMessage("プランを選択"),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
     "smartCorrections": MessageLookupByLibrary.simpleMessage("スマート修正"),
+    "speak": MessageLookupByLibrary.simpleMessage("話す"),
     "startHere": MessageLookupByLibrary.simpleMessage("ここから始める"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Premiumを開始"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(

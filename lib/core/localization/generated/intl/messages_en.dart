@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "24/7 AI tutor access",
     ),
     "appLanguage": MessageLookupByLibrary.simpleMessage("App language"),
+    "back": MessageLookupByLibrary.simpleMessage("Back"),
     "callDuration": MessageLookupByLibrary.simpleMessage("Call Duration"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cancelAnytime": MessageLookupByLibrary.simpleMessage("Cancel anytime"),
@@ -70,7 +71,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Language to learn",
     ),
+    "learn": MessageLookupByLibrary.simpleMessage("Learn"),
     "level": MessageLookupByLibrary.simpleMessage("Level"),
+    "listen": MessageLookupByLibrary.simpleMessage("Listen"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
           "• Listen\n• Speak\n• Get feedback\n• Repeat",
@@ -103,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pressureFree": MessageLookupByLibrary.simpleMessage("Pressure-free"),
     "prioritySupport": MessageLookupByLibrary.simpleMessage("Priority support"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "repeat": MessageLookupByLibrary.simpleMessage("Repeat"),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Safe Space"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -112,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "smartCorrections": MessageLookupByLibrary.simpleMessage(
       "Smart corrections",
     ),
+    "speak": MessageLookupByLibrary.simpleMessage("Speak"),
     "startHere": MessageLookupByLibrary.simpleMessage("Start here"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Start Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(

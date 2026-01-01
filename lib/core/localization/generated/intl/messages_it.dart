@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Accesso tutor IA 24/7",
     ),
     "appLanguage": MessageLookupByLibrary.simpleMessage("Lingua dell\'app"),
+    "back": MessageLookupByLibrary.simpleMessage("Indietro"),
     "callDuration": MessageLookupByLibrary.simpleMessage(
       "Durata delle chiamate",
     ),
@@ -78,7 +79,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Lingua da imparare",
     ),
+    "learn": MessageLookupByLibrary.simpleMessage("Imparare"),
     "level": MessageLookupByLibrary.simpleMessage("Livello"),
+    "listen": MessageLookupByLibrary.simpleMessage("Ascoltare"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
           "• Ascolta\n• Parla\n• Ricevi feedback\n• Ripeti",
@@ -113,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Supporto prioritario",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profilo"),
+    "repeat": MessageLookupByLibrary.simpleMessage("Ripetere"),
     "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Spazio sicuro"),
     "save": MessageLookupByLibrary.simpleMessage("Risparmia"),
@@ -122,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "smartCorrections": MessageLookupByLibrary.simpleMessage(
       "Correzioni intelligenti",
     ),
+    "speak": MessageLookupByLibrary.simpleMessage("Parlare"),
     "startHere": MessageLookupByLibrary.simpleMessage("Inizia qui"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Inizia Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(

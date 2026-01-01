@@ -85,5 +85,10 @@
   "personalizedFeedback": "Персонализированная обратная связь",
   "aiTutorAccess": "Доступ к AI-преподавателю 24/7",
   "getPremium": "Получить Premium",
-  "cancelAnytime": "Отменить в любое время"
+  "cancelAnytime": "Отменить в любое время",
+  "back": "Назад",
+  "listen": "Слушать",
+  "speak": "Говорить",
+  "learn": "Учить",
+  "repeat": "Повторять"
 }

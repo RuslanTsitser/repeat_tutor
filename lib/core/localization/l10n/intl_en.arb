@@ -85,5 +85,10 @@
   "personalizedFeedback": "Personalized feedback",
   "aiTutorAccess": "24/7 AI tutor access",
   "getPremium": "Get Premium",
-  "cancelAnytime": "Cancel anytime"
+  "cancelAnytime": "Cancel anytime",
+  "back": "Back",
+  "listen": "Listen",
+  "speak": "Speak",
+  "learn": "Learn",
+  "repeat": "Repeat"
 }

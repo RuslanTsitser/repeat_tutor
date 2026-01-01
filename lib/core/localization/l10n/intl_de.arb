@@ -85,5 +85,10 @@
   "personalizedFeedback": "Personalisierte Rückmeldung",
   "aiTutorAccess": "24/7 KI-Tutor-Zugang",
   "getPremium": "Premium erhalten",
-  "cancelAnytime": "Jederzeit kündbar"
+  "cancelAnytime": "Jederzeit kündbar",
+  "back": "Zurück",
+  "listen": "Hören",
+  "speak": "Sprechen",
+  "learn": "Lernen",
+  "repeat": "Wiederholen"
 }

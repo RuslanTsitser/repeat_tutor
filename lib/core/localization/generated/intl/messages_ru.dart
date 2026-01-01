@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Доступ к AI-преподавателю 24/7",
     ),
     "appLanguage": MessageLookupByLibrary.simpleMessage("Язык приложения"),
+    "back": MessageLookupByLibrary.simpleMessage("Назад"),
     "callDuration": MessageLookupByLibrary.simpleMessage(
       "Длительность звонков",
     ),
@@ -78,7 +79,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Язык для изучения",
     ),
+    "learn": MessageLookupByLibrary.simpleMessage("Учить"),
     "level": MessageLookupByLibrary.simpleMessage("Уровень"),
+    "listen": MessageLookupByLibrary.simpleMessage("Слушать"),
     "listenSpeakGetGentleAiFeedbackAndRepeatItsThe":
         MessageLookupByLibrary.simpleMessage(
           "• Слушайте\n• Говорите\n• Получайте обратную связь\n• Повторяйте",
@@ -111,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Приоритетная поддержка",
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
+    "repeat": MessageLookupByLibrary.simpleMessage("Повторять"),
     "retry": MessageLookupByLibrary.simpleMessage("Повторить"),
     "safeSpace": MessageLookupByLibrary.simpleMessage(
       "Безопасное пространство",
@@ -122,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "smartCorrections": MessageLookupByLibrary.simpleMessage(
       "Умные исправления",
     ),
+    "speak": MessageLookupByLibrary.simpleMessage("Говорить"),
     "startHere": MessageLookupByLibrary.simpleMessage("Начните здесь"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Начать Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
