@@ -31,6 +31,14 @@ class OnboardingNotifier with ChangeNotifier {
     }
     setState(state.copyWith(currentStep: state.currentStep + 1));
   }
+
+  /// Переходит на предыдущий шаг онбординга
+  void previousStep() {
+    if (state.isFirstStep) {
+      return;
+    }
+    setState(state.copyWith(currentStep: state.currentStep - 1));
+  }
 }
 
 class OnboardingState {
@@ -51,6 +59,7 @@ class OnboardingState {
   final int totalSteps;
 
   bool get isLastStep => currentStep == totalSteps - 1;
+  bool get isFirstStep => currentStep == 0;
 
   OnboardingState copyWith({
     String? onboardingName,
