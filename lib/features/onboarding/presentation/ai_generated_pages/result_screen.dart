@@ -168,16 +168,16 @@ class FloatingIcon extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(_padding),
       decoration: BoxDecoration(
-        color: AppColors.colorFFFFFFFF,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(_borderRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.colorFF8E8E93.withValues(alpha: 0.1),
+            color: AppColors.textMuted.withValues(alpha: 0.1),
             blurRadius: 16,
           ),
         ],
         border: Border.all(
-          color: AppColors.colorFF8E8E93.withValues(alpha: 0.1),
+          color: AppColors.textMuted.withValues(alpha: 0.1),
         ),
       ),
       child: Icon(icon, color: color, size: _iconSize),
@@ -209,7 +209,7 @@ class ProgressBar extends StatelessWidget {
           width: _barWidth,
           height: _maxHeight * heightFactor,
           decoration: BoxDecoration(
-            color: isFinal ? AppColors.colorFF5856D6 : AppColors.colorFFEFF6FF,
+            color: isFinal ? AppColors.primary : AppColors.backgroundLight,
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(_barBorderRadius),
             ),
@@ -272,7 +272,7 @@ class ResultContent extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
-                      color: AppColors.colorFF8E8E93,
+                      color: AppColors.textMuted,
                     )
                     .scaled(context),
               ),
@@ -309,7 +309,7 @@ class ResultBackButton extends StatelessWidget {
           child: const Icon(
             LucideIcons.chevronLeft,
             size: _iconSize,
-            color: AppColors.colorFF5856D6,
+            color: AppColors.primary,
           ),
         ),
       ),
@@ -337,7 +337,7 @@ class ResultButton extends StatelessWidget {
         width: double.infinity,
         child: CupertinoButton(
           onPressed: onNext,
-          color: AppColors.colorFF5856D6,
+          color: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
@@ -345,7 +345,7 @@ class ResultButton extends StatelessWidget {
             S.of(context).startYourJourney,
             style: AppTextStyle.inter16w600
                 .copyWith(
-                  color: AppColors.colorFFFFFFFF,
+                  color: AppColors.surface,
                 )
                 .scaled(context),
           ),

@@ -69,7 +69,7 @@ class EmpathyIllustration extends StatelessWidget {
             child:
                 Container(
                       decoration: const BoxDecoration(
-                        color: AppColors.colorFFEFF6FF,
+                        color: AppColors.backgroundLight,
                         shape: BoxShape.circle,
                       ),
                     )
@@ -89,7 +89,7 @@ class EmpathyIllustration extends StatelessWidget {
                       height: _innerCircleSize,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: AppColors.colorFF5856D6.withValues(alpha: 0.5),
+                          color: AppColors.primary.withValues(alpha: 0.5),
                           style: BorderStyle.solid,
                           width: 1,
                         ),
@@ -113,7 +113,7 @@ class EmpathyIllustration extends StatelessWidget {
                 const CharacterBox(
                       icon: LucideIcons.messageCircle,
                       bgColor: Color(0xFFE5E5EA),
-                      iconColor: AppColors.colorFF8E8E93,
+                      iconColor: AppColors.textMuted,
                       showSweat: true,
                     )
                     .animate(delay: 200.ms)
@@ -134,12 +134,12 @@ class EmpathyIllustration extends StatelessWidget {
                       width: _aiFigureSize,
                       height: _aiFigureSize,
                       decoration: const BoxDecoration(
-                        color: AppColors.colorFF5856D6,
+                        color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         LucideIcons.heartHandshake,
-                        color: AppColors.colorFFFFFFFF,
+                        color: AppColors.surface,
                         size: _aiIconSize,
                       ),
                     )
@@ -194,7 +194,7 @@ class CharacterBox extends StatelessWidget {
                         width: _sweatSize,
                         height: _sweatSize,
                         decoration: const BoxDecoration(
-                          color: AppColors.colorFF5856D6,
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                       )
@@ -228,7 +228,7 @@ class SafeSpaceTag extends StatelessWidget {
           vertical: _verticalPadding,
         ),
         decoration: BoxDecoration(
-          color: AppColors.colorFFEFF6FF,
+          color: AppColors.backgroundLight,
           borderRadius: BorderRadius.circular(_borderRadius),
         ),
         child: Row(
@@ -237,14 +237,14 @@ class SafeSpaceTag extends StatelessWidget {
             const Icon(
               LucideIcons.shieldCheck,
               size: _iconSize,
-              color: AppColors.colorFF5856D6,
+              color: AppColors.primary,
             ),
             const SizedBox(width: _spacing),
             Text(
               S.of(context).safeSpace,
               style: AppTextStyle.inter16w600
                   .copyWith(
-                    color: AppColors.colorFF5856D6,
+                    color: AppColors.primary,
                   )
                   .scaled(context),
             ),
@@ -283,7 +283,7 @@ class EmpathyContent extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
-                      color: AppColors.colorFF8E8E93,
+                      color: AppColors.textMuted,
                     )
                     .scaled(context),
               ),
@@ -316,7 +316,7 @@ class EmpathyButton extends StatelessWidget {
         width: double.infinity,
         child: CupertinoButton(
           onPressed: onNext,
-          color: AppColors.colorFF5856D6,
+          color: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
           minimumSize: const Size(0, 44.0), // Минимальный размер тач-таргета
           borderRadius: BorderRadius.circular(_borderRadius),
@@ -324,7 +324,7 @@ class EmpathyButton extends StatelessWidget {
             S.of(context).continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
-                  color: AppColors.colorFFFFFFFF,
+                  color: AppColors.surface,
                 )
                 .scaled(context),
           ),

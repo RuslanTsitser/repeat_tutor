@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      backgroundColor: AppColors.colorFFFFFFFF,
+      backgroundColor: AppColors.surface,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -109,7 +109,7 @@ class _LanguageSelector extends StatelessWidget {
         Text(
           label,
           style: AppTextStyle.inter16w400.copyWith(
-            color: AppColors.colorFF364153,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: 16),
@@ -124,10 +124,10 @@ class _LanguageSelector extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.colorFFF9FAFB,
+                color: AppColors.backgroundLight,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.colorFFE5E7EB,
+                  color: AppColors.divider,
                   width: 1,
                 ),
               ),
@@ -137,13 +137,13 @@ class _LanguageSelector extends StatelessWidget {
                   Text(
                     selectedLanguage.localizedName,
                     style: AppTextStyle.inter16w500.copyWith(
-                      color: AppColors.colorFF101828,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const Icon(
                     CupertinoIcons.chevron_down,
                     size: 24,
-                    color: AppColors.colorFF101828,
+                    color: AppColors.textPrimary,
                   ),
                 ],
               ),
@@ -185,7 +185,7 @@ class _LanguagePicker extends StatelessWidget {
     return Container(
       height: 300,
       decoration: const BoxDecoration(
-        color: AppColors.colorFFFFFFFF,
+        color: AppColors.surface,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -199,7 +199,7 @@ class _LanguagePicker extends StatelessWidget {
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: AppColors.colorFFE5E7EB,
+                  color: AppColors.divider,
                   width: 1,
                 ),
               ),
@@ -216,7 +216,7 @@ class _LanguagePicker extends StatelessWidget {
                     child: Text(
                       S.of(context).cancel,
                       style: AppTextStyle.inter16w400.copyWith(
-                        color: AppColors.colorFF364153,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                   ),
@@ -224,7 +224,7 @@ class _LanguagePicker extends StatelessWidget {
                 Text(
                   title,
                   style: AppTextStyle.inter16w500.copyWith(
-                    color: AppColors.colorFF101828,
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(width: 64),
@@ -245,7 +245,7 @@ class _LanguagePicker extends StatelessWidget {
                   child: Text(
                     language.localizedName,
                     style: AppTextStyle.inter16w400.copyWith(
-                      color: AppColors.colorFF101828,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 );
@@ -272,7 +272,7 @@ class _CallDurationSection extends ConsumerWidget {
         Text(
           S.of(context).callDuration,
           style: AppTextStyle.inter14w500.copyWith(
-            color: AppColors.colorFF6A7282,
+            color: AppColors.textSecondary,
           ),
         ),
         const SizedBox(height: 16),
@@ -332,7 +332,7 @@ class _DurationRow extends StatelessWidget {
             ? const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: AppColors.colorFFF3F4F6,
+                    color: AppColors.backgroundLight,
                     width: 1,
                   ),
                 ),
@@ -344,13 +344,13 @@ class _DurationRow extends StatelessWidget {
             Text(
               label,
               style: AppTextStyle.inter16w400.copyWith(
-                color: AppColors.colorFF364153,
+                color: AppColors.textPrimary,
               ),
             ),
             Text(
               _formatDuration(duration),
               style: AppTextStyle.inter16w500.copyWith(
-                color: AppColors.colorFF101828,
+                color: AppColors.textPrimary,
               ),
             ),
           ],

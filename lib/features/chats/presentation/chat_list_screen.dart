@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/models/chat.dart';
 import '../../../core/localization/generated/l10n.dart';
+import '../../../core/presentation/logo_app_bar.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../../onboarding/presentation/onboarding_chat_list_wrapper.dart';
@@ -94,8 +95,13 @@ class _Body extends ConsumerWidget {
     final List<Chat> chats = state.chats;
 
     if (isLoading) {
-      return const Center(
-        child: CupertinoActivityIndicator(),
+      return const Column(
+        children: [
+          LogoAppBar(),
+          Expanded(
+            child: CupertinoActivityIndicator(),
+          ),
+        ],
       );
     }
 
@@ -104,6 +110,7 @@ class _Body extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const LogoAppBar(),
             const Icon(
               CupertinoIcons.exclamationmark_triangle,
               size: 64,
@@ -129,32 +136,7 @@ class _Body extends ConsumerWidget {
 
     return Column(
       children: [
-        Container(
-          height: 65,
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-          decoration: const BoxDecoration(
-            color: CupertinoColors.white,
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFFE5E7EB),
-                width: 1,
-              ),
-            ),
-          ),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              S.of(context).chats,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF0A0A0A),
-                letterSpacing: 0.0703,
-                height: 32 / 24,
-              ),
-            ),
-          ),
-        ),
+        const LogoAppBar(),
         Expanded(
           child: chats.isEmpty
               ? const _EmptyState()

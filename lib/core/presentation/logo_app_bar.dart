@@ -19,7 +19,7 @@ class LogoAppBar extends StatelessWidget {
         ),
         border: Border(
           bottom: BorderSide(
-            color: AppColors.colorFFE5E7EB,
+            color: AppColors.divider,
             width: 1,
           ),
         ),

@@ -91,7 +91,7 @@ class MethodIllustration extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.colorFF8E8E93.withValues(alpha: 0.3),
+                color: AppColors.textMuted.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
@@ -104,11 +104,11 @@ class MethodIllustration extends StatelessWidget {
               width: _centerSize,
               height: _centerSize,
               decoration: BoxDecoration(
-                color: AppColors.colorFF5856D6,
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(_borderRadius),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.colorFF5856D6.withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 24,
                     offset: const Offset(0, 8),
                   ),
@@ -118,7 +118,7 @@ class MethodIllustration extends StatelessWidget {
                 angle: -0.785,
                 child: const Icon(
                   LucideIcons.mic,
-                  color: AppColors.colorFFFFFFFF,
+                  color: AppColors.surface,
                   size: _centerIconSize,
                 ),
               ),
@@ -142,7 +142,7 @@ class MethodIllustration extends StatelessWidget {
           _buildOrbitItem(
             2,
             LucideIcons.checkCircle2,
-            AppColors.colorFF5856D6,
+            AppColors.primary,
           ),
         ],
       ),
@@ -161,14 +161,14 @@ class MethodIllustration extends StatelessWidget {
               width: _orbitItemSize,
               height: _orbitItemSize,
               decoration: BoxDecoration(
-                color: AppColors.colorFFFFFFFF,
+                color: AppColors.surface,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppColors.colorFF8E8E93.withValues(alpha: 0.2),
+                  color: AppColors.textMuted.withValues(alpha: 0.2),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.colorFFFFFFFF.withValues(alpha: 0.05),
+                    color: AppColors.surface.withValues(alpha: 0.05),
                     blurRadius: 16,
                   ),
                 ],
@@ -218,7 +218,7 @@ class MethodContent extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
-                      color: AppColors.colorFF8E8E93,
+                      color: AppColors.textMuted,
                     )
                     .scaled(context),
               ),
@@ -253,14 +253,14 @@ class MethodTag extends StatelessWidget {
           vertical: _verticalPadding,
         ),
         decoration: BoxDecoration(
-          color: AppColors.colorFFEFF6FF,
+          color: AppColors.backgroundLight,
           borderRadius: BorderRadius.circular(_borderRadius),
         ),
         child: Text(
           text,
           style: AppTextStyle.inter12w600
               .copyWith(
-                color: AppColors.colorFF8E8E93,
+                color: AppColors.textMuted,
               )
               .scaled(context),
         ),
@@ -293,7 +293,7 @@ class MethodBackButton extends StatelessWidget {
           child: const Icon(
             LucideIcons.chevronLeft,
             size: _iconSize,
-            color: AppColors.colorFF5856D6,
+            color: AppColors.primary,
           ),
         ),
       ),
@@ -321,7 +321,7 @@ class MethodButton extends StatelessWidget {
         width: double.infinity,
         child: CupertinoButton(
           onPressed: onNext,
-          color: AppColors.colorFF5856D6,
+          color: AppColors.primary,
           padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
@@ -329,7 +329,7 @@ class MethodButton extends StatelessWidget {
             S.of(context).nextButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
-                  color: AppColors.colorFFFFFFFF,
+                  color: AppColors.surface,
                 )
                 .scaled(context),
           ),
