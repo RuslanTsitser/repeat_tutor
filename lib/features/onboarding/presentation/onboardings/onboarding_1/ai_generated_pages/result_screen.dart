@@ -3,9 +3,9 @@ import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-import '../../../../core/localization/generated/l10n.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_text_style.dart';
+import '../../../../../../core/localization/generated/l10n.dart';
+import '../../../../../../core/theme/app_colors.dart';
+import '../../../../../../core/theme/app_text_style.dart';
 
 class ResultScreen extends StatelessWidget {
   final VoidCallback onNext;
