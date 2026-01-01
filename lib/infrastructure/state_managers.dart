@@ -1,7 +1,6 @@
 // Chat providers
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/ab_test/enum/placement_type.dart';
 import '../features/chats/logic/chat_list_notifier.dart';
 import '../features/chats/logic/chat_notifier.dart';
 import '../features/chats/logic/create_chat_notifier.dart';
@@ -41,11 +40,8 @@ final profileProvider = ChangeNotifierProvider((ref) {
   return ProfileNotifier();
 });
 
-final paywallChangeNotifierProvider = ChangeNotifierProvider.family((
-  ref,
-  PlacementType placement,
-) {
-  return PaywallChangeNotifier(placement: placement);
+final paywallChangeNotifierProvider = ChangeNotifierProvider((ref) {
+  return PaywallChangeNotifier(abTestService: ref.watch(abTestServiceProvider));
 });
 
 final homeScreenNotifierProvider = ChangeNotifierProvider((ref) {
