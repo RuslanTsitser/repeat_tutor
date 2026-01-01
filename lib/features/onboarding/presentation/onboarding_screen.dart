@@ -79,7 +79,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     ref.read(onboardingNotifierProvider).previousStep();
                   },
                 ),
-                const PaywallScreen(
+                const OnboardingPaywallView(
                   placement: PlacementType.placementOnboarding,
                 ),
               ],

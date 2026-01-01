@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/domain/models/chat.dart';
 import '../../../core/router/router.dart';
 import '../../../infrastructure/core.dart';
@@ -45,5 +46,15 @@ class OpenScreenUseCase {
     if (messages.isEmpty) {
       await addMessageUseCase.addMessage(l10n.hello, addFirstMessage: false);
     }
+  }
+
+  Future<void> openProPaywall() async {
+    final appRouter = ref.read(routerProvider);
+    // TODO: change to the correct placement
+    appRouter.push<void>(
+      PaywallRoute(
+        placement: PlacementType.placementStart,
+      ),
+    );
   }
 }

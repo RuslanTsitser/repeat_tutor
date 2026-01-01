@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/ab_test/ab_test_service.dart';
 import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../infrastructure/core.dart';
+import '../../../infrastructure/use_case.dart';
+import '../../home/logic/home_screen_notifier.dart';
 import 'ai_generated/paywall_1.dart';
 
 @RoutePage()
@@ -35,11 +37,82 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final config = abTestService.remoteConfig(widget.placement);
+    return _Paywall(
+      placement: widget.placement,
+      abTestService: abTestService,
+      onPurchase: () {
+        ref.read(routerProvider).pop();
+      },
+      onClose: () {
+        ref.read(routerProvider).pop();
+      },
+    );
+  }
+}
+
+class OnboardingPaywallView extends ConsumerStatefulWidget {
+  const OnboardingPaywallView({super.key, required this.placement});
+  final PlacementType placement;
+
+  @override
+  ConsumerState<OnboardingPaywallView> createState() =>
+      _OnboardingPaywallViewState();
+}
+
+class _OnboardingPaywallViewState extends ConsumerState<OnboardingPaywallView> {
+  late final AbTestService abTestService;
+
+  @override
+  void initState() {
+    super.initState();
+    abTestService = ref.read(abTestServiceProvider);
+    abTestService.logShowPaywall(widget.placement);
+  }
+
+  @override
+  void dispose() {
+    abTestService.logClosePaywall(widget.placement);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _Paywall(
+      placement: widget.placement,
+      abTestService: abTestService,
+      onPurchase: () {
+        ref.read(initializeUseCaseProvider).setTab(HomeScreenTab.home);
+      },
+      onClose: () {
+        ref.read(routerProvider).pop();
+      },
+    );
+  }
+}
+
+class _Paywall extends StatelessWidget {
+  const _Paywall({
+    required this.placement,
+    required this.abTestService,
+    required this.onPurchase,
+    required this.onClose,
+  });
+  final PlacementType placement;
+  final AbTestService abTestService;
+  final VoidCallback onPurchase;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final config = abTestService.remoteConfig(placement);
     final paywallName = config.paywall;
     if (paywallName == 'paywall1') {
-      return const Paywall1();
+      return Paywall1(
+        onPurchase: onPurchase,
+      );
     }
-    return const Paywall1();
+    return Paywall1(
+      onPurchase: onPurchase,
+    );
   }
 }
