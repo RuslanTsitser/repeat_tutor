@@ -39,6 +39,14 @@ class InitializeUseCase {
 
   Future<void> setTab(HomeScreenTab tab) async {
     final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+    final localStorage = ref.read(localStorageProvider);
+    final currentTab = homeScreenNotifier.state.tab;
+    if (currentTab == HomeScreenTab.onboarding) {
+      await localStorage.setValue<bool>(
+        StorageKeys.isFirstOnboardingShownKey,
+        true,
+      );
+    }
     homeScreenNotifier.setState(
       homeScreenNotifier.state.copyWith(tab: tab),
     );
