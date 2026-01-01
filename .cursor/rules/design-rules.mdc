@@ -1,0 +1,283 @@
+---
+description: Design System Rules
+globs:
+alwaysApply: true
+---
+
+# Design System Rules (Project-Specific)
+
+Эти правила определяют **специфичную для проекта** систему дизайна для Flutter приложения Repeat Tutor.
+
+**Важно:** Общие принципы дизайна находятся в отдельных файлах:
+
+- `ios-hig-rules.mdc` - iOS Human Interface Guidelines
+- `accessibility-rules.mdc` - WCAG правила доступности
+- `visual-design-principles.mdc` - Принципы визуального дизайна
+- `ux-best-practices.mdc` - UX практики
+
+## Spacing System (Система отступов)
+
+**КРИТИЧЕСКИ ВАЖНО:** Все размеры должны использовать только следующие значения:
+
+- **4** - минимальный отступ (для очень маленьких элементов)
+- **8** - маленький отступ (для близких элементов)
+- **16** - стандартный отступ (для обычных элементов)
+- **24** - средний отступ (для секций)
+- **32** - большой отступ (для крупных секций)
+- **64** - максимальный отступ (для больших разделителей)
+
+### Правила применения
+
+- **Padding и Margin:** Используйте только значения из списка выше
+- **Размеры виджетов:** Ширина, высота, размеры иконок должны быть кратны этим значениям
+- **Скругления (Border Radius):** Используйте значения из списка (обычно 8, 16, 24)
+- **Размеры шрифтов:** Могут быть любыми, но предпочтительно использовать стандартные значения (12, 14, 16, 18, 20, 24, 28, 32)
+- **Анимации:** Смещения в анимациях должны использовать значения из списка
+
+### Примеры
+
+```dart
+// ✅ Правильно
+padding: const EdgeInsets.all(16.0)
+padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0)
+SizedBox(height: 32.0)
+borderRadius: BorderRadius.circular(16.0)
+
+// ❌ Неправильно
+padding: EdgeInsets.all(15.0)
+padding: EdgeInsets.symmetric(horizontal: 23.0)
+SizedBox(height: 30.0)
+borderRadius: BorderRadius.circular(20.0)
+```
+
+## Responsive vs Adaptive (Респонзивность vs Адаптивность)
+
+### ❌ НЕ используйте респонзивность
+
+- **Запрещено:** Расчеты размеров на основе процентов от размера экрана
+- **Запрещено:** `screenWidth * 0.08`, `screenHeight * 0.05` и подобные расчеты
+- **Запрещено:** `MediaQuery.of(context).size.width * percentage`
+- **Запрещено:** Динамические размеры шрифтов на основе размера экрана
+- **Запрещено:** Динамические отступы на основе размера экрана
+
+### ✅ Используйте адаптивность
+
+- **Используйте:** Фиксированные размеры из spacing system
+- **Используйте:** Layout виджеты для адаптации (`Expanded`, `Flexible`, `Column`, `Row`)
+- **Используйте:** `MediaQuery` только для получения constraints, не для расчетов
+- **Используйте:** `LayoutBuilder` для сложных адаптивных layout'ов
+- **Используйте:** `ConstrainedBox`, `AspectRatio` для контроля размеров
+
+### Примеры (респонзивность vs адаптивность)
+
+```dart
+// ✅ Правильно - адаптивность через layout виджеты
+Column(
+  children: [
+    Expanded(
+      child: ContentWidget(),
+    ),
+    FixedHeightButton(),
+  ],
+)
+
+// ❌ Неправильно - респонзивность через проценты
+Column(
+  children: [
+    SizedBox(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: ContentWidget(),
+    ),
+  ],
+)
+```
+
+## Design Style (Стиль дизайна)
+
+### iOS Cupertino Style
+
+- **Платформа:** iOS Cupertino look and feel
+- **Минимализм:** Минималистичный, чистый интерфейс
+- **Фон:** Чистый белый фон (поддержка светлой и темной темы)
+- **Цвета:** Мягкие системные цвета iOS (синий, фиолетовый, мятный)
+- **Иллюстрации:** Плоский стиль, абстрактные персонажи
+- **Формы:** Скругленные формы, спокойная композиция
+
+### Цветовая палитра
+
+- **Primary:** Индиго (#5856D6)
+- **Background Light:** Белый (#FFFFFF)
+- **Text Gray:** Серый (#8E8E93)
+- **Blue 50:** Светло-синий (#EFF6FF)
+
+## Typography (Типографика)
+
+### Размеры шрифтов
+
+- **Tag/Label:** 12px (маленькие метки)
+- **Body Small:** 14px (вторичный текст)
+- **Body:** 16px (основной текст)
+- **Body Large:** 18px (важный текст)
+- **Title:** 20-24px (заголовки)
+- **Headline:** 28-32px (крупные заголовки)
+
+### Стили
+
+- **Font Family:** SF Pro Text (iOS системный шрифт)
+- **Line Height:** 1.4-1.5 для body текста, 1.1 для заголовков
+- **Font Weight:**
+  - Normal (400) для body текста
+  - Semibold (600) для акцентов
+  - Bold (700) для заголовков
+
+### Примеры (типографика)
+
+```dart
+// Body текст
+TextStyle(
+  fontSize: 16.0,
+  height: 1.5,
+  fontWeight: FontWeight.normal,
+)
+
+// Заголовок
+TextStyle(
+  fontSize: 24.0,
+  height: 1.1,
+  fontWeight: FontWeight.bold,
+)
+```
+
+## Border Radius (Скругления)
+
+**Специфично для проекта:** Используйте значения из spacing system:
+
+- **Маленькие элементы:** 8px (кнопки, маленькие карточки)
+- **Стандартные элементы:** 16px (карточки, контейнеры)
+- **Большие элементы:** 24px (большие карточки, модальные окна)
+
+### Примеры (скругления)
+
+```dart
+// ✅ Правильно
+BorderRadius.circular(16.0)
+BorderRadius.circular(24.0)
+
+// ❌ Неправильно
+BorderRadius.circular(15.0)
+BorderRadius.circular(20.0)
+```
+
+## Shadows and Elevation (Тени и возвышение)
+
+**Специфично для проекта:** Используйте значения из spacing system:
+
+- **Blur Radius:** Используйте значения из spacing system (обычно 16, 24)
+- **Offset:** Используйте значения из spacing system (обычно 0, 8)
+- **Elevation:** Для Material виджетов используйте 0 или минимальные значения
+
+### Примеры (тени и возвышение)
+
+```dart
+BoxShadow(
+  color: Colors.black.withOpacity(0.1),
+  blurRadius: 24,
+  offset: const Offset(0, 8),
+)
+```
+
+## Icons (Иконки)
+
+- **Библиотека:** Используйте `lucide_icons` для иконок
+- **Размеры:** Используйте значения из spacing system (обычно 16, 24, 32)
+- **Цвета:** Используйте цвета из цветовой палитры
+
+### Примеры (иконки)
+
+```dart
+Icon(
+  LucideIcons.heartHandshake,
+  size: 32.0,
+  color: AppColors.indigo,
+)
+```
+
+## Animations (Анимации)
+
+- **Библиотека:** Используйте `flutter_animate` для анимаций
+- **Длительность:** Стандартные значения (300ms, 500ms, 1s)
+- **Кривые:** Используйте `Curves.easeOut`, `Curves.easeInOut`
+- **Смещения:** Используйте значения из spacing system для begin/end
+
+### Примеры (анимации)
+
+```dart
+.animate(delay: 200.ms)
+.moveX(begin: -16, end: 0, curve: Curves.easeOut)
+.fadeIn()
+```
+
+## Component Structure (Структура компонентов)
+
+### Разбиение на компоненты
+
+- **Принцип:** Разбивайте большие виджеты на отдельные компоненты
+- **Размещение:** Все компоненты одного экрана в одном файле
+- **Именование:** Используйте описательные имена (`CharacterBox`, `SafeSpaceTag`)
+- **Приватные константы:** Используйте `static const` для размеров внутри компонента
+
+### Пример структуры (компоненты)
+
+```dart
+class MainScreen extends StatelessWidget {
+  // Основной экран
+}
+
+class ComponentA extends StatelessWidget {
+  static const double _size = 64.0;
+  // Компонент A
+}
+
+class ComponentB extends StatelessWidget {
+  static const double _padding = 16.0;
+  // Компонент B
+}
+```
+
+## Layout Principles (Принципы компоновки)
+
+**Специфично для проекта:** Использование фиксированных значений из spacing system:
+
+- **Используйте `SizedBox`** для фиксированных отступов из spacing system
+- **Padding:** Используйте только фиксированные значения из spacing system
+
+### Примеры (компоновка)
+
+```dart
+// ✅ Правильно
+Padding(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 24.0,
+    vertical: 16.0,
+  ),
+  child: Content(),
+)
+
+// ❌ Неправильно
+Padding(
+  padding: EdgeInsets.symmetric(
+    horizontal: MediaQuery.of(context).size.width * 0.08,
+    vertical: MediaQuery.of(context).size.height * 0.05,
+  ),
+  child: Content(),
+)
+```
+
+## Best Practices (Лучшие практики для проекта)
+
+### Код
+
+- **Константы:** Все размеры должны быть константами (`static const`)
+- **Именование:** Используйте понятные имена для констант (`_size`, `_padding`, `_spacing`)
+- **Группировка:** Группируйте связанные константы в одном месте
+- **Единообразие:** Используйте одинаковые размеры для одинаковых элементов
