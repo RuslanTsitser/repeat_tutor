@@ -60,11 +60,11 @@ class ProfileSettingsUseCase {
 
   Future<void> setDefaultTeacherLanguage(Language language) async {
     final localStorageService = ref.read(localStorageProvider);
+    final profileNotifier = ref.read(profileProvider);
     await localStorageService.setValue<String>(
       StorageKeys.defaultTeacherLanguageKey,
       language.value,
     );
-    final profileNotifier = ref.read(profileProvider);
     profileNotifier.setState(
       profileNotifier.state.copyWith(defaultTeacherLanguage: language),
     );
@@ -72,17 +72,26 @@ class ProfileSettingsUseCase {
 
   Future<void> setDefaultLanguageToLearn(Language language) async {
     final localStorageService = ref.read(localStorageProvider);
+    final profileNotifier = ref.read(profileProvider);
+
     await localStorageService.setValue<String>(
       StorageKeys.defaultLanguageToLearnKey,
       language.value,
+    );
+    profileNotifier.setState(
+      profileNotifier.state.copyWith(defaultLanguageToLearn: language),
     );
   }
 
   Future<void> setDefaultLanguage(Language language) async {
     final localStorageService = ref.read(localStorageProvider);
+    final profileNotifier = ref.read(profileProvider);
     await localStorageService.setValue<String>(
       StorageKeys.defaultLanguageKey,
       language.value,
+    );
+    profileNotifier.setState(
+      profileNotifier.state.copyWith(defaultLanguage: language),
     );
   }
 
