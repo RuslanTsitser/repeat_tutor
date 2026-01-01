@@ -30,7 +30,6 @@ class ResultScreen extends StatelessWidget {
         ],
         Expanded(
           child: SafeArea(
-            minimum: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
                 const Expanded(
@@ -42,12 +41,21 @@ class ResultScreen extends StatelessWidget {
                         child: ResultIllustration(),
                       ),
                       SizedBox(height: 32.0),
-                      ResultContent(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ResultContent(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
-                ResultButton(onNext: onNext),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ResultButton(onNext: onNext),
+                ),
               ],
             ),
           ),
@@ -241,6 +249,8 @@ class ResultContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Semantics(
               label: S.of(context).gainRealConfidence,
@@ -259,7 +269,7 @@ class ResultContent extends StatelessWidget {
                 S
                     .of(context)
                     .transformFromHesitantToNaturalSpeakerFeelTheProgressWith,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.colorFF8E8E93,

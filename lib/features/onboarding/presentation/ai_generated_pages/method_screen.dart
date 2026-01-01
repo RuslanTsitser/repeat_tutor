@@ -29,7 +29,6 @@ class MethodScreen extends StatelessWidget {
         ],
         Expanded(
           child: SafeArea(
-            minimum: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
                 const Expanded(
@@ -41,12 +40,21 @@ class MethodScreen extends StatelessWidget {
                         child: MethodIllustration(),
                       ),
                       SizedBox(height: 32.0),
-                      MethodContent(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: MethodContent(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
-                MethodButton(onNext: onNext),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: MethodButton(onNext: onNext),
+                ),
               ],
             ),
           ),
@@ -186,13 +194,18 @@ class MethodContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Semantics(
-              label: S.of(context).theRepetitionLoop,
-              child: Text(
-                S.of(context).theRepetitionLoop,
-                textAlign: TextAlign.center,
-                style: AppTextStyle.inter24w700.scaled(context),
+            const SizedBox(height: 24.0),
+            Center(
+              child: Semantics(
+                label: S.of(context).theRepetitionLoop,
+                child: Text(
+                  S.of(context).theRepetitionLoop,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.inter24w700.scaled(context),
+                ),
               ),
             ),
             const SizedBox(height: _spacing),
@@ -202,22 +215,13 @@ class MethodContent extends StatelessWidget {
                   .listenSpeakGetGentleAiFeedbackAndRepeatItsThe,
               child: Text(
                 S.of(context).listenSpeakGetGentleAiFeedbackAndRepeatItsThe,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.colorFF8E8E93,
                     )
                     .scaled(context),
               ),
-            ),
-            const SizedBox(height: 24.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MethodTag(text: S.of(context).personalized),
-                const SizedBox(width: 8.0),
-                MethodTag(text: S.of(context).pressureFree),
-              ],
             ),
           ],
         )
