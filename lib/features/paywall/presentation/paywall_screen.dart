@@ -109,10 +109,12 @@ class _Paywall extends StatelessWidget {
     if (paywallName == 'paywall1') {
       return Paywall1(
         onPurchase: onPurchase,
+        onClose: onClose,
       );
     }
     return Paywall1(
       onPurchase: onPurchase,
+      onClose: onClose,
     );
   }
 }
