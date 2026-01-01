@@ -67,6 +67,7 @@ borderRadius: BorderRadius.circular(20.0)
 - **Используйте:** `MediaQuery` только для получения constraints, не для расчетов
 - **Используйте:** `LayoutBuilder` для сложных адаптивных layout'ов
 - **Используйте:** `ConstrainedBox`, `AspectRatio` для контроля размеров
+- **Используйте:** `FittedBox` для компонентов, которые должны иметь постоянные пропорции (иллюстрации, иконки, логотипы)
 
 ### Примеры (респонзивность vs адаптивность)
 
@@ -89,6 +90,12 @@ Column(
       child: ContentWidget(),
     ),
   ],
+)
+
+// ✅ Правильно - FittedBox для компонентов с постоянными пропорциями
+FittedBox(
+  fit: BoxFit.contain,
+  child: IllustrationWidget(),
 )
 ```
 
