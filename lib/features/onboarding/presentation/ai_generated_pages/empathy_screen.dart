@@ -14,7 +14,6 @@ class EmpathyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const Expanded(
@@ -26,11 +25,20 @@ class EmpathyScreen extends StatelessWidget {
                   child: EmpathyIllustration(),
                 ),
                 SizedBox(height: 32.0),
-                EmpathyContent(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: EmpathyContent(),
+                  ),
+                ),
               ],
             ),
           ),
-          EmpathyButton(onNext: onNext),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: EmpathyButton(onNext: onNext),
+          ),
         ],
       ),
     );
