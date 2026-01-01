@@ -40,12 +40,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     return _Paywall(
       placement: widget.placement,
       abTestService: abTestService,
-      onPurchase: () {
-        ref.read(routerProvider).pop();
-      },
-      onClose: () {
-        ref.read(routerProvider).pop();
-      },
+      onPurchase: () => ref.read(purchaseUseCaseProvider).purchase(),
+      onClose: () => ref.read(routerProvider).pop(),
     );
   }
 }
@@ -80,12 +76,15 @@ class _OnboardingPaywallViewState extends ConsumerState<OnboardingPaywallView> {
     return _Paywall(
       placement: widget.placement,
       abTestService: abTestService,
-      onPurchase: () {
-        ref.read(initializeUseCaseProvider).setTab(HomeScreenTab.home);
+      onPurchase: () async {
+        await ref.read(purchaseUseCaseProvider).purchase();
+        final isPremium = ref.read(abTestServiceProvider).isPremium;
+        if (isPremium) {
+          ref.read(initializeUseCaseProvider).setTab(HomeScreenTab.home);
+        }
       },
-      onClose: () {
-        ref.read(routerProvider).pop();
-      },
+      onClose: () =>
+          ref.read(initializeUseCaseProvider).setTab(HomeScreenTab.home),
     );
   }
 }

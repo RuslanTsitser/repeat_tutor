@@ -1,8 +1,6 @@
 import 'package:ab_test_service/ab_test_service/model/user_premium_source.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/ab_test/enum/placement_type.dart';
-import '../../../core/ab_test/enum/product_type.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -13,23 +11,18 @@ class PurchaseUseCase {
   });
   final Ref ref;
 
-  Future<void> purchase({
-    required ProductType productType,
-  }) async {
+  Future<void> purchase() async {
     final abTestService = ref.read(abTestServiceProvider);
     final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
     final appRouter = ref.read(routerProvider);
-    await paywallChangeNotifier.purchase(productType);
+    final selectedProductType = paywallChangeNotifier.state.selectedProductType;
+    if (selectedProductType == null) {
+      return;
+    }
+    await paywallChangeNotifier.purchase(selectedProductType);
     if (abTestService.isPremium) {
       appRouter.pop();
     }
-  }
-
-  Future<void> close({required PlacementType placement}) async {
-    final abTestService = ref.read(abTestServiceProvider);
-    final appRouter = ref.read(routerProvider);
-    await abTestService.logClosePaywall(placement);
-    appRouter.pop();
   }
 
   Future<void> setDebugPremium() async {
