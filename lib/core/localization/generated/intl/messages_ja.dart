@@ -22,10 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "advancedCorrections": MessageLookupByLibrary.simpleMessage("高度な修正"),
+    "advancedVoicePractice": MessageLookupByLibrary.simpleMessage("高度な音声練習"),
+    "aiTutorAccess": MessageLookupByLibrary.simpleMessage("24/7 AIチューターアクセス"),
     "appLanguage": MessageLookupByLibrary.simpleMessage("アプリの言語"),
     "callDuration": MessageLookupByLibrary.simpleMessage("通話時間"),
     "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+    "cancelAnytime": MessageLookupByLibrary.simpleMessage("いつでもキャンセル可能"),
     "chats": MessageLookupByLibrary.simpleMessage("チャット"),
+    "chooseYourPlan": MessageLookupByLibrary.simpleMessage("プランを選択"),
     "connected": MessageLookupByLibrary.simpleMessage("接続中"),
     "continueButton": MessageLookupByLibrary.simpleMessage("続ける"),
     "delete": MessageLookupByLibrary.simpleMessage("削除"),
@@ -36,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "チャットの読み込みに失敗しました",
     ),
+    "everythingYouNeedToMasterANewLanguage":
+        MessageLookupByLibrary.simpleMessage("新しい言語を習得するために必要なすべて"),
     "exampleTopicFood": MessageLookupByLibrary.simpleMessage("食べ物"),
     "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("自由時間"),
     "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("趣味"),
@@ -44,6 +51,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "exampleTopicTravel": MessageLookupByLibrary.simpleMessage("旅行"),
     "exampleTopicWork": MessageLookupByLibrary.simpleMessage("仕事"),
     "gainRealConfidence": MessageLookupByLibrary.simpleMessage("本当の自信を得る"),
+    "getPremium": MessageLookupByLibrary.simpleMessage("Premiumを取得"),
+    "getUnlimitedAccessToAllFeatures": MessageLookupByLibrary.simpleMessage(
+      "すべての機能への無制限アクセスを取得",
+    ),
+    "goPremium": MessageLookupByLibrary.simpleMessage("Premiumになる"),
     "hello": MessageLookupByLibrary.simpleMessage("こんにちは！"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage("学ぶ言語"),
     "level": MessageLookupByLibrary.simpleMessage("レベル"),
@@ -60,25 +72,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "または音声メッセージを送信",
     ),
+    "per": MessageLookupByLibrary.simpleMessage("あたり"),
     "period": MessageLookupByLibrary.simpleMessage("期間"),
     "personalized": MessageLookupByLibrary.simpleMessage("パーソナライズ"),
+    "personalizedFeedback": MessageLookupByLibrary.simpleMessage(
+      "パーソナライズされたフィードバック",
+    ),
+    "practiceSpeakingWithConfidence": MessageLookupByLibrary.simpleMessage(
+      "自信を持って話す練習",
+    ),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
           "• 判断なしで練習してください\n• 間違いを犯してください\n• 学び、成長してください",
         ),
+    "premiumExperience": MessageLookupByLibrary.simpleMessage("Premium体験"),
     "pressureFree": MessageLookupByLibrary.simpleMessage("プレッシャーなし"),
+    "prioritySupport": MessageLookupByLibrary.simpleMessage("優先サポート"),
     "profile": MessageLookupByLibrary.simpleMessage("プロフィール"),
     "retry": MessageLookupByLibrary.simpleMessage("再試行"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("安全な空間"),
+    "save": MessageLookupByLibrary.simpleMessage("節約"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("話すのが怖いですか？"),
+    "selectPlan": MessageLookupByLibrary.simpleMessage("プランを選択"),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
+    "smartCorrections": MessageLookupByLibrary.simpleMessage("スマート修正"),
     "startHere": MessageLookupByLibrary.simpleMessage("ここから始める"),
+    "startPremium": MessageLookupByLibrary.simpleMessage("Premiumを開始"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "最初のチャットを始めましょう",
     ),
     "startYourFirstConversationAndBeginPracticingANewLanguage":
         MessageLookupByLibrary.simpleMessage("最初の会話を始めて新しい言語を練習しましょう"),
     "startYourJourney": MessageLookupByLibrary.simpleMessage("あなたの旅を始める"),
+    "subscribeFor": MessageLookupByLibrary.simpleMessage("購読する"),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "タップして新しいチャットを作成",
     ),
@@ -99,9 +125,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "メッセージを入力してください...",
     ),
+    "unlimitedChats": MessageLookupByLibrary.simpleMessage("無制限のチャット"),
+    "unlimitedConversations": MessageLookupByLibrary.simpleMessage("無制限の会話"),
+    "unlockAllFeaturesAndPracticeWithoutLimits":
+        MessageLookupByLibrary.simpleMessage("すべての機能を解除し、制限なく練習"),
+    "unlockPremium": MessageLookupByLibrary.simpleMessage("Premiumを解除"),
+    "upgradeToPremium": MessageLookupByLibrary.simpleMessage("Premiumにアップグレード"),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage("音声通話中"),
+    "voiceMode": MessageLookupByLibrary.simpleMessage("音声モード"),
+    "voicePractice": MessageLookupByLibrary.simpleMessage("音声練習"),
+    "voicePracticeMode": MessageLookupByLibrary.simpleMessage("音声練習モード"),
     "week": MessageLookupByLibrary.simpleMessage("週"),
     "weekly": MessageLookupByLibrary.simpleMessage("週次"),
+    "whatsIncluded": MessageLookupByLibrary.simpleMessage("含まれるもの"),
     "year": MessageLookupByLibrary.simpleMessage("年"),
     "yearly": MessageLookupByLibrary.simpleMessage("年次"),
     "youCanAlsoPracticeSpeakingWithAVoiceCall":

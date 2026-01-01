@@ -22,12 +22,27 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "advancedCorrections": MessageLookupByLibrary.simpleMessage(
+      "Correzioni avanzate",
+    ),
+    "advancedVoicePractice": MessageLookupByLibrary.simpleMessage(
+      "Pratica vocale avanzata",
+    ),
+    "aiTutorAccess": MessageLookupByLibrary.simpleMessage(
+      "Accesso tutor IA 24/7",
+    ),
     "appLanguage": MessageLookupByLibrary.simpleMessage("Lingua dell\'app"),
     "callDuration": MessageLookupByLibrary.simpleMessage(
       "Durata delle chiamate",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("Annulla"),
+    "cancelAnytime": MessageLookupByLibrary.simpleMessage(
+      "Annulla in qualsiasi momento",
+    ),
     "chats": MessageLookupByLibrary.simpleMessage("Chatear"),
+    "chooseYourPlan": MessageLookupByLibrary.simpleMessage(
+      "Scegli il tuo piano",
+    ),
     "connected": MessageLookupByLibrary.simpleMessage("Connesso"),
     "continueButton": MessageLookupByLibrary.simpleMessage("Continua"),
     "delete": MessageLookupByLibrary.simpleMessage("Elimina"),
@@ -38,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "Errore nel caricamento dei chats",
     ),
+    "everythingYouNeedToMasterANewLanguage":
+        MessageLookupByLibrary.simpleMessage(
+          "Tutto ciò di cui hai bisogno per padroneggiare una nuova lingua",
+        ),
     "exampleTopicFood": MessageLookupByLibrary.simpleMessage("Cibo"),
     "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage(
       "Tempo libero",
@@ -50,6 +69,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
       "Acquista vera fiducia",
     ),
+    "getPremium": MessageLookupByLibrary.simpleMessage("Ottieni Premium"),
+    "getUnlimitedAccessToAllFeatures": MessageLookupByLibrary.simpleMessage(
+      "Ottieni accesso illimitato a tutte le funzionalità",
+    ),
+    "goPremium": MessageLookupByLibrary.simpleMessage("Diventa Premium"),
     "hello": MessageLookupByLibrary.simpleMessage("Ciao!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Lingua da imparare",
@@ -68,19 +92,38 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Oppure invia un messaggio audio",
     ),
+    "per": MessageLookupByLibrary.simpleMessage("per"),
     "period": MessageLookupByLibrary.simpleMessage("Periodo"),
     "personalized": MessageLookupByLibrary.simpleMessage("Personalizzato"),
+    "personalizedFeedback": MessageLookupByLibrary.simpleMessage(
+      "Feedback personalizzato",
+    ),
+    "practiceSpeakingWithConfidence": MessageLookupByLibrary.simpleMessage(
+      "Pratica il parlato con fiducia",
+    ),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
           "• Pratica senza giudizio\n• Fai errori\n• Impara e cresci",
         ),
+    "premiumExperience": MessageLookupByLibrary.simpleMessage(
+      "Esperienza Premium",
+    ),
     "pressureFree": MessageLookupByLibrary.simpleMessage("Senza pressione"),
+    "prioritySupport": MessageLookupByLibrary.simpleMessage(
+      "Supporto prioritario",
+    ),
     "profile": MessageLookupByLibrary.simpleMessage("Profilo"),
     "retry": MessageLookupByLibrary.simpleMessage("Riprova"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Spazio sicuro"),
+    "save": MessageLookupByLibrary.simpleMessage("Risparmia"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Paura di parlare?"),
+    "selectPlan": MessageLookupByLibrary.simpleMessage("Seleziona piano"),
     "settings": MessageLookupByLibrary.simpleMessage("Impostazioni"),
+    "smartCorrections": MessageLookupByLibrary.simpleMessage(
+      "Correzioni intelligenti",
+    ),
     "startHere": MessageLookupByLibrary.simpleMessage("Inizia qui"),
+    "startPremium": MessageLookupByLibrary.simpleMessage("Inizia Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "Inizia il tuo primo chat",
     ),
@@ -91,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startYourJourney": MessageLookupByLibrary.simpleMessage(
       "Inizia il tuo viaggio",
     ),
+    "subscribeFor": MessageLookupByLibrary.simpleMessage("Abbonati per"),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Tocca per creare una nuova chat",
     ),
@@ -117,11 +161,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Scrivi il tuo messaggio...",
     ),
+    "unlimitedChats": MessageLookupByLibrary.simpleMessage("Chat illimitate"),
+    "unlimitedConversations": MessageLookupByLibrary.simpleMessage(
+      "Conversazioni illimitate",
+    ),
+    "unlockAllFeaturesAndPracticeWithoutLimits":
+        MessageLookupByLibrary.simpleMessage(
+          "Sblocca tutte le funzionalità e pratica senza limiti",
+        ),
+    "unlockPremium": MessageLookupByLibrary.simpleMessage("Sblocca Premium"),
+    "upgradeToPremium": MessageLookupByLibrary.simpleMessage("Passa a Premium"),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
       "Chiamata vocale in corso",
     ),
+    "voiceMode": MessageLookupByLibrary.simpleMessage("Modalità vocale"),
+    "voicePractice": MessageLookupByLibrary.simpleMessage("Pratica vocale"),
+    "voicePracticeMode": MessageLookupByLibrary.simpleMessage(
+      "Modalità pratica vocale",
+    ),
     "week": MessageLookupByLibrary.simpleMessage("Settimana"),
     "weekly": MessageLookupByLibrary.simpleMessage("Settimanale"),
+    "whatsIncluded": MessageLookupByLibrary.simpleMessage("Cosa è incluso"),
     "year": MessageLookupByLibrary.simpleMessage("Anno"),
     "yearly": MessageLookupByLibrary.simpleMessage("Annuale"),
     "youCanAlsoPracticeSpeakingWithAVoiceCall":

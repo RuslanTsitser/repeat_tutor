@@ -22,10 +22,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "advancedCorrections": MessageLookupByLibrary.simpleMessage(
+      "Advanced corrections",
+    ),
+    "advancedVoicePractice": MessageLookupByLibrary.simpleMessage(
+      "Advanced voice practice",
+    ),
+    "aiTutorAccess": MessageLookupByLibrary.simpleMessage(
+      "24/7 AI tutor access",
+    ),
     "appLanguage": MessageLookupByLibrary.simpleMessage("App language"),
     "callDuration": MessageLookupByLibrary.simpleMessage("Call Duration"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cancelAnytime": MessageLookupByLibrary.simpleMessage("Cancel anytime"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
+    "chooseYourPlan": MessageLookupByLibrary.simpleMessage("Choose your plan"),
     "connected": MessageLookupByLibrary.simpleMessage("Connected"),
     "continueButton": MessageLookupByLibrary.simpleMessage("Continue"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
@@ -36,6 +47,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "Error loading chats",
     ),
+    "everythingYouNeedToMasterANewLanguage":
+        MessageLookupByLibrary.simpleMessage(
+          "Everything you need to master a new language",
+        ),
     "exampleTopicFood": MessageLookupByLibrary.simpleMessage("Food"),
     "exampleTopicFreeTime": MessageLookupByLibrary.simpleMessage("Free time"),
     "exampleTopicHobbies": MessageLookupByLibrary.simpleMessage("Hobbies"),
@@ -46,6 +61,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "gainRealConfidence": MessageLookupByLibrary.simpleMessage(
       "Gain Real Confidence",
     ),
+    "getPremium": MessageLookupByLibrary.simpleMessage("Get Premium"),
+    "getUnlimitedAccessToAllFeatures": MessageLookupByLibrary.simpleMessage(
+      "Get unlimited access to all features",
+    ),
+    "goPremium": MessageLookupByLibrary.simpleMessage("Go Premium"),
     "hello": MessageLookupByLibrary.simpleMessage("Hello!"),
     "languageToLearn": MessageLookupByLibrary.simpleMessage(
       "Language to learn",
@@ -64,19 +84,36 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Or send an audio message",
     ),
+    "per": MessageLookupByLibrary.simpleMessage("per"),
     "period": MessageLookupByLibrary.simpleMessage("Period"),
     "personalized": MessageLookupByLibrary.simpleMessage("Personalized"),
+    "personalizedFeedback": MessageLookupByLibrary.simpleMessage(
+      "Personalized feedback",
+    ),
+    "practiceSpeakingWithConfidence": MessageLookupByLibrary.simpleMessage(
+      "Practice speaking with confidence",
+    ),
     "practiceWithoutJudgmentMakeMistakesLearnAndGrowInA":
         MessageLookupByLibrary.simpleMessage(
           "• Practice without judgment\n• Make mistakes\n• Learn and grow",
         ),
+    "premiumExperience": MessageLookupByLibrary.simpleMessage(
+      "Premium Experience",
+    ),
     "pressureFree": MessageLookupByLibrary.simpleMessage("Pressure-free"),
+    "prioritySupport": MessageLookupByLibrary.simpleMessage("Priority support"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Safe Space"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Scared to speak?"),
+    "selectPlan": MessageLookupByLibrary.simpleMessage("Select plan"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "smartCorrections": MessageLookupByLibrary.simpleMessage(
+      "Smart corrections",
+    ),
     "startHere": MessageLookupByLibrary.simpleMessage("Start here"),
+    "startPremium": MessageLookupByLibrary.simpleMessage("Start Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
       "Start your first chat",
     ),
@@ -87,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startYourJourney": MessageLookupByLibrary.simpleMessage(
       "Start Your Journey",
     ),
+    "subscribeFor": MessageLookupByLibrary.simpleMessage("Subscribe for"),
     "tapToCreateANewChat": MessageLookupByLibrary.simpleMessage(
       "Tap to create a new chat",
     ),
@@ -111,11 +149,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "typeYourMessage": MessageLookupByLibrary.simpleMessage(
       "Type your message...",
     ),
+    "unlimitedChats": MessageLookupByLibrary.simpleMessage("Unlimited chats"),
+    "unlimitedConversations": MessageLookupByLibrary.simpleMessage(
+      "Unlimited conversations",
+    ),
+    "unlockAllFeaturesAndPracticeWithoutLimits":
+        MessageLookupByLibrary.simpleMessage(
+          "Unlock all features and practice without limits",
+        ),
+    "unlockPremium": MessageLookupByLibrary.simpleMessage("Unlock Premium"),
+    "upgradeToPremium": MessageLookupByLibrary.simpleMessage(
+      "Upgrade to Premium",
+    ),
     "voiceCallInProgress": MessageLookupByLibrary.simpleMessage(
       "Voice call in progress",
     ),
+    "voiceMode": MessageLookupByLibrary.simpleMessage("Voice mode"),
+    "voicePractice": MessageLookupByLibrary.simpleMessage("Voice practice"),
+    "voicePracticeMode": MessageLookupByLibrary.simpleMessage(
+      "Voice practice mode",
+    ),
     "week": MessageLookupByLibrary.simpleMessage("Week"),
     "weekly": MessageLookupByLibrary.simpleMessage("Weekly"),
+    "whatsIncluded": MessageLookupByLibrary.simpleMessage("What\'s included"),
     "year": MessageLookupByLibrary.simpleMessage("Year"),
     "yearly": MessageLookupByLibrary.simpleMessage("Yearly"),
     "youCanAlsoPracticeSpeakingWithAVoiceCall":

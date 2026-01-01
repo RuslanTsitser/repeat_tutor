@@ -503,6 +503,256 @@ class S {
   String get yearly {
     return Intl.message('Yearly', name: 'yearly', desc: '', args: []);
   }
+
+  /// `Upgrade to Premium`
+  String get upgradeToPremium {
+    return Intl.message(
+      'Upgrade to Premium',
+      name: 'upgradeToPremium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get unlimited access to all features`
+  String get getUnlimitedAccessToAllFeatures {
+    return Intl.message(
+      'Get unlimited access to all features',
+      name: 'getUnlimitedAccessToAllFeatures',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited conversations`
+  String get unlimitedConversations {
+    return Intl.message(
+      'Unlimited conversations',
+      name: 'unlimitedConversations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voice practice`
+  String get voicePractice {
+    return Intl.message(
+      'Voice practice',
+      name: 'voicePractice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smart corrections`
+  String get smartCorrections {
+    return Intl.message(
+      'Smart corrections',
+      name: 'smartCorrections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select plan`
+  String get selectPlan {
+    return Intl.message('Select plan', name: 'selectPlan', desc: '', args: []);
+  }
+
+  /// `Subscribe for`
+  String get subscribeFor {
+    return Intl.message(
+      'Subscribe for',
+      name: 'subscribeFor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock Premium`
+  String get unlockPremium {
+    return Intl.message(
+      'Unlock Premium',
+      name: 'unlockPremium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice speaking with confidence`
+  String get practiceSpeakingWithConfidence {
+    return Intl.message(
+      'Practice speaking with confidence',
+      name: 'practiceSpeakingWithConfidence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voice practice mode`
+  String get voicePracticeMode {
+    return Intl.message(
+      'Voice practice mode',
+      name: 'voicePracticeMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advanced corrections`
+  String get advancedCorrections {
+    return Intl.message(
+      'Advanced corrections',
+      name: 'advancedCorrections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Priority support`
+  String get prioritySupport {
+    return Intl.message(
+      'Priority support',
+      name: 'prioritySupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose your plan`
+  String get chooseYourPlan {
+    return Intl.message(
+      'Choose your plan',
+      name: 'chooseYourPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: '', args: []);
+  }
+
+  /// `Go Premium`
+  String get goPremium {
+    return Intl.message('Go Premium', name: 'goPremium', desc: '', args: []);
+  }
+
+  /// `Unlock all features and practice without limits`
+  String get unlockAllFeaturesAndPracticeWithoutLimits {
+    return Intl.message(
+      'Unlock all features and practice without limits',
+      name: 'unlockAllFeaturesAndPracticeWithoutLimits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `per`
+  String get per {
+    return Intl.message('per', name: 'per', desc: '', args: []);
+  }
+
+  /// `What's included`
+  String get whatsIncluded {
+    return Intl.message(
+      'What\'s included',
+      name: 'whatsIncluded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited chats`
+  String get unlimitedChats {
+    return Intl.message(
+      'Unlimited chats',
+      name: 'unlimitedChats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voice mode`
+  String get voiceMode {
+    return Intl.message('Voice mode', name: 'voiceMode', desc: '', args: []);
+  }
+
+  /// `Start Premium`
+  String get startPremium {
+    return Intl.message(
+      'Start Premium',
+      name: 'startPremium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium Experience`
+  String get premiumExperience {
+    return Intl.message(
+      'Premium Experience',
+      name: 'premiumExperience',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Everything you need to master a new language`
+  String get everythingYouNeedToMasterANewLanguage {
+    return Intl.message(
+      'Everything you need to master a new language',
+      name: 'everythingYouNeedToMasterANewLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advanced voice practice`
+  String get advancedVoicePractice {
+    return Intl.message(
+      'Advanced voice practice',
+      name: 'advancedVoicePractice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personalized feedback`
+  String get personalizedFeedback {
+    return Intl.message(
+      'Personalized feedback',
+      name: 'personalizedFeedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `24/7 AI tutor access`
+  String get aiTutorAccess {
+    return Intl.message(
+      '24/7 AI tutor access',
+      name: 'aiTutorAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Premium`
+  String get getPremium {
+    return Intl.message('Get Premium', name: 'getPremium', desc: '', args: []);
+  }
+
+  /// `Cancel anytime`
+  String get cancelAnytime {
+    return Intl.message(
+      'Cancel anytime',
+      name: 'cancelAnytime',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
