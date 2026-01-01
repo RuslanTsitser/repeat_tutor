@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../core/ab_test/enum/product_type.dart';
+import '../../../../core/localization/generated/l10n.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../infrastructure/state_managers.dart';
@@ -60,7 +61,7 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Text(
-              'Upgrade to Premium',
+              S.of(context).upgradeToPremium,
               style: AppTextStyle.inter24w700
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -71,7 +72,7 @@ class _Header extends StatelessWidget {
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
         const SizedBox(height: 8),
         Text(
-              'Get unlimited access to all features',
+              S.of(context).getUnlimitedAccessToAllFeatures,
               style: AppTextStyle.inter16w400
                   .copyWith(color: AppColors.textSecondary)
                   .scaled(context),
@@ -88,10 +89,10 @@ class _Header extends StatelessWidget {
 class _Content extends StatelessWidget {
   const _Content();
 
-  static const _features = [
-    (LucideIcons.messageCircle, 'Unlimited conversations'),
-    (LucideIcons.mic, 'Voice practice'),
-    (LucideIcons.sparkles, 'Smart corrections'),
+  static final _features = [
+    (LucideIcons.messageCircle, S.current.unlimitedConversations),
+    (LucideIcons.mic, S.current.voicePractice),
+    (LucideIcons.sparkles, S.current.smartCorrections),
   ];
 
   @override
@@ -116,7 +117,7 @@ class _Content extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            entry.value.$2,
+                            _getFeatureText(context, entry.value.$2),
                             style: AppTextStyle.inter16w500
                                 .copyWith(color: AppColors.textPrimary)
                                 .scaled(context),
@@ -130,6 +131,16 @@ class _Content extends StatelessWidget {
           )
           .toList(),
     );
+  }
+
+  static String _getFeatureText(BuildContext context, String key) {
+    final localizations = S.of(context);
+    return switch (key) {
+      'unlimitedConversations' => localizations.unlimitedConversations,
+      'voicePractice' => localizations.voicePractice,
+      'smartCorrections' => localizations.smartCorrections,
+      _ => key,
+    };
   }
 }
 
@@ -151,7 +162,7 @@ class _Selector extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-              'Select plan',
+              S.of(context).selectPlan,
               style: AppTextStyle.inter18w600
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -228,7 +239,7 @@ class _ProductOption extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              paywallProduct.productLabel,
+              paywallProduct.productLabel(S.of(context)),
               style: AppTextStyle.inter14w600
                   .copyWith(
                     color: isSelected
@@ -283,7 +294,7 @@ class _Button extends ConsumerWidget {
                         color: AppColors.surface,
                       )
                     : Text(
-                        'Subscribe for ${paywallProduct.fullPrice ?? ''}',
+                        '${S.of(context).subscribeFor} ${paywallProduct.fullPrice ?? ''}',
                         style: AppTextStyle.inter16w600
                             .copyWith(color: AppColors.surface)
                             .scaled(context),

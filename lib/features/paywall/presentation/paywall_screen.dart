@@ -106,9 +106,7 @@ class _Paywall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = abTestService
-        .remoteConfig(placement)
-        .copyWith(paywall: 'paywall4');
+    final config = abTestService.remoteConfig(placement);
     final paywallName = config.paywall;
     switch (paywallName) {
       case 'paywall1':

@@ -1,6 +1,7 @@
 import 'package:ab_test_service/ab_test_service.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../../core/localization/generated/l10n.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Обертка для отображения кнопки закрытия в правом верхнем углу
@@ -36,23 +37,23 @@ class CloseButtonWrapper extends StatelessWidget {
 /// Экстеншен для получения лейбла продукта из периода подписки
 extension PaywallProductLabelExtension on PaywallProduct {
   /// Возвращает короткий лейбл периода (Week, Month, Year)
-  String get productLabel {
+  String productLabel(S localizations) {
     final subscriptionPeriod = this.subscriptionPeriod;
     return switch (subscriptionPeriod) {
-      DefaultSubscriptionPeriodEnum.week => 'Week',
-      DefaultSubscriptionPeriodEnum.month => 'Month',
-      DefaultSubscriptionPeriodEnum.year => 'Year',
+      DefaultSubscriptionPeriodEnum.week => localizations.week,
+      DefaultSubscriptionPeriodEnum.month => localizations.month,
+      DefaultSubscriptionPeriodEnum.year => localizations.year,
       _ => '',
     };
   }
 
   /// Возвращает полный лейбл периода (Weekly, Monthly, Yearly)
-  String get productLabelFull {
+  String productLabelFull(S localizations) {
     final subscriptionPeriod = this.subscriptionPeriod;
     return switch (subscriptionPeriod) {
-      DefaultSubscriptionPeriodEnum.week => 'Weekly',
-      DefaultSubscriptionPeriodEnum.month => 'Monthly',
-      DefaultSubscriptionPeriodEnum.year => 'Yearly',
+      DefaultSubscriptionPeriodEnum.week => localizations.weekly,
+      DefaultSubscriptionPeriodEnum.month => localizations.monthly,
+      DefaultSubscriptionPeriodEnum.year => localizations.yearly,
       _ => '',
     };
   }
@@ -61,10 +62,10 @@ extension PaywallProductLabelExtension on PaywallProduct {
 /// Экстеншен для получения текстового лейбла периода по количеству дней
 extension PeriodLabelExtension on int {
   /// Возвращает текстовый лейбл периода (week, month, year)
-  String get periodLabel {
-    if (this == 7) return 'week';
-    if (this == 30) return 'month';
-    if (this == 365) return 'year';
-    return 'period';
+  String periodLabel(S localizations) {
+    if (this == 7) return localizations.week;
+    if (this == 30) return localizations.month;
+    if (this == 365) return localizations.year;
+    return localizations.period;
   }
 }

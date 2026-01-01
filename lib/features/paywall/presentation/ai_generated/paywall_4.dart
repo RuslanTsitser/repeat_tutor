@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../core/ab_test/enum/product_type.dart';
+import '../../../../core/localization/generated/l10n.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../infrastructure/state_managers.dart';
@@ -89,7 +90,7 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Text(
-              'Premium Experience',
+              S.of(context).premiumExperience,
               style: AppTextStyle.inter24w700
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -100,7 +101,7 @@ class _Header extends StatelessWidget {
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
         const SizedBox(height: 4),
         Text(
-              'Everything you need to master a new language',
+              S.of(context).everythingYouNeedToMasterANewLanguage,
               style: AppTextStyle.inter16w400
                   .copyWith(color: AppColors.textSecondary)
                   .scaled(context),
@@ -118,10 +119,10 @@ class _BenefitsList extends StatelessWidget {
   const _BenefitsList();
 
   static const _benefits = [
-    'Unlimited conversations',
-    'Advanced voice practice',
-    'Personalized feedback',
-    '24/7 AI tutor access',
+    'unlimitedConversations',
+    'advancedVoicePractice',
+    'personalizedFeedback',
+    'aiTutorAccess',
   ];
 
   @override
@@ -153,7 +154,7 @@ class _BenefitsList extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              entry.value,
+                              _getBenefitText(context, entry.value),
                               style: AppTextStyle.inter14w500
                                   .copyWith(color: AppColors.textPrimary)
                                   .scaled(context),
@@ -168,6 +169,17 @@ class _BenefitsList extends StatelessWidget {
           )
           .toList(),
     );
+  }
+
+  static String _getBenefitText(BuildContext context, String key) {
+    final localizations = S.of(context);
+    return switch (key) {
+      'unlimitedConversations' => localizations.unlimitedConversations,
+      'advancedVoicePractice' => localizations.advancedVoicePractice,
+      'personalizedFeedback' => localizations.personalizedFeedback,
+      'aiTutorAccess' => localizations.aiTutorAccess,
+      _ => key,
+    };
   }
 }
 
@@ -250,7 +262,7 @@ class _ProductOption extends ConsumerWidget {
         child: Column(
           children: [
             Text(
-              paywallProduct.productLabel,
+              paywallProduct.productLabel(S.of(context)),
               style: AppTextStyle.inter14w600
                   .copyWith(
                     color: isSelected
@@ -275,7 +287,6 @@ class _ProductOption extends ConsumerWidget {
       ),
     );
   }
-
 }
 
 class _Button extends ConsumerWidget {
@@ -307,7 +318,7 @@ class _Button extends ConsumerWidget {
                         color: AppColors.surface,
                       )
                     : Text(
-                        'Get Premium - ${paywallProduct.fullPrice ?? ''}',
+                        '${S.of(context).getPremium} - ${paywallProduct.fullPrice ?? ''}',
                         style: AppTextStyle.inter18w600
                             .copyWith(color: AppColors.surface)
                             .scaled(context),
@@ -318,7 +329,7 @@ class _Button extends ConsumerWidget {
               .moveY(begin: 16, end: 0, curve: Curves.easeOut),
           const SizedBox(height: 8),
           Text(
-            'Cancel anytime',
+            S.of(context).cancelAnytime,
             style: AppTextStyle.inter12w400
                 .copyWith(color: AppColors.textMuted)
                 .scaled(context),

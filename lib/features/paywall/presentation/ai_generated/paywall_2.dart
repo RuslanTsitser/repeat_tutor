@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../core/ab_test/enum/product_type.dart';
+import '../../../../core/localization/generated/l10n.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../infrastructure/state_managers.dart';
@@ -60,7 +61,7 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Text(
-              'Unlock Premium',
+              S.of(context).unlockPremium,
               style: AppTextStyle.inter24w700
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -71,7 +72,7 @@ class _Header extends StatelessWidget {
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
         const SizedBox(height: 8),
         Text(
-              'Practice speaking with confidence',
+              S.of(context).practiceSpeakingWithConfidence,
               style: AppTextStyle.inter16w400
                   .copyWith(color: AppColors.textSecondary)
                   .scaled(context),
@@ -89,10 +90,10 @@ class _FeaturesList extends StatelessWidget {
   const _FeaturesList();
 
   static const _features = [
-    ('Unlimited conversations', LucideIcons.messageCircle),
-    ('Voice practice mode', LucideIcons.mic),
-    ('Advanced corrections', LucideIcons.sparkles),
-    ('Priority support', LucideIcons.heartHandshake),
+    ('unlimitedConversations', LucideIcons.messageCircle),
+    ('voicePracticeMode', LucideIcons.mic),
+    ('advancedCorrections', LucideIcons.sparkles),
+    ('prioritySupport', LucideIcons.heartHandshake),
   ];
 
   @override
@@ -148,7 +149,7 @@ class _FeatureItem extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: Text(
-            text,
+            _getFeatureText(context, text),
             style: AppTextStyle.inter14w500
                 .copyWith(color: AppColors.textPrimary)
                 .scaled(context),
@@ -156,6 +157,17 @@ class _FeatureItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  static String _getFeatureText(BuildContext context, String key) {
+    final localizations = S.of(context);
+    return switch (key) {
+      'unlimitedConversations' => localizations.unlimitedConversations,
+      'voicePracticeMode' => localizations.voicePracticeMode,
+      'advancedCorrections' => localizations.advancedCorrections,
+      'prioritySupport' => localizations.prioritySupport,
+      _ => key,
+    };
   }
 }
 
@@ -177,7 +189,7 @@ class _ProductSelector extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-              'Choose your plan',
+              S.of(context).chooseYourPlan,
               style: AppTextStyle.inter18w600
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -267,7 +279,7 @@ class _ProductCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    paywallProduct.productLabelFull,
+                    paywallProduct.productLabelFull(S.of(context)),
                     style: AppTextStyle.inter16w600
                         .copyWith(
                           color: isSelected
@@ -279,7 +291,7 @@ class _ProductCard extends ConsumerWidget {
                   if (paywallProduct.discountPercent != null) ...[
                     const SizedBox(height: 4),
                     Text(
-                      'Save ${paywallProduct.discountPercent}%',
+                      '${S.of(context).save} ${paywallProduct.discountPercent}%',
                       style: AppTextStyle.inter12w500
                           .copyWith(color: AppColors.primary)
                           .scaled(context),
@@ -333,7 +345,7 @@ class _Button extends ConsumerWidget {
                         color: AppColors.surface,
                       )
                     : Text(
-                        'Subscribe for ${paywallProduct.fullPrice ?? ''}',
+                        '${S.of(context).subscribeFor} ${paywallProduct.fullPrice ?? ''}',
                         style: AppTextStyle.inter16w600
                             .copyWith(color: AppColors.surface)
                             .scaled(context),
