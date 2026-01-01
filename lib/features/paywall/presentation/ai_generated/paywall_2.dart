@@ -9,9 +9,9 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../infrastructure/state_managers.dart';
 import '../utils/paywall_utils.dart';
 
-/// Paywall1 - базовый вариант с простой компоновкой
-class Paywall1 extends StatelessWidget {
-  const Paywall1({
+/// Paywall2 - вариант с карточками продуктов и вертикальной компоновкой
+class Paywall2 extends StatelessWidget {
+  const Paywall2({
     super.key,
     required this.onPurchase,
     required this.onClose,
@@ -22,7 +22,7 @@ class Paywall1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.backgroundLight,
       child: SafeArea(
         child: CloseButtonWrapper(
           onClose: onClose,
@@ -36,9 +36,9 @@ class Paywall1 extends StatelessWidget {
                     children: [
                       _Header(),
                       SizedBox(height: 16),
-                      Flexible(child: _Content()),
+                      Flexible(child: _FeaturesList()),
                       SizedBox(height: 16),
-                      _Selector(),
+                      _ProductSelector(),
                     ],
                   ),
                 ),
@@ -60,7 +60,7 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Text(
-              'Upgrade to Premium',
+              'Unlock Premium',
               style: AppTextStyle.inter24w700
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -71,7 +71,7 @@ class _Header extends StatelessWidget {
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
         const SizedBox(height: 8),
         Text(
-              'Get unlimited access to all features',
+              'Practice speaking with confidence',
               style: AppTextStyle.inter16w400
                   .copyWith(color: AppColors.textSecondary)
                   .scaled(context),
@@ -85,43 +85,30 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _Content extends StatelessWidget {
-  const _Content();
+class _FeaturesList extends StatelessWidget {
+  const _FeaturesList();
 
   static const _features = [
-    (LucideIcons.messageCircle, 'Unlimited conversations'),
-    (LucideIcons.mic, 'Voice practice'),
-    (LucideIcons.sparkles, 'Smart corrections'),
+    ('Unlimited conversations', LucideIcons.messageCircle),
+    ('Voice practice mode', LucideIcons.mic),
+    ('Advanced corrections', LucideIcons.sparkles),
+    ('Priority support', LucideIcons.heartHandshake),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: _features
           .asMap()
           .entries
           .map(
             (entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 8),
               child:
-                  Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            entry.value.$1,
-                            size: 20,
-                            color: AppColors.primary,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            entry.value.$2,
-                            style: AppTextStyle.inter16w500
-                                .copyWith(color: AppColors.textPrimary)
-                                .scaled(context),
-                          ),
-                        ],
+                  _FeatureItem(
+                        icon: entry.value.$2,
+                        text: entry.value.$1,
                       )
                       .animate(delay: (400 + entry.key * 100).ms)
                       .fadeIn(duration: 400.ms)
@@ -133,8 +120,47 @@ class _Content extends StatelessWidget {
   }
 }
 
-class _Selector extends ConsumerWidget {
-  const _Selector();
+class _FeatureItem extends StatelessWidget {
+  const _FeatureItem({
+    required this.icon,
+    required this.text,
+  });
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            size: 14,
+            color: AppColors.primary,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyle.inter14w500
+                .copyWith(color: AppColors.textPrimary)
+                .scaled(context),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ProductSelector extends ConsumerWidget {
+  const _ProductSelector();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -151,7 +177,7 @@ class _Selector extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-              'Select plan',
+              'Choose your plan',
               style: AppTextStyle.inter18w600
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
@@ -160,45 +186,37 @@ class _Selector extends ConsumerWidget {
             .fadeIn(duration: 400.ms)
             .moveY(begin: 8, end: 0, curve: Curves.easeOut),
         const SizedBox(height: 8),
-        Row(
-          children: products
-              .asMap()
-              .entries
-              .map(
-                (entry) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child:
-                        _ProductOption(
-                              productType: entry.value,
-                              isSelected: selectedProductType == entry.value,
-                              onTap: () {
-                                paywallChangeNotifier.setState(
-                                  paywallChangeNotifier.state.copyWith(
-                                    selectedProductType: entry.value,
-                                  ),
-                                );
-                              },
-                            )
-                            .animate(delay: (800 + entry.key * 100).ms)
-                            .fadeIn(duration: 400.ms)
-                            .scale(
-                              begin: const Offset(0.9, 0.9),
-                              end: const Offset(1, 1),
-                              curve: Curves.easeOut,
-                            ),
-                  ),
-                ),
-              )
-              .toList(),
+        ...products.asMap().entries.map(
+          (entry) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child:
+                _ProductCard(
+                      productType: entry.value,
+                      isSelected: selectedProductType == entry.value,
+                      onTap: () {
+                        paywallChangeNotifier.setState(
+                          paywallChangeNotifier.state.copyWith(
+                            selectedProductType: entry.value,
+                          ),
+                        );
+                      },
+                    )
+                    .animate(delay: (800 + entry.key * 100).ms)
+                    .fadeIn(duration: 400.ms)
+                    .scale(
+                      begin: const Offset(0.9, 0.9),
+                      end: const Offset(1, 1),
+                      curve: Curves.easeOut,
+                    ),
+          ),
         ),
       ],
     );
   }
 }
 
-class _ProductOption extends ConsumerWidget {
-  const _ProductOption({
+class _ProductCard extends ConsumerWidget {
+  const _ProductCard({
     required this.productType,
     required this.isSelected,
     required this.onTap,
@@ -215,36 +233,68 @@ class _ProductOption extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.backgroundLight,
+          color: isSelected
+              ? AppColors.primary.withValues(alpha: 0.1)
+              : AppColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.divider,
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
           children: [
-            Text(
-              paywallProduct.productLabel,
-              style: AppTextStyle.inter14w600
-                  .copyWith(
-                    color: isSelected
-                        ? AppColors.surface
-                        : AppColors.textPrimary,
-                  )
-                  .scaled(context),
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? AppColors.primary : AppColors.divider,
+              ),
+              child: isSelected
+                  ? const Icon(
+                      CupertinoIcons.checkmark,
+                      size: 16,
+                      color: AppColors.surface,
+                    )
+                  : null,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    paywallProduct.productLabelFull,
+                    style: AppTextStyle.inter16w600
+                        .copyWith(
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.textPrimary,
+                        )
+                        .scaled(context),
+                  ),
+                  if (paywallProduct.discountPercent != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'Save ${paywallProduct.discountPercent}%',
+                      style: AppTextStyle.inter12w500
+                          .copyWith(color: AppColors.primary)
+                          .scaled(context),
+                    ),
+                  ],
+                ],
+              ),
+            ),
             Text(
               paywallProduct.fullPrice ?? '',
-              style: AppTextStyle.inter12w500
+              style: AppTextStyle.inter18w700
                   .copyWith(
                     color: isSelected
-                        ? AppColors.surface
-                        : AppColors.textSecondary,
+                        ? AppColors.primary
+                        : AppColors.textPrimary,
                   )
                   .scaled(context),
             ),

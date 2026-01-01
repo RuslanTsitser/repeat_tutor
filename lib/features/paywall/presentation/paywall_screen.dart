@@ -9,6 +9,9 @@ import '../../../infrastructure/core.dart';
 import '../../../infrastructure/use_case.dart';
 import '../../home/logic/home_screen_notifier.dart';
 import 'ai_generated/paywall_1.dart';
+import 'ai_generated/paywall_2.dart';
+import 'ai_generated/paywall_3.dart';
+import 'ai_generated/paywall_4.dart';
 
 @RoutePage()
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -103,17 +106,36 @@ class _Paywall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = abTestService.remoteConfig(placement);
+    final config = abTestService
+        .remoteConfig(placement)
+        .copyWith(paywall: 'paywall4');
     final paywallName = config.paywall;
-    if (paywallName == 'paywall1') {
-      return Paywall1(
-        onPurchase: onPurchase,
-        onClose: onClose,
-      );
+    switch (paywallName) {
+      case 'paywall1':
+        return Paywall1(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
+      case 'paywall2':
+        return Paywall2(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
+      case 'paywall3':
+        return Paywall3(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
+      case 'paywall4':
+        return Paywall4(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
+      default:
+        return Paywall1(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
     }
-    return Paywall1(
-      onPurchase: onPurchase,
-      onClose: onClose,
-    );
   }
 }

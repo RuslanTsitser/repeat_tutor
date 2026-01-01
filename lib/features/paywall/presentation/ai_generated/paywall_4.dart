@@ -9,9 +9,9 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../infrastructure/state_managers.dart';
 import '../utils/paywall_utils.dart';
 
-/// Paywall1 - базовый вариант с простой компоновкой
-class Paywall1 extends StatelessWidget {
-  const Paywall1({
+/// Paywall4 - минималистичный вариант с большим CTA и простым селектором
+class Paywall4 extends StatelessWidget {
+  const Paywall4({
     super.key,
     required this.onPurchase,
     required this.onClose,
@@ -22,7 +22,7 @@ class Paywall1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.backgroundLight,
       child: SafeArea(
         child: CloseButtonWrapper(
           onClose: onClose,
@@ -34,11 +34,13 @@ class Paywall1 extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Flexible(child: _Illustration()),
+                      SizedBox(height: 16),
                       _Header(),
                       SizedBox(height: 16),
-                      Flexible(child: _Content()),
+                      Flexible(child: _BenefitsList()),
                       SizedBox(height: 16),
-                      _Selector(),
+                      _ProductSelector(),
                     ],
                   ),
                 ),
@@ -52,6 +54,33 @@ class Paywall1 extends StatelessWidget {
   }
 }
 
+class _Illustration extends StatelessWidget {
+  const _Illustration();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            LucideIcons.star,
+            size: 48,
+            color: AppColors.primary,
+          ),
+        )
+        .animate()
+        .scale(
+          duration: 600.ms,
+          curve: Curves.easeOut,
+        )
+        .fadeIn(duration: 500.ms);
+  }
+}
+
 class _Header extends StatelessWidget {
   const _Header();
 
@@ -60,24 +89,24 @@ class _Header extends StatelessWidget {
     return Column(
       children: [
         Text(
-              'Upgrade to Premium',
+              'Premium Experience',
               style: AppTextStyle.inter24w700
                   .copyWith(color: AppColors.textPrimary)
                   .scaled(context),
               textAlign: TextAlign.center,
             )
-            .animate()
+            .animate(delay: 300.ms)
             .fadeIn(duration: 400.ms)
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         Text(
-              'Get unlimited access to all features',
+              'Everything you need to master a new language',
               style: AppTextStyle.inter16w400
                   .copyWith(color: AppColors.textSecondary)
                   .scaled(context),
               textAlign: TextAlign.center,
             )
-            .animate(delay: 200.ms)
+            .animate(delay: 500.ms)
             .fadeIn(duration: 400.ms)
             .moveY(begin: -8, end: 0, curve: Curves.easeOut),
       ],
@@ -85,45 +114,54 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _Content extends StatelessWidget {
-  const _Content();
+class _BenefitsList extends StatelessWidget {
+  const _BenefitsList();
 
-  static const _features = [
-    (LucideIcons.messageCircle, 'Unlimited conversations'),
-    (LucideIcons.mic, 'Voice practice'),
-    (LucideIcons.sparkles, 'Smart corrections'),
+  static const _benefits = [
+    'Unlimited conversations',
+    'Advanced voice practice',
+    'Personalized feedback',
+    '24/7 AI tutor access',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: _features
+      children: _benefits
           .asMap()
           .entries
           .map(
             (entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 8),
               child:
                   Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
-                            entry.value.$1,
-                            size: 20,
-                            color: AppColors.primary,
+                          Container(
+                            width: 20,
+                            height: 20,
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.checkmark,
+                              size: 12,
+                              color: AppColors.surface,
+                            ),
                           ),
                           const SizedBox(width: 12),
-                          Text(
-                            entry.value.$2,
-                            style: AppTextStyle.inter16w500
-                                .copyWith(color: AppColors.textPrimary)
-                                .scaled(context),
+                          Expanded(
+                            child: Text(
+                              entry.value,
+                              style: AppTextStyle.inter14w500
+                                  .copyWith(color: AppColors.textPrimary)
+                                  .scaled(context),
+                            ),
                           ),
                         ],
                       )
-                      .animate(delay: (400 + entry.key * 100).ms)
+                      .animate(delay: (700 + entry.key * 100).ms)
                       .fadeIn(duration: 400.ms)
                       .moveX(begin: -16, end: 0, curve: Curves.easeOut),
             ),
@@ -133,8 +171,8 @@ class _Content extends StatelessWidget {
   }
 }
 
-class _Selector extends ConsumerWidget {
-  const _Selector();
+class _ProductSelector extends ConsumerWidget {
+  const _ProductSelector();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -147,52 +185,41 @@ class _Selector extends ConsumerWidget {
       ProductType.product2,
     ];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-              'Select plan',
-              style: AppTextStyle.inter18w600
-                  .copyWith(color: AppColors.textPrimary)
-                  .scaled(context),
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: products
+            .asMap()
+            .entries
+            .map(
+              (entry) => Expanded(
+                child:
+                    _ProductOption(
+                          productType: entry.value,
+                          isSelected: selectedProductType == entry.value,
+                          onTap: () {
+                            paywallChangeNotifier.setState(
+                              paywallChangeNotifier.state.copyWith(
+                                selectedProductType: entry.value,
+                              ),
+                            );
+                          },
+                        )
+                        .animate(delay: (1100 + entry.key * 100).ms)
+                        .fadeIn(duration: 400.ms)
+                        .scale(
+                          begin: const Offset(0.9, 0.9),
+                          end: const Offset(1, 1),
+                          curve: Curves.easeOut,
+                        ),
+              ),
             )
-            .animate(delay: 700.ms)
-            .fadeIn(duration: 400.ms)
-            .moveY(begin: 8, end: 0, curve: Curves.easeOut),
-        const SizedBox(height: 8),
-        Row(
-          children: products
-              .asMap()
-              .entries
-              .map(
-                (entry) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child:
-                        _ProductOption(
-                              productType: entry.value,
-                              isSelected: selectedProductType == entry.value,
-                              onTap: () {
-                                paywallChangeNotifier.setState(
-                                  paywallChangeNotifier.state.copyWith(
-                                    selectedProductType: entry.value,
-                                  ),
-                                );
-                              },
-                            )
-                            .animate(delay: (800 + entry.key * 100).ms)
-                            .fadeIn(duration: 400.ms)
-                            .scale(
-                              begin: const Offset(0.9, 0.9),
-                              end: const Offset(1, 1),
-                              curve: Curves.easeOut,
-                            ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ],
+            .toList(),
+      ),
     );
   }
 }
@@ -215,17 +242,12 @@ class _ProductOption extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.backgroundLight,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.divider,
-            width: isSelected ? 2 : 1,
-          ),
+          color: isSelected ? AppColors.primary : CupertinoColors.transparent,
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               paywallProduct.productLabel,
@@ -253,6 +275,7 @@ class _ProductOption extends ConsumerWidget {
       ),
     );
   }
+
 }
 
 class _Button extends ConsumerWidget {
@@ -271,7 +294,8 @@ class _Button extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(24),
-      child:
+      child: Column(
+        children: [
           CupertinoButton(
                 color: AppColors.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -283,15 +307,24 @@ class _Button extends ConsumerWidget {
                         color: AppColors.surface,
                       )
                     : Text(
-                        'Subscribe for ${paywallProduct.fullPrice ?? ''}',
-                        style: AppTextStyle.inter16w600
+                        'Get Premium - ${paywallProduct.fullPrice ?? ''}',
+                        style: AppTextStyle.inter18w600
                             .copyWith(color: AppColors.surface)
                             .scaled(context),
                       ),
               )
-              .animate(delay: 1000.ms)
+              .animate(delay: 1300.ms)
               .fadeIn(duration: 400.ms)
               .moveY(begin: 16, end: 0, curve: Curves.easeOut),
+          const SizedBox(height: 8),
+          Text(
+            'Cancel anytime',
+            style: AppTextStyle.inter12w400
+                .copyWith(color: AppColors.textMuted)
+                .scaled(context),
+          ),
+        ],
+      ),
     );
   }
 }
