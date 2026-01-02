@@ -18,6 +18,9 @@ abstract interface class RealtimeWebRTCConnection {
   /// Обработчик события размутации микрофона
   void Function()? onUnMuted;
 
+  /// Обработчик получения текстового сообщения через DataChannel
+  void Function(String message)? onMessage;
+
   /// Подключение к Realtime API через WebRTC
   Future<void> connect(String clientSecret);
 

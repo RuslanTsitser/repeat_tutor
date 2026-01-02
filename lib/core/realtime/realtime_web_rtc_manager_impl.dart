@@ -31,6 +31,9 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   void Function()? onUnMuted;
 
   @override
+  void Function(String message)? onMessage;
+
+  @override
   Future<void> connect(String clientSecret) async {
     try {
       // Создаем конфигурацию peer connection
@@ -77,6 +80,11 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       if (_dataChannel == null) {
         throw Exception('Не удалось создать data channel');
       }
+
+      // Настраиваем обработчик получения сообщений через DataChannel
+      _dataChannel!.onMessage = (RTCDataChannelMessage message) {
+        onMessage?.call(message.text);
+      };
 
       // Настраиваем обработчики событий peer connection
       _peerConnection!.onIceConnectionState = (state) {
