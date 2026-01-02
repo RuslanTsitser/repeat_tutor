@@ -20,18 +20,12 @@ class Chat {
   final DateTime createdAt;
   final LastMessage? lastMessage;
 
-  String get chattyPrompt => TutorInstruction.chattyTutor(
+  String chattyPrompt(Language? tutorLanguage) => TutorInstruction.chattyTutor(
     languageName: chatLanguage.localizedName,
     levelName: level.value,
-    teacherLanguageName: teacherLanguage.localizedName,
+    teacherLanguageName:
+        tutorLanguage?.localizedName ?? teacherLanguage.localizedName,
     topic: topic,
-  );
-
-  String get repeatPrompt => TutorInstruction.repeatTutor(
-    topic: topic,
-    languageName: chatLanguage.localizedName,
-    levelName: level.value,
-    teacherLanguageName: teacherLanguage.localizedName,
   );
 
   Chat copyWithLastMessage({LastMessage? lastMessage}) {

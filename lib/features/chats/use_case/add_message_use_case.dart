@@ -20,6 +20,7 @@ class AddMessageUseCase {
     final chatNotifier = ref.read(chatNotifierProvider);
     final chatRepository = ref.read(chatRepositoryProvider);
     final gptService = ref.read(gptServiceProvider);
+    final profileNotifier = ref.read(profileProvider);
     final lastGptResponseId = chatNotifier.state.messages
         .lastWhereOrNull((message) => !message.isMe)
         ?.gptResponseId;
@@ -38,7 +39,9 @@ class AddMessageUseCase {
       chat: chatNotifier.state.chat,
     );
     final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
-      systemPrompt: chatNotifier.state.chat.chattyPrompt,
+      systemPrompt: chatNotifier.state.chat.chattyPrompt(
+        profileNotifier.state.defaultTeacherLanguage,
+      ),
       text: message,
       previousMessageId: lastGptResponseId,
     );
@@ -106,6 +109,7 @@ class AddMessageUseCase {
     final audioService = ref.read(audioServiceProvider);
     final chatRepository = ref.read(chatRepositoryProvider);
     final gptService = ref.read(gptServiceProvider);
+    final profileNotifier = ref.read(profileProvider);
     if (!chatNotifier.state.isSpeechRecording) {
       return;
     }
@@ -144,7 +148,9 @@ class AddMessageUseCase {
         ),
       );
       final (tutorAnswer, gptResponseId) = await gptService.getTutorAnswer(
-        systemPrompt: chatNotifier.state.chat.chattyPrompt,
+        systemPrompt: chatNotifier.state.chat.chattyPrompt(
+          profileNotifier.state.defaultTeacherLanguage,
+        ),
         text: message,
         previousMessageId: lastGptResponseId,
       );

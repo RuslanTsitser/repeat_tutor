@@ -72,11 +72,12 @@ class __StartVoiceCallState extends ConsumerState<_StartVoiceCall> {
           final chat = ref.read(chatNotifierProvider).state.chat;
           final router = ref.read(routerProvider);
           final useCase = ref.read(startRealtimeCallUseCaseProvider);
+          final profileNotifier = ref.read(profileProvider);
           await useCase.start(
             topic: chat.topic,
             language: chat.chatLanguage,
             level: chat.level,
-            teacherLanguage: chat.teacherLanguage,
+            teacherLanguage: profileNotifier.state.defaultTeacherLanguage,
           );
           await router.push(const RealtimeCallRoute());
           await useCase.stop();
