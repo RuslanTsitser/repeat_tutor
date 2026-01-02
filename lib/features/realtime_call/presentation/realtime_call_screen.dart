@@ -72,13 +72,16 @@ class _CallContent extends ConsumerWidget {
     final state = ref.watch(realtimeCallProvider).state;
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const SizedBox(height: 64),
           const _LanguageAvatar(),
           const SizedBox(height: 24),
           const _CallTitle(),
           const SizedBox(height: 32),
           const _CallTimer(),
+          const SizedBox(height: 32),
+          const _TutorMessage(),
           if (state.error != null) ...[
             const SizedBox(height: 16),
             _ErrorBanner(error: state.error!),
@@ -329,6 +332,127 @@ class _EndCallButton extends StatelessWidget {
           color: AppColors.surface,
           size: 32.0,
         ),
+      ),
+    );
+  }
+}
+
+class _TutorMessage extends ConsumerStatefulWidget {
+  const _TutorMessage();
+
+  @override
+  ConsumerState<_TutorMessage> createState() => _TutorMessageState();
+}
+
+class _TutorMessageState extends ConsumerState<_TutorMessage> {
+  Timer? _typewriterTimer;
+  String _displayedText = '';
+  String? _targetMessage;
+  int _currentIndex = 0;
+  DateTime? _lastUpdateTime;
+
+  static const Duration _characterDelay = Duration(milliseconds: 30);
+  static const Duration _fastCharacterDelay = Duration(milliseconds: 15);
+  static const Duration _rapidUpdateThreshold = Duration(milliseconds: 500);
+
+  @override
+  void dispose() {
+    _typewriterTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startTypewriterAnimation(String message, {bool isFast = false}) {
+    _typewriterTimer?.cancel();
+    _targetMessage = message;
+
+    if (message.isEmpty) {
+      setState(() {
+        _displayedText = '';
+        _currentIndex = 0;
+      });
+      return;
+    }
+
+    // Если новое сообщение начинается с уже отображенного текста,
+    // продолжаем с того места, где остановились
+    if (_displayedText.isNotEmpty && message.startsWith(_displayedText)) {
+      _currentIndex = _displayedText.length;
+    } else {
+      // Если сообщение полностью новое, начинаем с начала
+      _currentIndex = 0;
+      _displayedText = '';
+    }
+
+    final delay = isFast ? _fastCharacterDelay : _characterDelay;
+    final targetLength = message.length;
+
+    _typewriterTimer = Timer.periodic(delay, (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
+      // Проверяем, не изменилось ли целевое сообщение во время анимации
+      if (_targetMessage != message) {
+        timer.cancel();
+        return;
+      }
+
+      if (_currentIndex < targetLength) {
+        setState(() {
+          _displayedText = message.substring(0, _currentIndex + 1);
+        });
+        _currentIndex++;
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(realtimeCallProvider).state;
+    final message = state.tutorMessage ?? '';
+
+    if (message != _targetMessage) {
+      final now = DateTime.now();
+      final isRapidUpdate =
+          _lastUpdateTime != null &&
+          now.difference(_lastUpdateTime!) < _rapidUpdateThreshold;
+
+      _lastUpdateTime = now;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Проверяем, является ли новое сообщение продолжением предыдущего
+        final isContinuation =
+            _displayedText.isNotEmpty &&
+            message.startsWith(_displayedText) &&
+            message.length > _displayedText.length;
+
+        // Если это продолжение, всегда используем анимацию (даже при быстрых обновлениях)
+        // Если сообщение полностью новое и обновления быстрые - показываем сразу
+        if (isContinuation) {
+          _startTypewriterAnimation(message, isFast: isRapidUpdate);
+        } else if (isRapidUpdate && _targetMessage != null) {
+          // Только для полностью новых сообщений при быстрых обновлениях показываем сразу
+          setState(() {
+            _displayedText = message;
+            _currentIndex = message.length;
+            _targetMessage = message;
+          });
+        } else {
+          // Обычная анимация для новых сообщений
+          _startTypewriterAnimation(message, isFast: false);
+        }
+      });
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        _displayedText,
+        style: AppTextStyle.inter16w400,
+        textAlign: TextAlign.center,
       ),
     );
   }
