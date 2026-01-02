@@ -17,6 +17,7 @@ class GptServiceImpl implements GptService {
       'instructions': prompt,
       'voice': 'cedar',
       'turn_detection': {'type': 'semantic_vad'},
+      'input_audio_noise_reduction': {'type': 'far_field'},
     };
 
     final response = await _dio.post<Map<String, dynamic>>(
