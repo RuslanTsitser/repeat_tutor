@@ -330,6 +330,55 @@ class AppModalBottomSheetRouteArgs {
 }
 
 /// generated route for
+/// [AppRouteWrapperScreen]
+class AppRouteWrapperRoute extends PageRouteInfo<AppRouteWrapperRouteArgs> {
+  AppRouteWrapperRoute({
+    Key? key,
+    required WidgetBuilder builder,
+    List<PageRouteInfo>? children,
+  }) : super(
+         AppRouteWrapperRoute.name,
+         args: AppRouteWrapperRouteArgs(key: key, builder: builder),
+         initialChildren: children,
+       );
+
+  static const String name = 'AppRouteWrapperRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<AppRouteWrapperRouteArgs>();
+      return WrappedRoute(
+        child: AppRouteWrapperScreen(key: args.key, builder: args.builder),
+      );
+    },
+  );
+}
+
+class AppRouteWrapperRouteArgs {
+  const AppRouteWrapperRouteArgs({this.key, required this.builder});
+
+  final Key? key;
+
+  final WidgetBuilder builder;
+
+  @override
+  String toString() {
+    return 'AppRouteWrapperRouteArgs{key: $key, builder: $builder}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AppRouteWrapperRouteArgs) return false;
+    return key == other.key && builder == other.builder;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ builder.hashCode;
+}
+
+/// generated route for
 /// [ChatListScreen]
 class ChatListRoute extends PageRouteInfo<void> {
   const ChatListRoute({List<PageRouteInfo>? children})

@@ -1,6 +1,6 @@
 import '../../../core/domain/models/chat.dart';
 import '../../../core/domain/repositories/chat_repository.dart';
-import '../../../core/router/common/bottom_sheet.dart';
+import '../../../core/router/common/full_screen_dialog.dart';
 import '../../../core/router/router.dart';
 import '../../profile/logic/profile_notifier.dart';
 import '../logic/create_chat_notifier.dart';
@@ -17,8 +17,7 @@ class CreateChatUseCase {
   final AppRouter router;
 
   Future<Chat?> execute() async {
-    final state = await router.showAppBottomSheet<CreateChatState>(
-      isScrollControlled: true,
+    final state = await router.routeWrapper<CreateChatState>(
       builder: (context) => const CreateChatBottomSheet(),
     );
     if (state != null) {

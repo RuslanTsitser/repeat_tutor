@@ -14,6 +14,7 @@ import '../ab_test/enum/placement_type.dart';
 import 'modal_screens/app_bottom_sheet_screen.dart';
 import 'modal_screens/app_dialog_screen.dart';
 import 'modal_screens/app_full_screen.dart';
+import 'modal_screens/app_route_wrapper_screen.dart';
 
 part 'router.gr.dart';
 
@@ -24,8 +25,6 @@ class AppRouter extends RootStackRouter {
     CustomRoute<void>(
       initial: true,
       page: HomeRoute.page,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-          FadeTransition(opacity: animation, child: child),
       children: [
         AutoRoute(page: ChatListRoute.page, initial: true),
         AutoRoute(page: ProfileRoute.page),
@@ -55,7 +54,12 @@ class AppRouter extends RootStackRouter {
     CustomRoute<void>(
       page: AppFullRoute.page,
       fullscreenDialog: true,
-      customRouteBuilder: _buildAppFullScreen,
+      transitionsBuilder: TransitionsBuilders.slideBottom,
+    ),
+    CustomRoute<void>(
+      page: AppRouteWrapperRoute.page,
+      fullscreenDialog: true,
+      transitionsBuilder: TransitionsBuilders.slideBottom,
     ),
   ];
 
@@ -113,17 +117,5 @@ class AppRouter extends RootStackRouter {
             context: context,
             builder: (context) => child,
           );
-  }
-
-  Route<T> _buildAppFullScreen<T>(
-    BuildContext context,
-    Widget child,
-    AutoRoutePage<dynamic> page,
-  ) {
-    final widget = page.child as AppFullScreen;
-    return MaterialPageRoute(
-      builder: widget.builder,
-      settings: page,
-    );
   }
 }
