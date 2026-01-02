@@ -1,15 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/models/chat.dart';
 import '../../../core/localization/generated/l10n.dart';
 import '../../../core/presentation/logo_app_bar.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_style.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../../onboarding/presentation/onboarding_wrappers/onboarding_chat_list_wrapper.dart';
 import '../logic/chat_list_notifier.dart';
+import 'chat_list_item.dart';
 
 @RoutePage()
 class ChatListScreen extends StatelessWidget {
@@ -42,40 +44,35 @@ class AddButton extends ConsumerWidget {
     super.key,
   });
 
+  static const double _buttonSize = 56.0;
+  static const double _iconSize = 24.0;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AddButtonWrapper(
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: () async {
-          final chat = await ref.read(createChatUseCaseProvider).execute();
-          if (chat != null) {
-            ref.read(openScreenUseCaseProvider).openChat(chat);
-          }
-        },
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            color: const Color(0xFF155DFC),
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
-                blurRadius: 4,
-                offset: const Offset(0, -4),
-              ),
-            ],
-          ),
-          child: const Icon(
-            CupertinoIcons.add,
-            color: CupertinoColors.white,
-            size: 24,
+      child: Semantics(
+        button: true,
+        label: S.of(context).newChat,
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () async {
+            final chat = await ref.read(createChatUseCaseProvider).execute();
+            if (chat != null) {
+              ref.read(openScreenUseCaseProvider).openChat(chat);
+            }
+          },
+          child: Container(
+            width: _buttonSize,
+            height: _buttonSize,
+            decoration: const BoxDecoration(
+              color: AppColors.primary,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              CupertinoIcons.add,
+              color: CupertinoColors.white,
+              size: _iconSize,
+            ),
           ),
         ),
       ),
@@ -141,21 +138,22 @@ class _Body extends ConsumerWidget {
           child: chats.isEmpty
               ? const _EmptyState()
               : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 141),
+                  padding: const EdgeInsets.all(16),
+
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                   itemCount: chats.length,
                   itemBuilder: (context, index) {
                     final chat = chats[index];
-                    final widget = _ChatListItem(
+                    return ChatListItem(
                       chat: chat,
                       onTap: () =>
                           ref.read(openScreenUseCaseProvider).openChat(chat),
                       onDeletePressed: () => ref
                           .read(deleteChatUseCaseProvider)
                           .execute(chat.chatId),
+                      style: ChatListItemStyle.badge,
                     );
-                    return widget;
                   },
                 ),
         ),
@@ -164,106 +162,12 @@ class _Body extends ConsumerWidget {
   }
 }
 
-class _ChatListItem extends StatelessWidget {
-  const _ChatListItem({
-    required this.chat,
-    required this.onTap,
-    required this.onDeletePressed,
-  });
-  final Chat chat;
-  final VoidCallback onTap;
-  final VoidCallback onDeletePressed;
-
-  String _getChatTitle() {
-    final language = chat.chatLanguage.localizedName;
-    final level = chat.level.shortLocalizedName;
-    return '$language $level – ${chat.topic}';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoContextMenu.builder(
-      actions: [
-        CupertinoContextMenuAction(
-          onPressed: () {
-            Navigator.pop(context);
-            onDeletePressed();
-          },
-          trailingIcon: CupertinoIcons.delete,
-          child: Text(S.of(context).delete),
-        ),
-      ],
-      builder: (context, animation) => CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: onTap,
-        child: Container(
-          height: 82,
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: CupertinoColors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: const Color(0xFFE5E7EB),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 2,
-                offset: const Offset(0, -1),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            spacing: 4,
-            children: [
-              Flexible(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    _getChatTitle(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF101828),
-                      letterSpacing: -0.3125,
-                      height: 24 / 16,
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Text(
-                  chat.lastMessage?.text ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF4A5565),
-                    letterSpacing: -0.1504,
-                    height: 20 / 14,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
+
+  static const double _iconSize = 64.0;
+  static const double _spacing = 8.0;
+  static const double _horizontalPadding = 24.0;
 
   @override
   Widget build(BuildContext context) {
@@ -271,37 +175,29 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 8),
+          const SizedBox(height: _spacing),
           const Icon(
             CupertinoIcons.chat_bubble_2,
-            size: 64,
-            color: Color(0xFF9CA3AF),
+            size: _iconSize,
+            color: AppColors.textMuted,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: _spacing),
           Text(
             S.of(context).noChatsYet,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF101828),
-              letterSpacing: -0.4492,
-              height: 28 / 20,
+            style: AppTextStyle.inter20w500.copyWith(
+              color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: _spacing),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
             child: Text(
               S
                   .of(context)
                   .startYourFirstConversationAndBeginPracticingANewLanguage,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Color(0xFF4A5565),
-                letterSpacing: -0.3125,
-                height: 24 / 16,
+              style: AppTextStyle.inter16w400.copyWith(
+                color: AppColors.textSecondary,
               ),
             ),
           ),
