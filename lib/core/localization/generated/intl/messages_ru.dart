@@ -148,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Умные исправления",
     ),
     "speak": MessageLookupByLibrary.simpleMessage("Говорить"),
+    "start": MessageLookupByLibrary.simpleMessage("Начать"),
     "startHere": MessageLookupByLibrary.simpleMessage("Начните здесь"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Начать Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(

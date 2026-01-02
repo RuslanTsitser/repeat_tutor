@@ -189,6 +189,11 @@ class S {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
+  /// `Start`
+  String get start {
+    return Intl.message('Start', name: 'start', desc: '', args: []);
+  }
+
   /// `Chats`
   String get chats {
     return Intl.message('Chats', name: 'chats', desc: '', args: []);

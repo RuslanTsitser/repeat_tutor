@@ -150,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Correcciones inteligentes",
     ),
     "speak": MessageLookupByLibrary.simpleMessage("Hablar"),
+    "start": MessageLookupByLibrary.simpleMessage("Iniciar"),
     "startHere": MessageLookupByLibrary.simpleMessage("Comienza aquí"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Iniciar Premium"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(

@@ -122,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
     "smartCorrections": MessageLookupByLibrary.simpleMessage("スマート修正"),
     "speak": MessageLookupByLibrary.simpleMessage("話す"),
+    "start": MessageLookupByLibrary.simpleMessage("開始"),
     "startHere": MessageLookupByLibrary.simpleMessage("ここから始める"),
     "startPremium": MessageLookupByLibrary.simpleMessage("Premiumを開始"),
     "startYourFirstChat": MessageLookupByLibrary.simpleMessage(
