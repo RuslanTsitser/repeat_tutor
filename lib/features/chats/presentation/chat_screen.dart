@@ -13,7 +13,7 @@ import '../../../core/router/router.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
-import '../../onboarding/presentation/onboarding_chat_wrapper.dart';
+import '../../onboarding/presentation/onboarding_wrappers/onboarding_chat_wrapper.dart';
 import '../logic/chat_notifier.dart';
 
 @RoutePage()

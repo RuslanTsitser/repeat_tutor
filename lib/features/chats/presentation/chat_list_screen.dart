@@ -8,7 +8,7 @@ import '../../../core/localization/generated/l10n.dart';
 import '../../../core/presentation/logo_app_bar.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
-import '../../onboarding/presentation/onboarding_chat_list_wrapper.dart';
+import '../../onboarding/presentation/onboarding_wrappers/onboarding_chat_list_wrapper.dart';
 import '../logic/chat_list_notifier.dart';
 
 @RoutePage()
