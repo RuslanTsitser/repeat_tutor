@@ -16,9 +16,11 @@ class PurchaseUseCase {
     final abTestService = ref.read(abTestServiceProvider);
     final paywallChangeNotifier = ref.read(paywallChangeNotifierProvider);
     final appRouter = ref.read(routerProvider);
+    final profileSettingsUseCase = ref.read(profileSettingsUseCaseProvider);
     final selectedProductType =
         paywallChangeNotifier.state.selectedProductType ?? ProductType.product1;
     await paywallChangeNotifier.purchase(selectedProductType);
+    await profileSettingsUseCase.loadIsPremium();
     if (abTestService.isPremium) {
       appRouter.pop();
     }
