@@ -34,7 +34,11 @@ class _OnboardingChatListWrapperState
       if (isOnboarded == true) {
         return;
       }
-      showcaseView.startShowCase([_addButtonKey]);
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+      if (mounted) {
+        showcaseView.startShowCase([_addButtonKey]);
+        localStorage.setValue(StorageKeys.isOnboardedCreateChatKey, true);
+      }
     });
   }
 
