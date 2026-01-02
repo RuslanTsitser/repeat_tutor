@@ -9,7 +9,7 @@ import '../core/gpt/gpt_service.dart';
 import '../core/gpt/gpt_service_impl.dart';
 import '../core/local_storage/local_storage_service.dart';
 import '../core/localization/generated/l10n.dart';
-import '../core/logging/app_logger.dart';
+import '../core/logging/app_dio_logger.dart';
 import '../core/realtime/realtime_web_rtc_manager_impl.dart';
 import '../core/realtime/realtime_webrtc_manager.dart';
 import '../core/router/router.dart';
@@ -30,12 +30,7 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 final dioProvider = Provider<Dio>((ref) {
   return Dio()
     ..interceptors.add(
-      LogInterceptor(
-        responseBody: true,
-        requestBody: true,
-        requestHeader: false,
-        logPrint: logInfo,
-      ),
+      const AppDioLogger(false),
     );
 });
 
