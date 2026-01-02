@@ -38,6 +38,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelAnytime": MessageLookupByLibrary.simpleMessage("Cancel anytime"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
     "chooseYourPlan": MessageLookupByLibrary.simpleMessage("Choose your plan"),
+    "configureAppLanguage": MessageLookupByLibrary.simpleMessage(
+      "Configure the app interface language",
+    ),
+    "configureLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "Select the language you want to learn",
+    ),
+    "configureTutorLanguage": MessageLookupByLibrary.simpleMessage(
+      "Select the language the tutor will speak",
+    ),
     "connected": MessageLookupByLibrary.simpleMessage("Connected"),
     "continueButton": MessageLookupByLibrary.simpleMessage("Continue"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),

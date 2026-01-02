@@ -94,5 +94,8 @@
   "listen": "Слушать",
   "speak": "Говорить",
   "learn": "Учить",
-  "repeat": "Повторять"
+  "repeat": "Повторять",
+  "configureAppLanguage": "Настройте язык интерфейса приложения",
+  "configureLanguageToLearn": "Выберите язык, который хотите изучать",
+  "configureTutorLanguage": "Выберите язык, на котором будет говорить преподаватель"
 }

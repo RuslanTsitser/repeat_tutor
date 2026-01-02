@@ -32,6 +32,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancelAnytime": MessageLookupByLibrary.simpleMessage("いつでもキャンセル可能"),
     "chats": MessageLookupByLibrary.simpleMessage("チャット"),
     "chooseYourPlan": MessageLookupByLibrary.simpleMessage("プランを選択"),
+    "configureAppLanguage": MessageLookupByLibrary.simpleMessage(
+      "アプリのインターフェース言語を設定してください",
+    ),
+    "configureLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "学習したい言語を選択してください",
+    ),
+    "configureTutorLanguage": MessageLookupByLibrary.simpleMessage(
+      "チューターが話す言語を選択してください",
+    ),
     "connected": MessageLookupByLibrary.simpleMessage("接続中"),
     "continueButton": MessageLookupByLibrary.simpleMessage("続ける"),
     "delete": MessageLookupByLibrary.simpleMessage("削除"),

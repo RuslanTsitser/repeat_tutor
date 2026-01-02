@@ -44,6 +44,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseYourPlan": MessageLookupByLibrary.simpleMessage(
       "Выберите свой план",
     ),
+    "configureAppLanguage": MessageLookupByLibrary.simpleMessage(
+      "Настройте язык интерфейса приложения",
+    ),
+    "configureLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "Выберите язык, который хотите изучать",
+    ),
+    "configureTutorLanguage": MessageLookupByLibrary.simpleMessage(
+      "Выберите язык, на котором будет говорить преподаватель",
+    ),
     "connected": MessageLookupByLibrary.simpleMessage("Подключен"),
     "continueButton": MessageLookupByLibrary.simpleMessage("Продолжить"),
     "delete": MessageLookupByLibrary.simpleMessage("Удалить"),

@@ -94,5 +94,8 @@
   "listen": "Ouvir",
   "speak": "Falar",
   "learn": "Aprender",
-  "repeat": "Repetir"
+  "repeat": "Repetir",
+  "configureAppLanguage": "Configure o idioma da interface do aplicativo",
+  "configureLanguageToLearn": "Selecione o idioma que deseja aprender",
+  "configureTutorLanguage": "Selecione o idioma que o tutor falará"
 }

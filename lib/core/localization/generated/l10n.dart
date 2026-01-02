@@ -818,6 +818,36 @@ class S {
   String get repeat {
     return Intl.message('Repeat', name: 'repeat', desc: '', args: []);
   }
+
+  /// `Configure the app interface language`
+  String get configureAppLanguage {
+    return Intl.message(
+      'Configure the app interface language',
+      name: 'configureAppLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the language you want to learn`
+  String get configureLanguageToLearn {
+    return Intl.message(
+      'Select the language you want to learn',
+      name: 'configureLanguageToLearn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the language the tutor will speak`
+  String get configureTutorLanguage {
+    return Intl.message(
+      'Select the language the tutor will speak',
+      name: 'configureTutorLanguage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
