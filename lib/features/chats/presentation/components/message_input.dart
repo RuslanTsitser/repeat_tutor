@@ -131,7 +131,14 @@ class _MessageInputState extends ConsumerState<MessageInput> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              color: Color(0xFFFEF2F2),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFEF2F2),
+                  AppColors.surface,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
               border: Border(
                 top: BorderSide(
                   color: AppColors.divider,
@@ -144,7 +151,15 @@ class _MessageInputState extends ConsumerState<MessageInput> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              color: AppColors.surface,
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.surface,
+                  AppColors.surface,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+
               border: Border(
                 top: BorderSide(
                   color: AppColors.divider,
