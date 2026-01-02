@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
+  static const Color transparent = Color(0x00000000);
+
   // Brand Colors
 
   /// Primary - основной цвет для CTA, действий и премиум элементов
