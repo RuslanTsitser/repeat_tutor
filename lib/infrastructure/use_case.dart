@@ -8,41 +8,21 @@ import '../features/home/use_case/open_screen_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
 import '../features/profile/use_case/profile_settings_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
-import 'core.dart';
-import 'repositories.dart';
-import 'state_managers.dart';
 
 final createChatUseCaseProvider = Provider((ref) {
-  return CreateChatUseCase(
-    chatRepository: ref.watch(chatRepositoryProvider),
-    router: ref.watch(routerProvider),
-    profileSettingsNotifier: ref.watch(profileProvider),
-  );
+  return CreateChatUseCase(ref: ref);
 });
 
 final deleteChatUseCaseProvider = Provider((ref) {
-  return DeleteChatUseCase(
-    chatRepository: ref.watch(chatRepositoryProvider),
-  );
+  return DeleteChatUseCase(ref: ref);
 });
 
 final addMessageUseCaseProvider = Provider((ref) {
-  return AddMessageUseCase(
-    chatRepository: ref.watch(chatRepositoryProvider),
-    chatNotifier: ref.watch(chatNotifierProvider),
-    speechRecognizer: ref.watch(speechRecognizerProvider),
-    audioService: ref.watch(audioServiceProvider),
-    gptService: ref.watch(gptServiceProvider),
-  );
+  return AddMessageUseCase(ref: ref);
 });
 
 final startRealtimeCallUseCaseProvider = Provider((ref) {
-  return StartRealtimeCallUseCase(
-    gptService: ref.watch(gptServiceProvider),
-    realtimeWebRTCConnection: ref.watch(realtimeWebRTCConnectionProvider),
-    realtimeCallNotifier: ref.watch(realtimeCallProvider),
-    sessionsDurationsDao: ref.watch(databaseProvider).sessionsDurationsDao,
-  );
+  return StartRealtimeCallUseCase(ref: ref);
 });
 
 final purchaseUseCaseProvider = Provider((ref) {

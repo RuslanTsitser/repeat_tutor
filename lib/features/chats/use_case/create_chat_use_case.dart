@@ -1,22 +1,21 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/domain/models/chat.dart';
-import '../../../core/domain/repositories/chat_repository.dart';
 import '../../../core/router/common/full_screen_dialog.dart';
-import '../../../core/router/router.dart';
-import '../../profile/logic/profile_notifier.dart';
+import '../../../infrastructure/core.dart';
+import '../../../infrastructure/repositories.dart';
 import '../logic/create_chat_notifier.dart';
 import '../presentation/create_chat_bottom_sheet.dart';
 
 class CreateChatUseCase {
   const CreateChatUseCase({
-    required this.chatRepository,
-    required this.router,
-    required this.profileSettingsNotifier,
+    required this.ref,
   });
-  final ChatRepository chatRepository;
-  final ProfileNotifier profileSettingsNotifier;
-  final AppRouter router;
+  final Ref ref;
 
   Future<Chat?> execute() async {
+    final router = ref.read(routerProvider);
+    final chatRepository = ref.read(chatRepositoryProvider);
     final state = await router.routeWrapper<CreateChatState>(
       builder: (context) => const CreateChatBottomSheet(),
     );

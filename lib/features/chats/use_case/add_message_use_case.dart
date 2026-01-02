@@ -1,31 +1,25 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/audio/audio_service.dart';
-import '../../../core/domain/repositories/chat_repository.dart';
-import '../../../core/gpt/gpt_service.dart';
 import '../../../core/permission/microphone_permission_request.dart';
-import '../../../core/speech/speech_recognizer.dart';
-import '../logic/chat_notifier.dart';
+import '../../../infrastructure/core.dart';
+import '../../../infrastructure/repositories.dart';
+import '../../../infrastructure/state_managers.dart';
 
 class AddMessageUseCase {
   const AddMessageUseCase({
-    required this.chatRepository,
-    required this.chatNotifier,
-    required this.speechRecognizer,
-    required this.audioService,
-    required this.gptService,
+    required this.ref,
   });
-  final ChatRepository chatRepository;
-  final ChatNotifier chatNotifier;
-  final SpeechRecognizer speechRecognizer;
-  final AudioService audioService;
-  final GptService gptService;
+  final Ref ref;
 
   Future<void> addMessage(
     String message, {
     bool addFirstMessage = true,
   }) async {
+    final chatNotifier = ref.read(chatNotifierProvider);
+    final chatRepository = ref.read(chatRepositoryProvider);
+    final gptService = ref.read(gptServiceProvider);
     final lastGptResponseId = chatNotifier.state.messages
         .lastWhereOrNull((message) => !message.isMe)
         ?.gptResponseId;
@@ -69,6 +63,7 @@ class AddMessageUseCase {
   }
 
   Future<void> toggleAudioMode() async {
+    final chatNotifier = ref.read(chatNotifierProvider);
     await HapticFeedback.heavyImpact();
     final microphoneGranted = await requestMicrophonePermission();
     if (!microphoneGranted) {
@@ -83,6 +78,7 @@ class AddMessageUseCase {
   }
 
   Future<void> toggleRecording() async {
+    final chatNotifier = ref.read(chatNotifierProvider);
     if (chatNotifier.state.isSpeechRecording) {
       await stopAudioRecording();
       return;
@@ -92,6 +88,8 @@ class AddMessageUseCase {
   }
 
   Future<void> startAudioRecording() async {
+    final chatNotifier = ref.read(chatNotifierProvider);
+    final audioService = ref.read(audioServiceProvider);
     if (chatNotifier.state.isSpeechRecording) {
       return;
     }
@@ -104,6 +102,10 @@ class AddMessageUseCase {
   }
 
   Future<void> stopAudioRecording() async {
+    final chatNotifier = ref.read(chatNotifierProvider);
+    final audioService = ref.read(audioServiceProvider);
+    final chatRepository = ref.read(chatRepositoryProvider);
+    final gptService = ref.read(gptServiceProvider);
     if (!chatNotifier.state.isSpeechRecording) {
       return;
     }
@@ -167,6 +169,8 @@ class AddMessageUseCase {
   }
 
   Future<void> cancelAudioRecording() async {
+    final chatNotifier = ref.read(chatNotifierProvider);
+    final audioService = ref.read(audioServiceProvider);
     if (!chatNotifier.state.isSpeechRecording) {
       return;
     }

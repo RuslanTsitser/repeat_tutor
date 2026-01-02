@@ -1,24 +1,19 @@
-import '../../../core/database/daos/sessions_durations_dao.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/domain/enums/difficulty_level.dart';
 import '../../../core/domain/enums/language.dart';
 import '../../../core/domain/models/realtime_session.dart';
-import '../../../core/gpt/gpt_service.dart';
 import '../../../core/gpt/instructions/tutor_instruction.dart';
-import '../../../core/realtime/realtime_webrtc_manager.dart';
+import '../../../infrastructure/core.dart';
+import '../../../infrastructure/state_managers.dart';
 import '../logic/realtime_call_notifier.dart';
 
 /// Use case для создания новой Realtime-сессии.
 class StartRealtimeCallUseCase {
   const StartRealtimeCallUseCase({
-    required this.gptService,
-    required this.realtimeWebRTCConnection,
-    required this.realtimeCallNotifier,
-    required this.sessionsDurationsDao,
+    required this.ref,
   });
-  final GptService gptService;
-  final RealtimeWebRTCConnection realtimeWebRTCConnection;
-  final RealtimeCallNotifier realtimeCallNotifier;
-  final SessionsDurationsDao sessionsDurationsDao;
+  final Ref ref;
 
   Future<void> start({
     required String topic,
@@ -26,7 +21,13 @@ class StartRealtimeCallUseCase {
     required DifficultyLevel level,
     required Language teacherLanguage,
   }) async {
+    final realtimeCallNotifier = ref.read(realtimeCallProvider);
+    final sessionsDurationsDao = ref
+        .read(databaseProvider)
+        .sessionsDurationsDao;
+    final realtimeWebRTCConnection = ref.read(realtimeWebRTCConnectionProvider);
     realtimeCallNotifier.setState(RealtimeCallState.initial());
+    final gptService = ref.read(gptServiceProvider);
     final instructions = TutorInstruction.repeatTutor(
       topic: topic,
       languageName: language.localizedName,
@@ -59,6 +60,11 @@ class StartRealtimeCallUseCase {
   }
 
   Future<void> stop() async {
+    final realtimeWebRTCConnection = ref.read(realtimeWebRTCConnectionProvider);
+    final realtimeCallNotifier = ref.read(realtimeCallProvider);
+    final sessionsDurationsDao = ref
+        .read(databaseProvider)
+        .sessionsDurationsDao;
     realtimeWebRTCConnection.disconnect();
     final sessionId = realtimeCallNotifier.state.sessionId;
     if (sessionId == null) return;
@@ -66,6 +72,8 @@ class StartRealtimeCallUseCase {
   }
 
   Future<void> toggleMic() async {
+    final realtimeWebRTCConnection = ref.read(realtimeWebRTCConnectionProvider);
+    final realtimeCallNotifier = ref.read(realtimeCallProvider);
     final currentState = realtimeCallNotifier.state;
     await realtimeWebRTCConnection.setMicEnabled(!currentState.isMuted);
   }
