@@ -78,7 +78,7 @@ class ChatListNotifier extends ChangeNotifier {
 
 class ChatsState {
   factory ChatsState.initial() {
-    return const ChatsState(chats: [], isLoading: false, error: null);
+    return const ChatsState(chats: [], isLoading: true, error: null);
   }
   const ChatsState({
     required this.chats,
