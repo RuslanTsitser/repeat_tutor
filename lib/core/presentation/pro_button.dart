@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../features/profile/logic/profile_notifier.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
 import '../theme/app_colors.dart';
@@ -11,8 +13,12 @@ class ProButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(profileProvider).state.isPremium;
-    if (!isPremium) {
+    PremiumStatus premiumStatus = ref
+        .watch(profileProvider)
+        .state
+        .premiumStatus;
+
+    if (premiumStatus == PremiumStatus.free) {
       return const SizedBox.shrink();
     }
     return CupertinoButton(
@@ -23,11 +29,19 @@ class ProButton extends ConsumerWidget {
       onPressed: () {
         ref.read(openScreenUseCaseProvider).openProPaywall();
       },
-      child: const Row(
+      child: Row(
         spacing: 8,
         children: [
-          Icon(CupertinoIcons.star, color: AppColors.surface),
-          Text('Pro', style: AppTextStyle.inter16w600),
+          Icon(
+            premiumStatus == PremiumStatus.pro
+                ? LucideIcons.star
+                : LucideIcons.crown,
+            color: AppColors.surface,
+          ),
+          Text(
+            premiumStatus == PremiumStatus.pro ? 'Pro' : 'Gold',
+            style: AppTextStyle.inter16w600,
+          ),
         ],
       ),
     );
