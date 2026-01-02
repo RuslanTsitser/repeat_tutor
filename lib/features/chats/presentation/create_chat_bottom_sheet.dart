@@ -81,7 +81,7 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: _CreateChatBottomSheetConstants.shadowBlurRadius,
                 offset: const Offset(
                   0,
@@ -89,7 +89,7 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
                 ),
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 8.0,
                 offset: const Offset(
                   0,
