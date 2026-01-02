@@ -11,6 +11,7 @@ import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../logic/chat_list_notifier.dart';
 import 'components/chat_list_item.dart';
+import 'components/chat_list_item_shimmer.dart';
 
 @RoutePage()
 class ChatListScreen extends StatelessWidget {
@@ -43,7 +44,7 @@ class _Body extends ConsumerWidget {
         children: [
           LogoAppBar(),
           Expanded(
-            child: CupertinoActivityIndicator(),
+            child: _LoadingState(),
           ),
         ],
       );
@@ -105,6 +106,28 @@ class _Body extends ConsumerWidget {
                 ),
         ),
       ],
+    );
+  }
+}
+
+class _LoadingState extends StatelessWidget {
+  const _LoadingState();
+
+  static const int _shimmerCount = 5;
+  static const double _padding = 16.0;
+  static const double _spacing = 8.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(_padding),
+      separatorBuilder: (context, index) => const SizedBox(height: _spacing),
+      itemCount: _shimmerCount,
+      itemBuilder: (context, index) {
+        return ChatListItemShimmer(
+          key: ValueKey('shimmer_$index'),
+        );
+      },
     );
   }
 }
