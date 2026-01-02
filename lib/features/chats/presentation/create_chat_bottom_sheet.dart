@@ -13,6 +13,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_style.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../../onboarding/presentation/onboarding_wrappers/onboarding_create_chat_bottom_sheet_wrapper.dart';
 import '../logic/create_chat_notifier.dart';
 
 // Константы для размеров
@@ -62,151 +63,163 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
     final entity = ref.watch(createChatProvider);
     final state = entity.state;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(
-              _CreateChatBottomSheetConstants.borderRadius,
-            ),
-            topRight: Radius.circular(
-              _CreateChatBottomSheetConstants.borderRadius,
-            ),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: _CreateChatBottomSheetConstants.shadowBlurRadius,
-              offset: const Offset(
-                0,
-                _CreateChatBottomSheetConstants.shadowOffset,
+    return OnboardingCreateChatBottomSheetWrapper(
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(
+                _CreateChatBottomSheetConstants.borderRadius,
+              ),
+              topRight: Radius.circular(
+                _CreateChatBottomSheetConstants.borderRadius,
               ),
             ),
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 8.0,
-              offset: const Offset(
-                0,
-                _CreateChatBottomSheetConstants.shadowOffset,
-              ),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const LogoAppBar(),
-              // Form
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    // Topic
-                    _FormField(
-                      label: S.of(context).topic,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _TopicInput(
-                            value: state.topic,
-                            onChanged: (topic) {
-                              entity.setState(state.copyWith(topic: topic));
-                            },
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              ...[
-                                S.of(context).exampleTopicFreeTime,
-                                S.of(context).exampleTopicShopping,
-                                S.of(context).exampleTopicTravel,
-                                S.of(context).exampleTopicFood,
-                                S.of(context).exampleTopicWork,
-                                S.of(context).exampleTopicHobbies,
-                                S.of(context).exampleTopicSports,
-                              ].map(
-                                (topic) => _TopicChip(
-                                  label: topic,
-                                  onTap: () {
-                                    FocusScope.of(context).unfocus();
-                                    entity.setState(
-                                      state.copyWith(topic: topic),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Language to learn
-                    _FormField(
-                      label: S.of(context).languageToLearn,
-                      child: _LanguageDropdown(
-                        value: state.language,
-                        onChanged: (language) {
-                          entity.setState(state.copyWith(language: language));
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Level
-                    _FormField(
-                      label: S.of(context).level,
-                      child: _LevelDropdown(
-                        value: state.level,
-                        onChanged: (level) {
-                          entity.setState(state.copyWith(level: level));
-                        },
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-                  ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: _CreateChatBottomSheetConstants.shadowBlurRadius,
+                offset: const Offset(
+                  0,
+                  _CreateChatBottomSheetConstants.shadowOffset,
                 ),
               ),
-              const Spacer(),
-              // Buttons
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _CancelButton(
-                        onPressed: () => ref.read(routerProvider).pop(),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: _StartChatButton(
-                        onPressed: state.topic.trim().isEmpty
-                            ? null
-                            : () => ref.read(routerProvider).pop(state),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: max(
-                  MediaQuery.viewInsetsOf(context).bottom * 0.4,
-                  16,
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 8.0,
+                offset: const Offset(
+                  0,
+                  _CreateChatBottomSheetConstants.shadowOffset,
                 ),
               ),
             ],
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const LogoAppBar(),
+                // Form
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      // Topic
+                      _FormField(
+                        label: S.of(context).topic,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TopicInputWrapper(
+                              child: _TopicInput(
+                                value: state.topic,
+                                onChanged: (topic) {
+                                  entity.setState(state.copyWith(topic: topic));
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            TopicChipsWrapper(
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  ...[
+                                    S.of(context).exampleTopicFreeTime,
+                                    S.of(context).exampleTopicShopping,
+                                    S.of(context).exampleTopicTravel,
+                                    S.of(context).exampleTopicFood,
+                                    S.of(context).exampleTopicWork,
+                                    S.of(context).exampleTopicHobbies,
+                                    S.of(context).exampleTopicSports,
+                                  ].map(
+                                    (topic) => _TopicChip(
+                                      label: topic,
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        entity.setState(
+                                          state.copyWith(topic: topic),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Language to learn
+                      _FormField(
+                        label: S.of(context).languageToLearn,
+                        child: LanguageDropdownWrapper(
+                          child: _LanguageDropdown(
+                            value: state.language,
+                            onChanged: (language) {
+                              entity.setState(
+                                state.copyWith(language: language),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Level
+                      _FormField(
+                        label: S.of(context).level,
+                        child: LevelDropdownWrapper(
+                          child: _LevelDropdown(
+                            value: state.level,
+                            onChanged: (level) {
+                              entity.setState(state.copyWith(level: level));
+                            },
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                // Buttons
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _CancelButton(
+                          onPressed: () => ref.read(routerProvider).pop(),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _StartChatButton(
+                          onPressed: state.topic.trim().isEmpty
+                              ? null
+                              : () => ref.read(routerProvider).pop(state),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(
+                  height: max(
+                    MediaQuery.viewInsetsOf(context).bottom * 0.4,
+                    16,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
