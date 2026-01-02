@@ -88,7 +88,12 @@ class __StartVoiceCallState extends ConsumerState<_StartVoiceCall> {
         },
         child: _isLoading
             ? const CupertinoActivityIndicator()
-            : const Icon(LucideIcons.phone),
+            : const Icon(
+                LucideIcons.phone,
+                color: AppColors.primary,
+                size: 24,
+                fontWeight: FontWeight.w400,
+              ),
       ),
     );
   }
