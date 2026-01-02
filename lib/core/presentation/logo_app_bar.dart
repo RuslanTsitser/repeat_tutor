@@ -14,11 +14,13 @@ class LogoAppBar extends ConsumerWidget {
     this.showBackButton = false,
     this.withPadding = true,
     this.title = 'Repeat Tutor',
+    this.actions = const [],
   });
   final bool showProButton;
   final bool showBackButton;
   final bool withPadding;
   final String title;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,6 +60,7 @@ class LogoAppBar extends ConsumerWidget {
             ),
           ),
           if (showProButton) const ProButton(),
+          ...actions,
         ],
       ),
     );

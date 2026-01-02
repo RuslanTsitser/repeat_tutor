@@ -177,6 +177,12 @@ class __BodyState extends ConsumerState<_Body> {
               showBackButton: true,
               withPadding: false,
               title: chatTitle,
+              showProButton: false,
+              actions: const [
+                SizedBox(width: 8),
+                _StartVoiceCall(),
+                SizedBox(width: 8),
+              ],
             ),
             Expanded(
               child: messages.isEmpty
