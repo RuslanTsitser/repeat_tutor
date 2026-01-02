@@ -91,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("Próximo"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Nenhum chat"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Nenhum mensagem"),
+    "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
+      "Ou escolha dos exemplos abaixo",
+    ),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Ou envie uma mensagem de áudio",
     ),
@@ -120,7 +123,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "safeSpace": MessageLookupByLibrary.simpleMessage("Espaço seguro"),
     "save": MessageLookupByLibrary.simpleMessage("Economizar"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Com medo de falar?"),
+    "selectLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "Selecione o idioma que deseja aprender",
+    ),
     "selectPlan": MessageLookupByLibrary.simpleMessage("Selecionar plano"),
+    "selectYourLevel": MessageLookupByLibrary.simpleMessage(
+      "Escolha seu nível de proficiência",
+    ),
     "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
     "smartCorrections": MessageLookupByLibrary.simpleMessage(
       "Correções inteligentes",

@@ -334,6 +334,36 @@ class S {
     );
   }
 
+  /// `Or choose from examples below`
+  String get orChooseFromExamples {
+    return Intl.message(
+      'Or choose from examples below',
+      name: 'orChooseFromExamples',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the language you want to learn`
+  String get selectLanguageToLearn {
+    return Intl.message(
+      'Select the language you want to learn',
+      name: 'selectLanguageToLearn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose your proficiency level`
+  String get selectYourLevel {
+    return Intl.message(
+      'Choose your proficiency level',
+      name: 'selectYourLevel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Tap to write a text message`
   String get tapToWriteATextMessage {
     return Intl.message(

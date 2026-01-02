@@ -95,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("Далее"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Нет чатов"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Нет сообщений"),
+    "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
+      "Или выберите из примеров ниже",
+    ),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Или отправьте голосовое сообщение",
     ),
@@ -124,7 +127,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save": MessageLookupByLibrary.simpleMessage("Сэкономить"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Боитесь говорить?"),
+    "selectLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "Выберите язык, который хотите изучать",
+    ),
     "selectPlan": MessageLookupByLibrary.simpleMessage("Выберите план"),
+    "selectYourLevel": MessageLookupByLibrary.simpleMessage(
+      "Выберите ваш уровень владения",
+    ),
     "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
     "smartCorrections": MessageLookupByLibrary.simpleMessage(
       "Умные исправления",

@@ -75,6 +75,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("次へ"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
     "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
+    "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
+      "または下の例から選択してください",
+    ),
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "または音声メッセージを送信",
     ),
@@ -100,7 +103,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "safeSpace": MessageLookupByLibrary.simpleMessage("安全な空間"),
     "save": MessageLookupByLibrary.simpleMessage("節約"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("話すのが怖いですか？"),
+    "selectLanguageToLearn": MessageLookupByLibrary.simpleMessage(
+      "学習したい言語を選択してください",
+    ),
     "selectPlan": MessageLookupByLibrary.simpleMessage("プランを選択"),
+    "selectYourLevel": MessageLookupByLibrary.simpleMessage(
+      "あなたの習熟度レベルを選択してください",
+    ),
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
     "smartCorrections": MessageLookupByLibrary.simpleMessage("スマート修正"),
     "speak": MessageLookupByLibrary.simpleMessage("話す"),
