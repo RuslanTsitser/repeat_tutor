@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/enum/placement_type.dart';
+import '../../../core/domain/enums/language.dart';
 import '../../../core/domain/models/chat.dart';
 import '../../../core/router/router.dart';
 import '../../../infrastructure/core.dart';
@@ -19,7 +20,6 @@ class OpenScreenUseCase {
     final chatRepository = ref.read(chatRepositoryProvider);
     final messageNotifier = ref.read(chatNotifierProvider);
     final addMessageUseCase = ref.read(addMessageUseCaseProvider);
-    final l10n = ref.read(l10nProvider);
 
     messageNotifier.unsubscribeFromMessages();
     messageNotifier.subscribeToMessages(
@@ -44,7 +44,19 @@ class OpenScreenUseCase {
       ),
     );
     if (messages.isEmpty) {
-      await addMessageUseCase.addMessage(l10n.hello, addFirstMessage: false);
+      final chatLocale = chat.chatLanguage;
+      final firstMessage = switch (chatLocale) {
+        Language.japanese => 'こんにちは',
+        Language.russian => 'Привет',
+        Language.english => 'Hello',
+        Language.french => 'Bonjour',
+        Language.german => 'Hallo',
+        Language.spanish => 'Hola',
+        Language.portugueseEuropean => 'Olá',
+        Language.portugueseBrazilian => 'Olá',
+        Language.italian => 'Ciao',
+      };
+      await addMessageUseCase.addMessage(firstMessage, addFirstMessage: false);
     }
   }
 
