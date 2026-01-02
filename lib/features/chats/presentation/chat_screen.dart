@@ -32,7 +32,6 @@ class ChatScreen extends ConsumerWidget {
           FocusScope.of(context).unfocus();
         },
         child: const CupertinoPageScaffold(
-          backgroundColor: AppColors.transparent,
           resizeToAvoidBottomInset: true,
           child: _Body(),
         ),
