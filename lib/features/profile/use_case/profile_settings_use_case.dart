@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ab_test/model/user_premium_source.dart';
 import '../../../core/domain/enums/language.dart';
 import '../../../core/local_storage/storage_keys.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
+import '../logic/profile_notifier.dart';
 
 class ProfileSettingsUseCase {
   const ProfileSettingsUseCase({
@@ -115,8 +117,25 @@ class ProfileSettingsUseCase {
     final abTestService = ref.read(abTestServiceProvider);
     await abTestService.checkUserPremium();
     final profileNotifier = ref.read(profileProvider);
-    profileNotifier.setState(
-      profileNotifier.state.copyWith(isPremium: abTestService.isPremium),
-    );
+    final premiumSource = abTestService.userPremiumSource;
+    if (premiumSource.isGold) {
+      profileNotifier.setState(
+        profileNotifier.state.copyWith(
+          premiumStatus: PremiumStatus.gold,
+        ),
+      );
+    } else if (premiumSource.isPremium) {
+      profileNotifier.setState(
+        profileNotifier.state.copyWith(
+          premiumStatus: PremiumStatus.pro,
+        ),
+      );
+    } else {
+      profileNotifier.setState(
+        profileNotifier.state.copyWith(
+          premiumStatus: PremiumStatus.free,
+        ),
+      );
+    }
   }
 }

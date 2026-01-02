@@ -2,6 +2,12 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../core/domain/enums/language.dart';
 
+enum PremiumStatus {
+  free,
+  pro,
+  gold,
+}
+
 class ProfileNotifier with ChangeNotifier {
   ProfileNotifier();
 
@@ -23,7 +29,7 @@ class ProfileSettingsState {
       todayDuration: Duration.zero,
       totalDuration: Duration.zero,
       isLoading: false,
-      isPremium: false,
+      premiumStatus: PremiumStatus.free,
     );
   }
 
@@ -34,7 +40,7 @@ class ProfileSettingsState {
     required this.todayDuration,
     required this.totalDuration,
     required this.isLoading,
-    required this.isPremium,
+    required this.premiumStatus,
   });
 
   final Language defaultTeacherLanguage;
@@ -43,7 +49,7 @@ class ProfileSettingsState {
   final Duration todayDuration;
   final Duration totalDuration;
   final bool isLoading;
-  final bool isPremium;
+  final PremiumStatus premiumStatus;
 
   ProfileSettingsState copyWith({
     Language? defaultTeacherLanguage,
@@ -52,7 +58,7 @@ class ProfileSettingsState {
     Duration? todayDuration,
     Duration? totalDuration,
     bool? isLoading,
-    bool? isPremium,
+    PremiumStatus? premiumStatus,
   }) {
     return ProfileSettingsState(
       defaultTeacherLanguage:
@@ -63,7 +69,7 @@ class ProfileSettingsState {
       todayDuration: todayDuration ?? this.todayDuration,
       totalDuration: totalDuration ?? this.totalDuration,
       isLoading: isLoading ?? this.isLoading,
-      isPremium: isPremium ?? this.isPremium,
+      premiumStatus: premiumStatus ?? this.premiumStatus,
     );
   }
 }
