@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' show max;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
@@ -96,28 +97,30 @@ class _LanguageAvatar extends ConsumerWidget {
   const _LanguageAvatar();
 
   static const double _size = 128.0;
-  static const List<BoxShadow> _shadows = [
-    BoxShadow(
-      color: Color(0x1A000000),
-      blurRadius: 16.0,
-      offset: Offset(0, 4),
-    ),
-    BoxShadow(
-      color: Color(0x0D000000),
-      blurRadius: 4.0,
-      offset: Offset(0, -4),
-    ),
-  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    final tutorAudioLevel = state.tutorAudioLevel ?? 0; // -100 to 0
+    final myAudioLevel = state.myAudioLevel ?? 0;
+    final myAudioLevelPercentage = (myAudioLevel + 100) / 200;
+    final tutorAudioLevelPercentage = (tutorAudioLevel + 100) / 200;
+    final maxLevel = max(myAudioLevelPercentage, tutorAudioLevelPercentage);
+    final shadows = [
+      BoxShadow(
+        color: AppColors.primary.withValues(alpha: 0.5),
+        blurRadius: (maxLevel * 50) + 5,
+        spreadRadius: (maxLevel * 50) + 5,
+        offset: const Offset(0, 0),
+      ),
+    ];
     return Container(
       width: _size,
       height: _size,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
         shape: BoxShape.circle,
-        boxShadow: _shadows,
+        boxShadow: shadows,
       ),
       clipBehavior: Clip.hardEdge,
       child: Assets.appIcon.image(

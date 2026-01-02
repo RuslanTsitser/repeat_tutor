@@ -64,6 +64,22 @@ class RealtimeCallNotifier extends ChangeNotifier {
     };
 
     realtimeWebRTCConnection.onMessage = _onMessage;
+
+    realtimeWebRTCConnection.onAudioLevelChanged = (decibels, isLocal) {
+      _onAudioLevelChanged(decibels, isLocal);
+    };
+  }
+
+  void _onAudioLevelChanged(double decibels, bool isLocal) {
+    if (isLocal) {
+      setState(
+        state.copyWith(myAudioLevel: decibels),
+      );
+    } else {
+      setState(
+        state.copyWith(tutorAudioLevel: decibels),
+      );
+    }
   }
 
   void _onMessage(String message) {
@@ -128,6 +144,8 @@ class RealtimeCallState {
     required this.error,
     required this.tutorMessage,
     required this.callDuration,
+    required this.myAudioLevel,
+    required this.tutorAudioLevel,
   });
 
   factory RealtimeCallState.initial() {
@@ -139,6 +157,8 @@ class RealtimeCallState {
       error: null,
       tutorMessage: null,
       callDuration: Duration.zero,
+      myAudioLevel: null,
+      tutorAudioLevel: null,
     );
   }
 
@@ -149,6 +169,8 @@ class RealtimeCallState {
   final String? error;
   final String? tutorMessage;
   final Duration callDuration;
+  final double? myAudioLevel;
+  final double? tutorAudioLevel;
 
   RealtimeCallState copyWith({
     int? sessionId,
@@ -158,6 +180,8 @@ class RealtimeCallState {
     String? error,
     String? tutorMessage,
     Duration? callDuration,
+    double? myAudioLevel,
+    double? tutorAudioLevel,
   }) {
     return RealtimeCallState(
       sessionId: sessionId ?? this.sessionId,
@@ -167,6 +191,8 @@ class RealtimeCallState {
       error: error ?? this.error,
       tutorMessage: tutorMessage ?? this.tutorMessage,
       callDuration: callDuration ?? this.callDuration,
+      myAudioLevel: myAudioLevel ?? this.myAudioLevel,
+      tutorAudioLevel: tutorAudioLevel ?? this.tutorAudioLevel,
     );
   }
 

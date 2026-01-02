@@ -21,6 +21,11 @@ abstract interface class RealtimeWebRTCConnection {
   /// Обработчик получения текстового сообщения через DataChannel
   void Function(String message)? onMessage;
 
+  /// Обработчик изменения уровня громкости аудио (в децибелах)
+  /// [decibels] - значение от -100 (тишина) до 0 (максимальная громкость)
+  /// [isLocal] - true для исходящего аудио (микрофон), false для входящего (сервер)
+  void Function(double decibels, bool isLocal)? onAudioLevelChanged;
+
   /// Подключение к Realtime API через WebRTC
   Future<void> connect(String clientSecret);
 

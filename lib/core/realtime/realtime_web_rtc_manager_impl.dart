@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../gpt/gpt_service.dart';
@@ -34,6 +37,14 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   void Function(String message)? onMessage;
 
   @override
+  void Function(double decibels, bool isLocal)? onAudioLevelChanged;
+
+  MediaStream? _remoteStream;
+  Timer? _audioLevelTimer;
+  String? _localTrackId;
+  String? _remoteTrackId;
+
+  @override
   Future<void> connect(String clientSecret) async {
     try {
       // Создаем конфигурацию peer connection
@@ -60,8 +71,14 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
         final tracks = _localStream!.getAudioTracks();
         for (final track in tracks) {
           await _peerConnection!.addTrack(track, _localStream!);
+
+          // Сохраняем ID трека для идентификации в статистике
+          _localTrackId = track.id;
+
           track.onMute = () {
             onMuted?.call();
+            // При муте уровень должен быть минимальным
+            onAudioLevelChanged?.call(-100.0, true);
           };
           track.onUnMute = () {
             onUnMuted?.call();
@@ -84,6 +101,29 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       // Настраиваем обработчик получения сообщений через DataChannel
       _dataChannel!.onMessage = (RTCDataChannelMessage message) {
         onMessage?.call(message.text);
+      };
+
+      // Настраиваем обработчик получения входящих треков (аудио от сервера)
+      _peerConnection!.onTrack = (RTCTrackEvent event) {
+        if (event.streams.isNotEmpty) {
+          _remoteStream = event.streams[0];
+
+          // Получаем аудио треки из входящего потока
+          if (_remoteStream != null) {
+            final audioTracks = _remoteStream!.getAudioTracks();
+            for (final track in audioTracks) {
+              // Сохраняем ID трека для идентификации в статистике
+              _remoteTrackId = track.id;
+
+              track.onMute = () {
+                onAudioLevelChanged?.call(-100.0, false);
+              };
+              track.onUnMute = () {
+                // Трек был размучен
+              };
+            }
+          }
+        }
       };
 
       // Настраиваем обработчики событий peer connection
@@ -115,14 +155,90 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
       // Устанавливаем remote description (Answer)
       final answer = RTCSessionDescription(answerSDP, 'answer');
       await _peerConnection!.setRemoteDescription(answer);
+
+      // Запускаем мониторинг уровня аудио после установки соединения
+      _startAudioLevelMonitoring();
     } catch (e) {
       onError?.call(e);
       rethrow;
     }
   }
 
+  /// Запускает периодический мониторинг уровня аудио
+  void _startAudioLevelMonitoring() {
+    _audioLevelTimer?.cancel();
+    _audioLevelTimer = Timer.periodic(
+      const Duration(milliseconds: 100),
+      (_) => _updateAudioLevel(),
+    );
+  }
+
+  /// Обновляет уровень аудио через WebRTC статистику
+  Future<void> _updateAudioLevel() async {
+    if (_peerConnection == null) {
+      return;
+    }
+
+    try {
+      final stats = await _peerConnection!.getStats();
+
+      // Ищем записи с audioLevel в статистике
+      // Из логов видно, что audioLevel есть в записях с kind: "audio"
+      for (final stat in stats) {
+        final values = stat.values;
+
+        // Проверяем, что это аудио запись с audioLevel
+        if (values['kind'] == 'audio' && values.containsKey('audioLevel')) {
+          final audioLevel = values['audioLevel'];
+          if (audioLevel is num) {
+            final level = audioLevel.toDouble();
+
+            // Определяем, это входящий или исходящий аудио
+            // По trackIdentifier сравниваем с известными ID треков
+            final trackId = values['trackIdentifier'] as String?;
+
+            // Определяем, это локальный или удаленный трек
+            // Сравниваем trackIdentifier с сохраненными ID
+            bool isLocalTrack = false;
+            if (trackId != null) {
+              if (_localTrackId != null && trackId == _localTrackId) {
+                isLocalTrack = true;
+              } else if (_remoteTrackId != null && trackId == _remoteTrackId) {
+                isLocalTrack = false;
+              }
+              // Если не совпадает ни с одним известным ID,
+              // считаем локальным по умолчанию (исходящий аудио)
+              else if (_localTrackId == null && _remoteTrackId == null) {
+                isLocalTrack = true;
+              }
+            }
+
+            // Конвертируем в децибелы
+            // audioLevel уже нормализован от 0.0 до 1.0
+            // dB = 20 * log10(level)
+            final decibels = level > 0
+                ? 20.0 * math.log(level) / math.ln10
+                : -100.0;
+
+            // Ограничиваем диапазон от -100 до 0 дБ
+            final clampedDecibels = decibels.clamp(-100.0, 0.0);
+
+            onAudioLevelChanged?.call(clampedDecibels, isLocalTrack);
+          }
+        }
+      }
+    } catch (e) {
+      // Игнорируем ошибки при получении статистики
+      // чтобы не прерывать работу приложения
+    }
+  }
+
   @override
   void disconnect() {
+    // Останавливаем мониторинг уровня аудио
+    _audioLevelTimer?.cancel();
+    _audioLevelTimer = null;
+
     _dataChannel?.close();
     _dataChannel = null;
     _localStream?.getTracks().forEach((track) {
@@ -130,6 +246,16 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
     });
     _localStream?.dispose();
     _localStream = null;
+    _localTrackId = null;
+
+    // Останавливаем и освобождаем удаленные треки
+    _remoteStream?.getTracks().forEach((track) {
+      track.stop();
+    });
+    _remoteStream?.dispose();
+    _remoteStream = null;
+    _remoteTrackId = null;
+
     _peerConnection?.close();
     _peerConnection = null;
 
