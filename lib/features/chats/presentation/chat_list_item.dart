@@ -107,15 +107,13 @@ class _BadgeStyle extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Flexible(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      chat.topic,
-                      style: AppTextStyle.inter16w500.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    chat.topic,
+                    style: AppTextStyle.inter16w500.copyWith(
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 ),
