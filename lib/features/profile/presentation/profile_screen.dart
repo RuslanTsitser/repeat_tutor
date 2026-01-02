@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/domain/enums/language.dart';
-import '../../core/localization/generated/l10n.dart';
-import '../../core/presentation/logo_app_bar.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_style.dart';
-import '../../infrastructure/state_managers.dart';
-import '../../infrastructure/use_case.dart';
-import '../onboarding/presentation/onboarding_wrappers/onboarding_profile_wrapper.dart';
+import '../../../core/domain/enums/language.dart';
+import '../../../core/localization/generated/l10n.dart';
+import '../../../core/presentation/logo_app_bar.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_style.dart';
+import '../../../infrastructure/state_managers.dart';
+import '../../../infrastructure/use_case.dart';
+import '../../onboarding/presentation/onboarding_wrappers/onboarding_profile_wrapper.dart';
 
 @RoutePage()
 class ProfileScreen extends StatelessWidget {
