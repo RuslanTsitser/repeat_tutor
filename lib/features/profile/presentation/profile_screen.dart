@@ -178,7 +178,7 @@ class _LanguageSelector extends StatelessWidget {
   }
 }
 
-class _LanguagePicker extends StatelessWidget {
+class _LanguagePicker extends StatefulWidget {
   const _LanguagePicker({
     required this.title,
     required this.selectedValue,
@@ -188,6 +188,28 @@ class _LanguagePicker extends StatelessWidget {
   final String title;
   final Language selectedValue;
   final ValueChanged<Language> onSelected;
+
+  @override
+  State<_LanguagePicker> createState() => _LanguagePickerState();
+}
+
+class _LanguagePickerState extends State<_LanguagePicker> {
+  late Language _localValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _localValue = widget.selectedValue;
+  }
+
+  void _handleSave() {
+    widget.onSelected(_localValue);
+    Navigator.pop(context);
+  }
+
+  void _handleCancel() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,22 +243,35 @@ class _LanguagePicker extends StatelessWidget {
                   button: true,
                   child: CupertinoButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: _handleCancel,
                     child: Text(
                       S.of(context).cancel,
                       style: AppTextStyle.inter16w400.copyWith(
-                        color: AppColors.textPrimary,
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
                 ),
                 Text(
-                  title,
+                  widget.title,
                   style: AppTextStyle.inter16w500.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(width: 64),
+                Semantics(
+                  label: S.of(context).save,
+                  button: true,
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: _handleSave,
+                    child: Text(
+                      S.of(context).save,
+                      style: AppTextStyle.inter16w500.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -244,10 +279,12 @@ class _LanguagePicker extends StatelessWidget {
             child: CupertinoPicker(
               itemExtent: 44,
               scrollController: FixedExtentScrollController(
-                initialItem: Language.values.indexOf(selectedValue),
+                initialItem: Language.values.indexOf(widget.selectedValue),
               ),
               onSelectedItemChanged: (index) {
-                onSelected(Language.values[index]);
+                setState(() {
+                  _localValue = Language.values[index];
+                });
               },
               children: Language.values.map((language) {
                 return Center(
