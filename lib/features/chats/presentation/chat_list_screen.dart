@@ -10,7 +10,7 @@ import '../../../core/theme/app_text_style.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
 import '../logic/chat_list_notifier.dart';
-import 'chat_list_item.dart';
+import 'components/chat_list_item.dart';
 
 @RoutePage()
 class ChatListScreen extends StatelessWidget {

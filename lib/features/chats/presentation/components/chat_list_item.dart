@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../core/domain/enums/difficulty_level.dart';
-import '../../../core/domain/models/chat.dart';
-import '../../../core/localization/generated/l10n.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_text_style.dart';
+import '../../../../core/domain/enums/difficulty_level.dart';
+import '../../../../core/domain/models/chat.dart';
+import '../../../../core/localization/generated/l10n.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_style.dart';
 
 enum ChatListItemStyle {
   badge,
