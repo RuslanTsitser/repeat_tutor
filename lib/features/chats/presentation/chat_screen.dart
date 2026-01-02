@@ -158,6 +158,7 @@ class __BodyState extends ConsumerState<_Body> {
         gradient: LinearGradient(
           colors: [
             AppColors.surface,
+            AppColors.surface,
             AppColors.backgroundLight,
             AppColors.backgroundLight,
             AppColors.backgroundLight,
