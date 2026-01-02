@@ -135,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Безопасное пространство",
     ),
     "save": MessageLookupByLibrary.simpleMessage("Сэкономить"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Сохранить"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Боитесь говорить?"),
     "selectLanguageToLearn": MessageLookupByLibrary.simpleMessage(
       "Выберите язык, который хотите изучать",

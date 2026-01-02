@@ -659,7 +659,7 @@ class _LanguagePickerState extends State<_LanguagePicker> {
                   padding: EdgeInsets.zero,
                   onPressed: _handleSave,
                   child: Text(
-                    S.of(context).save,
+                    S.of(context).saveButton,
                     style: AppTextStyle.inter16w500
                         .copyWith(color: AppColors.primary)
                         .scaled(context),
@@ -779,7 +779,7 @@ class _LevelPickerState extends State<_LevelPicker> {
                   padding: EdgeInsets.zero,
                   onPressed: _handleSave,
                   child: Text(
-                    S.of(context).save,
+                    S.of(context).saveButton,
                     style: AppTextStyle.inter16w500
                         .copyWith(color: AppColors.primary)
                         .scaled(context),

@@ -131,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "retry": MessageLookupByLibrary.simpleMessage("Reintentar"),
     "safeSpace": MessageLookupByLibrary.simpleMessage("Espaço seguro"),
     "save": MessageLookupByLibrary.simpleMessage("Economizar"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Salvar"),
     "scaredToSpeak": MessageLookupByLibrary.simpleMessage("Com medo de falar?"),
     "selectLanguageToLearn": MessageLookupByLibrary.simpleMessage(
       "Selecione o idioma que deseja aprender",

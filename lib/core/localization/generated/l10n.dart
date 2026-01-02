@@ -679,6 +679,11 @@ class S {
     return Intl.message('Save', name: 'save', desc: '', args: []);
   }
 
+  /// `Save`
+  String get saveButton {
+    return Intl.message('Save', name: 'saveButton', desc: '', args: []);
+  }
+
   /// `Go Premium`
   String get goPremium {
     return Intl.message('Go Premium', name: 'goPremium', desc: '', args: []);

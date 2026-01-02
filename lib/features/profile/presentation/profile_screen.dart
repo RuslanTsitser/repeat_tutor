@@ -259,13 +259,13 @@ class _LanguagePickerState extends State<_LanguagePicker> {
                   ),
                 ),
                 Semantics(
-                  label: S.of(context).save,
+                  label: S.of(context).saveButton,
                   button: true,
                   child: CupertinoButton(
                     padding: EdgeInsets.zero,
                     onPressed: _handleSave,
                     child: Text(
-                      S.of(context).save,
+                      S.of(context).saveButton,
                       style: AppTextStyle.inter16w500.copyWith(
                         color: AppColors.primary,
                       ),
