@@ -565,7 +565,7 @@ class _StartChatButton extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              S.of(context).startYourFirstChat,
+              S.of(context).start,
               style: AppTextStyle.inter16w500
                   .copyWith(color: CupertinoColors.white)
                   .scaled(context),
