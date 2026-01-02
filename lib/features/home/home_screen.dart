@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/localization/generated/l10n.dart';
 import '../../core/router/router.dart';
+import '../../core/theme/app_colors.dart';
 import '../../infrastructure/state_managers.dart';
+import '../chats/presentation/create_chat_button.dart';
 import '../onboarding/presentation/onboarding_screen.dart';
+import '../onboarding/presentation/onboarding_wrappers/onboarding_chat_list_wrapper.dart';
 import 'logic/home_screen_notifier.dart';
 
 @RoutePage()
@@ -27,14 +30,18 @@ class HomeScreen extends ConsumerWidget {
       case HomeScreenTab.onboarding:
         return const OnboardingScreen();
       case HomeScreenTab.home:
-        return AutoTabsScaffold(
-          bottomNavigationBuilder: (context, tabsRouter) {
-            return _BottomNavigation(tabsRouter: tabsRouter);
-          },
-          routes: const [
-            ChatListRoute(),
-            ProfileRoute(),
-          ],
+        return OnboardingChatListWrapper(
+          child: AutoTabsScaffold(
+            floatingActionButton: const CreateChatButton(),
+            extendBody: true,
+            bottomNavigationBuilder: (context, tabsRouter) {
+              return _BottomNavigation(tabsRouter: tabsRouter);
+            },
+            routes: const [
+              ChatListRoute(),
+              ProfileRoute(),
+            ],
+          ),
         );
     }
   }
@@ -46,17 +53,14 @@ class _BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFE5E7EB),
-            width: 1,
-          ),
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 32),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          border: Border.all(color: AppColors.divider),
         ),
-      ),
-      child: SafeArea(
         child: ListenableBuilder(
           listenable: tabsRouter,
           builder: (context, child) {
@@ -101,35 +105,36 @@ class _BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      onPressed: onTap,
-      padding: EdgeInsets.zero,
-      child: Container(
-        height: 60,
-        color: CupertinoColors.transparent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 24,
-              color: isActive
-                  ? const Color(0xFF155DFC)
-                  : const Color(0xFF6A7282),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isActive
-                    ? const Color(0xFF155DFC)
-                    : const Color(0xFF6A7282),
-                height: 16 / 12,
+    return Semantics(
+      button: true,
+      label: label,
+      selected: isActive,
+      child: CupertinoButton(
+        onPressed: onTap,
+        padding: EdgeInsets.zero,
+        child: Container(
+          height: 64,
+          color: CupertinoColors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 24,
+                color: isActive ? AppColors.primary : AppColors.textSecondary,
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: isActive ? AppColors.primary : AppColors.textSecondary,
+                  height: 16 / 12,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
