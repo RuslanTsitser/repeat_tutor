@@ -9,6 +9,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_style.dart';
 import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
+import '../onboarding/presentation/onboarding_wrappers/onboarding_profile_wrapper.dart';
 
 @RoutePage()
 class ProfileScreen extends StatelessWidget {
@@ -16,29 +17,31 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      backgroundColor: AppColors.surface,
-      child: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            LogoAppBar(),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _SettingsSection(),
-                      SizedBox(height: 24),
-                      _CallDurationSection(),
-                    ],
+    return const OnboardingProfileWrapper(
+      child: CupertinoPageScaffold(
+        backgroundColor: AppColors.surface,
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              LogoAppBar(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _SettingsSection(),
+                        SizedBox(height: 24),
+                        _CallDurationSection(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -56,34 +59,40 @@ class _SettingsSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _LanguageSelector(
-          label: S.of(context).appLanguage,
-          selectedLanguage: state.defaultLanguage,
-          onLanguageSelected: (language) {
-            ref
-                .read(profileSettingsUseCaseProvider)
-                .setDefaultLanguage(language);
-          },
+        AppLanguageWrapper(
+          child: _LanguageSelector(
+            label: S.of(context).appLanguage,
+            selectedLanguage: state.defaultLanguage,
+            onLanguageSelected: (language) {
+              ref
+                  .read(profileSettingsUseCaseProvider)
+                  .setDefaultLanguage(language);
+            },
+          ),
         ),
         const SizedBox(height: 16),
-        _LanguageSelector(
-          label: S.of(context).languageToLearn,
-          selectedLanguage: state.defaultLanguageToLearn,
-          onLanguageSelected: (language) {
-            ref
-                .read(profileSettingsUseCaseProvider)
-                .setDefaultLanguageToLearn(language);
-          },
+        LanguageToLearnWrapper(
+          child: _LanguageSelector(
+            label: S.of(context).languageToLearn,
+            selectedLanguage: state.defaultLanguageToLearn,
+            onLanguageSelected: (language) {
+              ref
+                  .read(profileSettingsUseCaseProvider)
+                  .setDefaultLanguageToLearn(language);
+            },
+          ),
         ),
         const SizedBox(height: 16),
-        _LanguageSelector(
-          label: S.of(context).tutorLanguage,
-          selectedLanguage: state.defaultTeacherLanguage,
-          onLanguageSelected: (language) {
-            ref
-                .read(profileSettingsUseCaseProvider)
-                .setDefaultTeacherLanguage(language);
-          },
+        TutorLanguageWrapper(
+          child: _LanguageSelector(
+            label: S.of(context).tutorLanguage,
+            selectedLanguage: state.defaultTeacherLanguage,
+            onLanguageSelected: (language) {
+              ref
+                  .read(profileSettingsUseCaseProvider)
+                  .setDefaultTeacherLanguage(language);
+            },
+          ),
         ),
       ],
     );

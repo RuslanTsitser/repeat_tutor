@@ -7,4 +7,5 @@ abstract class StorageKeys {
       'is_onboarded_create_chat_form';
   static const String isOnboardedChatKey = 'is_onboarded_chat';
   static const String isFirstOnboardingShownKey = 'is_first_onboarding_shown';
+  static const String isOnboardedProfileKey = 'is_onboarded_profile';
 }
