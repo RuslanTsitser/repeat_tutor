@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../infrastructure/state_managers.dart';
 import '../../infrastructure/use_case.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
@@ -10,6 +11,10 @@ class ProButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(profileProvider).state.isPremium;
+    if (!isPremium) {
+      return const SizedBox.shrink();
+    }
     return CupertinoButton(
       borderRadius: BorderRadius.circular(16),
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),

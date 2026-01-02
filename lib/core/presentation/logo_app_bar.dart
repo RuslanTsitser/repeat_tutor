@@ -6,7 +6,8 @@ import '../theme/app_text_style.dart';
 import 'pro_button.dart';
 
 class LogoAppBar extends StatelessWidget {
-  const LogoAppBar({super.key});
+  const LogoAppBar({super.key, this.showProButton = true});
+  final bool showProButton;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,7 @@ class LogoAppBar extends StatelessWidget {
               style: AppTextStyle.inter24w500,
             ),
           ),
-          // TODO: hide for premium users
-          const ProButton(),
+          if (showProButton) const ProButton(),
         ],
       ),
     );
