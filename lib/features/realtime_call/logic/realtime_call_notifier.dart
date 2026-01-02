@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/domain/models/realtime_session.dart';
+import '../../../core/logging/app_logger.dart';
 import '../../../core/realtime/realtime_webrtc_manager.dart';
+import '../models/realtime_event.dart';
 
 /// Нотифаер для управления состоянием звонка Realtime API.
 class RealtimeCallNotifier extends ChangeNotifier {
@@ -58,6 +62,45 @@ class RealtimeCallNotifier extends ChangeNotifier {
         ),
       );
     };
+
+    realtimeWebRTCConnection.onMessage = _onMessage;
+  }
+
+  void _onMessage(String message) {
+    try {
+      final json = jsonDecode(message);
+      final event = RealtimeEvent.fromJson(json as Map<String, dynamic>);
+      switch (event.type) {
+        case EventType.responseContentPartAdded:
+          setState(
+            // ignore: avoid_dynamic_calls
+            state.copyWithTutorMessage(json['part']['transcript'] as String),
+          );
+          break;
+        case EventType.responseAudioTranscriptDelta:
+          final message = state.tutorMessage ?? '';
+          final delta = json['delta'] as String;
+          setState(
+            state.copyWithTutorMessage(message + delta),
+          );
+          break;
+        case EventType.responseAudioTranscriptDone:
+          final transcript = json['transcript'] as String;
+          setState(
+            state.copyWithTutorMessage(transcript),
+          );
+          break;
+        case EventType.responseDone ||
+            EventType.sessionCreated ||
+            EventType.rateLimitsUpdated:
+          logInfo(json);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      logError(e);
+    }
   }
 
   RealtimeCallState _state = RealtimeCallState.initial();
@@ -83,6 +126,8 @@ class RealtimeCallState {
     required this.status,
     required this.isMuted,
     required this.error,
+    required this.tutorMessage,
+    required this.callDuration,
   });
 
   factory RealtimeCallState.initial() {
@@ -92,6 +137,8 @@ class RealtimeCallState {
       status: RealtimeCallStatus.initial,
       isMuted: false,
       error: null,
+      tutorMessage: null,
+      callDuration: Duration.zero,
     );
   }
 
@@ -100,6 +147,8 @@ class RealtimeCallState {
   final RealtimeCallStatus status;
   final bool isMuted;
   final String? error;
+  final String? tutorMessage;
+  final Duration callDuration;
 
   RealtimeCallState copyWith({
     int? sessionId,
@@ -107,6 +156,8 @@ class RealtimeCallState {
     RealtimeCallStatus? status,
     bool? isMuted,
     String? error,
+    String? tutorMessage,
+    Duration? callDuration,
   }) {
     return RealtimeCallState(
       sessionId: sessionId ?? this.sessionId,
@@ -114,6 +165,12 @@ class RealtimeCallState {
       status: status ?? this.status,
       isMuted: isMuted ?? this.isMuted,
       error: error ?? this.error,
+      tutorMessage: tutorMessage ?? this.tutorMessage,
+      callDuration: callDuration ?? this.callDuration,
     );
+  }
+
+  RealtimeCallState copyWithTutorMessage(String value) {
+    return copyWith(tutorMessage: value);
   }
 }

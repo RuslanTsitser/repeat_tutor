@@ -4,7 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/localization/generated/l10n.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_style.dart';
+import '../../../gen/assets.gen.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -20,8 +22,6 @@ class RealtimeCallScreen extends ConsumerStatefulWidget {
 
 class _RealtimeCallScreenState extends ConsumerState<RealtimeCallScreen> {
   Timer? _callTimer;
-  Duration _callDuration = Duration.zero;
-  DateTime? _callStartTime;
 
   @override
   void initState() {
@@ -36,213 +36,27 @@ class _RealtimeCallScreenState extends ConsumerState<RealtimeCallScreen> {
   }
 
   void _startTimer() {
-    final notifier = ref.read(realtimeCallProvider);
-    final state = notifier.state;
-
-    if (state.status == RealtimeCallStatus.connected &&
-        _callStartTime == null) {
-      _callStartTime = DateTime.now();
-    }
-
     _callTimer?.cancel();
-    _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        final notifier = ref.read(realtimeCallProvider);
-        final state = notifier.state;
-
-        if (state.status == RealtimeCallStatus.connected) {
-          _callStartTime ??= DateTime.now();
-          _callDuration = DateTime.now().difference(_callStartTime!);
-        } else {
-          _callStartTime = null;
-          _callDuration = Duration.zero;
-        }
-
-        setState(() {});
-      }
+    _callTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _onTick();
     });
   }
 
-  String _formatDuration(Duration duration) {
-    final minutes = duration.inMinutes;
-    final seconds = duration.inSeconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
-
-  String _getLanguageInitial(RealtimeCallState state) {
-    if (state.session == null) return 'E';
-    final languageName = state.session!.language.localizedName;
-    if (languageName.isEmpty) return 'E';
-    return languageName[0].toUpperCase();
-  }
-
-  String _getCallTitle(RealtimeCallState state) {
-    if (state.session == null) return 'English A1 – Free time';
-    final topic = state.session!.topic;
-    final language = state.session!.language.localizedName;
-    final levelLabel = state.session!.level.shortLocalizedName;
-    return '$topic $language $levelLabel';
+  Future<void> _onTick() async {
+    ref.read(startRealtimeCallUseCaseProvider).addSecondCallDuration();
   }
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.watch(realtimeCallProvider);
-    final state = notifier.state;
-
-    // Обновляем таймер при изменении статуса
-    if (state.status == RealtimeCallStatus.connected &&
-        _callStartTime == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _startTimer();
-      });
-    } else if (state.status != RealtimeCallStatus.connected &&
-        _callStartTime != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _callStartTime = null;
-        _callDuration = Duration.zero;
-        setState(() {});
-      });
-    }
-
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+    return const CupertinoPageScaffold(
+      backgroundColor: AppColors.backgroundLight,
       child: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Аватар с буквой
-                    Container(
-                      width: 128,
-                      height: 128,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF155DFC),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: CupertinoColors.black.withValues(alpha: 0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                          BoxShadow(
-                            color: CupertinoColors.black.withValues(
-                              alpha: 0.05,
-                            ),
-                            blurRadius: 4,
-                            offset: const Offset(0, -4),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          _getLanguageInitial(state),
-                          style: const TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.w500,
-                            color: CupertinoColors.white,
-                            letterSpacing: 0.3516,
-                            height: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    // Заголовок
-                    Text(
-                      _getCallTitle(state),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF101828),
-                        letterSpacing: 0.0703,
-                        height: 32 / 24,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // Подзаголовок
-                    Text(
-                      S.of(context).voiceCallInProgress,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xFF4A5565),
-                        letterSpacing: -0.3125,
-                        height: 24 / 16,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Таймер
-                    Text(
-                      _formatDuration(_callDuration),
-                      style: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF101828),
-                        letterSpacing: 0.3691,
-                        height: 40 / 36,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    // Статус подключения
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: state.status == RealtimeCallStatus.connected
-                                ? const Color(0xFF00C950)
-                                : const Color(0xFF4A5565),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          state.status == RealtimeCallStatus.connected
-                              ? S.of(context).connected
-                              : S.of(context).disconnected,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF4A5565),
-                            letterSpacing: -0.3125,
-                            height: 24 / 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (state.error != null) ...[
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.systemRed.withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          state.error!,
-                          style: const TextStyle(
-                            color: Color(0xFF82181A),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
+              child: _CallContent(),
             ),
-            // Кнопки управления
-            _ControlButtons(state: state),
+            _ControlButtons(),
           ],
         ),
       ),
@@ -250,87 +64,271 @@ class _RealtimeCallScreenState extends ConsumerState<RealtimeCallScreen> {
   }
 }
 
-class _ControlButtons extends ConsumerWidget {
-  const _ControlButtons({required this.state});
-  final RealtimeCallState state;
+class _CallContent extends ConsumerWidget {
+  const _CallContent();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const _LanguageAvatar(),
+          const SizedBox(height: 24),
+          const _CallTitle(),
+          const SizedBox(height: 32),
+          const _CallTimer(),
+          if (state.error != null) ...[
+            const SizedBox(height: 16),
+            _ErrorBanner(error: state.error!),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageAvatar extends ConsumerWidget {
+  const _LanguageAvatar();
+
+  static const double _size = 128.0;
+  static const List<BoxShadow> _shadows = [
+    BoxShadow(
+      color: Color(0x1A000000),
+      blurRadius: 16.0,
+      offset: Offset(0, 4),
+    ),
+    BoxShadow(
+      color: Color(0x0D000000),
+      blurRadius: 4.0,
+      offset: Offset(0, -4),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      width: _size,
+      height: _size,
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        shape: BoxShape.circle,
+        boxShadow: _shadows,
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Assets.appIcon.image(
+        width: _size,
+        height: _size,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+}
+
+class _CallTitle extends ConsumerWidget {
+  const _CallTitle();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    final topic = state.session?.topic ?? '';
+    final language = state.session?.language.localizedName ?? '';
+    final level = state.session?.level.shortLocalizedName ?? '';
+
+    return Column(
+      children: [
+        Text(
+          topic,
+          style: AppTextStyle.inter24w500.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          '$language $level',
+          style: AppTextStyle.inter16w400.copyWith(
+            color: AppColors.textSecondary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class _CallTimer extends ConsumerWidget {
+  const _CallTimer();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    final duration = state.callDuration;
+    final minutes = duration.inMinutes.toString().padLeft(2, '0');
+    final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+    return Text(
+      '$minutes:$seconds',
+      style: AppTextStyle.inter32w500,
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  const _ErrorBanner({required this.error});
+
+  final String error;
+
+  static const double _horizontalPadding = 16.0;
+  static const double _verticalPadding = 8.0;
+  static const double _borderRadius = 8.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: _horizontalPadding,
+        vertical: _verticalPadding,
+      ),
+      decoration: BoxDecoration(
+        color: CupertinoColors.systemRed.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(_borderRadius),
+      ),
+      child: Text(
+        error,
+        style: AppTextStyle.inter14w400.copyWith(
+          color: CupertinoColors.systemRed,
+        ),
+      ),
+    );
+  }
+}
+
+class _ControlButtons extends ConsumerWidget {
+  const _ControlButtons();
+
+  static const double _horizontalPadding = 24.0;
+  static const double _verticalPadding = 32.0;
+  static const double _spacing = 32.0;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: _horizontalPadding,
+        vertical: _verticalPadding,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Кнопка микрофона
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: state.status == RealtimeCallStatus.connected
-                ? () => ref.read(startRealtimeCallUseCaseProvider).toggleMic()
-                : null,
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: CupertinoColors.white,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFFE5E7EB),
-                  width: 0.714,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                  BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.05),
-                    blurRadius: 4,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: Icon(
-                state.isMuted ? CupertinoIcons.mic_slash : CupertinoIcons.mic,
-                color: const Color(0xFF101828),
-                size: 28,
-              ),
-            ),
+          _MicButton(
+            isMuted: state.isMuted,
+            isEnabled: state.status == RealtimeCallStatus.connected,
+            onPressed: () =>
+                ref.read(startRealtimeCallUseCaseProvider).toggleMic(),
           ),
-          const SizedBox(width: 32),
-          // Кнопка завершения звонка
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: state.status == RealtimeCallStatus.connected
-                ? () => ref.read(routerProvider).pop()
-                : null,
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE7000B),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                  BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.05),
-                    blurRadius: 4,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                CupertinoIcons.phone_down,
-                color: CupertinoColors.white,
-                size: 32,
-              ),
-            ),
+          const SizedBox(width: _spacing),
+          _EndCallButton(
+            isEnabled: state.status == RealtimeCallStatus.connected,
+            onPressed: () => ref.read(routerProvider).pop(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MicButton extends StatelessWidget {
+  const _MicButton({
+    required this.isMuted,
+    required this.isEnabled,
+    required this.onPressed,
+  });
+
+  final bool isMuted;
+  final bool isEnabled;
+  final VoidCallback onPressed;
+
+  static const double _size = 64.0;
+  static const List<BoxShadow> _shadows = [
+    BoxShadow(
+      color: Color(0x1A000000),
+      blurRadius: 16.0,
+      offset: Offset(0, 4),
+    ),
+    BoxShadow(
+      color: Color(0x0D000000),
+      blurRadius: 4.0,
+      offset: Offset(0, -4),
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: isEnabled ? onPressed : null,
+      child: Container(
+        width: _size,
+        height: _size,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.divider, width: 0.714),
+          boxShadow: _shadows,
+        ),
+        child: Icon(
+          isMuted ? CupertinoIcons.mic_slash : CupertinoIcons.mic,
+          color: AppColors.textPrimary,
+          size: 32.0,
+        ),
+      ),
+    );
+  }
+}
+
+class _EndCallButton extends StatelessWidget {
+  const _EndCallButton({
+    required this.isEnabled,
+    required this.onPressed,
+  });
+
+  final bool isEnabled;
+  final VoidCallback onPressed;
+
+  static const double _size = 64.0;
+  static const Color _redColor = Color(0xFFE7000B);
+  static const List<BoxShadow> _shadows = [
+    BoxShadow(
+      color: Color(0x1A000000),
+      blurRadius: 16.0,
+      offset: Offset(0, 4),
+    ),
+    BoxShadow(
+      color: Color(0x0D000000),
+      blurRadius: 4.0,
+      offset: Offset(0, -4),
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: isEnabled ? onPressed : null,
+      child: Container(
+        width: _size,
+        height: _size,
+        decoration: const BoxDecoration(
+          color: _redColor,
+          shape: BoxShape.circle,
+          boxShadow: _shadows,
+        ),
+        child: const Icon(
+          CupertinoIcons.phone_down,
+          color: AppColors.surface,
+          size: 32.0,
+        ),
       ),
     );
   }
