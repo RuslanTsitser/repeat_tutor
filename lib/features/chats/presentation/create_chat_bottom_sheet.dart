@@ -158,9 +158,9 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
                       ),
                       const SizedBox(height: 16),
                       // Language to learn
-                      _FormField(
-                        label: S.of(context).languageToLearn,
-                        child: LanguageDropdownWrapper(
+                      LanguageDropdownWrapper(
+                        child: _FormField(
+                          label: S.of(context).languageToLearn,
                           child: _LanguageDropdown(
                             value: state.language,
                             onChanged: (language) {
@@ -173,9 +173,9 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
                       ),
                       const SizedBox(height: 16),
                       // Level
-                      _FormField(
-                        label: S.of(context).level,
-                        child: LevelDropdownWrapper(
+                      LevelDropdownWrapper(
+                        child: _FormField(
+                          label: S.of(context).level,
                           child: _LevelDropdown(
                             value: state.level,
                             onChanged: (level) {

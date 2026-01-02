@@ -63,7 +63,6 @@ class TopicInputWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Showcase(
-      title: S.of(context).startHere,
       description: S.of(context).enterATopicForYourChat,
       tooltipPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       tooltipBorderRadius: BorderRadius.circular(16),
@@ -104,6 +103,7 @@ class TopicChipsWrapper extends ConsumerWidget {
       tooltipPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       tooltipBorderRadius: BorderRadius.circular(16),
       targetBorderRadius: BorderRadius.circular(16),
+      targetPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       key: _topicChipsKey,
       onTargetClick: () {
         final showcaseView = ShowcaseView.getNamed(_scope);
@@ -140,6 +140,7 @@ class LanguageDropdownWrapper extends ConsumerWidget {
       tooltipPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       tooltipBorderRadius: BorderRadius.circular(16),
       targetBorderRadius: BorderRadius.circular(16),
+      targetPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       key: _languageDropdownKey,
       onTargetClick: () {
         final showcaseView = ShowcaseView.getNamed(_scope);
@@ -176,6 +177,7 @@ class LevelDropdownWrapper extends ConsumerWidget {
       tooltipPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       tooltipBorderRadius: BorderRadius.circular(16),
       targetBorderRadius: BorderRadius.circular(16),
+      targetPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       key: _levelDropdownKey,
       onTargetClick: () {
         ref
