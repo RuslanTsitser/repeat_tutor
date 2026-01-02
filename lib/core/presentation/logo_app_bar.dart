@@ -13,10 +13,12 @@ class LogoAppBar extends ConsumerWidget {
     this.showProButton = true,
     this.showBackButton = false,
     this.withPadding = true,
+    this.title = 'Repeat Tutor',
   });
   final bool showProButton;
   final bool showBackButton;
   final bool withPadding;
+  final String title;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,9 +51,9 @@ class LogoAppBar extends ConsumerWidget {
             ),
           Assets.appIcon.image(width: 48, height: 48),
           const SizedBox(width: 8),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Repeat Tutor',
+              title,
               style: AppTextStyle.inter24w500,
             ),
           ),

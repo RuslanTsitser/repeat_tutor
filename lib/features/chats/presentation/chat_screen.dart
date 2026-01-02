@@ -5,9 +5,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/domain/models/message.dart';
 import '../../../core/localization/generated/l10n.dart';
+import '../../../core/presentation/logo_app_bar.dart';
 import '../../../core/router/router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_text_style.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
@@ -16,49 +16,38 @@ import '../logic/chat_notifier.dart';
 import 'components/message_bubble.dart';
 import 'components/message_input.dart';
 
+final scrollControllerProvider = ChangeNotifierProvider.autoDispose(
+  (ref) => ScrollController(),
+);
+
 @RoutePage()
 class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chat = ref.watch(chatNotifierProvider).state.chat;
-    final chatTitle = chat.topic;
-
     return OnboardingChatWrapper(
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: CupertinoPageScaffold(
-          backgroundColor: AppColors.backgroundLight,
+        child: const CupertinoPageScaffold(
+          backgroundColor: AppColors.transparent,
           resizeToAvoidBottomInset: true,
-          navigationBar: CupertinoNavigationBar(
-            backgroundColor: AppColors.surface,
-            border: const Border(
-              bottom: BorderSide(
-                color: AppColors.divider,
-                width: 1,
-              ),
-            ),
-            leading: CupertinoNavigationBarBackButton(
-              onPressed: () => ref.read(routerProvider).pop(),
-            ),
-            middle: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                chatTitle,
-                style: AppTextStyle.inter18w500.copyWith(
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-            trailing: const _StartVoiceCall(),
-          ),
-          child: const _Body(),
+          child: _Body(),
         ),
       ),
     );
+  }
+}
+
+class _MessageInput extends ConsumerWidget {
+  const _MessageInput();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = ref.read(scrollControllerProvider);
+    return MessageInput(scrollController: scrollController);
   }
 }
 
@@ -113,15 +102,10 @@ class _Body extends ConsumerStatefulWidget {
 }
 
 class __BodyState extends ConsumerState<_Body> {
-  final ScrollController _scrollController = ScrollController();
   int _previousMessageCount = 0;
   bool _isInitialLoad = true;
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+  late final _scrollController = ref.read(scrollControllerProvider);
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -142,7 +126,8 @@ class __BodyState extends ConsumerState<_Body> {
     final List<Message> messages = state.messages.reversed.toList();
     final bool isLoading = state.isLoading;
     final String? error = state.error;
-
+    final chat = ref.read(chatNotifierProvider).state.chat;
+    final chatTitle = chat.topic;
     // Скролл до конца при первой загрузке сообщений
     if (!isLoading && _isInitialLoad && messages.isNotEmpty) {
       _isInitialLoad = false;
@@ -168,17 +153,34 @@ class __BodyState extends ConsumerState<_Body> {
       );
     }
 
-    return Container(
-      color: AppColors.backgroundLight,
-      child: Column(
-        children: [
-          Expanded(
-            child: messages.isEmpty
-                ? Center(child: Text(S.of(context).noMessages))
-                : SafeArea(
-                    top: true,
-                    bottom: false,
-                    child: ListView.builder(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.surface,
+            AppColors.backgroundLight,
+            AppColors.backgroundLight,
+            AppColors.backgroundLight,
+            AppColors.backgroundLight,
+            AppColors.backgroundLight,
+            AppColors.surface,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            LogoAppBar(
+              showBackButton: true,
+              withPadding: false,
+              title: chatTitle,
+            ),
+            Expanded(
+              child: messages.isEmpty
+                  ? Center(child: Text(S.of(context).noMessages))
+                  : ListView.builder(
                       reverse: true,
                       controller: _scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -195,10 +197,10 @@ class __BodyState extends ConsumerState<_Body> {
                         },
                       ),
                     ),
-                  ),
-          ),
-          MessageInput(scrollController: _scrollController),
-        ],
+            ),
+            const _MessageInput(),
+          ],
+        ),
       ),
     );
   }
