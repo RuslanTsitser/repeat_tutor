@@ -49,7 +49,12 @@ class LogoAppBar extends ConsumerWidget {
             CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () => router.pop(),
-              child: const Icon(CupertinoIcons.chevron_left),
+              child: const Icon(
+                CupertinoIcons.chevron_left,
+                color: AppColors.primary,
+                size: 24,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           Assets.appIcon.image(width: 48, height: 48),
           const SizedBox(width: 8),
