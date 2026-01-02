@@ -22,9 +22,9 @@ class ChatListNotifier extends ChangeNotifier {
   StreamSubscription<Message?>? _lastMessageSubscription;
 
   void _subscribeToChats() {
-    _subscription = chatRepository.getChatsStream().listen((chats) {
-      setState(state.copyWith(chats: chats));
-    });
+    _subscription = chatRepository.getChatsStream().listen(
+      (chats) => getChats(),
+    );
   }
 
   void _subscribeToMessages() {
