@@ -182,7 +182,7 @@ class __BodyState extends ConsumerState<_Body> {
             LogoAppBar(
               showBackButton: true,
               withPadding: false,
-              title: chatTitle,
+              subtitle: chatTitle,
               showProButton: false,
               actions: const [
                 SizedBox(width: 8),

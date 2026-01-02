@@ -5,6 +5,7 @@ import '../../gen/assets.gen.dart';
 import '../../infrastructure/core.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
+import '../utils/capitalize.dart';
 import 'pro_button.dart';
 
 class LogoAppBar extends ConsumerWidget {
@@ -13,13 +14,13 @@ class LogoAppBar extends ConsumerWidget {
     this.showProButton = true,
     this.showBackButton = false,
     this.withPadding = true,
-    this.title = 'Repeat Tutor',
+    this.subtitle,
     this.actions = const [],
   });
   final bool showProButton;
   final bool showBackButton;
   final bool withPadding;
-  final String title;
+  final String? subtitle;
   final List<Widget> actions;
 
   @override
@@ -59,9 +60,22 @@ class LogoAppBar extends ConsumerWidget {
           Assets.appIcon.image(width: 48, height: 48),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              title,
-              style: AppTextStyle.inter24w500,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Repeat Tutor',
+                  style: AppTextStyle.inter24w500,
+                ),
+                if (subtitle != null && subtitle!.isNotEmpty)
+                  Text(
+                    subtitle!.capitalize(),
+                    style: AppTextStyle.inter14w400,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
             ),
           ),
           if (showProButton) const ProButton(),
