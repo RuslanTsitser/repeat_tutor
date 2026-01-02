@@ -43,6 +43,17 @@ class SessionsDurationsDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
+  Future<void> updateSessionDuration(int sessionId, Duration duration) async {
+    final durationInMilliseconds = duration.inMilliseconds;
+    await (update(
+      sessionsDurations,
+    )..where((tbl) => tbl.sessionId.equals(sessionId))).write(
+      SessionsDurationsCompanion(
+        durationInMilliseconds: Value(durationInMilliseconds),
+      ),
+    );
+  }
+
   Future<Duration> getAllSessionsDurations() async {
     final totalDurationExpression = sessionsDurations.durationInMilliseconds
         .sum();
