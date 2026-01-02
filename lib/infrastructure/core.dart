@@ -30,7 +30,7 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 final dioProvider = Provider<Dio>((ref) {
   return Dio()
     ..interceptors.add(
-      const AppDioLogger(false),
+      const AppDioLogger(false, requestBody: true),
     );
 });
 
