@@ -324,6 +324,16 @@ class S {
     );
   }
 
+  /// `Enter a topic for your chat`
+  String get enterATopicForYourChat {
+    return Intl.message(
+      'Enter a topic for your chat',
+      name: 'enterATopicForYourChat',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Tap to write a text message`
   String get tapToWriteATextMessage {
     return Intl.message(

@@ -35,6 +35,7 @@
   "hello": "Привет!",
   "startHere": "Начните здесь",
   "tapToCreateANewChat": "Нажмите, чтобы создать новый чат",
+  "enterATopicForYourChat": "Введите тему для вашего чата",
   "tapToWriteATextMessage": "Нажмите, чтобы написать текстовое сообщение",
   "youCanAlsoPracticeSpeakingWithAVoiceCall": "Вы также можете практиковать речь с помощью голосового звонка",
   "orSendAnAudioMessage": "Или отправьте голосовое сообщение",

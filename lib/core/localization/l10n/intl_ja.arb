@@ -35,6 +35,7 @@
   "hello": "こんにちは！",
   "startHere": "ここから始める",
   "tapToCreateANewChat": "タップして新しいチャットを作成",
+  "enterATopicForYourChat": "チャットのトピックを入力してください",
   "tapToWriteATextMessage": "タップしてテキストメッセージを入力",
   "youCanAlsoPracticeSpeakingWithAVoiceCall": "音声通話で話す練習もできます",
   "orSendAnAudioMessage": "または音声メッセージを送信",

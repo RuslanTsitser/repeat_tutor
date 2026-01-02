@@ -39,6 +39,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
       "例: 自由時間, 買い物, 旅行",
     ),
+    "enterATopicForYourChat": MessageLookupByLibrary.simpleMessage(
+      "チャットのトピックを入力してください",
+    ),
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "チャットの読み込みに失敗しました",
     ),

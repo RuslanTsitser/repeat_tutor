@@ -49,6 +49,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "egFreeTimeShoppingTravel": MessageLookupByLibrary.simpleMessage(
       "ex. Tempo livre, Shopping, Viagem",
     ),
+    "enterATopicForYourChat": MessageLookupByLibrary.simpleMessage(
+      "Digite um tópico para seu chat",
+    ),
     "errorLoadingChats": MessageLookupByLibrary.simpleMessage(
       "Erro ao carregar os chats",
     ),

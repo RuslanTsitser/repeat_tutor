@@ -35,6 +35,7 @@
   "hello": "Bonjour!",
   "startHere": "Commencez ici",
   "tapToCreateANewChat": "Appuyez pour créer un nouveau chat",
+  "enterATopicForYourChat": "Entrez un thème pour votre chat",
   "tapToWriteATextMessage": "Appuyez pour écrire un message texte",
   "youCanAlsoPracticeSpeakingWithAVoiceCall": "Vous pouvez également pratiquer la parole avec un appel vocal",
   "orSendAnAudioMessage": "Ou envoyez un message audio",
