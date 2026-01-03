@@ -72,32 +72,35 @@ class _RealLifeTopicsIllustrationState
   Timer? _scrollTimer;
   double _scrollPosition = 0.0;
 
-  static const List<String> _topics = [
-    'Travel',
-    'Food',
-    'Sports',
-    'Music',
-    'Movies',
-    'Books',
-    'Technology',
-    'Art',
-    'Fashion',
-    'Nature',
-    'Cooking',
-    'Photography',
-    'Fitness',
-    'Gaming',
-    'History',
-    'Science',
-    'Business',
-    'Education',
-    'Health',
-    'Culture',
-    'Politics',
-    'Economy',
-    'Entertainment',
-    'Lifestyle',
-  ];
+  List<String> _getTopics(BuildContext context) {
+    final s = S.of(context);
+    return [
+      s.topicTravel,
+      s.topicFood,
+      s.topicSports,
+      s.topicMusic,
+      s.topicMovies,
+      s.topicBooks,
+      s.topicTechnology,
+      s.topicArt,
+      s.topicFashion,
+      s.topicNature,
+      s.topicCooking,
+      s.topicPhotography,
+      s.topicFitness,
+      s.topicGaming,
+      s.topicHistory,
+      s.topicScience,
+      s.topicBusiness,
+      s.topicEducation,
+      s.topicHealth,
+      s.topicCulture,
+      s.topicPolitics,
+      s.topicEconomy,
+      s.topicEntertainment,
+      s.topicLifestyle,
+    ];
+  }
 
   static const double _verticalSpacing = 8.0;
   static const double _horizontalSpacing = 8.0;
@@ -140,16 +143,17 @@ class _RealLifeTopicsIllustrationState
     );
   }
 
-  List<List<String>> _buildRows() {
+  List<List<String>> _buildRows(BuildContext context) {
+    final topics = _getTopics(context);
     final rows = <List<String>>[];
     for (int i = 0; i < 5; i++) {
       final startIndex = i * 4;
       final endIndex = (i + 1) * 4;
-      if (startIndex < _topics.length) {
+      if (startIndex < topics.length) {
         rows.add(
-          _topics.sublist(
+          topics.sublist(
             startIndex,
-            endIndex > _topics.length ? _topics.length : endIndex,
+            endIndex > topics.length ? topics.length : endIndex,
           ),
         );
       }
@@ -159,7 +163,7 @@ class _RealLifeTopicsIllustrationState
 
   @override
   Widget build(BuildContext context) {
-    final rows = _buildRows();
+    final rows = _buildRows(context);
     // Дублируем контент для бесконечного скролла
     final duplicatedRows = [
       ...rows,
