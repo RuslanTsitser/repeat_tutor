@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/model/user_premium_source.dart';
@@ -37,6 +39,22 @@ class ProfileSettingsUseCase {
       if (savedLanguageValue != null) {
         final language = Language.fromLanguage(savedLanguageValue);
         if (language != null) {
+          profileNotifier.setState(
+            profileNotifier.state.copyWith(defaultLanguage: language),
+          );
+        }
+      } else {
+        final parts = Platform.localeName.split('_');
+        if (parts.length > 1) {
+          final language = Language.fromLocaleCode(
+            parts[0],
+            countryCode: parts[1],
+          );
+          profileNotifier.setState(
+            profileNotifier.state.copyWith(defaultLanguage: language),
+          );
+        } else {
+          final language = Language.fromLocaleCode(parts[0]);
           profileNotifier.setState(
             profileNotifier.state.copyWith(defaultLanguage: language),
           );
