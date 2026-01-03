@@ -121,46 +121,61 @@ class FunFactProductionEffectContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Center(
-          child: Semantics(
-            label: s.onboarding6FunFactProductionTitle,
-            child: Text(
-              s.onboarding6FunFactProductionTitle,
-              textAlign: TextAlign.center,
-              style: AppTextStyle.inter24w700.scaled(context),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Semantics(
+                label: s.onboarding6FunFactProductionTitle,
+                child: Text(
+                  s.onboarding6FunFactProductionTitle,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.inter24w700.scaled(context),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: _spacing),
-        Semantics(
-          label: s.onboarding6FunFactProductionSubtitle,
-          child: Text(
-            s.onboarding6FunFactProductionSubtitle,
-            textAlign: TextAlign.start,
-            style: AppTextStyle.inter16w400
-                .copyWith(
-                  color: AppColors.textMuted,
-                )
-                .scaled(context),
-          ),
-        ),
-        const SizedBox(height: _helperSpacing),
-        Semantics(
-          label: s.onboarding6FunFactProductionHelper,
-          child: Text(
-            s.onboarding6FunFactProductionHelper,
-            textAlign: TextAlign.start,
-            style: AppTextStyle.inter14w400
-                .copyWith(
-                  color: AppColors.textMuted,
-                )
-                .scaled(context),
-          ),
-        ),
-      ],
-    ).animate(delay: 600.ms).moveY(begin: 16, end: 0, curve: Curves.easeOut).fadeIn();
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: s.onboarding6FunFactProductionSubtitle,
+              child: Text(
+                s.onboarding6FunFactProductionSubtitle,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.inter16w400
+                    .copyWith(
+                      color: AppColors.textMuted,
+                    )
+                    .scaled(context),
+              ),
+            ),
+            const SizedBox(height: _helperSpacing),
+            const SizedBox(height: _helperSpacing),
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundLight,
+                border: Border.all(
+                  color: AppColors.divider,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Semantics(
+                label: s.onboarding6FunFactProductionHelper,
+                child: Text(
+                  s.onboarding6FunFactProductionHelper,
+                  textAlign: TextAlign.start,
+                  style: AppTextStyle.inter14w400
+                      .copyWith(
+                        color: AppColors.textMuted,
+                      )
+                      .scaled(context),
+                ),
+              ),
+            ),
+          ],
+        )
+        .animate(delay: 600.ms)
+        .moveY(begin: 16, end: 0, curve: Curves.easeOut)
+        .fadeIn();
   }
 }
 
