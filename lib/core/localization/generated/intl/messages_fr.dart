@@ -103,85 +103,85 @@ class MessageLookup extends MessageLookupByLibrary {
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Aucun chat"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Aucun message"),
     "onboarding6BetterThanSchedulingSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback",
+      "Pratiquez quand vous voulez, pour moins qu\'un tuteur privé. Pas de calendrier. Pas de pression. Juste une vraie pratique et des retours doux",
     ),
     "onboarding6BetterThanSchedulingTitle":
         MessageLookupByLibrary.simpleMessage(
-          "A personal tutor, whenever you need",
+          "Un tuteur personnel, quand vous en avez besoin",
         ),
     "onboarding6CurrentLevelSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Just a rough estimate — we\'ll adapt as you practice.",
+      "Juste une estimation approximative — nous nous adapterons pendant que vous pratiquez.",
     ),
     "onboarding6CurrentLevelTitle": MessageLookupByLibrary.simpleMessage(
-      "What\'s your current level?",
+      "Quel est votre niveau actuel ?",
     ),
     "onboarding6FunFactProductionHelper": MessageLookupByLibrary.simpleMessage(
-      "Your voice practice isn\'t just \"practice\" — it helps new phrases stick faster.",
+      "Votre pratique vocale n\'est pas seulement une \"pratique\" — elle aide les nouvelles phrases à rester plus rapidement.",
     ),
     "onboarding6FunFactProductionSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.",
+      "Les études montrent que parler à voix haute peut améliorer la mémoire d\'environ 10–20% par rapport à la lecture silencieuse.",
     ),
     "onboarding6FunFactProductionTitle": MessageLookupByLibrary.simpleMessage(
-      "Fun fact: Saying it out loud helps you remember",
+      "Fait intéressant : Le dire à voix haute vous aide à vous souvenir",
     ),
     "onboarding6FunFactRetrievalHelper": MessageLookupByLibrary.simpleMessage(
-      "That\'s why answering questions helps your speaking stick.",
+      "C\'est pourquoi répondre aux questions aide votre parole à rester.",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored \"try to recall\" over \"just review.\"",
+      "La recherche montre qu\'essayer activement de se souvenir (au lieu de relire) conduit à un apprentissage nettement meilleur. Dans une grande méta-analyse, environ 81% des résultats ont favorisé \"essayer de se souvenir\" par rapport à \"juste réviser\".",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Fun fact: Trying to recall beats re-reading",
+      "Fait intéressant : Essayer de se souvenir bat la relecture",
     ),
-    "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Got it"),
+    "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Compris"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(
-      "Creating your personal learning path",
+      "Création de votre parcours d\'apprentissage personnel",
     ),
     "onboarding6LoadingText2": MessageLookupByLibrary.simpleMessage(
-      "Setting up your first lesson",
+      "Configuration de votre première leçon",
     ),
     "onboarding6LoadingText3": MessageLookupByLibrary.simpleMessage(
-      "Preparing your AI tutor",
+      "Préparation de votre tuteur IA",
     ),
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
-      "Almost ready...",
+      "Presque prêt...",
     ),
-    "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Nice"),
+    "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Sympa"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.",
+      "Choisissez un sujet et répondez à des questions simples. Dites-le à votre façon — votre tuteur vous corrige doucement et le fait paraître plus naturel, à votre niveau actuel.",
     ),
     "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
-      "Practice the topics that matter in real life",
+      "Pratiquez les sujets qui comptent dans la vie réelle",
     ),
     "onboarding6RealTimeVoiceSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Try translating a phrase out loud and get instant feedback or a helpful hint when you\'re stuck.",
+      "Essayez de traduire une phrase à voix haute et obtenez un retour instantané ou un indice utile lorsque vous êtes bloqué.",
     ),
     "onboarding6RealTimeVoiceTitle": MessageLookupByLibrary.simpleMessage(
-      "Practice speaking with AI in real time voice chat",
+      "Pratiquez la parole avec l\'IA dans un chat vocal en temps réel",
     ),
     "onboarding6StartTopicSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Choose what\'s most useful right now. You can change topics anytime.",
+      "Choisissez ce qui est le plus utile maintenant. Vous pouvez changer de sujets à tout moment.",
     ),
     "onboarding6StartTopicTitle": MessageLookupByLibrary.simpleMessage(
-      "Pick a topic to start with",
+      "Choisissez un sujet pour commencer",
     ),
     "onboarding6TargetLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "You can switch languages anytime.",
+      "Vous pouvez changer de langue à tout moment.",
     ),
     "onboarding6TargetLanguageTitle": MessageLookupByLibrary.simpleMessage(
-      "Choose the language you want to learn",
+      "Choisissez la langue que vous voulez apprendre",
     ),
     "onboarding6TeacherLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "This is the language your tutor will speak to you in. You can change it anytime.",
+      "C\'est la langue dans laquelle votre tuteur vous parlera. Vous pouvez la changer à tout moment.",
     ),
     "onboarding6TeacherLanguageTitle": MessageLookupByLibrary.simpleMessage(
-      "Choose your teacher language",
+      "Choisissez la langue de votre professeur",
     ),
     "onboarding6WelcomeSubtitle": MessageLookupByLibrary.simpleMessage(
-      "A safe, stress-free place to practice speaking for real life",
+      "Un endroit sûr et sans stress pour pratiquer la parole pour la vie réelle",
     ),
     "onboarding6WelcomeTitle": MessageLookupByLibrary.simpleMessage(
-      "Welcome to Repeat Tutor",
+      "Bienvenue sur Repeat Tutor",
     ),
     "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
       "Ou choisissez parmi les exemples ci-dessous",

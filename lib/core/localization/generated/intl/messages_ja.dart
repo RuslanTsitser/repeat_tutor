@@ -84,86 +84,86 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("次へ"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("チャットがありません"),
     "noMessages": MessageLookupByLibrary.simpleMessage("メッセージがありません"),
-    "onboarding6BetterThanSchedulingSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback",
-    ),
-    "onboarding6BetterThanSchedulingTitle":
+    "onboarding6BetterThanSchedulingSubtitle":
         MessageLookupByLibrary.simpleMessage(
-          "A personal tutor, whenever you need",
+          "いつでも練習できます。個人チューターよりも安価です。カレンダー不要。プレッシャーなし。本当の練習と優しいフィードバックだけです",
         ),
+    "onboarding6BetterThanSchedulingTitle":
+        MessageLookupByLibrary.simpleMessage("必要なときにいつでも個人チューター"),
     "onboarding6CurrentLevelSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Just a rough estimate — we\'ll adapt as you practice.",
+      "大まかな見積もりです — 練習に応じて適応します。",
     ),
     "onboarding6CurrentLevelTitle": MessageLookupByLibrary.simpleMessage(
-      "What\'s your current level?",
+      "あなたの現在のレベルは？",
     ),
     "onboarding6FunFactProductionHelper": MessageLookupByLibrary.simpleMessage(
-      "Your voice practice isn\'t just \"practice\" — it helps new phrases stick faster.",
+      "あなたの音声練習は単なる「練習」ではありません — 新しいフレーズがより速く定着するのに役立ちます。",
     ),
-    "onboarding6FunFactProductionSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.",
-    ),
+    "onboarding6FunFactProductionSubtitle":
+        MessageLookupByLibrary.simpleMessage(
+          "研究によると、声に出して話すことは、静かに読むことと比較して、記憶を約10–20%改善できることが示されています。",
+        ),
     "onboarding6FunFactProductionTitle": MessageLookupByLibrary.simpleMessage(
-      "Fun fact: Saying it out loud helps you remember",
+      "興味深い事実：声に出して言うことは記憶に役立つ",
     ),
     "onboarding6FunFactRetrievalHelper": MessageLookupByLibrary.simpleMessage(
-      "That\'s why answering questions helps your speaking stick.",
+      "だから質問に答えることが、あなたの話す力を定着させるのに役立つのです。",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored \"try to recall\" over \"just review.\"",
+      "研究によると、積極的に思い出そうとすること（再読の代わりに）は、著しく優れた学習につながります。大規模なメタ分析では、約81%の結果が「思い出そうとする」ことを「単に復習する」ことよりも好みました。",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Fun fact: Trying to recall beats re-reading",
+      "興味深い事実：思い出そうとすることは再読に勝る",
     ),
-    "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Got it"),
+    "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("わかりました"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(
-      "Creating your personal learning path",
+      "あなたの個人的な学習パスを作成中",
     ),
     "onboarding6LoadingText2": MessageLookupByLibrary.simpleMessage(
-      "Setting up your first lesson",
+      "最初のレッスンを設定中",
     ),
     "onboarding6LoadingText3": MessageLookupByLibrary.simpleMessage(
-      "Preparing your AI tutor",
+      "AIチューターを準備中",
     ),
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
-      "Almost ready...",
+      "ほぼ準備完了...",
     ),
-    "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Nice"),
+    "onboarding6Nice": MessageLookupByLibrary.simpleMessage("いいですね"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.",
+      "トピックを選んで簡単な質問に答えてください。あなたの方法で言ってください — あなたのチューターが優しく訂正し、あなたの現在のレベルでより自然に聞こえるようにします。",
     ),
     "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
-      "Practice the topics that matter in real life",
+      "実生活で重要なトピックを練習する",
     ),
     "onboarding6RealTimeVoiceSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Try translating a phrase out loud and get instant feedback or a helpful hint when you\'re stuck.",
+      "フレーズを声に出して翻訳してみて、行き詰まったときに即座のフィードバックや役立つヒントを得てください。",
     ),
     "onboarding6RealTimeVoiceTitle": MessageLookupByLibrary.simpleMessage(
-      "Practice speaking with AI in real time voice chat",
+      "リアルタイム音声チャットでAIと話す練習をする",
     ),
     "onboarding6StartTopicSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Choose what\'s most useful right now. You can change topics anytime.",
+      "今最も有用なものを選んでください。いつでもトピックを変更できます。",
     ),
     "onboarding6StartTopicTitle": MessageLookupByLibrary.simpleMessage(
-      "Pick a topic to start with",
+      "始めるトピックを選んでください",
     ),
     "onboarding6TargetLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "You can switch languages anytime.",
+      "いつでも言語を切り替えることができます。",
     ),
     "onboarding6TargetLanguageTitle": MessageLookupByLibrary.simpleMessage(
-      "Choose the language you want to learn",
+      "学習したい言語を選択してください",
     ),
     "onboarding6TeacherLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
-      "This is the language your tutor will speak to you in. You can change it anytime.",
+      "これはあなたのチューターがあなたに話す言語です。いつでも変更できます。",
     ),
     "onboarding6TeacherLanguageTitle": MessageLookupByLibrary.simpleMessage(
-      "Choose your teacher language",
+      "教師の言語を選択してください",
     ),
     "onboarding6WelcomeSubtitle": MessageLookupByLibrary.simpleMessage(
-      "A safe, stress-free place to practice speaking for real life",
+      "実生活で話す練習をするための安全でストレスのない場所",
     ),
     "onboarding6WelcomeTitle": MessageLookupByLibrary.simpleMessage(
-      "Welcome to Repeat Tutor",
+      "Repeat Tutorへようこそ",
     ),
     "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
       "または下の例から選択してください",

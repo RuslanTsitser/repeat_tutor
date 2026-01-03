@@ -128,4 +128,29 @@ enum Language {
         return const Locale.fromSubtags(languageCode: 'en');
     }
   }
+
+  static Language fromLocaleCode(String localeCode, {String? countryCode}) {
+    switch (localeCode) {
+      case 'ja':
+        return Language.japanese;
+      case 'pt':
+        return countryCode == 'PT'
+            ? Language.portugueseEuropean
+            : Language.portugueseBrazilian;
+      case 'es':
+        return Language.spanish;
+      case 'fr':
+        return Language.french;
+      case 'it':
+        return Language.italian;
+      case 'de':
+        return Language.german;
+      case 'ru':
+        return Language.russian;
+      case 'en':
+        return Language.english;
+      default:
+        return Language.english;
+    }
+  }
 }
