@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
+import '../../../../../../gen/assets.gen.dart';
 import 'onboarding_back_button_wrapper.dart';
 
 class BetterThanSchedulingPage extends StatelessWidget {
@@ -28,10 +28,7 @@ class BetterThanSchedulingPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FittedBox(
-                    fit: BoxFit.contain,
-                    child: BetterThanSchedulingIllustration(),
-                  ),
+                  BetterThanSchedulingIllustration(),
                   SizedBox(height: 32.0),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32.0),
@@ -60,53 +57,11 @@ class BetterThanSchedulingPage extends StatelessWidget {
 class BetterThanSchedulingIllustration extends StatelessWidget {
   const BetterThanSchedulingIllustration({super.key});
 
-  static const double _illustrationSize = 256.0;
-  static const double _circleSize = 180.0;
-  static const double _iconSize = 80.0;
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: _illustrationSize,
-      height: _illustrationSize,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-                width: _circleSize,
-                height: _circleSize,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-              )
-              .animate()
-              .scale(
-                duration: 1.seconds,
-                curve: Curves.easeOut,
-              )
-              .fadeIn(duration: 1.seconds),
-          Container(
-                width: _iconSize,
-                height: _iconSize,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  LucideIcons.clock,
-                  color: AppColors.surface,
-                  size: 40.0,
-                ),
-              )
-              .animate(delay: 400.ms)
-              .scale(
-                duration: 600.ms,
-                curve: Curves.elasticOut,
-              )
-              .fadeIn(),
-        ],
-      ),
+    return Assets.aiGenerated.imageCall.image(
+      width: double.infinity,
+      fit: BoxFit.cover,
     );
   }
 }
