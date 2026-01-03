@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 
 /// Поддерживаемые языки
 enum Language {
-  japanese,
-  portugueseEuropean,
-  portugueseBrazilian,
+  english,
   spanish,
   french,
   italian,
   german,
+  portugueseEuropean,
   russian,
-  english;
+  portugueseBrazilian,
+  japanese;
 
   String get value {
     switch (this) {
