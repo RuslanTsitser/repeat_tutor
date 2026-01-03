@@ -16,6 +16,7 @@ enum HomeScreenTab {
   loading,
   onboarding,
   home,
+  paywall,
 }
 
 class HomeScreenState {

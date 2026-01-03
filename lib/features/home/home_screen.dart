@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/ab_test/enum/placement_type.dart';
 import '../../core/localization/generated/l10n.dart';
 import '../../core/router/router.dart';
 import '../../core/theme/app_colors.dart';
@@ -9,6 +10,7 @@ import '../../infrastructure/state_managers.dart';
 import '../chats/presentation/create_chat_button.dart';
 import '../onboarding/presentation/onboarding_screen.dart';
 import '../onboarding/presentation/onboarding_wrappers/onboarding_chat_list_wrapper.dart';
+import '../paywall/presentation/paywall_screen.dart';
 import 'logic/home_screen_notifier.dart';
 
 @RoutePage()
@@ -43,6 +45,8 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
         );
+      case HomeScreenTab.paywall:
+        return const PaywallScreen(placement: PlacementType.placementStart);
     }
   }
 }
