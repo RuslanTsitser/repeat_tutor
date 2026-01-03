@@ -128,6 +128,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
       "ほぼ準備完了...",
     ),
+    "onboarding6MistakesOkSubtitle": MessageLookupByLibrary.simpleMessage(
+      "あなたの方法で話してください — あなたの教師は優しく修正し、あなたの現在のレベルで、より自然な話し方にします。",
+    ),
+    "onboarding6MistakesOkTitle": MessageLookupByLibrary.simpleMessage(
+      "必要なだけ間違いを犯してください",
+    ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("いいですね"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
       "トピックを選んで簡単な質問に答えてください",

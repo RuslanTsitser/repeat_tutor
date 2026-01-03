@@ -144,6 +144,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
       "Quase pronto...",
     ),
+    "onboarding6MistakesOkSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Fale do seu jeito — seu professor corrige você suavemente e torna sua fala mais natural, no seu nível atual.",
+    ),
+    "onboarding6MistakesOkTitle": MessageLookupByLibrary.simpleMessage(
+      "Cometa quantos erros precisar",
+    ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Legal"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
       "Escolha um tópico e responda perguntas simples",

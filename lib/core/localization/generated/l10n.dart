@@ -899,6 +899,26 @@ class S {
     );
   }
 
+  /// `Make as many mistakes as you need`
+  String get onboarding6MistakesOkTitle {
+    return Intl.message(
+      'Make as many mistakes as you need',
+      name: 'onboarding6MistakesOkTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speak your way — your teacher gently corrects you and makes your speech more natural, at your current level.`
+  String get onboarding6MistakesOkSubtitle {
+    return Intl.message(
+      'Speak your way — your teacher gently corrects you and makes your speech more natural, at your current level.',
+      name: 'onboarding6MistakesOkSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Fun fact: Trying to recall beats re-reading`
   String get onboarding6FunFactRetrievalTitle {
     return Intl.message(
