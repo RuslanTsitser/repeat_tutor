@@ -11,9 +11,24 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsAiGeneratedGen {
+  const $AssetsAiGeneratedGen();
+
+  /// File path: assets/ai_generated/.gitkeep
+  String get aGitkeep => 'assets/ai_generated/.gitkeep';
+
+  /// File path: assets/ai_generated/image_call.webp
+  AssetGenImage get imageCall =>
+      const AssetGenImage('assets/ai_generated/image_call.webp');
+
+  /// List of all assets
+  List<dynamic> get values => [aGitkeep, imageCall];
+}
+
 class Assets {
   const Assets._();
 
+  static const $AssetsAiGeneratedGen aiGenerated = $AssetsAiGeneratedGen();
   static const AssetGenImage appIcon = AssetGenImage('assets/app_icon.webp');
 
   /// List of all assets
