@@ -7,6 +7,7 @@ import 'pages/current_level_page.dart';
 import 'pages/fun_fact_production_effect_page.dart';
 import 'pages/fun_fact_retrieval_practice_page.dart';
 import 'pages/loading_page.dart';
+import 'pages/mistakes_ok_page.dart';
 import 'pages/real_life_topics_page.dart';
 import 'pages/real_time_voice_mode_page.dart';
 import 'pages/start_topic_page.dart';
@@ -30,7 +31,7 @@ class _Onboarding6State extends ConsumerState<Onboarding6> {
     ref
         .read(onboardingNotifierProvider)
         .setInitialState(
-          totalSteps: 11,
+          totalSteps: 12,
           onboardingName: 'onboarding6',
         );
     onboardingNotifier.addListener(listener);
@@ -69,6 +70,14 @@ class _Onboarding6State extends ConsumerState<Onboarding6> {
                   },
                 ),
                 RealLifeTopicsPage(
+                  onNext: () {
+                    ref.read(onboardingNotifierProvider).nextStep();
+                  },
+                  onPrevious: () {
+                    ref.read(onboardingNotifierProvider).previousStep();
+                  },
+                ),
+                MistakesOkPage(
                   onNext: () {
                     ref.read(onboardingNotifierProvider).nextStep();
                   },
