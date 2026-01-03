@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../core/domain/enums/difficulty_level.dart';
 import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
-import '../../../../../../infrastructure/repositories.dart';
 import '../../../../../../infrastructure/state_managers.dart';
 import '../../../../../../infrastructure/use_case.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -56,25 +54,11 @@ class _StartTopicPageState extends ConsumerState<StartTopicPage> {
     });
 
     try {
-      final profileState = ref.read(profileProvider).state;
-      final onboarding6State = ref.read(onboarding6NotifierProvider).state;
-
-      // Сохраняем выбранную тему
       ref.read(onboarding6NotifierProvider).setSelectedTopic(topic);
 
-      final chatRepository = ref.read(chatRepositoryProvider);
-      final openScreenUseCase = ref.read(openScreenUseCaseProvider);
-
-      final chat = await chatRepository.createChat(
-        language: profileState.defaultLanguageToLearn,
-        level: onboarding6State.currentLevel ?? DifficultyLevel.beginner,
-        topic: topic,
-        teacherLanguage: profileState.defaultTeacherLanguage,
-      );
-
-      if (mounted) {
-        await openScreenUseCase.openChatAfterOnboarding(chat);
-      }
+      await ref
+          .read(openChatAfterOnboardingUseCaseProvider)
+          .openChatAfterOnboarding();
       return;
     } catch (e) {
       // Обработка ошибки создания чата
