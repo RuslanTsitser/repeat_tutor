@@ -12,6 +12,7 @@ import 'ai_generated/paywall_1.dart';
 import 'ai_generated/paywall_2.dart';
 import 'ai_generated/paywall_3.dart';
 import 'ai_generated/paywall_4.dart';
+import 'ai_generated/paywall_5.dart';
 
 @RoutePage()
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -126,6 +127,11 @@ class _Paywall extends StatelessWidget {
         );
       case 'paywall4':
         return Paywall4(
+          onPurchase: onPurchase,
+          onClose: onClose,
+        );
+      case 'paywall5':
+        return Paywall5(
           onPurchase: onPurchase,
           onClose: onClose,
         );
