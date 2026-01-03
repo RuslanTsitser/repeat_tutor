@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/domain/enums/difficulty_level.dart';
-import '../../../core/domain/enums/language.dart';
+import '../../../core/domain/models/chat.dart';
 import '../../../core/domain/models/realtime_session.dart';
 import '../../../core/gpt/instructions/tutor_instruction.dart';
 import '../../../infrastructure/core.dart';
@@ -17,23 +16,20 @@ class StartRealtimeCallUseCase {
   final Ref ref;
 
   Future<void> start({
-    required String topic,
-    required Language language,
-    required DifficultyLevel level,
-    required Language teacherLanguage,
+    required Chat chat,
   }) async {
     final realtimeCallNotifier = ref.read(realtimeCallProvider);
     final sessionsDurationsDao = ref
         .read(databaseProvider)
         .sessionsDurationsDao;
     final realtimeWebRTCConnection = ref.read(realtimeWebRTCConnectionProvider);
-    realtimeCallNotifier.setState(RealtimeCallState.initial());
+    realtimeCallNotifier.setState(RealtimeCallState.initial(chat));
     final gptService = ref.read(gptServiceProvider);
     final instructions = TutorInstruction.repeatTutor(
-      topic: topic,
-      languageName: language.localizedName,
-      levelName: level.localizedName,
-      teacherLanguageName: teacherLanguage.localizedName,
+      topic: chat.topic,
+      languageName: chat.chatLanguage.localizedName,
+      levelName: chat.level.localizedName,
+      teacherLanguageName: chat.teacherLanguage.localizedName,
     );
 
     final newSession = await gptService.createSession(instructions);
@@ -43,10 +39,10 @@ class StartRealtimeCallUseCase {
         callDuration: Duration.zero,
         session: RealtimeSession(
           createdAt: createdAt,
-          topic: topic,
-          language: language,
-          level: level,
-          teacherLanguage: teacherLanguage,
+          topic: chat.topic,
+          language: chat.chatLanguage,
+          level: chat.level,
+          teacherLanguage: chat.teacherLanguage,
           clientSecret: newSession.clientSecret,
         ),
       ),

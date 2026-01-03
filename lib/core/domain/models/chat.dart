@@ -39,6 +39,25 @@ class Chat {
       lastMessage: lastMessage,
     );
   }
+
+  Chat copyWith({
+    String? topic,
+    Language? chatLanguage,
+    DifficultyLevel? level,
+    Language? teacherLanguage,
+    DateTime? createdAt,
+    LastMessage? lastMessage,
+  }) {
+    return Chat(
+      chatId: chatId,
+      topic: topic ?? this.topic,
+      chatLanguage: chatLanguage ?? this.chatLanguage,
+      level: level ?? this.level,
+      teacherLanguage: teacherLanguage ?? this.teacherLanguage,
+      createdAt: createdAt ?? this.createdAt,
+      lastMessage: lastMessage ?? this.lastMessage,
+    );
+  }
 }
 
 class LastMessage {
