@@ -24,25 +24,21 @@ class RealTimeVoiceModePage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const FittedBox(
-                    fit: BoxFit.contain,
-                    child: RealTimeVoiceModeIllustration(),
-                  ),
-                  const SizedBox(height: 32.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: RealTimeVoiceModeContent(),
-                    ),
-                  ),
-                ],
+            const Expanded(
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: RealTimeVoiceModeIllustration(),
               ),
             ),
+            const SizedBox(height: 32.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: RealTimeVoiceModeContent(),
+              ),
+            ),
+            const SizedBox(height: 32.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: RealTimeVoiceModeButton(
@@ -137,7 +133,7 @@ class RealTimeVoiceModeContent extends StatelessWidget {
               label: s.onboarding6RealTimeVoiceSubtitle,
               child: Text(
                 s.onboarding6RealTimeVoiceSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,
@@ -193,4 +189,3 @@ class RealTimeVoiceModeButton extends StatelessWidget {
     ).animate(delay: 1000.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
-
