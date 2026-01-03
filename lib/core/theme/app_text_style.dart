@@ -18,7 +18,7 @@ class AppTextStyle {
   // Константы для шрифта
   static const String _fontFamily = FontFamily.inter;
   static const double _lineHeightBody = 1.5;
-  static const double _lineHeightTitle = 1.1;
+  static const double _lineHeightTitle = 1.2;
 
   // Tag/Label - 12px
   static const TextStyle inter12w400 = TextStyle(
