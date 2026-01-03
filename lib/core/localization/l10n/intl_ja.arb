@@ -164,5 +164,10 @@
   "topicPolitics": "政治",
   "topicEconomy": "経済",
   "topicEntertainment": "エンターテインメント",
-  "topicLifestyle": "ライフスタイル"
+  "topicLifestyle": "ライフスタイル",
+  "onboarding6RealTimeVoiceMockLanguage": "英語",
+  "onboarding6RealTimeVoiceMockLevel": "初心者",
+  "onboarding6RealTimeVoiceMockTutorMessage": "ほぼ正解です！正しい言い方は「I went to the store yesterday」です",
+  "onboarding6RealTimeVoiceMockCorrectionMarkdown": "I ~~goed~~ **went** to the store yesterday",
+  "onboarding6RealTimeVoiceMockExplanation": "\"go\"は不規則動詞なので、過去形は\"goed\"ではなく\"went\"であることを覚えておいてください"
 }

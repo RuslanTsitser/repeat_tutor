@@ -167,6 +167,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
       "Üben Sie die Themen, die im echten Leben wichtig sind",
     ),
+    "onboarding6RealTimeVoiceMockCorrectionMarkdown":
+        MessageLookupByLibrary.simpleMessage(
+          "I ~~goed~~ **went** to the store yesterday",
+        ),
+    "onboarding6RealTimeVoiceMockExplanation": MessageLookupByLibrary.simpleMessage(
+      "Denken Sie daran, dass \"go\" ein unregelmäßiges Verb ist, daher ist seine Vergangenheitsform \"went\" und nicht \"goed\"",
+    ),
+    "onboarding6RealTimeVoiceMockLanguage":
+        MessageLookupByLibrary.simpleMessage("Englisch"),
+    "onboarding6RealTimeVoiceMockLevel": MessageLookupByLibrary.simpleMessage(
+      "Anfänger",
+    ),
+    "onboarding6RealTimeVoiceMockTutorMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Du hattest es fast richtig! Die richtige Art, es zu sagen, ist \"I went to the store yesterday\"",
+        ),
     "onboarding6RealTimeVoiceSubtitle": MessageLookupByLibrary.simpleMessage(
       "Versuchen Sie, eine Phrase laut zu übersetzen und erhalten Sie sofortiges Feedback oder einen hilfreichen Hinweis, wenn Sie feststecken.",
     ),

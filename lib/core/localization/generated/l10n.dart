@@ -1403,6 +1403,56 @@ class S {
       args: [],
     );
   }
+
+  /// `English`
+  String get onboarding6RealTimeVoiceMockLanguage {
+    return Intl.message(
+      'English',
+      name: 'onboarding6RealTimeVoiceMockLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beginner`
+  String get onboarding6RealTimeVoiceMockLevel {
+    return Intl.message(
+      'Beginner',
+      name: 'onboarding6RealTimeVoiceMockLevel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You almost got it right! The correct way to say it is "I went to the store yesterday"`
+  String get onboarding6RealTimeVoiceMockTutorMessage {
+    return Intl.message(
+      'You almost got it right! The correct way to say it is "I went to the store yesterday"',
+      name: 'onboarding6RealTimeVoiceMockTutorMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I ~~goed~~ **went** to the store yesterday`
+  String get onboarding6RealTimeVoiceMockCorrectionMarkdown {
+    return Intl.message(
+      'I ~~goed~~ **went** to the store yesterday',
+      name: 'onboarding6RealTimeVoiceMockCorrectionMarkdown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remember that "go" is an irregular verb, so its past tense is "went" rather than "goed"`
+  String get onboarding6RealTimeVoiceMockExplanation {
+    return Intl.message(
+      'Remember that "go" is an irregular verb, so its past tense is "went" rather than "goed"',
+      name: 'onboarding6RealTimeVoiceMockExplanation',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -164,5 +164,10 @@
   "topicPolitics": "Politics",
   "topicEconomy": "Economy",
   "topicEntertainment": "Entertainment",
-  "topicLifestyle": "Lifestyle"
+  "topicLifestyle": "Lifestyle",
+  "onboarding6RealTimeVoiceMockLanguage": "English",
+  "onboarding6RealTimeVoiceMockLevel": "Beginner",
+  "onboarding6RealTimeVoiceMockTutorMessage": "You almost got it right! The correct way to say it is \"I went to the store yesterday\"",
+  "onboarding6RealTimeVoiceMockCorrectionMarkdown": "I ~~goed~~ **went** to the store yesterday",
+  "onboarding6RealTimeVoiceMockExplanation": "Remember that \"go\" is an irregular verb, so its past tense is \"went\" rather than \"goed\""
 }

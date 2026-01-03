@@ -164,5 +164,10 @@
   "topicPolitics": "Политика",
   "topicEconomy": "Экономика",
   "topicEntertainment": "Развлечения",
-  "topicLifestyle": "Образ жизни"
+  "topicLifestyle": "Образ жизни",
+  "onboarding6RealTimeVoiceMockLanguage": "Английский",
+  "onboarding6RealTimeVoiceMockLevel": "Начинающий",
+  "onboarding6RealTimeVoiceMockTutorMessage": "Почти правильно! Правильный способ сказать это: \"Я пошел в магазин вчера\"",
+  "onboarding6RealTimeVoiceMockCorrectionMarkdown": "Я ~~goed~~ **пошел** в магазин вчера",
+  "onboarding6RealTimeVoiceMockExplanation": "Помните, что \"go\" — это неправильный глагол, поэтому его прошедшее время — \"went\", а не \"goed\""
 }

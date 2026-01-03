@@ -164,5 +164,10 @@
   "topicPolitics": "Politik",
   "topicEconomy": "Wirtschaft",
   "topicEntertainment": "Unterhaltung",
-  "topicLifestyle": "Lebensstil"
+  "topicLifestyle": "Lebensstil",
+  "onboarding6RealTimeVoiceMockLanguage": "Englisch",
+  "onboarding6RealTimeVoiceMockLevel": "Anfänger",
+  "onboarding6RealTimeVoiceMockTutorMessage": "Du hattest es fast richtig! Die richtige Art, es zu sagen, ist \"I went to the store yesterday\"",
+  "onboarding6RealTimeVoiceMockCorrectionMarkdown": "I ~~goed~~ **went** to the store yesterday",
+  "onboarding6RealTimeVoiceMockExplanation": "Denken Sie daran, dass \"go\" ein unregelmäßiges Verb ist, daher ist seine Vergangenheitsform \"went\" und nicht \"goed\""
 }
