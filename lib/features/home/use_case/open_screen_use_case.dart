@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/domain/enums/language.dart';
 import '../../../core/domain/models/chat.dart';
+import '../../../core/local_storage/storage_keys.dart';
 import '../../../core/router/router.dart';
 import '../../../infrastructure/core.dart';
 import '../../../infrastructure/repositories.dart';
@@ -80,7 +81,9 @@ class OpenScreenUseCase {
   Future<void> openChatAfterOnboarding(Chat chat) async {
     final appRouter = ref.read(routerProvider);
     final abTestService = ref.read(abTestServiceProvider);
-    final initializeUseCase = ref.read(initializeUseCaseProvider);
+    final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+    final localStorage = ref.read(localStorageProvider);
+    localStorage.setValue(StorageKeys.isFirstOnboardingShownKey, true);
 
     if (!abTestService.userPremiumSource.isPremium) {
       await appRouter.push(
@@ -89,6 +92,8 @@ class OpenScreenUseCase {
     }
 
     await openChat(chat);
-    await initializeUseCase.setTab(HomeScreenTab.home);
+    homeScreenNotifier.setState(
+      homeScreenNotifier.state.copyWith(tab: HomeScreenTab.home),
+    );
   }
 }
