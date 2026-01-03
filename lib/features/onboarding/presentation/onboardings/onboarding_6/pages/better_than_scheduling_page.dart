@@ -24,17 +24,17 @@ class BetterThanSchedulingPage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const FittedBox(
+                  FittedBox(
                     fit: BoxFit.contain,
                     child: BetterThanSchedulingIllustration(),
                   ),
-                  const SizedBox(height: 32.0),
+                  SizedBox(height: 32.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    padding: EdgeInsets.symmetric(horizontal: 32.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: BetterThanSchedulingContent(),
@@ -136,7 +136,7 @@ class BetterThanSchedulingContent extends StatelessWidget {
               label: S.of(context).onboarding6BetterThanSchedulingSubtitle,
               child: Text(
                 S.of(context).onboarding6BetterThanSchedulingSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,
@@ -192,4 +192,3 @@ class BetterThanSchedulingButton extends StatelessWidget {
     ).animate(delay: 1000.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
-
