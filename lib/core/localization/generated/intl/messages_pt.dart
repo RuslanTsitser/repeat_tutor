@@ -146,7 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Legal"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Escolha um tópico e responda perguntas simples. Diga do seu jeito — seu tutor corrige você suavemente e faz soar mais natural, no seu nível atual.",
+      "Escolha um tópico e responda perguntas simples",
     ),
     "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
       "Pratique os tópicos que importam na vida real",

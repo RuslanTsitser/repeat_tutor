@@ -130,7 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("いいですね"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
-      "トピックを選んで簡単な質問に答えてください。あなたの方法で言ってください — あなたのチューターが優しく訂正し、あなたの現在のレベルでより自然に聞こえるようにします。",
+      "トピックを選んで簡単な質問に答えてください",
     ),
     "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
       "実生活で重要なトピックを練習する",

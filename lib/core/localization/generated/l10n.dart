@@ -889,10 +889,10 @@ class S {
     );
   }
 
-  /// `Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.`
+  /// `Pick a topic and answer simple questions`
   String get onboarding6RealLifeTopicsSubtitle {
     return Intl.message(
-      'Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.',
+      'Pick a topic and answer simple questions',
       name: 'onboarding6RealLifeTopicsSubtitle',
       desc: '',
       args: [],
