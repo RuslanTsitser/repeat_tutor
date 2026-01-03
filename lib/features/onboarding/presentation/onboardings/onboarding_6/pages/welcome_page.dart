@@ -24,7 +24,7 @@ class WelcomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 WelcomeLogo(),
-                SizedBox(height: 32.0),
+                SizedBox(height: 64.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32.0),
                   child: SizedBox(
@@ -54,9 +54,10 @@ class WelcomeLogo extends StatefulWidget {
 
 class _WelcomeLogoState extends State<WelcomeLogo>
     with SingleTickerProviderStateMixin {
-  static const double _illustrationSize = 256.0;
+  static const double _illustrationSize = 320.0;
   static const double _logoSize = 180.0;
-  static const double _smallIconSize = 32.0;
+  static const double _smallIconSize = 64.0;
+  static const double _largeIconSize = 40.0;
   static const double _orbitRadius = _illustrationSize / 2 - _smallIconSize / 2;
 
   late AnimationController _rotationController;
@@ -159,7 +160,7 @@ class _WelcomeLogoState extends State<WelcomeLogo>
                 child: Icon(
                   icon,
                   color: AppColors.primary,
-                  size: 16.0,
+                  size: _largeIconSize,
                 ),
               )
               .animate(delay: delay)
@@ -195,7 +196,7 @@ class WelcomeContent extends StatelessWidget {
               label: s.onboarding6WelcomeSubtitle,
               child: Text(
                 s.onboarding6WelcomeSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,

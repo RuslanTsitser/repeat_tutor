@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -24,22 +25,22 @@ class RealLifeTopicsPage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const FittedBox(
-                    fit: BoxFit.contain,
+                  Expanded(
                     child: RealLifeTopicsIllustration(),
                   ),
-                  const SizedBox(height: 32.0),
+                  SizedBox(height: 32.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    padding: EdgeInsets.symmetric(horizontal: 32.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: RealLifeTopicsContent(),
                     ),
                   ),
+                  SizedBox(height: 32.0),
                 ],
               ),
             ),
@@ -57,55 +58,259 @@ class RealLifeTopicsPage extends StatelessWidget {
   }
 }
 
-class RealLifeTopicsIllustration extends StatelessWidget {
+class RealLifeTopicsIllustration extends StatefulWidget {
   const RealLifeTopicsIllustration({super.key});
 
-  static const double _illustrationSize = 256.0;
-  static const double _circleSize = 180.0;
-  static const double _iconSize = 80.0;
+  @override
+  State<RealLifeTopicsIllustration> createState() =>
+      _RealLifeTopicsIllustrationState();
+}
+
+class _RealLifeTopicsIllustrationState
+    extends State<RealLifeTopicsIllustration> {
+  final ScrollController _scrollController = ScrollController();
+  Timer? _scrollTimer;
+  double _scrollPosition = 0.0;
+
+  static const List<String> _topics = [
+    'Travel',
+    'Food',
+    'Sports',
+    'Music',
+    'Movies',
+    'Books',
+    'Technology',
+    'Art',
+    'Fashion',
+    'Nature',
+    'Cooking',
+    'Photography',
+    'Fitness',
+    'Gaming',
+    'History',
+    'Science',
+    'Business',
+    'Education',
+    'Health',
+    'Culture',
+    'Politics',
+    'Economy',
+    'Entertainment',
+    'Lifestyle',
+  ];
+
+  static const double _verticalSpacing = 8.0;
+  static const double _horizontalSpacing = 8.0;
+  static const double _brickOffset = 60.0;
+  static const double _scrollSpeed = 0.3; // пикселей за кадр
+  static const double _fadeZoneHeight = 64.0; // высота зоны fade
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    _scrollTimer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _scrollTimer = Timer.periodic(
+      const Duration(milliseconds: 16), // ~60 FPS
+      (timer) {
+        if (!mounted || !_scrollController.hasClients) return;
+
+        setState(() {
+          _scrollPosition += _scrollSpeed;
+          final maxScroll = _scrollController.position.maxScrollExtent;
+
+          // Бесконечный скролл: когда доходим до конца, возвращаемся к началу
+          // Используем модуль для плавного перехода
+          if (_scrollPosition >= maxScroll) {
+            _scrollPosition = _scrollPosition % maxScroll;
+          }
+
+          _scrollController.jumpTo(_scrollPosition);
+        });
+      },
+    );
+  }
+
+  List<List<String>> _buildRows() {
+    final rows = <List<String>>[];
+    for (int i = 0; i < 5; i++) {
+      final startIndex = i * 4;
+      final endIndex = (i + 1) * 4;
+      if (startIndex < _topics.length) {
+        rows.add(
+          _topics.sublist(
+            startIndex,
+            endIndex > _topics.length ? _topics.length : endIndex,
+          ),
+        );
+      }
+    }
+    return rows;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: _illustrationSize,
-      height: _illustrationSize,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-                width: _circleSize,
-                height: _circleSize,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
+    final rows = _buildRows();
+    // Дублируем контент для бесконечного скролла
+    final duplicatedRows = [
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+      ...rows,
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ClipRect(
+          child: Stack(
+            children: [
+              // Скроллируемый контент
+              ListView(
+                controller: _scrollController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: duplicatedRows.asMap().entries.map((entry) {
+                  final rowIndex = entry.key;
+                  final topics = entry.value;
+                  final isEvenRow = rowIndex % 2 == 1;
+                  final offset = isEvenRow ? _brickOffset : 0.0;
+
+                  return Padding(
+                    key: ValueKey('row_$rowIndex'),
+                    padding: EdgeInsets.only(
+                      bottom: rowIndex < duplicatedRows.length - 1
+                          ? _verticalSpacing
+                          : 0,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (offset > 0) SizedBox(width: offset),
+                          ...topics.map((topic) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                right: topics.last == topic
+                                    ? 0
+                                    : _horizontalSpacing,
+                              ),
+                              child: _TopicCard(
+                                topic: topic,
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+
+              // Градиенты для fade эффекта сверху и снизу
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: _fadeZoneHeight,
+                child: IgnorePointer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColors.surface,
+                          AppColors.surface.withValues(alpha: 0.0),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              )
-              .animate()
-              .scale(
-                duration: 1.seconds,
-                curve: Curves.easeOut,
-              )
-              .fadeIn(duration: 1.seconds),
-          Container(
-                width: _iconSize,
-                height: _iconSize,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: _fadeZoneHeight,
+                child: IgnorePointer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          AppColors.surface,
+                          AppColors.surface.withValues(alpha: 0.0),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Icon(
-                  LucideIcons.messageCircle,
-                  color: AppColors.surface,
-                  size: 40.0,
-                ),
-              )
-              .animate(delay: 400.ms)
-              .scale(
-                duration: 600.ms,
-                curve: Curves.elasticOut,
-              )
-              .fadeIn(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TopicCard extends StatelessWidget {
+  final String topic;
+
+  const _TopicCard({
+    required this.topic,
+  });
+
+  static const double _horizontalPadding = 16.0;
+  static const double _verticalPadding = 8.0;
+  static const double _borderRadius = 16.0;
+  static const double _minHeight = 32.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: _horizontalPadding,
+        vertical: _verticalPadding,
+      ),
+      constraints: const BoxConstraints(
+        minHeight: _minHeight,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(_borderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textMuted.withValues(alpha: 0.1),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
         ],
+      ),
+      child: Text(
+        topic,
+        style: AppTextStyle.inter14w500
+            .copyWith(
+              color: AppColors.textPrimary,
+            )
+            .scaled(context),
       ),
     );
   }
@@ -137,7 +342,7 @@ class RealLifeTopicsContent extends StatelessWidget {
               label: s.onboarding6RealLifeTopicsSubtitle,
               child: Text(
                 s.onboarding6RealLifeTopicsSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,
@@ -193,4 +398,3 @@ class RealLifeTopicsButton extends StatelessWidget {
     ).animate(delay: 1000.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
-
