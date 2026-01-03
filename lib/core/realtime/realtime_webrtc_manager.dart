@@ -37,4 +37,7 @@ abstract interface class RealtimeWebRTCConnection {
 
   /// Установка состояния динамика
   Future<void> setSpeakerEnabled(bool enabled);
+
+  /// Отправка сообщения через DataChannel
+  Future<void> sendMessage(Map<String, dynamic> message);
 }

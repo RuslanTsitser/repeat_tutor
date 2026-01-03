@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -100,7 +101,8 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
 
       // Настраиваем обработчик получения сообщений через DataChannel
       _dataChannel!.onMessage = (RTCDataChannelMessage message) {
-        onMessage?.call(message.text);
+        final messageText = message.text;
+        onMessage?.call(messageText);
       };
 
       // Настраиваем обработчик получения входящих треков (аудио от сервера)
@@ -276,5 +278,21 @@ class RealtimeWebRTCManagerImpl implements RealtimeWebRTCConnection {
   @override
   Future<void> setSpeakerEnabled(bool enabled) async {
     await Helper.setSpeakerphoneOn(enabled);
+  }
+
+  /// Отправляет сообщение через DataChannel
+  @override
+  Future<void> sendMessage(Map<String, dynamic> message) async {
+    if (_dataChannel == null ||
+        _dataChannel!.state != RTCDataChannelState.RTCDataChannelOpen) {
+      return;
+    }
+
+    try {
+      final jsonString = jsonEncode(message);
+      _dataChannel!.send(RTCDataChannelMessage(jsonString));
+    } catch (e) {
+      onError?.call('Ошибка при отправке сообщения: $e');
+    }
   }
 }
