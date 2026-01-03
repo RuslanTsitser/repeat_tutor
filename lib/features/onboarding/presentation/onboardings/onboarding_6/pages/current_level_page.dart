@@ -30,13 +30,23 @@ class _CurrentLevelPageState extends ConsumerState<CurrentLevelPage> {
   Timer? _transitionTimer;
 
   @override
+  void initState() {
+    super.initState();
+    final onboarding6State = ref.read(onboarding6NotifierProvider);
+    _selectedLevel = onboarding6State.state.currentLevel;
+  }
+
+  @override
   void dispose() {
     _transitionTimer?.cancel();
     super.dispose();
   }
 
   void _handleLevelSelected(DifficultyLevel level) {
-    if (_selectedLevel == level) return;
+    if (_selectedLevel == level) {
+      widget.onNext();
+      return;
+    }
 
     setState(() {
       _selectedLevel = level;

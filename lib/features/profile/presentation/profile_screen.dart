@@ -74,7 +74,7 @@ class _SettingsSection extends ConsumerWidget {
         LanguageToLearnWrapper(
           child: _LanguageSelector(
             label: S.of(context).languageToLearn,
-            selectedLanguage: state.defaultLanguageToLearn,
+            selectedLanguage: state.defaultLanguageToLearn ?? Language.english,
             onLanguageSelected: (language) {
               ref
                   .read(profileSettingsUseCaseProvider)
@@ -86,7 +86,7 @@ class _SettingsSection extends ConsumerWidget {
         TutorLanguageWrapper(
           child: _LanguageSelector(
             label: S.of(context).tutorLanguage,
-            selectedLanguage: state.defaultTeacherLanguage,
+            selectedLanguage: state.defaultTeacherLanguage ?? Language.english,
             onLanguageSelected: (language) {
               ref
                   .read(profileSettingsUseCaseProvider)

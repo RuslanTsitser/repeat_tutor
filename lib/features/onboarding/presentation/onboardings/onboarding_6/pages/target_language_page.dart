@@ -8,6 +8,7 @@ import '../../../../../../core/domain/enums/language.dart';
 import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
+import '../../../../../../infrastructure/state_managers.dart';
 import '../../../../../../infrastructure/use_case.dart';
 import 'onboarding_back_button_wrapper.dart';
 
@@ -30,13 +31,23 @@ class _TargetLanguagePageState extends ConsumerState<TargetLanguagePage> {
   Timer? _transitionTimer;
 
   @override
+  void initState() {
+    super.initState();
+    final profileState = ref.read(profileProvider);
+    _selectedLanguage = profileState.state.defaultLanguageToLearn;
+  }
+
+  @override
   void dispose() {
     _transitionTimer?.cancel();
     super.dispose();
   }
 
   void _handleLanguageSelected(Language language) {
-    if (_selectedLanguage == language) return;
+    if (_selectedLanguage == language) {
+      widget.onNext();
+      return;
+    }
 
     setState(() {
       _selectedLanguage = language;

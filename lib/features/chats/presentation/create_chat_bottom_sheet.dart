@@ -46,12 +46,13 @@ class _CreateChatBottomSheetState extends ConsumerState<CreateChatBottomSheet> {
           .read(createChatProvider.notifier)
           .setState(
             CreateChatState(
-              language: ref.read(profileProvider).state.defaultLanguageToLearn,
+              language:
+                  ref.read(profileProvider).state.defaultLanguageToLearn ??
+                  Language.english,
               level: DifficultyLevel.beginner,
-              teacherLanguage: ref
-                  .read(profileProvider)
-                  .state
-                  .defaultTeacherLanguage,
+              teacherLanguage:
+                  ref.read(profileProvider).state.defaultTeacherLanguage ??
+                  Language.english,
               topic: '',
             ),
           );

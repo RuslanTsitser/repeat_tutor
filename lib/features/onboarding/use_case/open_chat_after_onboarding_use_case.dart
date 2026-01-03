@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/enum/placement_type.dart';
 import '../../../core/domain/enums/difficulty_level.dart';
+import '../../../core/domain/enums/language.dart';
 import '../../../core/local_storage/storage_keys.dart';
 import '../../../core/router/router.dart';
 import '../../../infrastructure/core.dart';
@@ -27,10 +28,10 @@ class OpenChatAfterOnboardingUseCase {
     final chatRepository = ref.read(chatRepositoryProvider);
 
     final chat = await chatRepository.createChat(
-      language: profileState.defaultLanguageToLearn,
+      language: profileState.defaultLanguageToLearn ?? Language.english,
       level: onboarding6State.currentLevel ?? DifficultyLevel.beginner,
       topic: onboarding6State.selectedTopic ?? '',
-      teacherLanguage: profileState.defaultTeacherLanguage,
+      teacherLanguage: profileState.defaultTeacherLanguage ?? Language.english,
     );
     localStorage.setValue(StorageKeys.isFirstOnboardingShownKey, true);
 

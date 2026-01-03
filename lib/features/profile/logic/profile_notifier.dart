@@ -23,8 +23,8 @@ class ProfileNotifier with ChangeNotifier {
 class ProfileSettingsState {
   factory ProfileSettingsState.initial() {
     return const ProfileSettingsState(
-      defaultTeacherLanguage: Language.english,
-      defaultLanguageToLearn: Language.english,
+      defaultTeacherLanguage: null,
+      defaultLanguageToLearn: null,
       defaultLanguage: Language.english,
       todayDuration: Duration.zero,
       totalDuration: Duration.zero,
@@ -43,8 +43,8 @@ class ProfileSettingsState {
     required this.premiumStatus,
   });
 
-  final Language defaultTeacherLanguage;
-  final Language defaultLanguageToLearn;
+  final Language? defaultTeacherLanguage;
+  final Language? defaultLanguageToLearn;
   final Language defaultLanguage;
   final Duration todayDuration;
   final Duration totalDuration;
