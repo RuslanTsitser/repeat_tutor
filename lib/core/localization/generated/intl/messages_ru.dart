@@ -104,6 +104,75 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("Далее"),
     "noChatsYet": MessageLookupByLibrary.simpleMessage("Нет чатов"),
     "noMessages": MessageLookupByLibrary.simpleMessage("Нет сообщений"),
+    "onboarding6BetterThanSchedulingSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Практикуйтесь в любое время, дешевле, чем частный преподаватель. Без календаря. Без давления. Только настоящая практика и мягкая обратная связь",
+    ),
+    "onboarding6BetterThanSchedulingTitle":
+        MessageLookupByLibrary.simpleMessage(
+          "Личный преподаватель, когда вам нужно",
+        ),
+    "onboarding6CurrentLevelSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Просто приблизительная оценка — мы адаптируемся по мере вашей практики.",
+    ),
+    "onboarding6CurrentLevelTitle": MessageLookupByLibrary.simpleMessage(
+      "Какой у вас текущий уровень?",
+    ),
+    "onboarding6FunFactProductionHelper": MessageLookupByLibrary.simpleMessage(
+      "Ваша голосовая практика — это не просто \"практика\" — она помогает новым фразам быстрее закрепиться.",
+    ),
+    "onboarding6FunFactProductionSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Исследования показывают, что произнесение вслух может улучшить память примерно на 10–20% по сравнению с тихим чтением.",
+    ),
+    "onboarding6FunFactProductionTitle": MessageLookupByLibrary.simpleMessage(
+      "Интересный факт: произнесение вслух помогает запомнить",
+    ),
+    "onboarding6FunFactRetrievalHelper": MessageLookupByLibrary.simpleMessage(
+      "Вот почему ответы на вопросы помогают закрепить вашу речь.",
+    ),
+    "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Исследования показывают, что активная попытка вспомнить (вместо перечитывания) приводит к заметно лучшему обучению. В большом метаанализе около 81% результатов отдали предпочтение \"попытке вспомнить\" перед \"просто просмотром\".",
+    ),
+    "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
+      "Интересный факт: попытка вспомнить лучше, чем перечитывание",
+    ),
+    "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Понятно"),
+    "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Отлично"),
+    "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Выберите тему и отвечайте на простые вопросы. Говорите по-своему — ваш преподаватель мягко исправляет вас и делает речь более естественной, на вашем текущем уровне.",
+    ),
+    "onboarding6RealLifeTopicsTitle": MessageLookupByLibrary.simpleMessage(
+      "Практикуйте темы, которые важны в реальной жизни",
+    ),
+    "onboarding6RealTimeVoiceSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Попробуйте перевести фразу вслух и получите мгновенную обратную связь или полезную подсказку, когда застрянете.",
+    ),
+    "onboarding6RealTimeVoiceTitle": MessageLookupByLibrary.simpleMessage(
+      "Практикуйте речь с ИИ в голосовом чате в реальном времени",
+    ),
+    "onboarding6StartTopicSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Выберите то, что наиболее полезно прямо сейчас. Вы можете менять темы в любое время.",
+    ),
+    "onboarding6StartTopicTitle": MessageLookupByLibrary.simpleMessage(
+      "Выберите тему для начала",
+    ),
+    "onboarding6TargetLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Вы можете переключать языки в любое время.",
+    ),
+    "onboarding6TargetLanguageTitle": MessageLookupByLibrary.simpleMessage(
+      "Выберите язык, который хотите изучать",
+    ),
+    "onboarding6TeacherLanguageSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Это язык, на котором ваш преподаватель будет с вами говорить. Вы можете изменить его в любое время.",
+    ),
+    "onboarding6TeacherLanguageTitle": MessageLookupByLibrary.simpleMessage(
+      "Выберите язык преподавателя",
+    ),
+    "onboarding6WelcomeSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Безопасное место без стресса для практики речи в реальной жизни",
+    ),
+    "onboarding6WelcomeTitle": MessageLookupByLibrary.simpleMessage(
+      "Добро пожаловать в Repeat Tutor",
+    ),
     "orChooseFromExamples": MessageLookupByLibrary.simpleMessage(
       "Или выберите из примеров ниже",
     ),

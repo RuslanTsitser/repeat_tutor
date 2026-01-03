@@ -858,6 +858,236 @@ class S {
       args: [],
     );
   }
+
+  /// `Welcome to Repeat Tutor`
+  String get onboarding6WelcomeTitle {
+    return Intl.message(
+      'Welcome to Repeat Tutor',
+      name: 'onboarding6WelcomeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A safe, stress-free place to practice speaking for real life`
+  String get onboarding6WelcomeSubtitle {
+    return Intl.message(
+      'A safe, stress-free place to practice speaking for real life',
+      name: 'onboarding6WelcomeSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice the topics that matter in real life`
+  String get onboarding6RealLifeTopicsTitle {
+    return Intl.message(
+      'Practice the topics that matter in real life',
+      name: 'onboarding6RealLifeTopicsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.`
+  String get onboarding6RealLifeTopicsSubtitle {
+    return Intl.message(
+      'Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.',
+      name: 'onboarding6RealLifeTopicsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fun fact: Trying to recall beats re-reading`
+  String get onboarding6FunFactRetrievalTitle {
+    return Intl.message(
+      'Fun fact: Trying to recall beats re-reading',
+      name: 'onboarding6FunFactRetrievalTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."`
+  String get onboarding6FunFactRetrievalSubtitle {
+    return Intl.message(
+      'Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."',
+      name: 'onboarding6FunFactRetrievalSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `That's why answering questions helps your speaking stick.`
+  String get onboarding6FunFactRetrievalHelper {
+    return Intl.message(
+      'That\'s why answering questions helps your speaking stick.',
+      name: 'onboarding6FunFactRetrievalHelper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get onboarding6GotIt {
+    return Intl.message('Got it', name: 'onboarding6GotIt', desc: '', args: []);
+  }
+
+  /// `Practice speaking with AI in real time voice chat`
+  String get onboarding6RealTimeVoiceTitle {
+    return Intl.message(
+      'Practice speaking with AI in real time voice chat',
+      name: 'onboarding6RealTimeVoiceTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try translating a phrase out loud and get instant feedback or a helpful hint when you're stuck.`
+  String get onboarding6RealTimeVoiceSubtitle {
+    return Intl.message(
+      'Try translating a phrase out loud and get instant feedback or a helpful hint when you\'re stuck.',
+      name: 'onboarding6RealTimeVoiceSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fun fact: Saying it out loud helps you remember`
+  String get onboarding6FunFactProductionTitle {
+    return Intl.message(
+      'Fun fact: Saying it out loud helps you remember',
+      name: 'onboarding6FunFactProductionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.`
+  String get onboarding6FunFactProductionSubtitle {
+    return Intl.message(
+      'Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.',
+      name: 'onboarding6FunFactProductionSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your voice practice isn't just "practice" — it helps new phrases stick faster.`
+  String get onboarding6FunFactProductionHelper {
+    return Intl.message(
+      'Your voice practice isn\'t just "practice" — it helps new phrases stick faster.',
+      name: 'onboarding6FunFactProductionHelper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nice`
+  String get onboarding6Nice {
+    return Intl.message('Nice', name: 'onboarding6Nice', desc: '', args: []);
+  }
+
+  /// `A personal tutor, whenever you need`
+  String get onboarding6BetterThanSchedulingTitle {
+    return Intl.message(
+      'A personal tutor, whenever you need',
+      name: 'onboarding6BetterThanSchedulingTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback`
+  String get onboarding6BetterThanSchedulingSubtitle {
+    return Intl.message(
+      'Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback',
+      name: 'onboarding6BetterThanSchedulingSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose your teacher language`
+  String get onboarding6TeacherLanguageTitle {
+    return Intl.message(
+      'Choose your teacher language',
+      name: 'onboarding6TeacherLanguageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the language your tutor will speak to you in. You can change it anytime.`
+  String get onboarding6TeacherLanguageSubtitle {
+    return Intl.message(
+      'This is the language your tutor will speak to you in. You can change it anytime.',
+      name: 'onboarding6TeacherLanguageSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose the language you want to learn`
+  String get onboarding6TargetLanguageTitle {
+    return Intl.message(
+      'Choose the language you want to learn',
+      name: 'onboarding6TargetLanguageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can switch languages anytime.`
+  String get onboarding6TargetLanguageSubtitle {
+    return Intl.message(
+      'You can switch languages anytime.',
+      name: 'onboarding6TargetLanguageSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What's your current level?`
+  String get onboarding6CurrentLevelTitle {
+    return Intl.message(
+      'What\'s your current level?',
+      name: 'onboarding6CurrentLevelTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just a rough estimate — we'll adapt as you practice.`
+  String get onboarding6CurrentLevelSubtitle {
+    return Intl.message(
+      'Just a rough estimate — we\'ll adapt as you practice.',
+      name: 'onboarding6CurrentLevelSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick a topic to start with`
+  String get onboarding6StartTopicTitle {
+    return Intl.message(
+      'Pick a topic to start with',
+      name: 'onboarding6StartTopicTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose what's most useful right now. You can change topics anytime.`
+  String get onboarding6StartTopicSubtitle {
+    return Intl.message(
+      'Choose what\'s most useful right now. You can change topics anytime.',
+      name: 'onboarding6StartTopicSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
