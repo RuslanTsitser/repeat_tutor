@@ -76,6 +76,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/app_icon.webp
+    - assets/ai_generated/
   fonts:
     - family: Inter
       fonts:
