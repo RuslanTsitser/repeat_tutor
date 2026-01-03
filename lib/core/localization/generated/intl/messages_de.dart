@@ -124,10 +124,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Deshalb hilft das Beantworten von Fragen, dass Ihr Sprechen hängen bleibt.",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Forschung zeigt, dass aktives Erinnern (anstatt Wiederlesen) zu deutlich besserem Lernen führt. In einer großen Meta-Analyse bevorzugten etwa 81% der Ergebnisse \"versuchen zu erinnern\" gegenüber \"nur überprüfen\".",
+      "Eine große Meta-Analyse ergab, dass ~81% der Ergebnisse das Erinnern dem Wiederlesen vorzogen",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Interessanter Fakt: Der Versuch, sich zu erinnern, schlägt das Wiederlesen",
+      "Interessanter Fakt: Der Versuch, sich zu erinnern, hilft Ihnen, schneller zu lernen",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Verstanden"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(

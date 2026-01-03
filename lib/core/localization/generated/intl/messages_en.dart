@@ -122,10 +122,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "That\'s why answering questions helps your speaking stick.",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored \"try to recall\" over \"just review.\"",
+      "A large meta-analysis found ~81% of results favored recall over re-reading",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Fun fact: Trying to recall beats re-reading",
+      "Fun fact: Trying to recall helps you learn faster",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Got it"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(

@@ -959,20 +959,20 @@ class S {
     );
   }
 
-  /// `Fun fact: Trying to recall beats re-reading`
+  /// `Fun fact: Trying to recall helps you learn faster`
   String get onboarding6FunFactRetrievalTitle {
     return Intl.message(
-      'Fun fact: Trying to recall beats re-reading',
+      'Fun fact: Trying to recall helps you learn faster',
       name: 'onboarding6FunFactRetrievalTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."`
+  /// `A large meta-analysis found ~81% of results favored recall over re-reading`
   String get onboarding6FunFactRetrievalSubtitle {
     return Intl.message(
-      'Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."',
+      'A large meta-analysis found ~81% of results favored recall over re-reading',
       name: 'onboarding6FunFactRetrievalSubtitle',
       desc: '',
       args: [],

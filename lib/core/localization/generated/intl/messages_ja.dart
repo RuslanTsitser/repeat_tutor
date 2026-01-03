@@ -110,10 +110,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "だから質問に答えることが、あなたの話す力を定着させるのに役立つのです。",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "研究によると、積極的に思い出そうとすること（再読の代わりに）は、著しく優れた学習につながります。大規模なメタ分析では、約81%の結果が「思い出そうとする」ことを「単に復習する」ことよりも好みました。",
+      "大規模なメタ分析では、約81%の結果が再読よりも思い出すことを好むことがわかりました",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "興味深い事実：思い出そうとすることは再読に勝る",
+      "興味深い事実：思い出そうとすることで、より速く学べます",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("わかりました"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(

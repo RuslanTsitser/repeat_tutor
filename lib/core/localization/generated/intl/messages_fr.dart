@@ -128,10 +128,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "C\'est pourquoi répondre aux questions aide votre parole à rester.",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "La recherche montre qu\'essayer activement de se souvenir (au lieu de relire) conduit à un apprentissage nettement meilleur. Dans une grande méta-analyse, environ 81% des résultats ont favorisé \"essayer de se souvenir\" par rapport à \"juste réviser\".",
+      "Une grande méta-analyse a révélé que ~81% des résultats favorisaient le rappel par rapport à la relecture",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Fait intéressant : Essayer de se souvenir bat la relecture",
+      "Fait intéressant : Essayer de se souvenir vous aide à apprendre plus rapidement",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Compris"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(

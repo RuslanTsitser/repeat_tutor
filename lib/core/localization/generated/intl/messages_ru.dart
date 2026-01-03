@@ -130,10 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Вот почему ответы на вопросы помогают закрепить вашу речь.",
     ),
     "onboarding6FunFactRetrievalSubtitle": MessageLookupByLibrary.simpleMessage(
-      "Исследования показывают, что активная попытка вспомнить (вместо перечитывания) приводит к заметно лучшему обучению. В большом метаанализе около 81% результатов отдали предпочтение \"попытке вспомнить\" перед \"просто просмотром\".",
+      "Большой метаанализ показал, что ~81% результатов отдали предпочтение вспоминанию перед перечитыванием",
     ),
     "onboarding6FunFactRetrievalTitle": MessageLookupByLibrary.simpleMessage(
-      "Интересный факт: попытка вспомнить лучше, чем перечитывание",
+      "Интересный факт: попытка вспомнить помогает учиться быстрее",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Понятно"),
     "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(
