@@ -1,0 +1,238 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../../core/domain/enums/difficulty_level.dart';
+import '../../../../../../core/theme/app_colors.dart';
+import '../../../../../../core/theme/app_text_style.dart';
+import '../../../../../../infrastructure/state_managers.dart';
+import 'onboarding_back_button_wrapper.dart';
+
+class CurrentLevelPage extends ConsumerWidget {
+  final VoidCallback onNext;
+  final VoidCallback? onPrevious;
+
+  const CurrentLevelPage({
+    super.key,
+    required this.onNext,
+    this.onPrevious,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final onboarding6State = ref.watch(onboarding6NotifierProvider);
+    final selectedLevel =
+        onboarding6State.state.currentLevel ?? DifficultyLevel.beginner;
+
+    return OnboardingBackButtonWrapper(
+      onPrevious: onPrevious,
+      child: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 32.0),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: CurrentLevelContent(
+                  selectedLevel: selectedLevel,
+                  onLevelSelected: (level) {
+                    ref
+                        .read(onboarding6NotifierProvider)
+                        .setCurrentLevel(level);
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CurrentLevelButton(
+                onNext: onNext,
+                onPrevious: onPrevious,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CurrentLevelContent extends StatelessWidget {
+  final DifficultyLevel selectedLevel;
+  final ValueChanged<DifficultyLevel> onLevelSelected;
+
+  const CurrentLevelContent({
+    super.key,
+    required this.selectedLevel,
+    required this.onLevelSelected,
+  });
+
+  static const double _spacing = 16.0;
+  static const double _itemSpacing = 8.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 32.0),
+            Center(
+              child: Semantics(
+                label: 'What\'s your current level?',
+                child: Text(
+                  'What\'s your current level?',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.inter24w700.scaled(context),
+                ),
+              ),
+            ),
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: 'Just a rough estimate — we\'ll adapt as you practice.',
+              child: Text(
+                'Just a rough estimate — we\'ll adapt as you practice.',
+                textAlign: TextAlign.start,
+                style: AppTextStyle.inter16w400
+                    .copyWith(
+                      color: AppColors.textMuted,
+                    )
+                    .scaled(context),
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            Semantics(
+              label: 'Level list',
+              child: Column(
+                children: DifficultyLevel.values.map((level) {
+                  final isSelected = selectedLevel == level;
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: _itemSpacing),
+                    child: _LevelItem(
+                      level: level,
+                      isSelected: isSelected,
+                      onTap: () => onLevelSelected(level),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 32.0),
+          ],
+        )
+        .animate(delay: 200.ms)
+        .moveY(begin: 16, end: 0, curve: Curves.easeOut)
+        .fadeIn();
+  }
+}
+
+class _LevelItem extends StatelessWidget {
+  final DifficultyLevel level;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _LevelItem({
+    required this.level,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  static const double _horizontalPadding = 16.0;
+  static const double _borderRadius = 16.0;
+  static const double _checkmarkSize = 24.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: '${level.localizedName}${isSelected ? ', selected' : ''}',
+      button: true,
+      selected: isSelected,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 56.0,
+          padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? AppColors.primary.withValues(alpha: 0.1)
+                : AppColors.backgroundLight,
+            borderRadius: BorderRadius.circular(_borderRadius),
+            border: Border.all(
+              color: isSelected ? AppColors.primary : AppColors.divider,
+              width: isSelected ? 2 : 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  level.localizedName,
+                  style: AppTextStyle.inter16w400
+                      .copyWith(
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.textPrimary,
+                      )
+                      .scaled(context),
+                ),
+              ),
+              if (isSelected)
+                Container(
+                  width: _checkmarkSize,
+                  height: _checkmarkSize,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    CupertinoIcons.checkmark,
+                    size: 16,
+                    color: AppColors.surface,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CurrentLevelButton extends StatelessWidget {
+  final VoidCallback onNext;
+  final VoidCallback? onPrevious;
+
+  const CurrentLevelButton({
+    super.key,
+    required this.onNext,
+    this.onPrevious,
+  });
+
+  static const double _verticalPadding = 16.0;
+  static const double _borderRadius = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Continue',
+      child: SizedBox(
+        width: double.infinity,
+        child: CupertinoButton(
+          onPressed: onNext,
+          color: AppColors.primary,
+          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
+          minimumSize: const Size(0, 44.0),
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: Text(
+            'Continue',
+            style: AppTextStyle.inter16w600
+                .copyWith(
+                  color: AppColors.surface,
+                )
+                .scaled(context),
+          ),
+        ),
+      ),
+    ).animate(delay: 400.ms).moveY(begin: 16, end: 0).fadeIn();
+  }
+}

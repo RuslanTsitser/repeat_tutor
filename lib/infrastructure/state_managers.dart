@@ -5,6 +5,7 @@ import '../features/chats/logic/chat_list_notifier.dart';
 import '../features/chats/logic/chat_notifier.dart';
 import '../features/chats/logic/create_chat_notifier.dart';
 import '../features/home/logic/home_screen_notifier.dart';
+import '../features/onboarding/logic/onboarding_6_notifier.dart';
 import '../features/onboarding/logic/onboarding_notifier.dart';
 import '../features/paywall/logic/paywall_change_notifier.dart';
 import '../features/profile/logic/profile_notifier.dart';
@@ -50,4 +51,8 @@ final homeScreenNotifierProvider = ChangeNotifierProvider((ref) {
 
 final onboardingNotifierProvider = ChangeNotifierProvider((ref) {
   return OnboardingNotifier();
+});
+
+final onboarding6NotifierProvider = ChangeNotifierProvider((ref) {
+  return Onboarding6Notifier();
 });

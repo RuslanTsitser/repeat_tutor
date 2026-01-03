@@ -9,6 +9,7 @@ import 'onboardings/onboarding_2/onboarding2.dart';
 import 'onboardings/onboarding_3/onboarding3.dart';
 import 'onboardings/onboarding_4/onboarding4.dart';
 import 'onboardings/onboarding_5/onboarding5.dart';
+import 'onboardings/onboarding_6/onboarding6.dart';
 
 @RoutePage()
 class OnboardingScreen extends ConsumerWidget {
@@ -32,6 +33,8 @@ class OnboardingScreen extends ConsumerWidget {
         return const Onboarding4();
       case 'onboarding5':
         return const Onboarding5();
+      case 'onboarding6':
+        return const Onboarding6();
 
       default:
         return const Onboarding1();
