@@ -1198,6 +1198,151 @@ class S {
       args: [],
     );
   }
+
+  /// `Travel`
+  String get topicTravel {
+    return Intl.message('Travel', name: 'topicTravel', desc: '', args: []);
+  }
+
+  /// `Food`
+  String get topicFood {
+    return Intl.message('Food', name: 'topicFood', desc: '', args: []);
+  }
+
+  /// `Sports`
+  String get topicSports {
+    return Intl.message('Sports', name: 'topicSports', desc: '', args: []);
+  }
+
+  /// `Music`
+  String get topicMusic {
+    return Intl.message('Music', name: 'topicMusic', desc: '', args: []);
+  }
+
+  /// `Movies`
+  String get topicMovies {
+    return Intl.message('Movies', name: 'topicMovies', desc: '', args: []);
+  }
+
+  /// `Books`
+  String get topicBooks {
+    return Intl.message('Books', name: 'topicBooks', desc: '', args: []);
+  }
+
+  /// `Technology`
+  String get topicTechnology {
+    return Intl.message(
+      'Technology',
+      name: 'topicTechnology',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Art`
+  String get topicArt {
+    return Intl.message('Art', name: 'topicArt', desc: '', args: []);
+  }
+
+  /// `Fashion`
+  String get topicFashion {
+    return Intl.message('Fashion', name: 'topicFashion', desc: '', args: []);
+  }
+
+  /// `Nature`
+  String get topicNature {
+    return Intl.message('Nature', name: 'topicNature', desc: '', args: []);
+  }
+
+  /// `Cooking`
+  String get topicCooking {
+    return Intl.message('Cooking', name: 'topicCooking', desc: '', args: []);
+  }
+
+  /// `Photography`
+  String get topicPhotography {
+    return Intl.message(
+      'Photography',
+      name: 'topicPhotography',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fitness`
+  String get topicFitness {
+    return Intl.message('Fitness', name: 'topicFitness', desc: '', args: []);
+  }
+
+  /// `Gaming`
+  String get topicGaming {
+    return Intl.message('Gaming', name: 'topicGaming', desc: '', args: []);
+  }
+
+  /// `History`
+  String get topicHistory {
+    return Intl.message('History', name: 'topicHistory', desc: '', args: []);
+  }
+
+  /// `Science`
+  String get topicScience {
+    return Intl.message('Science', name: 'topicScience', desc: '', args: []);
+  }
+
+  /// `Business`
+  String get topicBusiness {
+    return Intl.message('Business', name: 'topicBusiness', desc: '', args: []);
+  }
+
+  /// `Education`
+  String get topicEducation {
+    return Intl.message(
+      'Education',
+      name: 'topicEducation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Health`
+  String get topicHealth {
+    return Intl.message('Health', name: 'topicHealth', desc: '', args: []);
+  }
+
+  /// `Culture`
+  String get topicCulture {
+    return Intl.message('Culture', name: 'topicCulture', desc: '', args: []);
+  }
+
+  /// `Politics`
+  String get topicPolitics {
+    return Intl.message('Politics', name: 'topicPolitics', desc: '', args: []);
+  }
+
+  /// `Economy`
+  String get topicEconomy {
+    return Intl.message('Economy', name: 'topicEconomy', desc: '', args: []);
+  }
+
+  /// `Entertainment`
+  String get topicEntertainment {
+    return Intl.message(
+      'Entertainment',
+      name: 'topicEntertainment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lifestyle`
+  String get topicLifestyle {
+    return Intl.message(
+      'Lifestyle',
+      name: 'topicLifestyle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
