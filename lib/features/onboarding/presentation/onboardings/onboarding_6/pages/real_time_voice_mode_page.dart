@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -117,14 +118,15 @@ class RealTimeVoiceModeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Semantics(
-                label: 'Practice speaking with AI in real time voice chat',
+                label: s.onboarding6RealTimeVoiceTitle,
                 child: Text(
-                  'Practice speaking with AI in real time voice chat',
+                  s.onboarding6RealTimeVoiceTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -132,10 +134,9 @@ class RealTimeVoiceModeContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label:
-                  'Try translating a phrase out loud and get instant feedback or a helpful hint when you\'re stuck.',
+              label: s.onboarding6RealTimeVoiceSubtitle,
               child: Text(
-                'Try translating a phrase out loud and get instant feedback or a helpful hint when you\'re stuck.',
+                s.onboarding6RealTimeVoiceSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -167,9 +168,10 @@ class RealTimeVoiceModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -179,7 +181,7 @@ class RealTimeVoiceModeButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

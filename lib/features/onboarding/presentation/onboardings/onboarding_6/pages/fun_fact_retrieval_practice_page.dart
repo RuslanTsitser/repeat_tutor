@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -118,14 +119,15 @@ class FunFactRetrievalPracticeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Semantics(
-                label: 'Fun fact: Trying to recall beats re-reading',
+                label: s.onboarding6FunFactRetrievalTitle,
                 child: Text(
-                  'Fun fact: Trying to recall beats re-reading',
+                  s.onboarding6FunFactRetrievalTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -133,10 +135,9 @@ class FunFactRetrievalPracticeContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label:
-                  'Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."',
+              label: s.onboarding6FunFactRetrievalSubtitle,
               child: Text(
-                'Research shows that actively trying to remember (instead of re-reading) leads to noticeably better learning. In a large meta-analysis about 81% of results favored "try to recall" over "just review."',
+                s.onboarding6FunFactRetrievalSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -147,9 +148,9 @@ class FunFactRetrievalPracticeContent extends StatelessWidget {
             ),
             const SizedBox(height: _helperSpacing),
             Semantics(
-              label: 'That\'s why answering questions helps your speaking stick.',
+              label: s.onboarding6FunFactRetrievalHelper,
               child: Text(
-                'That\'s why answering questions helps your speaking stick.',
+                s.onboarding6FunFactRetrievalHelper,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter14w400
                     .copyWith(
@@ -181,9 +182,10 @@ class FunFactButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Got it',
+      label: s.onboarding6GotIt,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -193,7 +195,7 @@ class FunFactButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Got it',
+            s.onboarding6GotIt,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

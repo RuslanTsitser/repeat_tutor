@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../core/domain/enums/language.dart';
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../infrastructure/state_managers.dart';
@@ -80,9 +81,9 @@ class TargetLanguageContent extends StatelessWidget {
             const SizedBox(height: 32.0),
             Center(
               child: Semantics(
-                label: 'Choose the language you want to learn',
+                label: S.of(context).onboarding6TargetLanguageTitle,
                 child: Text(
-                  'Choose the language you want to learn',
+                  S.of(context).onboarding6TargetLanguageTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -90,9 +91,9 @@ class TargetLanguageContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label: 'You can switch languages anytime.',
+              label: S.of(context).onboarding6TargetLanguageSubtitle,
               child: Text(
-                'You can switch languages anytime.',
+                S.of(context).onboarding6TargetLanguageSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -214,9 +215,10 @@ class TargetLanguageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -226,7 +228,7 @@ class TargetLanguageButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

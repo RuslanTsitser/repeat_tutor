@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -118,14 +119,15 @@ class FunFactProductionEffectContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
           child: Semantics(
-            label: 'Fun fact: Saying it out loud helps you remember',
+            label: s.onboarding6FunFactProductionTitle,
             child: Text(
-              'Fun fact: Saying it out loud helps you remember',
+              s.onboarding6FunFactProductionTitle,
               textAlign: TextAlign.center,
               style: AppTextStyle.inter24w700.scaled(context),
             ),
@@ -133,10 +135,9 @@ class FunFactProductionEffectContent extends StatelessWidget {
         ),
         const SizedBox(height: _spacing),
         Semantics(
-          label:
-              'Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.',
+          label: s.onboarding6FunFactProductionSubtitle,
           child: Text(
-            'Studies show that speaking out loud can improve memory by about 10–20% compared to reading silently.',
+            s.onboarding6FunFactProductionSubtitle,
             textAlign: TextAlign.start,
             style: AppTextStyle.inter16w400
                 .copyWith(
@@ -147,10 +148,9 @@ class FunFactProductionEffectContent extends StatelessWidget {
         ),
         const SizedBox(height: _helperSpacing),
         Semantics(
-          label:
-              'Your voice practice isn\'t just "practice" — it helps new phrases stick faster.',
+          label: s.onboarding6FunFactProductionHelper,
           child: Text(
-            'Your voice practice isn\'t just "practice" — it helps new phrases stick faster.',
+            s.onboarding6FunFactProductionHelper,
             textAlign: TextAlign.start,
             style: AppTextStyle.inter14w400
                 .copyWith(
@@ -179,9 +179,10 @@ class FunFactProductionEffectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Nice',
+      label: s.onboarding6Nice,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -191,7 +192,7 @@ class FunFactProductionEffectButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Nice',
+            s.onboarding6Nice,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

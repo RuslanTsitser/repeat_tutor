@@ -1,7 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../gen/assets.gen.dart';
@@ -42,12 +45,36 @@ class WelcomePage extends StatelessWidget {
   }
 }
 
-class WelcomeLogo extends StatelessWidget {
+class WelcomeLogo extends StatefulWidget {
   const WelcomeLogo({super.key});
 
+  @override
+  State<WelcomeLogo> createState() => _WelcomeLogoState();
+}
+
+class _WelcomeLogoState extends State<WelcomeLogo>
+    with SingleTickerProviderStateMixin {
   static const double _illustrationSize = 256.0;
   static const double _logoSize = 180.0;
   static const double _smallIconSize = 32.0;
+  static const double _orbitRadius = _illustrationSize / 2 - _smallIconSize / 2;
+
+  late AnimationController _rotationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,33 +97,25 @@ class WelcomeLogo extends StatelessWidget {
                   curve: Curves.elasticOut,
                 )
                 .fadeIn(),
-            Positioned(
-              top: 0,
-              child: _buildSmallIcon(
-                LucideIcons.messageSquare,
-                delay: 200.ms,
-              ),
+            _buildOrbitingIcon(
+              LucideIcons.messageSquare,
+              initialAngle: -math.pi / 2,
+              delay: 200.ms,
             ),
-            Positioned(
-              right: 0,
-              child: _buildSmallIcon(
-                LucideIcons.mic,
-                delay: 400.ms,
-              ),
+            _buildOrbitingIcon(
+              LucideIcons.mic,
+              initialAngle: 0,
+              delay: 400.ms,
             ),
-            Positioned(
-              bottom: 0,
-              child: _buildSmallIcon(
-                LucideIcons.bookOpen,
-                delay: 600.ms,
-              ),
+            _buildOrbitingIcon(
+              LucideIcons.bookOpen,
+              initialAngle: math.pi / 2,
+              delay: 600.ms,
             ),
-            Positioned(
-              left: 0,
-              child: _buildSmallIcon(
-                LucideIcons.star,
-                delay: 800.ms,
-              ),
+            _buildOrbitingIcon(
+              LucideIcons.star,
+              initialAngle: math.pi,
+              delay: 800.ms,
             ),
           ],
         ),
@@ -104,29 +123,49 @@ class WelcomeLogo extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallIcon(IconData icon, {Duration delay = Duration.zero}) {
-    return Container(
-          width: _smallIconSize,
-          height: _smallIconSize,
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.textMuted.withValues(alpha: 0.1),
-                blurRadius: 16,
-              ),
-            ],
-          ),
-          child: Icon(
-            icon,
-            color: AppColors.primary,
-            size: 16.0,
-          ),
-        )
-        .animate(delay: delay)
-        .scale(duration: 400.ms, curve: Curves.elasticOut)
-        .fadeIn();
+  Widget _buildOrbitingIcon(
+    IconData icon, {
+    required double initialAngle,
+    required Duration delay,
+  }) {
+    return AnimatedBuilder(
+      animation: _rotationController,
+      builder: (context, child) {
+        final currentAngle =
+            initialAngle + _rotationController.value * 2 * math.pi;
+        final x = _orbitRadius * math.cos(currentAngle);
+        final y = _orbitRadius * math.sin(currentAngle);
+
+        return Positioned(
+          left: _illustrationSize / 2 + x - _smallIconSize / 2,
+          top: _illustrationSize / 2 + y - _smallIconSize / 2,
+          child: child!,
+        );
+      },
+      child:
+          Container(
+                width: _smallIconSize,
+                height: _smallIconSize,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.textMuted.withValues(alpha: 0.1),
+                      blurRadius: 16,
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  icon,
+                  color: AppColors.primary,
+                  size: 16.0,
+                ),
+              )
+              .animate(delay: delay)
+              .scale(duration: 400.ms, curve: Curves.elasticOut)
+              .fadeIn(),
+    );
   }
 }
 
@@ -137,14 +176,15 @@ class WelcomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Semantics(
-                label: 'Welcome to Repeat Tutor',
+                label: s.onboarding6WelcomeTitle,
                 child: Text(
-                  'Welcome to Repeat Tutor',
+                  s.onboarding6WelcomeTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -152,10 +192,9 @@ class WelcomeContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label:
-                  'A safe, stress-free place to practice speaking for real life',
+              label: s.onboarding6WelcomeSubtitle,
               child: Text(
-                'A safe, stress-free place to practice speaking for real life',
+                s.onboarding6WelcomeSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -185,9 +224,10 @@ class WelcomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -197,7 +237,7 @@ class WelcomeButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

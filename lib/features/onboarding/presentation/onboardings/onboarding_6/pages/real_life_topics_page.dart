@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -117,14 +118,15 @@ class RealLifeTopicsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Semantics(
-                label: 'Practice the topics that matter in real life',
+                label: s.onboarding6RealLifeTopicsTitle,
                 child: Text(
-                  'Practice the topics that matter in real life',
+                  s.onboarding6RealLifeTopicsTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -132,10 +134,9 @@ class RealLifeTopicsContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label:
-                  'Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.',
+              label: s.onboarding6RealLifeTopicsSubtitle,
               child: Text(
-                'Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.',
+                s.onboarding6RealLifeTopicsSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -167,9 +168,10 @@ class RealLifeTopicsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -179,7 +181,7 @@ class RealLifeTopicsButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

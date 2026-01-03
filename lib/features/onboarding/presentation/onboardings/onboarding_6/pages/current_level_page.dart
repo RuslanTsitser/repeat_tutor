@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../core/domain/enums/difficulty_level.dart';
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../infrastructure/state_managers.dart';
@@ -78,9 +79,9 @@ class CurrentLevelContent extends StatelessWidget {
             const SizedBox(height: 32.0),
             Center(
               child: Semantics(
-                label: 'What\'s your current level?',
+                label: S.of(context).onboarding6CurrentLevelTitle,
                 child: Text(
-                  'What\'s your current level?',
+                  S.of(context).onboarding6CurrentLevelTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -88,9 +89,9 @@ class CurrentLevelContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label: 'Just a rough estimate — we\'ll adapt as you practice.',
+              label: S.of(context).onboarding6CurrentLevelSubtitle,
               child: Text(
-                'Just a rough estimate — we\'ll adapt as you practice.',
+                S.of(context).onboarding6CurrentLevelSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -212,9 +213,10 @@ class CurrentLevelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -224,7 +226,7 @@ class CurrentLevelButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

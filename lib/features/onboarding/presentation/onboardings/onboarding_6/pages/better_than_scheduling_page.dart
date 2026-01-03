@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import 'onboarding_back_button_wrapper.dart';
@@ -122,9 +123,9 @@ class BetterThanSchedulingContent extends StatelessWidget {
           children: [
             Center(
               child: Semantics(
-                label: 'A personal tutor, whenever you need',
+                label: S.of(context).onboarding6BetterThanSchedulingTitle,
                 child: Text(
-                  'A personal tutor, whenever you need',
+                  S.of(context).onboarding6BetterThanSchedulingTitle,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.inter24w700.scaled(context),
                 ),
@@ -132,10 +133,9 @@ class BetterThanSchedulingContent extends StatelessWidget {
             ),
             const SizedBox(height: _spacing),
             Semantics(
-              label:
-                  'Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback',
+              label: S.of(context).onboarding6BetterThanSchedulingSubtitle,
               child: Text(
-                'Practice anytime you want, for less than a private tutor. No calendar. No pressure. Just real practice and gentle feedback',
+                S.of(context).onboarding6BetterThanSchedulingSubtitle,
                 textAlign: TextAlign.start,
                 style: AppTextStyle.inter16w400
                     .copyWith(
@@ -167,9 +167,10 @@ class BetterThanSchedulingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -179,7 +180,7 @@ class BetterThanSchedulingButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

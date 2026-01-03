@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../core/domain/enums/language.dart';
+import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../infrastructure/state_managers.dart';
@@ -78,22 +79,21 @@ class TeacherLanguageContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 32.0),
-        Center(
-          child: Semantics(
-            label: 'Choose your teacher language',
-            child: Text(
-              'Choose your teacher language',
-              textAlign: TextAlign.center,
-              style: AppTextStyle.inter24w700.scaled(context),
+            Center(
+              child: Semantics(
+                label: S.of(context).onboarding6TeacherLanguageTitle,
+                child: Text(
+                  S.of(context).onboarding6TeacherLanguageTitle,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.inter24w700.scaled(context),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: _spacing),
-        Semantics(
-          label:
-              'This is the language your tutor will speak to you in. You can change it anytime.',
-          child: Text(
-            'This is the language your tutor will speak to you in. You can change it anytime.',
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: S.of(context).onboarding6TeacherLanguageSubtitle,
+              child: Text(
+                S.of(context).onboarding6TeacherLanguageSubtitle,
             textAlign: TextAlign.start,
             style: AppTextStyle.inter16w400
                 .copyWith(
@@ -212,9 +212,10 @@ class TeacherLanguageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       child: SizedBox(
         width: double.infinity,
         child: CupertinoButton(
@@ -224,7 +225,7 @@ class TeacherLanguageButton extends StatelessWidget {
           minimumSize: const Size(0, 44.0),
           borderRadius: BorderRadius.circular(_borderRadius),
           child: Text(
-            'Continue',
+            s.continueButton,
             style: AppTextStyle.inter16w600
                 .copyWith(
                   color: AppColors.surface,

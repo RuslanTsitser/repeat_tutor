@@ -162,78 +162,80 @@ class StartTopicContent extends StatelessWidget {
     ];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Center(
-          child: Semantics(
-            label: 'Pick a topic to start with',
-            child: Text(
-              'Pick a topic to start with',
-              textAlign: TextAlign.center,
-              style: AppTextStyle.inter24w700.scaled(context),
-            ),
-          ),
-        ),
-        const SizedBox(height: _spacing),
-        Semantics(
-          label:
-              'Choose what\'s most useful right now. You can change topics anytime.',
-          child: Text(
-            'Choose what\'s most useful right now. You can change topics anytime.',
-            textAlign: TextAlign.start,
-            style: AppTextStyle.inter16w400
-                .copyWith(
-                  color: AppColors.textMuted,
-                )
-                .scaled(context),
-          ),
-        ),
-        const SizedBox(height: 32.0),
-        Semantics(
-          textField: true,
-          label: 'Topic input',
-          hint: S.of(context).egFreeTimeShoppingTravel,
-          child: Container(
-            height: 48.0,
-            decoration: BoxDecoration(
-              color: AppColors.backgroundLight,
-              borderRadius: BorderRadius.circular(16.0),
-              border: Border.all(
-                color: AppColors.divider,
-                width: 1,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Semantics(
+                label: S.of(context).onboarding6StartTopicTitle,
+                child: Text(
+                  S.of(context).onboarding6StartTopicTitle,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.inter24w700.scaled(context),
+                ),
               ),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: CupertinoTextField(
-              controller: topicController,
-              placeholder: S.of(context).egFreeTimeShoppingTravel,
-              placeholderStyle: AppTextStyle.inter16w400.copyWith(
-                color: AppColors.textMuted,
+            const SizedBox(height: _spacing),
+            Semantics(
+              label: S.of(context).onboarding6StartTopicSubtitle,
+              child: Text(
+                S.of(context).onboarding6StartTopicSubtitle,
+                textAlign: TextAlign.start,
+                style: AppTextStyle.inter16w400
+                    .copyWith(
+                      color: AppColors.textMuted,
+                    )
+                    .scaled(context),
               ),
-              style: AppTextStyle.inter16w400
-                  .copyWith(color: AppColors.textPrimary)
-                  .scaled(context),
-              decoration: const BoxDecoration(),
             ),
-          ),
-        ),
-        const SizedBox(height: _spacing),
-        Wrap(
-          spacing: _chipSpacing,
-          runSpacing: _chipSpacing,
-          children: exampleTopics.map((topic) {
-            final isSelected = selectedTopic == topic;
-            return _TopicChip(
-              label: topic,
-              isSelected: isSelected,
-              onTap: () {
-                onTopicSelected(topic);
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    ).animate(delay: 200.ms).moveY(begin: 16, end: 0, curve: Curves.easeOut).fadeIn();
+            const SizedBox(height: 32.0),
+            Semantics(
+              textField: true,
+              label: 'Topic input',
+              hint: S.of(context).egFreeTimeShoppingTravel,
+              child: Container(
+                height: 48.0,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundLight,
+                  borderRadius: BorderRadius.circular(16.0),
+                  border: Border.all(
+                    color: AppColors.divider,
+                    width: 1,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: CupertinoTextField(
+                  controller: topicController,
+                  placeholder: S.of(context).egFreeTimeShoppingTravel,
+                  placeholderStyle: AppTextStyle.inter16w400.copyWith(
+                    color: AppColors.textMuted,
+                  ),
+                  style: AppTextStyle.inter16w400
+                      .copyWith(color: AppColors.textPrimary)
+                      .scaled(context),
+                  decoration: const BoxDecoration(),
+                ),
+              ),
+            ),
+            const SizedBox(height: _spacing),
+            Wrap(
+              spacing: _chipSpacing,
+              runSpacing: _chipSpacing,
+              children: exampleTopics.map((topic) {
+                final isSelected = selectedTopic == topic;
+                return _TopicChip(
+                  label: topic,
+                  isSelected: isSelected,
+                  onTap: () {
+                    onTopicSelected(topic);
+                  },
+                );
+              }).toList(),
+            ),
+          ],
+        )
+        .animate(delay: 200.ms)
+        .moveY(begin: 16, end: 0, curve: Curves.easeOut)
+        .fadeIn();
   }
 }
 
@@ -308,9 +310,10 @@ class StartTopicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Semantics(
       button: true,
-      label: 'Continue',
+      label: s.continueButton,
       enabled: canProceed && !isCreating,
       child: SizedBox(
         width: double.infinity,
@@ -325,7 +328,7 @@ class StartTopicButton extends StatelessWidget {
                   color: AppColors.surface,
                 )
               : Text(
-                  'Continue',
+                  s.continueButton,
                   style: AppTextStyle.inter16w600
                       .copyWith(
                         color: AppColors.surface,
