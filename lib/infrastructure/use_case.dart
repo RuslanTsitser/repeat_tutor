@@ -5,6 +5,7 @@ import '../features/chats/use_case/create_chat_use_case.dart';
 import '../features/chats/use_case/delete_chat_use_case.dart';
 import '../features/home/use_case/initialize_use_case.dart';
 import '../features/home/use_case/open_screen_use_case.dart';
+import '../features/onboarding/use_case/open_chat_after_onboarding_use_case.dart';
 import '../features/paywall/use_case/purchase_use_case.dart';
 import '../features/profile/use_case/profile_settings_use_case.dart';
 import '../features/realtime_call/use_case/start_realtime_call_use_case.dart';
@@ -39,4 +40,8 @@ final initializeUseCaseProvider = Provider((ref) {
 
 final profileSettingsUseCaseProvider = Provider((ref) {
   return ProfileSettingsUseCase(ref: ref);
+});
+
+final openChatAfterOnboardingUseCaseProvider = Provider((ref) {
+  return OpenChatAfterOnboardingUseCase(ref: ref);
 });
