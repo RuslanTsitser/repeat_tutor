@@ -329,7 +329,7 @@ class RealLifeTopicsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: Semantics(
