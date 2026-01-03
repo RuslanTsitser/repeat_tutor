@@ -25,7 +25,6 @@ class RealTimeVoiceModePage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 32.0),
             const Expanded(
               child: RealTimeVoiceModeIllustration(),
             ),
@@ -55,7 +54,6 @@ class RealTimeVoiceModePage extends StatelessWidget {
 class RealTimeVoiceModeIllustration extends StatelessWidget {
   const RealTimeVoiceModeIllustration({super.key});
 
-  static const double _maxWidth = 320.0;
   static const double _borderWidth = 1.0;
   static const double _borderRadius = 16.0;
   static const double _padding = 16.0;
@@ -63,58 +61,54 @@ class RealTimeVoiceModeIllustration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mockData = _createMockData(context);
+    final width = MediaQuery.sizeOf(context).width;
 
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          border: Border.all(
-            color: AppColors.divider,
-            width: _borderWidth,
-          ),
-          borderRadius: BorderRadius.circular(_borderRadius),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.textMuted.withValues(alpha: 0.1),
-              blurRadius: 24,
-              offset: const Offset(0, 8),
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border.all(
+          color: AppColors.divider,
+          width: _borderWidth,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(_borderRadius),
-          child: Container(
-            width: _maxWidth,
-            padding: const EdgeInsets.symmetric(horizontal: _padding),
-            color: AppColors.backgroundLight,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: _padding),
-                  const _MockLanguageAvatar(),
-                  const SizedBox(height: 16.0),
-                  _MockCallTitle(
-                    topic: mockData.topic,
-                    language: mockData.language,
-                    level: mockData.level,
-                  ),
-                  const SizedBox(height: 16.0),
-                  _MockCallTimer(duration: mockData.duration),
-                  const SizedBox(height: 16.0),
-                  _MockTutorMessage(message: mockData.tutorMessage),
-                  const SizedBox(height: 8.0),
-                  _MockTutorNotesMarkdown(
-                    correctionMarkdown: mockData.correctionMarkdown,
-                    explanation: mockData.explanation,
-                  ),
-                  const SizedBox(height: 16.0),
-                  const _MockControlButtons(),
-                  const SizedBox(height: _padding),
-                ],
+        borderRadius: BorderRadius.circular(_borderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textMuted.withValues(alpha: 0.1),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        child: Container(
+          width: width,
+          padding: const EdgeInsets.symmetric(horizontal: _padding),
+          color: AppColors.backgroundLight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: _padding),
+              const _MockLanguageAvatar(),
+              const SizedBox(height: 16.0),
+              _MockCallTitle(
+                topic: mockData.topic,
+                language: mockData.language,
+                level: mockData.level,
               ),
-            ),
+              const SizedBox(height: 16.0),
+              _MockCallTimer(duration: mockData.duration),
+              const SizedBox(height: 16.0),
+              _MockTutorMessage(message: mockData.tutorMessage),
+              const SizedBox(height: 8.0),
+              _MockTutorNotesMarkdown(
+                correctionMarkdown: mockData.correctionMarkdown,
+                explanation: mockData.explanation,
+              ),
+              const SizedBox(height: 16.0),
+              const _MockControlButtons(),
+              const SizedBox(height: _padding),
+            ],
           ),
         ),
       ),
