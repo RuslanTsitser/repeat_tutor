@@ -80,7 +80,7 @@ class OpenScreenUseCase {
   Future<void> openChatAfterOnboarding(Chat chat) async {
     final appRouter = ref.read(routerProvider);
     final abTestService = ref.read(abTestServiceProvider);
-    final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+    final initializeUseCase = ref.read(initializeUseCaseProvider);
 
     if (!abTestService.userPremiumSource.isPremium) {
       await appRouter.push(
@@ -89,10 +89,6 @@ class OpenScreenUseCase {
     }
 
     await openChat(chat);
-    homeScreenNotifier.setState(
-      homeScreenNotifier.state.copyWith(
-        tab: HomeScreenTab.home,
-      ),
-    );
+    await initializeUseCase.setTab(HomeScreenTab.home);
   }
 }
