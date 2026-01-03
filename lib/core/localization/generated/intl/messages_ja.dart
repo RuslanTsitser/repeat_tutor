@@ -171,6 +171,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "または音声メッセージを送信",
     ),
+    "paywall5Benefit1": MessageLookupByLibrary.simpleMessage(
+      "AIとリアルタイムで話す（音声）",
+    ),
+    "paywall5Benefit2": MessageLookupByLibrary.simpleMessage("無制限の実生活のトピック"),
+    "paywall5Benefit3": MessageLookupByLibrary.simpleMessage("あらゆる言語、いつでも"),
+    "paywall5Benefit4": MessageLookupByLibrary.simpleMessage(
+      "即座の優しい訂正 + より自然な表現",
+    ),
+    "paywall5Headline": MessageLookupByLibrary.simpleMessage(
+      "自信を持って話す — プレッシャーなしで",
+    ),
+    "paywall5StartPracticing": MessageLookupByLibrary.simpleMessage("練習を始める"),
+    "paywall5Subheadline": MessageLookupByLibrary.simpleMessage(
+      "温かく、判断のないチューターが、いつでも利用できます。",
+    ),
     "per": MessageLookupByLibrary.simpleMessage("あたり"),
     "period": MessageLookupByLibrary.simpleMessage("期間"),
     "personalized": MessageLookupByLibrary.simpleMessage("パーソナライズ"),

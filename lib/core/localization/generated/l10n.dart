@@ -1128,6 +1128,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Speak with confidence — without the pressure`
+  String get paywall5Headline {
+    return Intl.message(
+      'Speak with confidence — without the pressure',
+      name: 'paywall5Headline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your warm, judgment-free tutor, anytime.`
+  String get paywall5Subheadline {
+    return Intl.message(
+      'Your warm, judgment-free tutor, anytime.',
+      name: 'paywall5Subheadline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speak with AI in real time (voice)`
+  String get paywall5Benefit1 {
+    return Intl.message(
+      'Speak with AI in real time (voice)',
+      name: 'paywall5Benefit1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited real-life topics`
+  String get paywall5Benefit2 {
+    return Intl.message(
+      'Unlimited real-life topics',
+      name: 'paywall5Benefit2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Any language, anytime`
+  String get paywall5Benefit3 {
+    return Intl.message(
+      'Any language, anytime',
+      name: 'paywall5Benefit3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instant gentle corrections + more natural phrasing`
+  String get paywall5Benefit4 {
+    return Intl.message(
+      'Instant gentle corrections + more natural phrasing',
+      name: 'paywall5Benefit4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start practicing`
+  String get paywall5StartPracticing {
+    return Intl.message(
+      'Start practicing',
+      name: 'paywall5StartPracticing',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

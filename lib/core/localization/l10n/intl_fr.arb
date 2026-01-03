@@ -127,5 +127,12 @@
   "onboarding6LoadingText1": "Creating your personal learning path",
   "onboarding6LoadingText2": "Setting up your first lesson",
   "onboarding6LoadingText3": "Preparing your AI tutor",
-  "onboarding6LoadingText4": "Almost ready..."
+  "onboarding6LoadingText4": "Almost ready...",
+  "paywall5Headline": "Parlez avec confiance — sans pression",
+  "paywall5Subheadline": "Votre tuteur chaleureux et sans jugement, à tout moment.",
+  "paywall5Benefit1": "Parlez avec l'IA en temps réel (voix)",
+  "paywall5Benefit2": "Sujets illimités de la vie réelle",
+  "paywall5Benefit3": "N'importe quelle langue, à tout moment",
+  "paywall5Benefit4": "Corrections douces instantanées + formulations plus naturelles",
+  "paywall5StartPracticing": "Commencer à pratiquer"
 }

@@ -127,5 +127,12 @@
   "onboarding6LoadingText1": "Creating your personal learning path",
   "onboarding6LoadingText2": "Setting up your first lesson",
   "onboarding6LoadingText3": "Preparing your AI tutor",
-  "onboarding6LoadingText4": "Almost ready..."
+  "onboarding6LoadingText4": "Almost ready...",
+  "paywall5Headline": "自信を持って話す — プレッシャーなしで",
+  "paywall5Subheadline": "温かく、判断のないチューターが、いつでも利用できます。",
+  "paywall5Benefit1": "AIとリアルタイムで話す（音声）",
+  "paywall5Benefit2": "無制限の実生活のトピック",
+  "paywall5Benefit3": "あらゆる言語、いつでも",
+  "paywall5Benefit4": "即座の優しい訂正 + より自然な表現",
+  "paywall5StartPracticing": "練習を始める"
 }

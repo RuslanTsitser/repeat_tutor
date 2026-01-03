@@ -127,5 +127,12 @@
   "onboarding6LoadingText1": "Создаем ваш персональный путь обучения",
   "onboarding6LoadingText2": "Настраиваем ваш первый урок",
   "onboarding6LoadingText3": "Подготавливаем вашего AI-преподавателя",
-  "onboarding6LoadingText4": "Почти готово..."
+  "onboarding6LoadingText4": "Почти готово...",
+  "paywall5Headline": "Говорите с уверенностью — без давления",
+  "paywall5Subheadline": "Ваш теплый, безоценочный преподаватель, в любое время.",
+  "paywall5Benefit1": "Говорите с ИИ в реальном времени (голос)",
+  "paywall5Benefit2": "Неограниченные темы из реальной жизни",
+  "paywall5Benefit3": "Любой язык, в любое время",
+  "paywall5Benefit4": "Мгновенные мягкие исправления + более естественные формулировки",
+  "paywall5StartPracticing": "Начать практику"
 }

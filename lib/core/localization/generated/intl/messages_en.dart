@@ -183,6 +183,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "orSendAnAudioMessage": MessageLookupByLibrary.simpleMessage(
       "Or send an audio message",
     ),
+    "paywall5Benefit1": MessageLookupByLibrary.simpleMessage(
+      "Speak with AI in real time (voice)",
+    ),
+    "paywall5Benefit2": MessageLookupByLibrary.simpleMessage(
+      "Unlimited real-life topics",
+    ),
+    "paywall5Benefit3": MessageLookupByLibrary.simpleMessage(
+      "Any language, anytime",
+    ),
+    "paywall5Benefit4": MessageLookupByLibrary.simpleMessage(
+      "Instant gentle corrections + more natural phrasing",
+    ),
+    "paywall5Headline": MessageLookupByLibrary.simpleMessage(
+      "Speak with confidence — without the pressure",
+    ),
+    "paywall5StartPracticing": MessageLookupByLibrary.simpleMessage(
+      "Start practicing",
+    ),
+    "paywall5Subheadline": MessageLookupByLibrary.simpleMessage(
+      "Your warm, judgment-free tutor, anytime.",
+    ),
     "per": MessageLookupByLibrary.simpleMessage("per"),
     "period": MessageLookupByLibrary.simpleMessage("Period"),
     "personalized": MessageLookupByLibrary.simpleMessage("Personalized"),
