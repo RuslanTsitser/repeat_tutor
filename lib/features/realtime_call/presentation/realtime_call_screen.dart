@@ -4,6 +4,7 @@ import 'dart:math' show max;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_style.dart';
@@ -83,6 +84,10 @@ class _CallContent extends ConsumerWidget {
           const _CallTimer(),
           const SizedBox(height: 32),
           const _TutorMessage(),
+          const SizedBox(height: 16),
+          const Expanded(
+            child: SingleChildScrollView(child: _TutorNotesMarkdown()),
+          ),
           if (state.error != null) ...[
             const SizedBox(height: 16),
             _ErrorBanner(error: state.error!),
@@ -457,6 +462,125 @@ class _TutorMessageState extends ConsumerState<_TutorMessage> {
         style: AppTextStyle.inter16w400,
         textAlign: TextAlign.center,
       ),
+    );
+  }
+}
+
+class _TutorNotesMarkdown extends ConsumerWidget {
+  const _TutorNotesMarkdown();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(realtimeCallProvider).state;
+    if (!state.showCorrectionMarkdown) {
+      return const SizedBox.shrink();
+    }
+
+    final List<Widget> children = [];
+
+    final suggestedTranslation = state.suggestedTranslation;
+    if (suggestedTranslation != null && suggestedTranslation.isNotEmpty) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEFF6FF),
+              border: Border.all(
+                color: const Color(0xFFBEDBFF),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: DefaultTextStyle(
+              style: AppTextStyle.inter16w500.copyWith(
+                color: AppColors.accentBlue,
+              ),
+              child: MarkdownWidget(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                data: suggestedTranslation,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final correctionMarkdown = state.correctedMessage;
+    if (correctionMarkdown != null && correctionMarkdown.isNotEmpty) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFBEB),
+              border: Border.all(
+                color: const Color(0xFFFEE685),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                DefaultTextStyle(
+                  style: AppTextStyle.inter16w500.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: MarkdownWidget(
+                      key: ValueKey(correctionMarkdown),
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      data: correctionMarkdown,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final explanation = state.explanation;
+    if (explanation != null && explanation.isNotEmpty) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: DefaultTextStyle(
+            style: AppTextStyle.inter16w400.copyWith(
+              color: AppColors.textPrimary,
+            ),
+            child: MarkdownWidget(
+              padding: EdgeInsets.zero,
+              selectable: false,
+              shrinkWrap: true,
+              data: explanation,
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
     );
   }
 }
