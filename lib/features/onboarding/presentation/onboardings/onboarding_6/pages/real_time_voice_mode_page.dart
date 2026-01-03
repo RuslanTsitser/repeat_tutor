@@ -62,7 +62,7 @@ class RealTimeVoiceModeIllustration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mockData = _createMockData();
+    final mockData = _createMockData(context);
 
     return FittedBox(
       fit: BoxFit.scaleDown,
@@ -123,7 +123,7 @@ class RealTimeVoiceModeIllustration extends StatelessWidget {
 }
 
 class _MockData {
-  const _MockData({
+  _MockData({
     required this.topic,
     required this.language,
     required this.level,
@@ -142,17 +142,16 @@ class _MockData {
   final String explanation;
 }
 
-_MockData _createMockData() {
-  return const _MockData(
-    topic: 'Free time',
-    language: 'English',
-    level: 'Beginner',
-    duration: Duration(minutes: 2, seconds: 34),
-    tutorMessage:
-        'You almost got it right! The correct way to say it is "I went to the store yesterday"',
-    correctionMarkdown: 'I ~~goed~~ **went** to the store yesterday',
-    explanation:
-        'Remember that "go" is an irregular verb, so its past tense is "went" rather than "goed"',
+_MockData _createMockData(BuildContext context) {
+  final s = S.of(context);
+  return _MockData(
+    topic: s.exampleTopicFreeTime,
+    language: s.onboarding6RealTimeVoiceMockLanguage,
+    level: s.onboarding6RealTimeVoiceMockLevel,
+    duration: const Duration(minutes: 2, seconds: 34),
+    tutorMessage: s.onboarding6RealTimeVoiceMockTutorMessage,
+    correctionMarkdown: s.onboarding6RealTimeVoiceMockCorrectionMarkdown,
+    explanation: s.onboarding6RealTimeVoiceMockExplanation,
   );
 }
 
