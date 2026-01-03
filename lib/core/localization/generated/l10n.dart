@@ -1088,6 +1088,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Creating your personal learning path`
+  String get onboarding6LoadingText1 {
+    return Intl.message(
+      'Creating your personal learning path',
+      name: 'onboarding6LoadingText1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setting up your first lesson`
+  String get onboarding6LoadingText2 {
+    return Intl.message(
+      'Setting up your first lesson',
+      name: 'onboarding6LoadingText2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preparing your AI tutor`
+  String get onboarding6LoadingText3 {
+    return Intl.message(
+      'Preparing your AI tutor',
+      name: 'onboarding6LoadingText3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Almost ready...`
+  String get onboarding6LoadingText4 {
+    return Intl.message(
+      'Almost ready...',
+      name: 'onboarding6LoadingText4',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

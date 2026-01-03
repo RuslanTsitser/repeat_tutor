@@ -123,5 +123,9 @@
   "onboarding6CurrentLevelTitle": "What's your current level?",
   "onboarding6CurrentLevelSubtitle": "Just a rough estimate — we'll adapt as you practice.",
   "onboarding6StartTopicTitle": "Pick a topic to start with",
-  "onboarding6StartTopicSubtitle": "Choose what's most useful right now. You can change topics anytime."
+  "onboarding6StartTopicSubtitle": "Choose what's most useful right now. You can change topics anytime.",
+  "onboarding6LoadingText1": "Creating your personal learning path",
+  "onboarding6LoadingText2": "Setting up your first lesson",
+  "onboarding6LoadingText3": "Preparing your AI tutor",
+  "onboarding6LoadingText4": "Almost ready..."
 }

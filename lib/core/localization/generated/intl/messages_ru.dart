@@ -136,6 +136,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Интересный факт: попытка вспомнить лучше, чем перечитывание",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Понятно"),
+    "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(
+      "Создаем ваш персональный путь обучения",
+    ),
+    "onboarding6LoadingText2": MessageLookupByLibrary.simpleMessage(
+      "Настраиваем ваш первый урок",
+    ),
+    "onboarding6LoadingText3": MessageLookupByLibrary.simpleMessage(
+      "Подготавливаем вашего AI-преподавателя",
+    ),
+    "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
+      "Почти готово...",
+    ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Отлично"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
       "Выберите тему и отвечайте на простые вопросы. Говорите по-своему — ваш преподаватель мягко исправляет вас и делает речь более естественной, на вашем текущем уровне.",

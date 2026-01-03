@@ -123,5 +123,9 @@
   "onboarding6CurrentLevelTitle": "Какой у вас текущий уровень?",
   "onboarding6CurrentLevelSubtitle": "Просто приблизительная оценка — мы адаптируемся по мере вашей практики.",
   "onboarding6StartTopicTitle": "Выберите тему для начала",
-  "onboarding6StartTopicSubtitle": "Выберите то, что наиболее полезно прямо сейчас. Вы можете менять темы в любое время."
+  "onboarding6StartTopicSubtitle": "Выберите то, что наиболее полезно прямо сейчас. Вы можете менять темы в любое время.",
+  "onboarding6LoadingText1": "Создаем ваш персональный путь обучения",
+  "onboarding6LoadingText2": "Настраиваем ваш первый урок",
+  "onboarding6LoadingText3": "Подготавливаем вашего AI-преподавателя",
+  "onboarding6LoadingText4": "Почти готово..."
 }

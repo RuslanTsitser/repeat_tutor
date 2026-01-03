@@ -130,6 +130,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Fun fact: Trying to recall beats re-reading",
     ),
     "onboarding6GotIt": MessageLookupByLibrary.simpleMessage("Got it"),
+    "onboarding6LoadingText1": MessageLookupByLibrary.simpleMessage(
+      "Creating your personal learning path",
+    ),
+    "onboarding6LoadingText2": MessageLookupByLibrary.simpleMessage(
+      "Setting up your first lesson",
+    ),
+    "onboarding6LoadingText3": MessageLookupByLibrary.simpleMessage(
+      "Preparing your AI tutor",
+    ),
+    "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
+      "Almost ready...",
+    ),
     "onboarding6Nice": MessageLookupByLibrary.simpleMessage("Nice"),
     "onboarding6RealLifeTopicsSubtitle": MessageLookupByLibrary.simpleMessage(
       "Pick a topic and answer simple questions. Say it your way — your tutor gently corrects you and makes it sound more natural, at your current level.",
