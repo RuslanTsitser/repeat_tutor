@@ -6,7 +6,6 @@ import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../infrastructure/state_managers.dart';
-import '../../../../../../infrastructure/use_case.dart';
 import 'onboarding_back_button_wrapper.dart';
 
 class StartTopicPage extends ConsumerStatefulWidget {
@@ -53,21 +52,12 @@ class _StartTopicPageState extends ConsumerState<StartTopicPage> {
       _isCreating = true;
     });
 
-    try {
-      ref.read(onboarding6NotifierProvider).setSelectedTopic(topic);
-
-      await ref
-          .read(openChatAfterOnboardingUseCaseProvider)
-          .openChatAfterOnboarding();
-      return;
-    } catch (e) {
-      // Обработка ошибки создания чата
-      if (mounted) {
-        setState(() {
-          _isCreating = false;
-        });
-      }
-    }
+    ref.read(onboarding6NotifierProvider).setSelectedTopic(topic);
+    widget.onNext();
+    if (!mounted) return;
+    setState(() {
+      _isCreating = false;
+    });
   }
 
   void _selectTopic(String topic) {
