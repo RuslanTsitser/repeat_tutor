@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,11 +8,10 @@ import '../../../../../../core/domain/enums/language.dart';
 import '../../../../../../core/localization/generated/l10n.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_style.dart';
-import '../../../../../../infrastructure/state_managers.dart';
 import '../../../../../../infrastructure/use_case.dart';
 import 'onboarding_back_button_wrapper.dart';
 
-class TargetLanguagePage extends ConsumerWidget {
+class TargetLanguagePage extends ConsumerStatefulWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
 
@@ -21,13 +22,42 @@ class TargetLanguagePage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileProvider);
-    final selectedLanguage = profileState.state.defaultLanguageToLearn;
+  ConsumerState<TargetLanguagePage> createState() => _TargetLanguagePageState();
+}
 
+class _TargetLanguagePageState extends ConsumerState<TargetLanguagePage> {
+  Language? _selectedLanguage;
+  Timer? _transitionTimer;
+
+  @override
+  void dispose() {
+    _transitionTimer?.cancel();
+    super.dispose();
+  }
+
+  void _handleLanguageSelected(Language language) {
+    if (_selectedLanguage == language) return;
+
+    setState(() {
+      _selectedLanguage = language;
+    });
+
+    ref
+        .read(profileSettingsUseCaseProvider)
+        .setDefaultLanguageToLearn(language);
+
+    _transitionTimer?.cancel();
+    _transitionTimer = Timer(const Duration(milliseconds: 500), () {
+      widget.onNext();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return OnboardingBackButtonWrapper(
-      onPrevious: onPrevious,
+      onPrevious: widget.onPrevious,
       child: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             const SizedBox(height: 32.0),
@@ -35,22 +65,9 @@ class TargetLanguagePage extends ConsumerWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: TargetLanguageContent(
-                  selectedLanguage: selectedLanguage,
-                  onLanguageSelected: (language) {
-                    ref
-                        .read(profileSettingsUseCaseProvider)
-                        .setDefaultLanguageToLearn(language);
-                  },
+                  selectedLanguage: _selectedLanguage,
+                  onLanguageSelected: _handleLanguageSelected,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ).copyWith(top: 8.0),
-              child: TargetLanguageButton(
-                onNext: onNext,
-                onPrevious: onPrevious,
               ),
             ),
           ],
@@ -61,7 +78,7 @@ class TargetLanguagePage extends ConsumerWidget {
 }
 
 class TargetLanguageContent extends StatelessWidget {
-  final Language selectedLanguage;
+  final Language? selectedLanguage;
   final ValueChanged<Language> onLanguageSelected;
 
   const TargetLanguageContent({
@@ -197,46 +214,5 @@ class _LanguageItem extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class TargetLanguageButton extends StatelessWidget {
-  final VoidCallback onNext;
-  final VoidCallback? onPrevious;
-
-  const TargetLanguageButton({
-    super.key,
-    required this.onNext,
-    this.onPrevious,
-  });
-
-  static const double _verticalPadding = 16.0;
-  static const double _borderRadius = 16.0;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = S.of(context);
-    return Semantics(
-      button: true,
-      label: s.continueButton,
-      child: SizedBox(
-        width: double.infinity,
-        child: CupertinoButton(
-          onPressed: onNext,
-          color: AppColors.primary,
-          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
-          minimumSize: const Size(0, 44.0),
-          borderRadius: BorderRadius.circular(_borderRadius),
-          child: Text(
-            s.continueButton,
-            style: AppTextStyle.inter16w600
-                .copyWith(
-                  color: AppColors.surface,
-                )
-                .scaled(context),
-          ),
-        ),
-      ),
-    ).animate(delay: 400.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }

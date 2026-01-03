@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +11,7 @@ import '../../../../../../core/theme/app_text_style.dart';
 import '../../../../../../infrastructure/state_managers.dart';
 import 'onboarding_back_button_wrapper.dart';
 
-class CurrentLevelPage extends ConsumerWidget {
+class CurrentLevelPage extends ConsumerStatefulWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
 
@@ -20,14 +22,40 @@ class CurrentLevelPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final onboarding6State = ref.watch(onboarding6NotifierProvider);
-    final selectedLevel =
-        onboarding6State.state.currentLevel ?? DifficultyLevel.beginner;
+  ConsumerState<CurrentLevelPage> createState() => _CurrentLevelPageState();
+}
 
+class _CurrentLevelPageState extends ConsumerState<CurrentLevelPage> {
+  DifficultyLevel? _selectedLevel;
+  Timer? _transitionTimer;
+
+  @override
+  void dispose() {
+    _transitionTimer?.cancel();
+    super.dispose();
+  }
+
+  void _handleLevelSelected(DifficultyLevel level) {
+    if (_selectedLevel == level) return;
+
+    setState(() {
+      _selectedLevel = level;
+    });
+
+    ref.read(onboarding6NotifierProvider).setCurrentLevel(level);
+
+    _transitionTimer?.cancel();
+    _transitionTimer = Timer(const Duration(milliseconds: 500), () {
+      widget.onNext();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return OnboardingBackButtonWrapper(
-      onPrevious: onPrevious,
+      onPrevious: widget.onPrevious,
       child: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             const SizedBox(height: 32.0),
@@ -35,20 +63,9 @@ class CurrentLevelPage extends ConsumerWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: CurrentLevelContent(
-                  selectedLevel: selectedLevel,
-                  onLevelSelected: (level) {
-                    ref
-                        .read(onboarding6NotifierProvider)
-                        .setCurrentLevel(level);
-                  },
+                  selectedLevel: _selectedLevel,
+                  onLevelSelected: _handleLevelSelected,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CurrentLevelButton(
-                onNext: onNext,
-                onPrevious: onPrevious,
               ),
             ),
           ],
@@ -59,7 +76,7 @@ class CurrentLevelPage extends ConsumerWidget {
 }
 
 class CurrentLevelContent extends StatelessWidget {
-  final DifficultyLevel selectedLevel;
+  final DifficultyLevel? selectedLevel;
   final ValueChanged<DifficultyLevel> onLevelSelected;
 
   const CurrentLevelContent({
@@ -195,46 +212,5 @@ class _LevelItem extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class CurrentLevelButton extends StatelessWidget {
-  final VoidCallback onNext;
-  final VoidCallback? onPrevious;
-
-  const CurrentLevelButton({
-    super.key,
-    required this.onNext,
-    this.onPrevious,
-  });
-
-  static const double _verticalPadding = 16.0;
-  static const double _borderRadius = 16.0;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = S.of(context);
-    return Semantics(
-      button: true,
-      label: s.continueButton,
-      child: SizedBox(
-        width: double.infinity,
-        child: CupertinoButton(
-          onPressed: onNext,
-          color: AppColors.primary,
-          padding: const EdgeInsets.symmetric(vertical: _verticalPadding),
-          minimumSize: const Size(0, 44.0),
-          borderRadius: BorderRadius.circular(_borderRadius),
-          child: Text(
-            s.continueButton,
-            style: AppTextStyle.inter16w600
-                .copyWith(
-                  color: AppColors.surface,
-                )
-                .scaled(context),
-          ),
-        ),
-      ),
-    ).animate(delay: 400.ms).moveY(begin: 16, end: 0).fadeIn();
   }
 }
