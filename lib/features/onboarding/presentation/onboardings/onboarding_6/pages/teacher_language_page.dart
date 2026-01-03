@@ -112,7 +112,7 @@ class TeacherLanguageContent extends StatelessWidget {
               label: S.of(context).onboarding6TeacherLanguageSubtitle,
               child: Text(
                 S.of(context).onboarding6TeacherLanguageSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,

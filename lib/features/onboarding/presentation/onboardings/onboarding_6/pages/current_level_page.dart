@@ -109,7 +109,7 @@ class CurrentLevelContent extends StatelessWidget {
               label: S.of(context).onboarding6CurrentLevelSubtitle,
               child: Text(
                 S.of(context).onboarding6CurrentLevelSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,

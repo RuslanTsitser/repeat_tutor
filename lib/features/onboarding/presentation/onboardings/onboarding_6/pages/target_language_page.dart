@@ -111,7 +111,7 @@ class TargetLanguageContent extends StatelessWidget {
               label: S.of(context).onboarding6TargetLanguageSubtitle,
               child: Text(
                 S.of(context).onboarding6TargetLanguageSubtitle,
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.inter16w400
                     .copyWith(
                       color: AppColors.textMuted,
