@@ -24,22 +24,16 @@ class BetterThanSchedulingPage extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BetterThanSchedulingIllustration(),
-                  SizedBox(height: 32.0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: BetterThanSchedulingContent(),
-                    ),
-                  ),
-                ],
+            const Expanded(child: BetterThanSchedulingIllustration()),
+            const SizedBox(height: 32.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: BetterThanSchedulingContent(),
               ),
             ),
+            const SizedBox(height: 32.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: BetterThanSchedulingButton(
@@ -60,8 +54,7 @@ class BetterThanSchedulingIllustration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Assets.aiGenerated.imageCall.image(
-      width: double.infinity,
-      fit: BoxFit.cover,
+      fit: BoxFit.fitWidth,
     );
   }
 }
