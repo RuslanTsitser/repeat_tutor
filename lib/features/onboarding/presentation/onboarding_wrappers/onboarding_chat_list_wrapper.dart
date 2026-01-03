@@ -61,7 +61,6 @@ class AddButtonWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Showcase(
-      title: S.of(context).startHere,
       description: S.of(context).tapToCreateANewChat,
       tooltipPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       tooltipBorderRadius: BorderRadius.circular(16),
