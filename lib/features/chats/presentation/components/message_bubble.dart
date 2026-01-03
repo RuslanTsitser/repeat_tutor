@@ -287,19 +287,6 @@ class _CorrectionBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DefaultTextStyle(
-            style: AppTextStyle.inter16w400.copyWith(
-              color: AppColors.textSecondary,
-              decoration: TextDecoration.lineThrough,
-              decorationColor: AppColors.textSecondary,
-            ),
-            child: MarkdownWidget(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              data: correction.original,
-            ),
-          ),
-          const SizedBox(height: 8),
-          DefaultTextStyle(
             style: AppTextStyle.inter16w500.copyWith(
               color: AppColors.textPrimary,
             ),
