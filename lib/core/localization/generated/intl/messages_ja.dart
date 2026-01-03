@@ -128,6 +128,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
       "ほぼ準備完了...",
     ),
+    "onboarding6MistakesOkExampleContinue":
+        MessageLookupByLibrary.simpleMessage("そこで何を買いましたか？"),
+    "onboarding6MistakesOkExampleExplanation":
+        MessageLookupByLibrary.simpleMessage(
+          "\"go\"の過去形は\"went\"で、\"goed\"ではありません。",
+        ),
+    "onboarding6MistakesOkExampleTutorMessage":
+        MessageLookupByLibrary.simpleMessage("いいですね！小さな修正があります："),
+    "onboarding6MistakesOkExampleUserMessage":
+        MessageLookupByLibrary.simpleMessage("I goed to the store yesterday"),
     "onboarding6MistakesOkSubtitle": MessageLookupByLibrary.simpleMessage(
       "あなたの方法で話してください — あなたの教師は優しく修正し、あなたの現在のレベルで、より自然な話し方にします。",
     ),

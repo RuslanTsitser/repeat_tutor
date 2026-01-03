@@ -146,6 +146,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboarding6LoadingText4": MessageLookupByLibrary.simpleMessage(
       "Quase pronto...",
     ),
+    "onboarding6MistakesOkExampleContinue":
+        MessageLookupByLibrary.simpleMessage("O que comprou lá?"),
+    "onboarding6MistakesOkExampleExplanation":
+        MessageLookupByLibrary.simpleMessage(
+          "O passado de \"go\" é \"went\", não \"goed\".",
+        ),
+    "onboarding6MistakesOkExampleTutorMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Bom! Aqui está uma pequena correção:",
+        ),
+    "onboarding6MistakesOkExampleUserMessage":
+        MessageLookupByLibrary.simpleMessage("I goed to the store yesterday"),
     "onboarding6MistakesOkSubtitle": MessageLookupByLibrary.simpleMessage(
       "Fale à sua maneira — o seu professor corrige-o suavemente e torna a sua fala mais natural, no seu nível atual.",
     ),

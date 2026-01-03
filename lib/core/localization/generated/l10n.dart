@@ -919,6 +919,46 @@ class S {
     );
   }
 
+  /// `I goed to the store yesterday`
+  String get onboarding6MistakesOkExampleUserMessage {
+    return Intl.message(
+      'I goed to the store yesterday',
+      name: 'onboarding6MistakesOkExampleUserMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good! Here's a small correction:`
+  String get onboarding6MistakesOkExampleTutorMessage {
+    return Intl.message(
+      'Good! Here\'s a small correction:',
+      name: 'onboarding6MistakesOkExampleTutorMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The past tense of "go" is "went", not "goed".`
+  String get onboarding6MistakesOkExampleExplanation {
+    return Intl.message(
+      'The past tense of "go" is "went", not "goed".',
+      name: 'onboarding6MistakesOkExampleExplanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What did you buy there?`
+  String get onboarding6MistakesOkExampleContinue {
+    return Intl.message(
+      'What did you buy there?',
+      name: 'onboarding6MistakesOkExampleContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Fun fact: Trying to recall beats re-reading`
   String get onboarding6FunFactRetrievalTitle {
     return Intl.message(
