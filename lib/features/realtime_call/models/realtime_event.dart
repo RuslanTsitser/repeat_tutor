@@ -17,6 +17,8 @@ enum EventType {
   responseDone,
   rateLimitsUpdated,
   outputAudioBufferStopped,
+  responseTextDelta,
+  responseTextDone,
   unknown;
 
   String get key => switch (this) {
@@ -36,6 +38,8 @@ enum EventType {
     responseDone => 'response.done',
     rateLimitsUpdated => 'rate_limits.updated',
     outputAudioBufferStopped => 'output_audio_buffer.stopped',
+    responseTextDelta => 'response.text.delta',
+    responseTextDone => 'response.text.done',
     unknown => 'unknown',
   };
 
@@ -348,5 +352,57 @@ class RealtimeEvent {
         "response_id": "resp_CtcSie6XsD9cPaELIeCRx"
       }
 
+      {
+        "type": "response.text.delta",
+        "event_id": "event_CtgWvHj1VIHwQ4gUoNqFc",
+        "response_id": "resp_CtgWv7bnGjmWpjhG3NPBH",
+        "item_id": "item_CtgWv3PHM27qdk7UgCeEZ",
+        "output_index": 0,
+        "content_index": 0,
+        "delta": "{",
+        "obfuscation": "Lrrym0eAH8eonP5"
+      }
 
+      {
+        "type": "response.text.done",
+        "event_id": "event_CtgWwzeaDp0xvZloe0XU7",
+        "response_id": "resp_CtgWv7bnGjmWpjhG3NPBH",
+        "item_id": "item_CtgWv3PHM27qdk7UgCeEZ",
+        "output_index": 0,
+        "content_index": 0,
+        "text": "{  \n  \"score\": 0.92 \n}  \n"
+      }
+
+      {
+        "type": "response.content_part.done",
+        "event_id": "event_CtgWwexUsB0xcH8whmhna",
+        "response_id": "resp_CtgWv7bnGjmWpjhG3NPBH",
+        "item_id": "item_CtgWv3PHM27qdk7UgCeEZ",
+        "output_index": 0,
+        "content_index": 0,
+        "part": {
+          "type": "text",
+          "text": "{  \n  \"score\": 0.92 \n}  \n"
+        }
+      }
+
+{
+        "type": "response.output_item.done",
+        "event_id": "event_CtgWwze8eJicrL9cHoMz0",
+        "response_id": "resp_CtgWv7bnGjmWpjhG3NPBH",
+        "output_index": 0,
+        "item": {
+          "id": "item_CtgWv3PHM27qdk7UgCeEZ",
+          "object": "realtime.item",
+          "type": "message",
+          "status": "completed",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{  \n  \"score\": 0.92 \n}  \n"
+            }
+          ]
+        }
+      }
  */
