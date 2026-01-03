@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ab_test/enum/placement_type.dart';
@@ -8,6 +10,7 @@ import '../../../infrastructure/core.dart';
 import '../../../infrastructure/repositories.dart';
 import '../../../infrastructure/state_managers.dart';
 import '../../../infrastructure/use_case.dart';
+import '../logic/home_screen_notifier.dart';
 
 class OpenScreenUseCase {
   const OpenScreenUseCase({
@@ -32,7 +35,10 @@ class OpenScreenUseCase {
         error: null,
       ),
     );
-    appRouter.push<void>(const ChatRoute());
+    final completed = Completer<void>();
+    appRouter
+        .push<void>(const ChatRoute())
+        .then((value) => completed.complete());
 
     final messages = await chatRepository.getMessages(chat.chatId);
     messageNotifier.setState(
@@ -58,6 +64,7 @@ class OpenScreenUseCase {
       };
       await addMessageUseCase.addMessage(firstMessage, addFirstMessage: false);
     }
+    await completed.future;
   }
 
   Future<void> openProPaywall() async {
@@ -66,6 +73,25 @@ class OpenScreenUseCase {
     appRouter.push<void>(
       PaywallRoute(
         placement: PlacementType.placementStart,
+      ),
+    );
+  }
+
+  Future<void> openChatAfterOnboarding(Chat chat) async {
+    final appRouter = ref.read(routerProvider);
+    final abTestService = ref.read(abTestServiceProvider);
+    final homeScreenNotifier = ref.read(homeScreenNotifierProvider);
+
+    if (!abTestService.userPremiumSource.isPremium) {
+      await appRouter.push(
+        PaywallRoute(placement: PlacementType.placementOnboarding),
+      );
+    }
+
+    await openChat(chat);
+    homeScreenNotifier.setState(
+      homeScreenNotifier.state.copyWith(
+        tab: HomeScreenTab.home,
       ),
     );
   }
